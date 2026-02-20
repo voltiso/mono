@@ -32,7 +32,7 @@ class DataHookImpl<D extends object> {
 
 		Object.freeze(this)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(this, {
 			get: (t, p, r) => {
 				if (!this.data || p in t) return Reflect.get(t, p, r) as unknown

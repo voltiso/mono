@@ -13,9 +13,8 @@ import type { CssWeb } from './web'
  *
  * - Use TS declaration merging
  */
-export interface CssExtensionWeb<
-	CustomCss extends object,
-> extends CssExtension<CustomCss> {
+export interface CssExtensionWeb<CustomCss extends object>
+	extends CssExtension<CustomCss> {
 	':nth-child(odd)'?: CssWeb<CustomCss> | undefined
 	':nth-child(even)'?: CssWeb<CustomCss> | undefined
 

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -12,7 +12,9 @@ describe('PickConstruct', () => {
 	it('PickConstructNoUnknown - abstract and normal', () => {
 		expect.assertions(0)
 
-		type Input = (abstract new (x: number) => number) & {
+		type Input = (abstract new (
+			x: number,
+		) => number) & {
 			new (x: number): number
 			(x: number): string
 			[k: string]: number
@@ -28,7 +30,9 @@ describe('PickConstruct', () => {
 	it('PickConstructNoUnknown - only abstract', () => {
 		expect.assertions(0)
 
-		type Input = (abstract new (x: number) => number) & {
+		type Input = (abstract new (
+			x: number,
+		) => number) & {
 			(x: number): string
 			[k: string]: number
 			num: number

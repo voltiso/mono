@@ -36,13 +36,11 @@ export const _strongRefCall = <X extends $$DocRelatedLike>(): s.Schema<
 
 //
 
-export interface StrongDocRefSchema<
-	X extends $$DocRelated = ANY_DOC,
-> extends s.Schema<DocRef<X>> {}
+export interface StrongDocRefSchema<X extends $$DocRelated = ANY_DOC>
+	extends s.Schema<DocRef<X>> {}
 
-export interface StrongDocRefSchema$<
-	X extends $$DocRelated = ANY_DOC,
-> extends s.Schema$<DocRef<X>> {
+export interface StrongDocRefSchema$<X extends $$DocRelated = ANY_DOC>
+	extends s.Schema$<DocRef<X>> {
 	//
 	get Final(): StrongDocRefSchema<X>
 }

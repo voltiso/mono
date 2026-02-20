@@ -17,15 +17,14 @@ export function createPatch(oldObject: unknown, newObject: unknown): unknown {
 
 		for (const [oldKey, oldValue] of Object.entries(oldObject)) {
 			assertNotPolluting(oldKey)
+			// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 			if (Object.prototype.hasOwnProperty.call(newObject, oldKey)) {
 				patch[oldKey] = createPatch(
 					oldValue,
 					newObject[oldKey as keyof typeof newObject],
 				)
 
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (patch[oldKey] === keepIt) {
-					// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 					delete patch[oldKey]
 				}
 			} else patch[oldKey] = deleteIt

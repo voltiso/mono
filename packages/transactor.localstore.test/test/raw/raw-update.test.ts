@@ -13,8 +13,8 @@ const db = createTransactor({
 	checkDecorators: false,
 })
 
-describe('raw-update', function () {
-	it('updates without returning data when no triggers or schemas', async function () {
+describe('raw-update', () => {
+	it('updates without returning data when no triggers or schemas', async () => {
 		expect.hasAssertions()
 
 		await db('doctor/anthony').delete()
@@ -40,7 +40,7 @@ describe('raw-update', function () {
 		})
 	})
 
-	it('does not allow updates of deleted document', async function () {
+	it('does not allow updates of deleted document', async () => {
 		expect.hasAssertions()
 		await expect(
 			db.runTransaction(async db => {
@@ -50,7 +50,7 @@ describe('raw-update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('does not allow updates of deleted document #2', async function () {
+	it('does not allow updates of deleted document #2', async () => {
 		expect.hasAssertions()
 
 		await db('doctor/anthony').delete()
@@ -62,7 +62,7 @@ describe('raw-update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('updates without returning data when no triggers or schemas - when in transaction', async function () {
+	it('updates without returning data when no triggers or schemas - when in transaction', async () => {
 		expect.hasAssertions()
 
 		await db('doctor/anthony').set({ asd: 1 })

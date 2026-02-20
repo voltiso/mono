@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/max-params */
-
 import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
 import { isDeleteIt, isReplaceIt, stringFrom } from '@voltiso/util'
@@ -67,7 +65,6 @@ async function databaseSet(
 		? ctxOverride.transaction._date
 		: new Date()
 
-	// eslint-disable-next-line no-param-reassign
 	data = {
 		...data,
 
@@ -128,11 +125,9 @@ export async function databaseUpdate(
 		? ctxOverride.transaction._date
 		: new Date()
 
-	// eslint-disable-next-line no-param-reassign
 	updates = {
 		...updates,
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		__voltiso: {
 			...(updates['__voltiso'] as any),
 			updatedAt: now,

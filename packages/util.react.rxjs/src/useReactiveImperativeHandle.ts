@@ -12,6 +12,8 @@ export function useReactiveImperativeHandle<T, R extends T>(
 	deps?: DependencyList,
 ): void {
 	const targetDeps = useObservables(...(deps || [])) // force re-render with subscriptions
-	// eslint-disable-next-line react-hooks/exhaustive-deps, @typescript-eslint/no-confusing-void-expression
+
+	// biome-ignore lint/correctness/noVoidTypeReturn: .
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	return useImperativeHandle<T, R>(ref, init, deps ? targetDeps : undefined)
 }

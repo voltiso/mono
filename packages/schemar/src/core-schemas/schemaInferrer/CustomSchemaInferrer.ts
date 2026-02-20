@@ -13,9 +13,8 @@ import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 
 //
 
-export interface CustomSchemaInferrer$<
-	O extends Partial<UnknownSchemaOptions>,
-> extends CustomSchema$<O> {
+export interface CustomSchemaInferrer$<O extends Partial<UnknownSchemaOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'SchemaInferrer'
 }

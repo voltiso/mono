@@ -1,11 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BASE_OPTIONS,
@@ -14,6 +11,7 @@ import {
 	OPTIONS,
 	zip,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type {
 	GetDeepShape_,
@@ -52,7 +50,6 @@ export class CustomTupleImpl<
 	}
 
 	get getLength(): any {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return this.getShape.length
 	}
 
@@ -85,7 +82,6 @@ export class CustomTupleImpl<
 		return this._cloneWithOptions({ isReadonlyTuple: false }) as never
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override [Voltiso.Schemar.EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTupleSchema(other) || isUnknownTupleSchema(other)) &&
@@ -121,7 +117,6 @@ export class CustomTupleImpl<
 		return value
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override _getIssues(
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
@@ -175,7 +170,6 @@ export class CustomTupleImpl<
 				const r = schema(t).exec(value[idx], options)
 
 				if (!r.isValid) {
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const issue of r.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...r.issues]
@@ -188,7 +182,6 @@ export class CustomTupleImpl<
 				for (let idx = this.getShape.length; idx < value.length; ++idx) {
 					const r = restSchema.exec(value[idx], options)
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (!r.isValid) {
 						for (const issue of r.issues) issue.path = [idx, ...issue.path]
 

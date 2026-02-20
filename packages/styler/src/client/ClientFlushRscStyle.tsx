@@ -41,13 +41,12 @@ export const ClientFlushRscStyle: FC<{ readonly rscStyle: RscStyle }> = ({
 		 * `.getElementById()` is the most performant - better than
 		 * `.querySelector()`
 		 */
-		// eslint-disable-next-line unicorn/prefer-query-selector
+
 		if (document.getElementById(rscStyle.k)) return
 
 		// console.log('voltiso-rsc', rscStyle)
 		const node = document.createElement('style')
 
-		// eslint-disable-next-line unicorn/prefer-dom-node-dataset
 		node.setAttribute('data-voltiso-rsc', '')
 		node.id = rscStyle.k
 		node.textContent = rscStyle.v
@@ -65,7 +64,7 @@ export const ClientFlushRscStyle: FC<{ readonly rscStyle: RscStyle }> = ({
 				id={rscStyle.k}
 				key={rscStyle.k}
 				/** Cannot use children - it would escape e.g. `>` characters */
-				// eslint-disable-next-line react/no-danger
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: .
 				dangerouslySetInnerHTML={{ __html: rscStyle.v }}
 			/>
 		)

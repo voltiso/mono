@@ -4,9 +4,8 @@
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { Schema } from '~/types/Schema/ISchema'
 import type { Schemable } from '~/types/Schemable/Schemable'
-
-import { isTupleSchema } from '../tuple/isTuple'
 import type { ITuple } from '../tuple/ITuple'
+import { isTupleSchema } from '../tuple/isTuple'
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 	const aa = a.getShape

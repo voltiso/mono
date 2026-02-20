@@ -31,10 +31,10 @@
 	//
 	"editor.tabSize": 2,
 
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.defaultFormatter": "biomejs.biome",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit",
-		"source.fixAll.eslint": "explicit"
+		"source.fixAll.biome": "explicit"
 	},
 
 	"files.autoSave": "onFocusChange",
@@ -44,7 +44,7 @@
 
 	// "files.trimTrailingWhitespace": false,
 	"files.insertFinalNewline": true,
-	"files.trimFinalNewlines": true, // Already handled by eslint
+	"files.trimFinalNewlines": true,
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
 
@@ -225,7 +225,6 @@
 	/** --------------------------------------------------------- */
 	// Project-specific settings
 	//
-	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
 	"jest.nodeEnv": {
 		"NODE_OPTIONS": "--experimental-vm-modules"
 	}, // needed for dynamic `import()` in `jest` tests
@@ -235,83 +234,6 @@
 
 	"files.encoding": "utf8",
 	"files.eol": "\n",
-
-	"eslint.useFlatConfig": true,
-
-	// "eslint.codeActionsOnSave.mode": "all", // slower
-	"eslint.codeActionsOnSave.mode": "problems", // faster
-
-	"eslint.workingDirectories": [{ "pattern": "./packages/*/" }, "."],
-
-	"eslint.probe": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-		"json",
-		"jsonc",
-		"json5",
-		"yaml",
-		"toml",
-		"properties",
-		"ignore",
-		"editorconfig",
-		"markdown"
-	],
-
-	"eslint.validate": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-		"json",
-		"jsonc",
-		"json5",
-		"yaml",
-		"toml",
-		"properties",
-		"ignore",
-		"editorconfig",
-		"markdown"
-	],
-
-	// "eslint.run": "onSave",
-	// "eslint.packageManager": "pnpm",
-	"eslint.useESLintClass": true,
-	// "eslint.format.enable": true,
-	// "eslint.lintTask.enable": true,
-
-	"eslint.execArgv": ["--max_old_space_size=24000"],
-
-	// // Only turn on what's frequently used - better editor responsiveness
-	// "eslint.codeActionsOnSave.rules": [
-	// 	"prettier/prettier",
-	// 	// "import/no-useless-path-segments",
-	// 	"@voltiso/no-useless-path-segments",
-	// 	"simple-import-sort/imports",
-	// 	"@typescript-eslint/consistent-type-imports",
-	// 	"import/no-duplicates",
-	// 	"n/file-extension-in-import",
-	// 	"import/newline-after-import",
-	// 	"notice/notice",
-	// 	"@typescript-eslint/padding-line-between-statements",
-	// 	"simple-import-sort/exports",
-	// 	"unused-imports/no-unused-imports",
-	// 	"ext/lines-between-object-properties",
-	// 	"yml/plain-scalar",
-	// 	"object-shorthand",
-	// 	"spaced-comment",
-	// 	"unicorn/numeric-separators-style",
-	// 	"react/jsx-curly-brace-presence",
-	// 	"jest-formatting/padding-around-all",
-	// 	"no-useless-rename"
-	// ],
-
-	"prettier.documentSelectors": [
-		"**/.gitignore",
-		"**/.npmrc",
-		"**/.editorconfig"
-	],
 
 	// "jest.jestCommandLine": "node_modules/.bin/jest",
 	// "jest.jestCommandLine": "pnpm test",
@@ -459,7 +381,6 @@
 		"predeploy",
 		"prefixer",
 		"Pressable",
-		"prettierrc",
 		"RAII",
 		"readdirp",
 		"realpath",

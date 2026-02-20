@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable es-x/no-global-this */
-
 import type * as s from '@voltiso/schemar'
 
 import type { DocTag } from '~/DocTypes'

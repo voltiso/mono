@@ -40,6 +40,6 @@ Removes numeric separators from the compiled code.
 
 #### Pitfalls
 
-- Please use the `@typescript-eslint/explicit-module-boundary-types` rule.
-  Otherwise the transformer might fail for some fringe cases. This is not a big
-  issue, as exporting types explicitly might speed up type-checking anyway.
+- Needs explicit module boundary types. Otherwise the transformer might fail for some fringe cases. This is not a big
+  issue, as exporting types explicitly might speed up type-checking anyway. `@typescript-eslint/explicit-module-boundary-types`
+	was checking it previously, but now we use Biome and there's no clear counterpart... just `useExplicitType` everywhere, not only on boundary.

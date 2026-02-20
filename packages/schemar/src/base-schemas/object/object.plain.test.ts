@@ -57,15 +57,11 @@ describe('object', () => {
 
 class CC {}
 
-// eslint-disable-next-line jest/require-hook
 $Assert.is<CC, object>()
 
 const a = { a: 1 }
 
-// eslint-disable-next-line jest/require-hook
 $Assert.is<typeof a, object>()
-
-/* eslint-disable jest/require-hook */
 
 $Assert.is<{ a: 1 }, object>()
 $Assert.is<Omit<number, 'toString'>, object>()

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/nested-control-flow */
-
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
@@ -17,7 +15,7 @@ function poorMansGetJsDocTags(node: ts.Node) {
 	for (const commentRange of commentRanges || []) {
 		const comment = source.slice(commentRange.pos, commentRange.end)
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		// biome-ignore lint/style/noNonNullAssertion: .
 		const moreTags = [...comment.matchAll(/@(\S+)/gu)].map(match => match[1]!)
 		// console.log('xxxxxxxxx', comment, tags)
 		tags.push(...moreTags)
@@ -40,7 +38,6 @@ export function getJsDocTagNames(
 
 	const tags = symbol.getJsDocTags(ctx.typeChecker).map(tag => tag.name)
 
-	// // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	// const linkedSymbol = (symbol as any).links?.target as ts.Symbol | undefined
 	// if (linkedSymbol) {
 	// 	const moreTags = getJsDocTagNames(ctx, linkedSymbol)
@@ -57,7 +54,6 @@ export function getJsDocTagNames(
 		tags.push(...poorMansGetJsDocTags(symbol.valueDeclaration))
 	}
 
-	// // eslint-disable-next-line no-bitwise
 	// if (symbol.flags & ts.SymbolFlags.TypeAlias) {
 	// 	// console.log('found type alias!', symbol, symbol.declarations?.[0]?.kind)
 	// 	const typeAliasDeclaration = symbol.declarations?.[0]
@@ -71,7 +67,6 @@ export function getJsDocTagNames(
 	// 	}
 	// }
 
-	// // eslint-disable-next-line no-bitwise
 	// if (symbol.flags & ts.SymbolFlags.Method) {
 	// 	const methodDeclaration = symbol.valueDeclaration
 	// 	if (methodDeclaration?.kind === ts.SyntaxKind.MethodDeclaration) {
@@ -83,7 +78,6 @@ export function getJsDocTagNames(
 	// 	}
 	// }
 
-	// // eslint-disable-next-line no-bitwise
 	// if (symbol.flags & ts.SymbolFlags.Function) {
 	// 	const functionDeclaration = symbol.valueDeclaration
 	// 	if (functionDeclaration?.kind === ts.SyntaxKind.FunctionDeclaration) {
@@ -92,7 +86,6 @@ export function getJsDocTagNames(
 	// 	}
 	// }
 
-	// eslint-disable-next-line no-bitwise
 	if (symbol.flags & ts.SymbolFlags.BlockScopedVariable) {
 		// console.log('AA')
 		const variableDeclaration = symbol.valueDeclaration
@@ -122,7 +115,6 @@ export function getJsDocTagNames(
 		}
 	}
 
-	// eslint-disable-next-line no-bitwise
 	if (symbol.flags & ts.SymbolFlags.Alias) {
 		// console.log('follow alias...', symbol.name)
 		const targetSymbol = ctx.typeChecker.getImmediateAliasedSymbol(symbol)

@@ -22,7 +22,6 @@ declare module '@voltiso/transactor' {
 }
 
 describe('ref schema', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		const a = sRef
 
@@ -30,7 +29,6 @@ describe('ref schema', () => {
 		$Assert<IsIdentical<A, DocRef<ANY_DOC>>>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type 2', () => {
 		expect.assertions(0)
 

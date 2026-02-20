@@ -1,13 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
 	CALL,
 	lazyConstructor,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { LiteralImpl } from '~/core-schemas/literal/_/LiteralImpl'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -22,12 +22,13 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnknownLiteralImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnknownLiteralOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownLiteral<O>
@@ -36,7 +37,8 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
@@ -45,7 +47,6 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'literal'
 	}
@@ -54,7 +55,6 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	[CALL]<L extends InferableLiteral>(literals: Set<L>): LiteralImpl<L>
 	[CALL]<L extends InferableLiteral>(...args: L[] | [Set<L>]): LiteralImpl<L>
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends InferableLiteral>(...args: L[] | [Set<L>]): LiteralImpl<L> {
 		return new LiteralImpl(...args) as never
 	}

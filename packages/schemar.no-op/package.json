@@ -27,33 +27,11 @@
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________DEV": "__________",
-    "dev": "v dev",
-    "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "areTheTypesWrong": "v areTheTypesWrong",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "v lintTsc",
-    "lint:dist:tsc": "v lintDistTsc",
-    "__________FIX": "__________",
-    "fix": "v fix",
-    "fix:prettier": "v fixPrettier",
-    "fix:eslint": "v fixEslint",
-    "__________BUILD": "__________",
+    "__________TURBO": "__________",
     "build": "v build",
-    "build:esm": "v buildEsm",
-    "build:cjs": "v buildCjs",
-    "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnlyFast",
-    "__________MISC": "__________",
-    "clean": "v clean",
-    "__________TS_TRACE": "__________",
-    "trace": "v trace",
-    "trace:run": "v traceRun",
-    "typecov": "v typecov"
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "dependencies": {
@@ -66,12 +44,11 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "@~/workspace": "workspace:^",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   },
   "__________MISC": "__________",
   "typeCoverage": {
-    "is": 98.74
+    "is": 99.35
   }
 }

@@ -1,14 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 // import { randomBytes } from 'node:crypto'
 import randomBytes from 'randombytes'
 
 // copied from 'firebase-admin/firestore'
 export function newAutoId(): string {
-	// eslint-disable-next-line no-secrets/no-secrets
 	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 	let autoId = ''
 

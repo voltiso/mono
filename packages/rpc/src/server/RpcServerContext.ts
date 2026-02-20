@@ -10,7 +10,6 @@ export class RpcServerContext<
 	TRequest extends RpcRequest = RpcRequest,
 	TResponse extends RpcResponse = RpcResponse,
 > {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	_context = new Context<{ request: TRequest; response: TResponse }>()
 
 	get request(): TRequest {

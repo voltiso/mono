@@ -10,7 +10,7 @@ describe('Primitive', () => {
 		expect.hasAssertions()
 		expect(isPrimitive('a')).toBeTruthy()
 		expect(isPrimitive(1)).toBeTruthy()
-		// eslint-disable-next-line unicorn/prefer-bigint-literals
+
 		expect(isPrimitive(BigInt(123))).toBeTruthy()
 		expect(isPrimitive(Symbol('dfg'))).toBeTruthy()
 		expect(isPrimitive(undefined)).toBeTruthy()

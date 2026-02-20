@@ -4,7 +4,9 @@
 import type { SchemaOptions } from '~'
 
 export interface InstanceOptions extends SchemaOptions {
-	Constructor: abstract new (...args: any[]) => object
+	Constructor: abstract new (
+		...args: any[]
+	) => object
 	// Output: object
 	// Input: object
 }

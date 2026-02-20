@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$Schemable, Output_, Schema } from '@voltiso/schemar'
-import { isValidationError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { isValidationError } from '@voltiso/schemar'
 
 import type { WithTransactor } from '~/Transactor'
 

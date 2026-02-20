@@ -187,7 +187,7 @@ describe('Handler', () => {
 		$Assert<IsIdentical<typeof b.IsAsync, true>>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
+
 	// it('does not allow returning without result schema', () => {
 	// 	expect.hasAssertions()
 

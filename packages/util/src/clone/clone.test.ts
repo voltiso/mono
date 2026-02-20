@@ -25,9 +25,7 @@ class MyCloneable {
 	}
 }
 
-// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('clone', () => {
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('strict mode', () => {
 	// 	expect.hasAssertions()
 
@@ -41,7 +39,7 @@ describe('clone', () => {
 		expect(clone(undefined)).toBeUndefined()
 		expect(clone(123)).toBe(123)
 		expect(clone('123')).toBe('123')
-		// eslint-disable-next-line unicorn/prefer-bigint-literals
+
 		expect(clone(BigInt(123))).toBe(BigInt(123))
 
 		const sym = Symbol('sym')
@@ -246,6 +244,7 @@ describe('clone', () => {
 
 		class C_ {
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: .
 				return BoundCallable(this)
 			}
 
@@ -290,14 +289,16 @@ describe('clone', () => {
 	it('clones lazy callable instances', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		interface C {
+			// biome-ignore lint/style/useShorthandFunctionType: .
 			(...args: any): any
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+		// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 		class C {
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: .
 				return BoundCallable(this)
 			}
 

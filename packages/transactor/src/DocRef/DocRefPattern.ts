@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { assert } from '@voltiso/assertor'
 import type {
 	$$SchemableObject,
@@ -24,9 +22,8 @@ import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 type Context = WithTransactor
 
 export class DocRefPattern {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	context: Context
-	// eslint-disable-next-line es-x/no-class-instance-fields
+
 	pattern: DocPattern
 
 	constructor(context: Context, ...args: string[]) {
@@ -123,7 +120,6 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line @typescript-eslint/consistent-return
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
@@ -147,7 +143,6 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line @typescript-eslint/consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
@@ -173,7 +168,6 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line @typescript-eslint/consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 

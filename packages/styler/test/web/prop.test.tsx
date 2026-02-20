@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import { $Assert } from '@voltiso/util'
 import type { ChangeEventHandler } from 'react'
@@ -13,12 +13,10 @@ import { style } from '~'
 import { renderApp } from './common'
 
 describe('prop', () => {
-	// eslint-disable-next-line jest/no-hooks
 	afterEach(() => {
 		cleanup() // required after upgrading testing library
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

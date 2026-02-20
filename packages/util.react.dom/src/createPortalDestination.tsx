@@ -14,12 +14,12 @@ export function createPortalDestination(ctx: PortalContext): PortalDestination {
 		const update = useUpdate()
 
 		if (typeof window !== 'undefined')
-			// eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps, sonarjs/rules-of-hooks
+			// biome-ignore lint/correctness/useExhaustiveDependencies: .
+			// biome-ignore lint/correctness/useHookAtTopLevel: .
 			useLayoutEffect(update, [])
 
 		// const Element = ctx.Element as 'div' | 'span' // for TS not to complain
 
-		// eslint-disable-next-line no-useless-assignment
 		const Element = 'div'
 
 		if (!ctx.renderTarget) ctx.renderTarget = _createElement('div')

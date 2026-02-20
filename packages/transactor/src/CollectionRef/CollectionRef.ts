@@ -39,21 +39,21 @@ export interface CollectionRef<
 	): Throw<'wrong Id type' & { docTag: DocTagFromBrand<T> }>
 
 	/** Get Doc reference by Id */
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	(id: string): WeakDocRef<GetDocRepresentative<R>>
 }
 
 /** Collection reference */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CollectionRef<
 	R extends $$DocRelated,
 	_Ctx extends ExecutionContext = 'outside',
 > {
 	// [DTI]: TI
-	// eslint-disable-next-line es-x/no-class-instance-fields
+
 	private readonly _context: Context
 
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	private readonly _path: CollectionPath
 	get path(): CollectionPath {
 		return this._path
@@ -62,12 +62,11 @@ export class CollectionRef<
 	constructor(context: Context, input: readonly string[] | string) {
 		this._context = context
 
-		// eslint-disable-next-line no-param-reassign
 		if (typeof input === 'string') input = [input]
 
 		this._path = new CollectionPath(concatPath(input))
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return Object.setPrototypeOf(
 			(id: DocIdString<R>) =>
 				this._context.db.doc(

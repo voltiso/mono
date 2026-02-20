@@ -9,7 +9,7 @@ import { createTransactor } from '../common'
 
 const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
-describe('raw-transaction', function () {
+describe('raw-transaction', () => {
 	it('should detect concurrent transactions', async () => {
 		expect.hasAssertions()
 
@@ -34,7 +34,7 @@ describe('raw-transaction', function () {
 		db.allowConcurrentTransactions = oldOption
 	})
 
-	it('should use async storage (get)', async function () {
+	it('should use async storage (get)', async () => {
 		expect.hasAssertions()
 
 		const oldOptions = db.allowConcurrentTransactions
@@ -51,7 +51,7 @@ describe('raw-transaction', function () {
 		db.allowConcurrentTransactions = oldOptions
 	})
 
-	it('should use async storage (update)', async function () {
+	it('should use async storage (update)', async () => {
 		expect.hasAssertions()
 
 		await db('user/artur').set({ age: 12 })
@@ -65,7 +65,7 @@ describe('raw-transaction', function () {
 		await expect(db('user/artur').data['age']).resolves.toBe(12)
 	})
 
-	it('should detect access after transaction is committed', async function () {
+	it('should detect access after transaction is committed', async () => {
 		expect.hasAssertions()
 
 		let t: Transaction
@@ -77,7 +77,7 @@ describe('raw-transaction', function () {
 		expect(() => t('user/artur').set({ age: 994 })).toThrow('missing await')
 	})
 
-	it('should detect floating promises', async function () {
+	it('should detect floating promises', async () => {
 		expect.hasAssertions()
 		await expect(
 			db.runTransaction(async t => {
@@ -101,7 +101,7 @@ describe('raw-transaction', function () {
 		).rejects.toThrow('numFloatingPromises: 7')
 	})
 
-	it('should commit local object changes', async function () {
+	it('should commit local object changes', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async db => {
@@ -109,7 +109,7 @@ describe('raw-transaction', function () {
 			adam.data['age'] = 234
 
 			delete adam.data['x']
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 			;(adam.data['arr'] as any).push(4)
 
 			expect(adam.data['age']).toBe(234)
@@ -128,7 +128,7 @@ describe('raw-transaction', function () {
 		expect(adam.data['arr']).toStrictEqual([1, 2, 3, 4])
 	})
 
-	it('should commit local object changes recursively', async function () {
+	it('should commit local object changes recursively', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async () => {
@@ -145,7 +145,7 @@ describe('raw-transaction', function () {
 		expect(adam.address.street).toBe('b')
 	})
 
-	it('should commit local object changes recursively after awaiting sub-objects', async function () {
+	it('should commit local object changes recursively after awaiting sub-objects', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async t => {
@@ -176,7 +176,7 @@ describe('raw-transaction', function () {
 		expect((await db('user', 'adam').a).b.c).toStrictEqual({ d: 99 })
 	})
 
-	it('should ignore transactions inside transactions', async function () {
+	it('should ignore transactions inside transactions', async () => {
 		expect.hasAssertions()
 		await expect(
 			db.runTransaction(async () => {

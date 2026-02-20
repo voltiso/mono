@@ -21,9 +21,9 @@ export const defaultArrayOptions: ArrayOptions.Default = Object.freeze({
 	isReadonlyArray: false as const,
 
 	element: unknown,
-	// eslint-disable-next-line sonarjs/no-undefined-assignment
+
 	minLength: undefined,
-	// eslint-disable-next-line sonarjs/no-undefined-assignment
+
 	maxLength: undefined,
 })
 

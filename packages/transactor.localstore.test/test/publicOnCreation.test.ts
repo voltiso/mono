@@ -1,7 +1,5 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import { Doc, Transactor } from '@voltiso/transactor'
@@ -12,7 +10,6 @@ const db = new Transactor({
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 db.init(database, staticContext)
 
 class Transfer extends Doc.with({
@@ -42,9 +39,7 @@ class Transfer extends Doc.with({
 		if (this.data.triggerCondition) this.data.amount = 1919
 	})
 
-	.method('test', function (x: number) {
-		return x * 2
-	})
+	.method('test', (x: number) => x * 2)
 
 	.method('debugChangeAmount', function (x: number) {
 		this.data.amount = x

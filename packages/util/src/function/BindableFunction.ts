@@ -53,7 +53,6 @@ export class _BindableFunction<
 		this.boundThis = boundThis
 		this.boundArguments = boundArguments
 
-		// eslint-disable-next-line unicorn/no-this-assignment, consistent-this, @typescript-eslint/no-this-alias
 		const self = this
 
 		const name = this.name
@@ -62,7 +61,7 @@ export class _BindableFunction<
 			[name](this: BoundThis, ...args: BoundArguments) {
 				const finalThis = self.boundThis !== UNSET ? self.boundThis : this
 				const finalArgs = [...self.boundArguments, ...args]
-				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+
 				return Reflect.apply(self.function, finalThis, finalArgs) as never
 			},
 		}[name]
@@ -75,7 +74,7 @@ export class _BindableFunction<
 
 		Object.setPrototypeOf(bindableFunctionCall, this)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return bindableFunctionCall as never
 
 		// return new Proxy(bindableFunctionCall, {

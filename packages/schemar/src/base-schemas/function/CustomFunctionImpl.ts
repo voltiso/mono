@@ -1,9 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type { Assume } from '@voltiso/util'
 import { $fastAssert, lazyConstructor, OPTIONS, UNSET } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error'
@@ -17,8 +19,8 @@ import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { IArray } from '../array/IArray'
 import { isArraySchema } from '../array/isArray'
-import { isTupleSchema } from '../tuple/isTuple'
 import type { ITuple } from '../tuple/ITuple'
+import { isTupleSchema } from '../tuple/isTuple'
 import { _flattenUnion, or } from '../union'
 import { isUnknownFunctionSchema } from '../unknownFunction/IUnknownFunction'
 import { _functionArgumentsExtends } from './_functionArgumentsExtends'
@@ -32,6 +34,7 @@ $fastAssert(UNSET)
 $fastAssert(OPTIONS)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomFunctionImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: FunctionOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: FunctionOptions.Default
@@ -58,7 +61,7 @@ export interface CustomFunctionImpl<O> {
 	readonly Return: this['OutputReturn']
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomFunction<O>

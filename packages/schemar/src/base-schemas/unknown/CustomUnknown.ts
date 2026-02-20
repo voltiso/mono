@@ -7,9 +7,8 @@ import type { UnknownOptions } from './UnknownOptions'
 
 //
 
-export interface CustomUnknown<
-	O extends Partial<UnknownOptions>,
-> extends CustomSchema<O> {
+export interface CustomUnknown<O extends Partial<UnknownOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 
@@ -19,9 +18,8 @@ export interface CustomUnknown<
 
 //
 
-export interface CustomUnknown$<
-	O extends Partial<UnknownOptions>,
-> extends CustomSchema$<O> {
+export interface CustomUnknown$<O extends Partial<UnknownOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 

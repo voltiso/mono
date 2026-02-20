@@ -68,7 +68,7 @@ describe('cssProps', () => {
 		const GoodSvg = StrippedSvg.cssProps('margin')
 
 		renderApp(<GoodSvg data-testid='a' margin={8} />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		const svg = screen.getByTestId('a')
 
 		expect(svg).toHaveStyle({

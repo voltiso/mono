@@ -8,5 +8,6 @@ export interface SyncerFunction<
 	Return = unknown,
 	Intermediate = unknown,
 > {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	(...args: Args): SyncerPromise<Return, Intermediate>
 }

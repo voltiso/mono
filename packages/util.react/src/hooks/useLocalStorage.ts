@@ -54,7 +54,6 @@ export function useLocalStorage<T>(
 			if (!storage) return
 
 			// throw new Error(
-			// 	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 			// 	`useLocalStorage: cannot set value ${current.x} for local storage key ${current.key}`,
 			// )
 

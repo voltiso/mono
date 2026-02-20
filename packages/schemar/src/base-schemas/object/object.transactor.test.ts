@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jest/no-export */
-
 import { describe, expect, it } from '@jest/globals'
 import { equals } from '@voltiso/util'
 
@@ -128,9 +126,8 @@ namespace VoltisoEntry {
 
 	//
 
-	export interface Migrations extends Output_<
-		typeof _sVoltisoEntryMigrations
-	> {}
+	export interface Migrations
+		extends Output_<typeof _sVoltisoEntryMigrations> {}
 
 	export namespace Migrations {
 		export interface Input extends Input_<typeof _sVoltisoEntryMigrations> {}
@@ -138,37 +135,31 @@ namespace VoltisoEntry {
 
 	//
 
-	export interface AggregateSource extends Output_<
-		typeof _sVoltisoEntryAggregateSource
-	> {}
+	export interface AggregateSource
+		extends Output_<typeof _sVoltisoEntryAggregateSource> {}
 
 	export namespace AggregateSource {
-		export interface Input extends Input_<
-			typeof _sVoltisoEntryAggregateSource
-		> {}
+		export interface Input
+			extends Input_<typeof _sVoltisoEntryAggregateSource> {}
 	}
 
 	//
 
-	export interface AggregateTarget extends Output_<
-		typeof _sVoltisoEntryAggregateTarget
-	> {}
+	export interface AggregateTarget
+		extends Output_<typeof _sVoltisoEntryAggregateTarget> {}
 
 	export namespace AggregateTarget {
-		export interface Input extends Input_<
-			typeof _sVoltisoEntryAggregateTarget
-		> {}
+		export interface Input
+			extends Input_<typeof _sVoltisoEntryAggregateTarget> {}
 
 		//
 
-		export interface Entry extends Output_<
-			typeof _sVoltisoEntryAggregateTargetEntry
-		> {}
+		export interface Entry
+			extends Output_<typeof _sVoltisoEntryAggregateTargetEntry> {}
 
 		export namespace Entry {
-			export interface Input extends Input_<
-				typeof _sVoltisoEntryAggregateTargetEntry
-			> {}
+			export interface Input
+				extends Input_<typeof _sVoltisoEntryAggregateTargetEntry> {}
 		}
 	}
 }

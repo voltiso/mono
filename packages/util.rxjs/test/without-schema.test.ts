@@ -189,7 +189,6 @@ describe('SubjectTree', () => {
 		expect(data$.a$.b$.c$.exists).toBeFalsy()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('union types', () => {
 	// 	expect.hasAssertions()
 

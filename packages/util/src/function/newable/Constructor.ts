@@ -7,9 +7,8 @@ import type { Newable, NewableOptions } from './builder'
 
 //
 
-export interface Constructor<
-	O extends Partial<ConstructorOptions> = {},
-> extends Newable<GetConstructorOptions<O>> {
+export interface Constructor<O extends Partial<ConstructorOptions> = {}>
+	extends Newable<GetConstructorOptions<O>> {
 	prototype: GetConstructorOptions<O>['return']
 }
 

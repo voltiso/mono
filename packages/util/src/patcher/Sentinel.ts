@@ -36,7 +36,6 @@ export function isSafeToStripPatchSentinel(
 
 export function isPatchSentinel(x: unknown): x is PatchSentinel {
 	return (
-		// eslint-disable-next-line sonarjs/expression-complexity
 		isDeleteIt(x) ||
 		isDeleteItIfPresent(x) ||
 		isReplaceIt(x) ||

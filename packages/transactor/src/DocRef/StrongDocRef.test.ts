@@ -16,7 +16,6 @@ import type { DocRef } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
 describe('StrongDocRef', () => {
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('generic', <D extends IDoc>() => {
 	// 	expect.assertions(0)
 

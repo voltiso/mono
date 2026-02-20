@@ -9,7 +9,6 @@ import { DataHook } from './DataHook'
 import { dataHook } from './DataHookConstructor'
 
 describe('DataHook', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works - data', () => {
 		expect.hasAssertions()
 

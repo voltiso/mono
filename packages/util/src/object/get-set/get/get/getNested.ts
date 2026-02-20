@@ -8,7 +8,7 @@ import type { ReadonlyPropertyPath, UnknownProperty, Value } from '~/object'
 import { stringFrom } from '~/string'
 
 import type { GetPropertyComplex } from './getProperty'
-import { getProperty, GetPropertyError } from './getProperty'
+import { GetPropertyError, getProperty } from './getProperty'
 
 export type GetNested_<O, P> = P extends readonly []
 	? O
@@ -38,7 +38,6 @@ export class GetError<
 		)}, ${stringFrom(path)})`
 		super(message, options)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 
 		this.object = object
@@ -73,7 +72,7 @@ export function get<
 	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as
 		| readonly []
 		| ReadonlyPropertyPath
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
 	let r = obj as any
 	try {
 		for (const token of path) {

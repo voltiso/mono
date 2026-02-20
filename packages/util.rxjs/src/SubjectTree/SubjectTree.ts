@@ -42,7 +42,8 @@ export type CustomSubjectTree_<TO extends SubjectTreeTypeOptions> =
 		_SubjectTreeRec<TO>
 
 export interface ISubjectTree
-	extends ISubjectTreeBase, SubjectNoDeprecated<unknown> {}
+	extends ISubjectTreeBase,
+		SubjectNoDeprecated<unknown> {}
 
 $dev(<TO extends Partial<SubjectTreeTypeOptions>>() => {
 	$Assert.is<CustomSubjectTree<TO>, ISubjectTree>()

@@ -55,12 +55,10 @@ describe('localstore', () => {
 
 			expect(f.data.name).toBe('a')
 
-			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')
 
-			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name2 = await b.data.friend.data.name
 
 			expect(name2).toBe('a')

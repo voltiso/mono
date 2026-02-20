@@ -18,11 +18,12 @@ class Class_ {
 		Object.defineProperty(this, 'nonEnum', {
 			enumerable: false,
 		})
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this)
 	}
 
 	[CALL](s: string): string
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	[CALL](n: number): string
 
 	[CALL](arg: string | number) {
@@ -44,7 +45,7 @@ class Class_ {
 
 interface ClassConstructor<Derived extends Class_ = Class_> {
 	new (arg: string): Derived
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	new (arg: number): Derived
 }
 
@@ -68,7 +69,7 @@ describe('BoundCallable', () => {
 		c.opt = 444
 
 		expect(c.opt).toBe(444)
-		// eslint-disable-next-line @typescript-eslint/no-misused-spread
+
 		expect({ ...c }).toStrictEqual({ [sym]: 99, _data: 'test?', opt: 444 })
 
 		expect(c.constructor).toBe(Class)
@@ -100,6 +101,7 @@ describe('BoundCallable', () => {
 			}
 
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: .
 				return BoundCallable(this)
 			}
 		}
@@ -115,6 +117,7 @@ describe('BoundCallable', () => {
 
 		class C {
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: .
 				return BoundCallable(this)
 			}
 
@@ -125,7 +128,6 @@ describe('BoundCallable', () => {
 
 		const c = new C()
 
-		// eslint-disable-next-line @typescript-eslint/no-misused-spread
 		expect({ ...c }).toStrictEqual({})
 		// expect(Reflect.ownKeys(c)).toStrictEqual(['clone']) // can't make it work - need own bind/call/apply for react-native
 		expect(Reflect.ownKeys(c)).toStrictEqual(['clone', 'bind', 'call', 'apply'])
@@ -134,14 +136,16 @@ describe('BoundCallable', () => {
 	it('clone', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		interface C {
+			// biome-ignore lint/style/useShorthandFunctionType: .
 			(): unknown
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+		// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 		class C {
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: .
 				return BoundCallable(this)
 			}
 

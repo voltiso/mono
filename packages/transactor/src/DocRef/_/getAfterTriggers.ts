@@ -71,11 +71,11 @@ export function getAfterTriggers(
 					const targetDocRef = db.doc(targetPath)
 
 					// ! TODO ! no-await-in-loop
-					// eslint-disable-next-line no-await-in-loop
+
 					const targetDoc = await targetDocRef
 
 					// ! TODO ! no-await-in-loop
-					// eslint-disable-next-line no-await-in-loop, sonarjs/variable-name
+
 					const __voltiso = await (async () => {
 						try {
 							return await targetDocRef.__voltiso // returns __voltiso from transaction cache if doc is already deleted
@@ -101,7 +101,6 @@ export function getAfterTriggers(
 
 					if (shouldCheck && __voltiso.numRefs < ba.after) {
 						throw new TransactorError(
-							// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
 							`ref trigger for ${path.toString()}: ${targetPath.toString()}.__voltiso.numRefs === ${
 								__voltiso.numRefs
 							} too small - database corrupt`,

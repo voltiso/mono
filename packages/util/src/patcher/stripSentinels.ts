@@ -11,7 +11,6 @@ import {
 	stringFromPatchSentinel,
 } from './Sentinel'
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function stripSentinels(value: unknown): unknown {
 	if (isPatchSentinel(value)) {
 		if (isSafeToStripPatchSentinel(value)) return undefined
@@ -44,16 +43,15 @@ export function stripSentinels(value: unknown): unknown {
 
 		let haveChange = false
 		for (const [key, item] of Object.entries(value)) {
+			// biome-ignore lint/suspicious/noImplicitAnyLet: .
 			let newItem
 
 			if (isPatchSentinel(item)) {
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (isSafeToStripPatchSentinel(item)) {
 					haveChange = true
 					continue // skip (do not add to result)
 				}
 
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (isReplaceIt(item)) {
 					newItem = item.__replaceIt
 				} else

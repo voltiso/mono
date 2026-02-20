@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable promise/prefer-await-to-then */
-
 export type LazyPromiseLike<T> = PromiseLike<T> & {
 	readonly isLazy: true
 }
@@ -16,7 +14,7 @@ export function lazyPromise<T, ARGS extends unknown[]>(
 	return {
 		isLazy: true,
 
-		// eslint-disable-next-line unicorn/no-thenable
+		// biome-ignore lint/suspicious/noThenProperty: .
 		then: (f, r) => {
 			if (!promise) promise = getPromise(...args)
 

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jest/require-hook */
-
 import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
@@ -40,7 +38,6 @@ class Doctor extends Doc.with({
 		if (rand.random() < cutoff) {
 			await this.update({ num: incrementIt(1) })
 		}
-
 		// type A = GetUpdateDataByCtx<GetTI<Doctor>, 'outside'>
 
 		// ! does not work currently
@@ -90,8 +87,8 @@ class Doctor extends Doc.with({
 
 const doctors = db('doctorA').register(Doctor)
 
-describe('after - nested', function () {
-	it('works', async function () {
+describe('after - nested', () => {
+	it('works', async () => {
 		expect.hasAssertions()
 
 		cutoff = 0.2

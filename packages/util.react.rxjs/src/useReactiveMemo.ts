@@ -80,6 +80,7 @@ export function useCustomReactiveMemo<T>(
 	mutable.isInHookBody = true
 
 	try {
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useCustomReactiveEffect(
 			{ isLazy, isImmediate: true },
 			() => {

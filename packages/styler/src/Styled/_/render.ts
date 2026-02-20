@@ -7,8 +7,8 @@ import type { ForwardedRef } from 'react'
 import * as React from 'react'
 
 import type { IForwardRefRenderFunction, StyledData } from '~/_/StyledData'
-import { useRenderer, useTheme } from '~/client'
 import type { Css } from '~/Css/Css'
+import { useRenderer, useTheme } from '~/client'
 import type {
 	IForwardedRef,
 	IForwardRefAndCssRenderFunction,
@@ -17,9 +17,9 @@ import type {
 import type { WebRenderer } from '~/renderer'
 import { isWebRenderer } from '~/renderer'
 import type { NativeRenderer } from '~/renderer/NativeRenderer'
-import { rscRenderer } from '~/server'
 import type { NativeInnerProps, OuterProps, WebInnerProps } from '~/Stylable'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import { rscRenderer } from '~/server'
 import { isServerComponent } from '~/util/isServerComponent'
 
 import { consumeCssProps } from './consumeCssProps'
@@ -36,7 +36,6 @@ import {
 
 /** @internal */
 function _getCssArray(css: Css | readonly Css[] | undefined): Css[] {
-	// eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
 	return Array.isArray(css) ? (css as Css[]) : css ? [css as Css] : []
 }
 
@@ -75,7 +74,6 @@ function _getFinalNativeProps(css: Css, props: NativeInnerProps) {
 	return { ...props, style }
 }
 
-// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function render<$ extends StyledTypeInfo>(
 	props: $['Props'] & OuterProps,
 	ref: ForwardedRef<unknown>,
@@ -83,25 +81,24 @@ export function render<$ extends StyledTypeInfo>(
 ): React.ReactNode {
 	const renderer: WebRenderer | NativeRenderer | null = isServerComponent
 		? rscRenderer
-		: // eslint-disable-next-line react-hooks/rules-of-hooks
+		: // biome-ignore lint/correctness/useHookAtTopLevel: .
 			useRenderer()
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (React.useInsertionEffect && isWebRenderer(renderer)) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		React.useInsertionEffect(() => {
 			const style = renderer.flushStyle()
 			if (!style) return
 
 			const node = document.createElement('style')
-			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
+
 			node.setAttribute('data-voltiso', '')
 			node.textContent = style
 			document.head.append(node)
 		})
 	}
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// biome-ignore lint/correctness/useHookAtTopLevel: .
 	const theme = isServerComponent ? {} : useTheme()
 
 	const { css, ...otherProps } = props
@@ -119,11 +116,9 @@ export function render<$ extends StyledTypeInfo>(
 	// 	if (k === 'children') continue // dangerous and slow
 
 	// 	// assertNotPolluting(k)
-	// 	// eslint-disable-next-line security/detect-object-injection
 	// 	p[k] = prepare(p[k], { theme, isPreparingProps: true }) as never
 	// }
 
-	// eslint-disable-next-line unicorn/no-array-reverse
 	const cssArray = [..._getCssArray(css)].reverse()
 
 	const styles: Css[] = []
@@ -152,7 +147,6 @@ export function render<$ extends StyledTypeInfo>(
 		const node = stack[i]
 
 		if (isRemovePropsNode(node)) {
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			for (const prop of node.removeProps) delete p[prop as never]
 		} else if (isStyleNode(node)) {
 			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
@@ -174,7 +168,6 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isWrapNode(node)) {
 			// overrideChildren = true
 
-			// eslint-disable-next-line @typescript-eslint/no-loop-func
 			const children = node.wrap.map((element, index) => {
 				let props = {
 					key: index,

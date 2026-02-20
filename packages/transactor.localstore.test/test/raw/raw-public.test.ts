@@ -8,13 +8,12 @@ import { createTransactor, database } from '../common'
 
 const db = createTransactor({ onUnknownField: 'error', checkDecorators: false })
 
-// eslint-disable-next-line jest/require-hook
 db('doctor/*').public({
 	specialty: s.string.optional,
 })
 
-describe('raw-public', function () {
-	it('should validate schema', async function () {
+describe('raw-public', () => {
+	it('should validate schema', async () => {
 		expect.hasAssertions()
 
 		await database.doc('doctor/anthony').delete()

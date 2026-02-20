@@ -21,20 +21,17 @@ const commands = {
 
 type CommandName = keyof typeof commands
 
-// eslint-disable-next-line sonarjs/variable-name
 function isCommandName(string_: unknown): string_ is CommandName {
 	if (typeof string_ !== 'string') return false
 
 	return Object.keys(commands).includes(string_ as CommandName)
 }
 
-// // eslint-disable-next-line no-console
 // console.log(icon, pc.gray('@voltiso/script'))
 
 // const cpPromises = [] as Promise<void>[]
 
 async function main(): Promise<void> {
-	// eslint-disable-next-line sonarjs/process-argv
 	const args = process.argv.slice(2)
 
 	const commandNames = Object.keys(commands) as CommandName[]
@@ -76,5 +73,4 @@ async function main(): Promise<void> {
 	// throw new VoltisoScriptError(messages.join(' '))
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
 void main()

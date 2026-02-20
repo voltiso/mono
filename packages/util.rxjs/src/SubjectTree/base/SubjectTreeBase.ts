@@ -5,9 +5,8 @@ import type { PatchFor } from '@voltiso/util'
 
 import type { ISubjectTreeBase, SubjectTreeTypeOptions } from '~'
 
-export interface CustomSubjectTreeBase<
-	TO extends SubjectTreeTypeOptions,
-> extends ISubjectTreeBase {
+export interface CustomSubjectTreeBase<TO extends SubjectTreeTypeOptions>
+	extends ISubjectTreeBase {
 	/** Replace current value */
 	set(x: TO['Input']): void
 

@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '~/object'
-// eslint-disable-next-line sonarjs/no-built-in-override
+
+// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 import { hasOwnProperty } from '~/object'
 import type { AlsoAccept } from '~/type'
 

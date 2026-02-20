@@ -4,8 +4,8 @@
 import type {
 	$Override_,
 	AlsoAccept,
-	DeepPartial_,
 	DEFAULT_OPTIONS,
+	DeepPartial_,
 	NonStrictPartial,
 	Throw,
 	UNSET,
@@ -30,9 +30,8 @@ import type {
 
 //
 
-export interface CustomSchema<
-	O extends Partial<SchemaOptions> = {},
-> extends Schema {
+export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
+	extends Schema {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
 
@@ -184,9 +183,8 @@ export interface CustomSchema<
 
 //
 
-export interface CustomSchema$<
-	O extends Partial<SchemaOptions>,
-> extends CustomSchema<O> /* , Schema$ */ {
+export interface CustomSchema$<O extends Partial<SchemaOptions>>
+	extends CustomSchema<O> /* , Schema$ */ {
 	//
 
 	/**
@@ -251,9 +249,7 @@ export interface CustomSchema$<
 		DefaultValue extends
 			| this[Voltiso.OPTIONS]['Input']
 			| AlsoAccept<Readonly<this[Voltiso.OPTIONS]['Input']>>,
-	>(
-		value: DefaultValue,
-	): CustomSchema.WithDefault<this, O, DefaultValue>
+	>(value: DefaultValue): CustomSchema.WithDefault<this, O, DefaultValue>
 
 	/**
 	 * Specify default value if the input value is `undefined`
@@ -265,7 +261,6 @@ export interface CustomSchema$<
 			| this[Voltiso.OPTIONS]['Input']
 			| AlsoAccept<Readonly<this[Voltiso.OPTIONS]['Input']>>,
 	>(
-		// eslint-disable-next-line @typescript-eslint/unified-signatures
 		getValue: () => DefaultValue,
 	): CustomSchema.WithDefault<this, O, DefaultValue>
 

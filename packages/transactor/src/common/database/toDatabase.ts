@@ -35,7 +35,6 @@ export function toDatabaseUpdate(
 	nestedUpdates: NestedUpdates,
 ): FirestoreLike.UpdateDataNested
 
-// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function toDatabaseUpdate(
 	ctx: DatabaseContext,
 	updates: Updates | NestedUpdates,
@@ -85,7 +84,6 @@ export function toDatabaseUpdate(
 
 			// if (Database.isTimestamp(rr)) r[key] = rr
 			if (isPlainObject(rr))
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				for (const childKey of getKeys(rr)) {
 					const val = (rr as FirestoreLike.DocumentData)[childKey] as unknown
 					assert(val !== undefined)
@@ -100,7 +98,6 @@ export function toDatabaseUpdate(
 
 //
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function toDatabaseSetNested(
 	ctx: DatabaseContext,
 	obj: NestedData,

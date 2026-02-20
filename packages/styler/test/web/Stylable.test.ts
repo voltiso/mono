@@ -11,7 +11,6 @@ import type { Props } from '~/react-types'
 import type { FC } from './common'
 
 describe('Stylable', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
@@ -19,7 +18,6 @@ describe('Stylable', () => {
 		$Assert.is<Stylable<P>, Stylable>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -37,7 +35,6 @@ describe('Stylable', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('complex', () => {
 		expect.assertions(0)
 
@@ -76,7 +73,6 @@ describe('Stylable', () => {
 		// Assert(Is<'input'>().not.subtypeOf<Stylable<BadTextProps>>()) // missing undefined... should pass?
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('playground', () => {
 		expect.assertions(0)
 

@@ -28,5 +28,6 @@ export function incrementIt<Amount extends number | bigint>(
 }
 
 export function isIncrementIt(x: unknown): x is IncrementIt {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__incrementIt')
 }

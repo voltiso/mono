@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable promise/always-return */
-/* eslint-disable promise/prefer-await-to-then */
-
 import 'zone.js'
 
 import { describe, expect, it } from '@jest/globals'
@@ -74,7 +71,7 @@ describe('node', () => {
 	})
 
 	/** Fails when global `Promise` not patched correctly */
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
+
 	it('parallel', async () => {
 		const context = new ZoneContext<number>()
 

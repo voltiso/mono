@@ -8,21 +8,9 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________TEST": "__________",
-    "test": "run-s test:build test:jest",
-    "test:build": "run-s clean test:build:esm",
-    "test:build:esm": "tspc -b tsconfig.build.esm.json",
-    "test:jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "v lintTsc",
-    "fix": "v fix",
-    "fix:prettier": "v fixPrettier",
-    "fix:eslint": "v fixEslint",
-    "__________MISC": "__________",
-    "clean": "rimraf dist"
+    "__________TURBO": "__________",
+    "build": "v build",
+    "check": "v check"
   },
   "__________DEPS": "__________",
   "devDependencies": {
@@ -37,8 +25,6 @@
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.jest": "workspace:^",
-    "@~/workspace": "workspace:^",
-    "eslint": "^9.39.2",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

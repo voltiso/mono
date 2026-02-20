@@ -1,16 +1,14 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type * as t from '@voltiso/schemar'
 import {
 	deepFrozen,
 	fastAssert,
 	isPlainObject,
 	lazyConstructor,
-	omit,
 	OPTIONS,
+	omit,
 	stringFrom,
 } from '@voltiso/util'
 
@@ -35,11 +33,9 @@ import { DTI } from './DocTI'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			r[k] = patchContextInRefs(v as never, ctx)
 		}
 
@@ -69,7 +65,6 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 		fastAssert(raw.__voltiso)
 
-		// eslint-disable-next-line no-param-reassign
 		raw = patchContextInRefs(raw, context)
 
 		this._context = context
@@ -104,18 +99,17 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 		// Object.freeze(this)
 		Object.seal(this)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(this, {
 			get: (target, p, receiver: unknown) => {
 				if (p === 'aggregates') return this._raw.__voltiso.aggregateTarget
 				else if (p in target) return Reflect.get(target, p, receiver) as never
 				else if (p in this._raw.__voltiso.aggregateTarget)
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					return (this._raw.__voltiso.aggregateTarget as any)[p].value as never
 				else return Reflect.get(this._rawProxy, p) as never
 			},
 
-			// eslint-disable-next-line @typescript-eslint/max-params
 			set: (target, p, value, receiver: unknown) => {
 				if (typeof p !== 'string' || p in target)
 					return Reflect.set(target, p, value, receiver)

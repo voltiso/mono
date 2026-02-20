@@ -161,7 +161,7 @@ export function andObjects<
 						...((ooGetDefault ? ooGetDefault() : ooDefault) as object),
 					}
 				}
-				// eslint-disable-next-line sonarjs/no-undefined-assignment
+
 				o.default = undefined
 			} else {
 				o.default = {

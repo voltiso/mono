@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type * as Database from '@voltiso/firestore-like'
 import { at } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
@@ -14,11 +12,9 @@ import type { CollectionPath, DocPath } from './Path.js'
 import { Transaction } from './Transaction.js'
 
 export class Doc {
-	// eslint-disable-next-line rxjs/no-exposed-subjects
 	data$: BehaviorSubject<Database.DocumentData | null>
 
 	constructor(data: Database.DocumentData | null) {
-		// eslint-disable-next-line rxjs/no-explicit-generics
 		this.data$ = new BehaviorSubject<Database.DocumentData | null>(data)
 	}
 }
@@ -26,7 +22,6 @@ export class Doc {
 export class Collection {
 	_docs: Record<string, Doc> = {}
 
-	// eslint-disable-next-line rxjs/no-exposed-subjects
 	_docs$: BehaviorSubject<Record<string, Database.DocumentData>>
 
 	constructor() {

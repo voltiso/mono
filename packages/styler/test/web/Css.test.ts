@@ -7,7 +7,6 @@ import { $Assert, $Is } from '@voltiso/util'
 import type { Css } from '~'
 
 describe('Css', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('simple', () => {
 		expect.assertions(0)
 
@@ -39,7 +38,6 @@ describe('Css', () => {
 		// $Assert.is<typeof b, Css<{ customPropertyA: number }>>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('allows arrays', () => {
 		expect.assertions(0)
 
@@ -50,7 +48,6 @@ describe('Css', () => {
 		$Assert.is<typeof a, Css>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('nested', () => {
 		expect.assertions(0)
 

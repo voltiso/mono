@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/complexity/useArrowFunction: . */
+
 import { lazyFunction } from '@voltiso/util'
 
 import type { $$Schemable } from '~/types/Schemable/Schemable'
@@ -10,7 +12,6 @@ import { Union$ } from './Union'
 
 export const or = lazyFunction(
 	() =>
-		// eslint-disable-next-line unicorn/consistent-function-scoping
 		function <Ts extends $$Schemable[]>(...types: Ts): Union$<Ts> {
 			let ts = [] as $$Schemable[]
 

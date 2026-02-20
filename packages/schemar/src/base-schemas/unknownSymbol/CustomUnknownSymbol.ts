@@ -5,9 +5,8 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownSymbolOptions } from './UnknownSymbolOptions'
 
-export interface CustomUnknownSymbol<
-	O extends Partial<UnknownSymbolOptions>,
-> extends CustomSchema<O> {
+export interface CustomUnknownSymbol<O extends Partial<UnknownSymbolOptions>>
+	extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownSymbol'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownSymbolOptions
@@ -16,9 +15,8 @@ export interface CustomUnknownSymbol<
 
 //
 
-export interface CustomUnknownSymbol$<
-	O extends Partial<UnknownSymbolOptions>,
-> extends CustomSchema$<O> {
+export interface CustomUnknownSymbol$<O extends Partial<UnknownSymbolOptions>>
+	extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownSymbol'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownSymbolOptions

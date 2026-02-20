@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import { $fastAssert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -13,6 +13,7 @@ import { isNumberSchema } from '../isNumber'
 import type { NumberOptions } from '../NumberOptions'
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomNumberImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
@@ -22,7 +23,7 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 $fastAssert(OPTIONS)
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomNumber<O>
@@ -69,7 +70,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 				issues.push(
 					new ValidationIssue({
 						name: this[Voltiso.OPTIONS].name,
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
 						expected: { description: `be at least ${this.getMin}` },
 						received: { value },
 					}),
@@ -80,7 +81,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 				issues.push(
 					new ValidationIssue({
 						name: this[Voltiso.OPTIONS].name,
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
 						expected: { description: `be at most ${this.getMax}` },
 						received: { value },
 					}),
@@ -99,7 +100,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'number'
 	}

@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './apply'
-export * from './bind'
 export * from './BindableFunction'
 export type * from './Bivariant'
+export * from './bind'
 export * from './call'
 export type * from './callable'
 export * from './callableObject'

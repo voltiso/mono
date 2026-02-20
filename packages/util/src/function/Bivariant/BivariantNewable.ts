@@ -2,19 +2,17 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /** @internal */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+
 class _NewableBivarianceHack<Args extends readonly unknown[]> {
 	constructor(...args: Args) {
-		// eslint-disable-next-line sonarjs/void-use
 		void args
 	}
 }
 
 /** @internal */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+
 abstract class _NewableAbstractBivarianceHack<Args extends readonly unknown[]> {
 	constructor(...args: Args) {
-		// eslint-disable-next-line sonarjs/void-use
 		void args
 	}
 }
@@ -33,7 +31,9 @@ export type _BivariantAbstractNewable<
 	Args extends readonly unknown[],
 	Return,
 > = typeof _NewableAbstractBivarianceHack<Args> &
-	(abstract new (...args: any) => Return)
+	(abstract new (
+		...args: any
+	) => Return)
 
 //
 

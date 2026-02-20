@@ -13,11 +13,9 @@ import type { WithDocRef } from '../WithDocRef'
 
 function processSentinels(x: unknown): IntrinsicFields | null {
 	if (isPlainObject(x)) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			if (!isDeleteIt(v)) r[k] = processSentinels(v)
 		}
 

@@ -69,7 +69,6 @@ export function at<
 	assertNotPolluting(index)
 	const r = array.length > 0 ? array[mod(index, array.length)] : undefined
 
-	// // eslint-disable-next-line security/detect-object-injection
 	// const r = isRelativeIndexable(array) ? array.at(index) : array[index]
 
 	if (r === undefined)

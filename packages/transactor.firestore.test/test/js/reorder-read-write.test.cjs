@@ -14,8 +14,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('reorder-read-write', function () {
-	it('should reorder', async function () {
+describe('reorder-read-write', () => {
+	it('should reorder', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('languages/english').set({ popularity: 1 })
@@ -36,7 +36,7 @@ describe('reorder-read-write', function () {
 		})
 	})
 
-	it('should support chained increment', async function () {
+	it('should support chained increment', async () => {
 		expect.hasAssertions()
 
 		await db('entity/a').set({ val: 1 })

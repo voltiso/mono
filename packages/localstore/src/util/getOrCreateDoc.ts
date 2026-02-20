@@ -13,6 +13,7 @@ export function getOrCreateDoc(
 	id: string,
 ): Doc {
 	const collection = getOrCreateCollection(store, collectionPath)
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/no-nested-assignment
+
+	// biome-ignore lint/suspicious/noAssignInExpressions: .
 	return (collection._docs[id] ||= new Doc(null))
 }

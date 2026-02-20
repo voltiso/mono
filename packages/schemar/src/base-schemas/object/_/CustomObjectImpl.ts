@@ -1,9 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
-import { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import * as v from '@voltiso/util'
+import { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { number } from '~/base-schemas/number/Number'
 import { string } from '~/base-schemas/string/String'
@@ -24,7 +26,6 @@ import { isObjectSchema } from '../IObject'
 import type { ObjectIndexSignatureEntry, ObjectOptions } from '../ObjectOptions'
 import { deepPartialShape, deepStrictPartialShape } from './deepPartialShape'
 import { partialShape, strictPartialShape } from './partialShape'
-/* eslint-disable max-depth */
 
 v.$fastAssert(EXTENDS)
 v.$fastAssert(SCHEMA_NAME)
@@ -119,10 +120,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (!hasThisK && !isOtherOptional) return false
 				else if (
 					hasThisK &&
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					!schema(this.getShape[key] as {}).extends(value as never)
 				)
-					// eslint-disable-next-line sonarjs/no-duplicated-branches
 					return false
 			}
 
@@ -132,7 +131,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		} else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override _getIssues(
 		x: unknown,
 		partialOptions?: Partial<ValidationOptions> | undefined,
@@ -161,7 +159,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				)
 			}
 
-			// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 			for (const [key, value] of v.getEntries(this.getShape, {
 				includeSymbols: true,
 			}) as [keyof any, Schemable][]) {
@@ -193,7 +190,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				const r = childSchema.exec(val, options)
 
 				if (!r.isValid) {
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const issue of r.issues) issue.path = [key, ...issue.path]
 
 					issues = [...issues, ...r.issues]
@@ -223,7 +219,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							? options.onUnknownProperty(issue)
 							: options.onUnknownProperty
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (
 						onUnknownPropertyResult === 'error' ||
 						onUnknownPropertyResult === 'warning'
@@ -235,7 +230,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					let keyIssues: ValidationIssue[] = []
 					let valueIssues: ValidationIssue[] = []
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const { keySchema, valueSchema } of this[v.OPTIONS]
 						.indexSignatures) {
 						const sKeySchema = schema(keySchema) as unknown as Schema
@@ -250,7 +244,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
-										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature key: ${sKeySchema.toString()}`,
 									},
 
@@ -275,7 +268,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
-										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature value: ${sValueSchema.toString()}`,
 									},
 
@@ -291,7 +283,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						}
 					}
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (valueIssues.length > 0) {
 						issues = [...issues, ...valueIssues]
 					} else if (keyIssues.length > 0) {
@@ -323,7 +314,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override _fix(
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
@@ -344,10 +334,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (v.hasProperty(fixedObject, key) || mySchema.hasDefault) {
 					const result = mySchema.exec(fixedObject[key as never], options)
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (result.value === undefined && isOptional) {
-						if (Object.prototype.hasOwnProperty.call(fixedObject, key)) {
-							// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+						if (Object.hasOwn(fixedObject, key)) {
 							delete fixedObject[key as never]
 							isChanged = true
 						}
@@ -378,7 +366,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						options,
 					)
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (keyValidationResult.isValid && valueValidationResult.isValid) {
 						xKey = keyValidationResult.value as never
 
@@ -389,15 +376,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey) {
 					isChanged = true
 
-					// eslint-disable-next-line @typescript-eslint/no-dynamic-delete, sonarjs/nested-control-flow
 					if (xKey !== originalXKey) delete fixedObject[originalXKey]
 
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (xValue !== fixedObject[xKey]) fixedObject[xKey] = xValue as never
 				}
 			}
 
-			// eslint-disable-next-line no-param-reassign
 			if (isChanged) value = fixedObject
 		}
 

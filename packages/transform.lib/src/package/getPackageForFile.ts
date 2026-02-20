@@ -18,7 +18,6 @@ export interface _PackagePath {
 /** @internal */
 
 export function _getPackageForFile(file: string): _PackagePath {
-	// eslint-disable-next-line no-param-reassign
 	file = path.resolve(file)
 
 	const dirPath = path.dirname(file)
@@ -26,7 +25,6 @@ export function _getPackageForFile(file: string): _PackagePath {
 	const { packageJson, packageJsonPath } = _getPackageForDir(dirPath)
 	const packageJsonDirPath = path.dirname(packageJsonPath)
 
-	// eslint-disable-next-line unicorn/consistent-assert
 	assert(file.startsWith(packageJsonDirPath))
 
 	return {

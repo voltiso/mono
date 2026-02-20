@@ -13,14 +13,12 @@ import type { ICssProp } from './ICssProp'
 import type { IndexedCssProps, IndexedCssPropsSingle } from './IndexedCssProps'
 
 describe('CssProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props, CustomCss extends object>() => {
 		expect.assertions(0)
 
 		$Assert.is<CssProps<P, CustomCss>, IndexedCssProps<CustomCss>>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', <CustomCss extends object>() => {
 		expect.assertions(0)
 

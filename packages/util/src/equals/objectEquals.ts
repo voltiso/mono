@@ -53,9 +53,8 @@ export function forInEquals(a: object, b: object): boolean {
 	const aKeysArr = []
 	const bKeysArr = []
 
-	// eslint-disable-next-line guard-for-in, sonarjs/for-in
 	for (const key in a) aKeysArr.push(key)
-	// eslint-disable-next-line guard-for-in, sonarjs/for-in
+
 	for (const key in b) bKeysArr.push(key)
 
 	const aKeys = new Set(aKeysArr)

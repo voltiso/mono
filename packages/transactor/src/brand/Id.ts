@@ -20,9 +20,8 @@ export type _DocIdBrand<tag extends DocTag | ANY_DOC> = ___<
 		TransactorBrand<'doc', tag extends ANY_DOC ? any : { [k in tag]: {} }>
 >
 
-export interface DocIdBrand<
-	tag extends DocTag | ANY_DOC = ANY_DOC,
-> extends _DocIdBrand<tag> {}
+export interface DocIdBrand<tag extends DocTag | ANY_DOC = ANY_DOC>
+	extends _DocIdBrand<tag> {}
 
 export type GetDocIdBrand<X extends $$DocRelatedLike | UNSET = UNSET> =
 	X extends UNSET

@@ -18,11 +18,10 @@ export class FunctionImpl<
 			...options,
 		} as never)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL](...args: unknown[]): never {
 		return new CustomUnknownFunctionImpl(...(args as [any])) as never
 	}

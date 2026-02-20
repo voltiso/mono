@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/cyclomatic-complexity */
-/* eslint-disable sonarjs/no-nested-conditional */
-/* eslint-disable no-nested-ternary */
-
 import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
 import { defaultTransformOptions } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
@@ -38,7 +34,7 @@ export function inlineTransform(
 		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			const options: InlineTransformOptions = _deepMerge2(
 				defaultTransformOptions as never,
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 				(pluginOptions as never) ?? {},
 			) as never
 
@@ -96,7 +92,6 @@ export function inlineTransform(
 
 						if (hasInlineTag && canBeInlined(ctx, node)) {
 							logInlinedNode(ctx, originalNode, { type: 'alias' })
-							// // eslint-disable-next-line no-console
 							// console.log(
 							// 	'\n',
 							// 	'[@voltiso/transform] inlining type alias:',

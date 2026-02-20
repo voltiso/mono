@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/complexity/useArrowFunction: . */
+
 import { describe, expect, it } from '@jest/globals'
 
 import { assign } from './assign'

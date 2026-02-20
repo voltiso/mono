@@ -2,14 +2,12 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
   - react-native
   - '@babel/core'
   - '@babel/preset-env'
   - '@babel/plugin-transform-react-jsx'
   - '@babel/plugin-proposal-decorators'
   - '@voltiso/config.ts'
-  - '@voltiso/config.eslint'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.jest.lib'
   - '@voltiso/script'

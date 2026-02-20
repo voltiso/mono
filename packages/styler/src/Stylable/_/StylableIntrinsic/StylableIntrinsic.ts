@@ -49,7 +49,6 @@ export type IntrinsicElement = IsReactNative extends false
 	? keyof React.JSX.IntrinsicElements
 	: never
 
-// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type IStylableIntrinsicElement = IntrinsicElement
 
 // export type IStylableIntrinsic = IsReactNative extends false

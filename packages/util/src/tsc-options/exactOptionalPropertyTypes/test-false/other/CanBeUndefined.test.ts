@@ -1,14 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { CanBeUndefined } from '~/object'
 import type { exactOptionalPropertyTypes } from '~/tsc-options'
 import type { IsIdentical } from '~/type'
 
-// eslint-disable-next-line jest/require-hook
 $Assert.is<exactOptionalPropertyTypes, false>() // !
 
 describe('canBeUndefined', () => {

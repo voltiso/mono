@@ -10,8 +10,8 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
-describe('updates', function () {
-	it('should replace field', function () {
+describe('updates', () => {
+	it('should replace field', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1 }
@@ -21,7 +21,7 @@ describe('updates', function () {
 		expect(newData).toStrictEqual({ a: 2 })
 	})
 
-	it('should replace field and not touch other fields', function () {
+	it('should replace field and not touch other fields', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: 11 }
@@ -31,7 +31,7 @@ describe('updates', function () {
 		expect(newData).toStrictEqual({ a: 2, b: 11 })
 	})
 
-	it('should replace nested field', function () {
+	it('should replace nested field', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
@@ -44,7 +44,7 @@ describe('updates', function () {
 		})
 	})
 
-	it('should support updates === deleteField()', function () {
+	it('should support updates === deleteField()', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
@@ -54,7 +54,7 @@ describe('updates', function () {
 		expect(isDeleteIt(newData)).toBeTruthy()
 	})
 
-	it('should support "deleteField" sentinel', function () {
+	it('should support "deleteField" sentinel', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
@@ -67,7 +67,7 @@ describe('updates', function () {
 		})
 	})
 
-	it('should support "replace" sentinel', function () {
+	it('should support "replace" sentinel', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
@@ -80,7 +80,7 @@ describe('updates', function () {
 		})
 	})
 
-	it('should support "increment" sentinel', function () {
+	it('should support "increment" sentinel', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 999 } } }
@@ -93,7 +93,7 @@ describe('updates', function () {
 		})
 	})
 
-	it('should not increment undefined', function () {
+	it('should not increment undefined', () => {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 999 } } }

@@ -13,8 +13,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('get', function () {
-	it('should return null if document does not exist', async function () {
+describe('get', () => {
+	it('should return null if document does not exist', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('usersAB/artur').delete()
@@ -23,7 +23,7 @@ describe('get', function () {
 		expect(doc).toBeNull()
 	})
 
-	it('should return document with id', async function () {
+	it('should return document with id', async () => {
 		expect.hasAssertions()
 
 		await db('usersAB', 'artur').set({ name: 'Arturo' })

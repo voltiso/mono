@@ -3,10 +3,9 @@
 
 import type { NonStrictPartial } from '~/object/map/NonStrictPartial'
 import { overrideDefined } from '~/object/Override'
-
-import { stringFrom } from './stringFrom'
 import type { StringFromOptions } from './StringFromOptions'
 import { defaultToStringOptions } from './StringFromOptions'
+import { stringFrom } from './stringFrom'
 
 const baseResult = '[]'
 const baseShortResult = '[...]'

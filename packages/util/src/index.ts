@@ -5,8 +5,8 @@ export * from './_'
 export type * from './any'
 export * from './array'
 export * from './assert'
-export type * from './boolean'
 export type { Brands } from './Brands-augmentation'
+export type * from './boolean'
 export * from './cast'
 export * from './class'
 export * from './clone'
@@ -33,8 +33,6 @@ export * from './regex'
 export * from './stack-trace'
 export * from './string'
 export * from './syncer'
-export type * from './tsc-options'
-export * from './type'
 export type * from './TypeAliases'
 export type {
 	TypeAliases0,
@@ -48,4 +46,6 @@ export type {
 	TypeAliases8,
 	TypeAliases9,
 } from './TypeAliases-augmentation'
+export type * from './tsc-options'
+export * from './type'
 //

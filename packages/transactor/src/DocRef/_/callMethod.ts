@@ -24,7 +24,6 @@ export interface CallMethodOptions {
 	localDoc?: IDocImpl
 }
 
-// eslint-disable-next-line @typescript-eslint/max-params
 export async function callMethod<
 	TI extends DocTI,
 	EC extends ExecutionContext,
@@ -39,7 +38,6 @@ export async function callMethod<
 ): Promise<R> {
 	const ctxOverride = ctx.transactor._getTransactionContext()
 
-	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 	const { name, localDoc } = options // argSchema
@@ -59,7 +57,6 @@ export async function callMethod<
 		let cache: Cache | undefined
 
 		const result = await transactor.runTransaction(() => {
-			// eslint-disable-next-line unicorn/consistent-destructuring
 			const ctxOverride = ctx.transactor._getTransactionContext()
 
 			assert(ctxOverride)
@@ -98,7 +95,6 @@ export async function callMethod<
 	// data._._setContext(this.context)
 
 	if ((doc as unknown as DocImpl)._context.transactor._options.log) {
-		// eslint-disable-next-line no-console
 		console.log(
 			'\n',
 			pc.inverse('CALL method'),

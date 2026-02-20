@@ -19,10 +19,10 @@ import { parallel } from '@voltiso/script'
 
 export const build = 'tsc -b'
 
-export const lintEslint = 'eslint .'
+export const lintBiome = 'biome lint'
 export const lintTsc = 'tsc --noEmit'
 
-export const lint = parallel(lintEslint, lintTsc)
+export const lint = parallel(lintBiome, lintTsc)
 
 export const check = [build, lint] // sequential
 

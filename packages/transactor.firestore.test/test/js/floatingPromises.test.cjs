@@ -10,10 +10,10 @@ const { createFirestoreTransactor } = srcFirestore
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
-describe('floatingPromises', function () {
+describe('floatingPromises', () => {
 	it(
 		'should detect floating promises',
-		async function () {
+		async () => {
 			expect.hasAssertions()
 
 			/** @type {PromiseLike<unknown>[]} */

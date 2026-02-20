@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@~/workspace",
+  "name": "@voltiso/~",
   "version": "0.0.1",
   "repository": "git://github.com/voltiso/mono.git",
   "________": "__________",
@@ -8,45 +8,36 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________TURBO - GLOBAL": "__________",
-    "dev": "v devWorkspace",
-    "build": "v buildWorkspace",
-    "test": "v testWorkspace",
-    "lint": "v lintWorkspace",
-    "depcheck": "v depcheckWorkspace",
-    "areTheTypesWrong": "v areTheTypesWrongWorkspace",
-    "check": "v checkWorkspace",
-    "__________WORKSPACE ONLY": "__________",
-    "lint:eslint": "cross-env FULL=1 NODE_OPTIONS=--max_old_space_size=24000 eslint --max-warnings=0 \"*\"",
-    "__________PREPARE WORKSPACE": "__________",
+    "__________ALL PACKAGES": "__________",
+    "build": "v allBuild",
+    "check": "v allCheck",
+    "__________HOOKS": "__________",
     "prepare": "cross-env FORCE_COLOR=1 run-s prepare:script prepare:run",
-    "prepare:script": "cross-env FORCE_COLOR=1 turbo run build:cjs --filter=@voltiso/script",
-    "prepare:run": "v prepareWorkspace"
+    "__________IMPL": "__________",
+    "prepare:script": "cross-env FORCE_COLOR=1 turbo run build --filter=@voltiso/script",
+    "prepare:run": "v workspacePrepare"
   },
   "__________DEPS": "__________",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
+    "@biomejs/biome": "^2.4.2",
     "@types/node": "^25.2.3",
     "@typescript/analyze-trace": "^0.10.1",
-    "@voltiso/config.eslint": "workspace:^",
-    "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
-    "@voltiso/config.prettier": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "cross-env": "^10.1.0",
     "depcheck": "^1.4.7",
-    "eslint": "^9.39.2",
     "gnomon": "^1.5.0",
     "jest": "^30.2.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
+    "tsx": "^4.21.0",
     "turbo": "^2.5.3",
     "type-coverage": "^2.29.7",
     "typescript": "^5.8.3",
@@ -59,11 +50,6 @@
     "pnpm": ">= 10"
   },
   "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "eslint": "*"
-      }
-    },
     "packageExtensions": {
       "firebase-tools": {
         "peerDependencies": {
@@ -74,17 +60,6 @@
         "peerDependencies": {
           "@jest/globals": "*",
           "@jest/expect": "*"
-        }
-      },
-      "eslint-plugin-sonarjs": {
-        "peerDependencies": {
-          "globals": "*",
-          "ts-api-utils": "*"
-        }
-      },
-      "eslint-plugin-jsonc": {
-        "peerDependencies": {
-          "espree": "*"
         }
       },
       "react-native": {

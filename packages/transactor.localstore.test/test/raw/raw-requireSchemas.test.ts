@@ -12,8 +12,8 @@ const dbWithSchema = createTransactor({
 	checkDecorators: false,
 })
 
-describe('raw-requireSchemas', function () {
-	it('should respect constructor argument (false)', async function () {
+describe('raw-requireSchemas', () => {
+	it('should respect constructor argument (false)', async () => {
 		expect.hasAssertions()
 
 		const doc = await db('mystic').add({ mysticField: 123 })
@@ -28,7 +28,7 @@ describe('raw-requireSchemas', function () {
 		})
 	})
 
-	it('should respect dynamically changed requireSchema (to false)', async function () {
+	it('should respect dynamically changed requireSchema (to false)', async () => {
 		expect.hasAssertions()
 
 		dbWithSchema.requireSchemas = false
@@ -48,7 +48,7 @@ describe('raw-requireSchemas', function () {
 		dbWithSchema.requireSchemas = true
 	})
 
-	it('should respect constructor argument (true)', async function () {
+	it('should respect constructor argument (true)', async () => {
 		expect.hasAssertions()
 
 		dbWithSchema.requireSchemas = true
@@ -61,7 +61,7 @@ describe('raw-requireSchemas', function () {
 		).rejects.toThrow('missing schema')
 	})
 
-	it('should respect dynamically changed requireSchema (to true)', async function () {
+	it('should respect dynamically changed requireSchema (to true)', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = true

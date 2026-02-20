@@ -16,14 +16,12 @@ let helloPrinted = false
 function _helloOnce() {
 	if (helloPrinted) return
 
-	// eslint-disable-next-line no-console
 	console.log(moduleIcon, pc.gray('@voltiso/transform/compat'))
 	helloPrinted = true
 }
 
 const rightArrow = '➡️ '
 
-// eslint-disable-next-line @typescript-eslint/max-params
 export function logCompatTransformNode(
 	ctx: CompatTransformContext,
 	node: ts.Node,
@@ -34,7 +32,6 @@ export function logCompatTransformNode(
 
 	_helloOnce()
 
-	// eslint-disable-next-line no-console
 	console.log(
 		moduleIcon,
 		options.feature,

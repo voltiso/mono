@@ -21,7 +21,7 @@ export function protoLink<Args extends object[]>(
 				`protoLink(...${stringFrom(args)}) assertion failed`,
 			)
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		// biome-ignore lint/style/noNonNullAssertion: .
 		Object.setPrototypeOf(args[index], args[index + 1]!)
 	}
 

@@ -13,7 +13,6 @@ declare module '~' {
 }
 
 describe('extension', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.assertions(0)
 

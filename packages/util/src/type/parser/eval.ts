@@ -41,7 +41,7 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [
 				never,
 				never,
 				never,
-		  ] extends [
+			] extends [
 				infer A,
 				infer B,
 				infer C,
@@ -52,7 +52,7 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [
 				infer H,
 				infer I,
 				...unknown[],
-		  ]
+			]
 		? ast extends '1'
 			? A
 			: ast extends '2'
@@ -75,7 +75,7 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [
 		: never
 
 /** - TODO: constrain it better, not just `string` */
-// eslint-disable-next-line sonarjs/redundant-type-aliases
+
 type ExprString = string
 
 export type Expr = Ast | keyof Operation | ExprString

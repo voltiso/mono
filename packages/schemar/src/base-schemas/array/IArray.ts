@@ -10,7 +10,8 @@ export interface $$Array extends $$Schema {
 }
 
 export interface ArrayLike<T extends readonly unknown[] = readonly unknown[]>
-	extends $$Array, SchemaLike<T> {
+	extends $$Array,
+		SchemaLike<T> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 }

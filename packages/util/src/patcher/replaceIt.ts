@@ -26,5 +26,6 @@ export function replaceIt<X>(x: X): ReplaceIt<X> {
 }
 
 export function isReplaceIt(x: unknown): x is ReplaceIt {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__replaceIt')
 }

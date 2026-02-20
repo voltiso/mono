@@ -28,7 +28,7 @@ class Doctor extends Doc.with({
 const doctors = db('doctor').register(Doctor)
 
 describe('afterCreate', () => {
-	it('triggers on creation', async function () {
+	it('triggers on creation', async () => {
 		expect.hasAssertions()
 
 		await database.doc('doctor/anthony').delete()
@@ -47,7 +47,7 @@ describe('afterCreate', () => {
 		await expect(doctors('anthony').data.ofWhat).resolves.toBe('universe')
 	})
 
-	it('does not trigger on update', async function () {
+	it('does not trigger on update', async () => {
 		expect.hasAssertions()
 
 		await database.doc('doctor/anthony').delete()

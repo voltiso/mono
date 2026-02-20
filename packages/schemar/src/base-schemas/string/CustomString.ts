@@ -9,9 +9,8 @@ import type { StringOptions } from './StringOptions'
 
 //
 
-export interface CustomString<
-	O extends Partial<StringOptions>,
-> extends CustomSchema<O> {
+export interface CustomString<O extends Partial<StringOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
@@ -26,9 +25,8 @@ export interface CustomString<
 
 //
 
-export interface CustomString$<
-	O extends Partial<StringOptions>,
-> extends CustomSchema$<O> {
+export interface CustomString$<O extends Partial<StringOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 

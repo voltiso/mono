@@ -7,9 +7,8 @@ import type { NeverOptions } from './NeverOptions'
 
 //
 
-export interface CustomNever<
-	O extends Partial<NeverOptions>,
-> extends CustomSchema<O> {
+export interface CustomNever<O extends Partial<NeverOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Never'
 
@@ -19,9 +18,8 @@ export interface CustomNever<
 
 //
 
-export interface CustomNever$<
-	O extends Partial<NeverOptions>,
-> extends CustomSchema$<O> {
+export interface CustomNever$<O extends Partial<NeverOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Never'
 

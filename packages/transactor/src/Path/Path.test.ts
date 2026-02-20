@@ -13,7 +13,7 @@ import type { ANY_DOC } from '~/DocTypes'
 import type { CustomDocPath, DbPathFromString } from './Path'
 import { CollectionPath } from './Path'
 
-describe('path', function () {
+describe('path', () => {
 	it('type', <D extends $$Doc>() => {
 		type A = GetDocTag<D>
 		type B = GetDocTag<IndexedDoc>
@@ -26,7 +26,7 @@ describe('path', function () {
 		$Assert.is<CustomDocPath<{ doc: D }>, CustomDocPath<{ doc: IndexedDoc }>>()
 	})
 
-	it('creates Path from string[]', function () {
+	it('creates Path from string[]', () => {
 		expect.hasAssertions()
 
 		const path = new CollectionPath('asd/sdf/dfg')
@@ -37,7 +37,7 @@ describe('path', function () {
 		expect(path.segments).toStrictEqual('asd/sdf/dfg'.split('/'))
 	})
 
-	it('DbPathFromString', function () {
+	it('DbPathFromString', () => {
 		expect.assertions(0)
 
 		type X = DbPathFromString<'asd/...' | 'sdf/...'>

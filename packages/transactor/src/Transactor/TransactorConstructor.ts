@@ -14,7 +14,6 @@ export interface TransactorConstructor<
 > {
 	new (): Derived
 
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	new (options: Partial<TransactorOptions>): Derived
 
 	new (
@@ -25,12 +24,11 @@ export interface TransactorConstructor<
 	new (
 		database: Database.Database,
 		firestoreLikeModule: FirestoreLikeModule,
-		// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 		options: Partial<TransactorOptions>,
 	): Derived
 
 	new (
-		// eslint-disable-next-line @typescript-eslint/unified-signatures
 		...args:
 			| []
 			| [Partial<TransactorOptions>]

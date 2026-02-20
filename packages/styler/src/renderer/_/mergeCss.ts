@@ -44,6 +44,5 @@ export function flattenCss(css: Css): FlatCss {
 }
 
 export function mergeCss(...styles: Css[]): Css {
-	// eslint-disable-next-line unicorn/no-array-reduce
 	return styles.map(style => flattenCss(style)).reduce(mergeTwoFlatCss, {})
 }

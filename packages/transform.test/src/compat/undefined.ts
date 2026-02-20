@@ -14,5 +14,3 @@ export function shadowDifferentType(): number {
 	const undefined = 123
 	return undefined
 }
-
-export {}

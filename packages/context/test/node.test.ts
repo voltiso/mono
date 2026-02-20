@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable promise/prefer-await-to-then */
-/* eslint-disable promise/always-return */
-
 import { describe, expect, it } from '@jest/globals'
 import { sleep } from '@voltiso/util'
 
@@ -92,7 +89,7 @@ describe('node', () => {
 	 * Fails when using non-standard global `Promise` mock - e.g. `react-native`
 	 * jest config
 	 */
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
+
 	it('parallel', async () => {
 		const context = new NodeContext<number>()
 

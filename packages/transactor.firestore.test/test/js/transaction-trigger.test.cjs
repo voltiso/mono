@@ -15,16 +15,15 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 db('userA/{user}/project/*').after(
 	async ({ db, before, after, pathParams }) => {
 		// @ts-expect-error ...
-		// eslint-disable-next-line sonarjs/non-number-in-arithmetic-expression
+
 		const dNumProjects = Boolean(after) - Boolean(before)
 
 		if (dNumProjects) {
 			// @ts-expect-error ...
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 			await db('userA', pathParams.user).update({
 				numProjects: incrementIt(dNumProjects),
 			})
@@ -32,7 +31,6 @@ db('userA/{user}/project/*').after(
 	},
 )
 
-// eslint-disable-next-line jest/require-hook
 db('userA/{user}').after(async ({ after }) => {
 	// @ts-expect-error ...
 	if (after?.numProjects > 2) {
@@ -41,7 +39,7 @@ db('userA/{user}').after(async ({ after }) => {
 })
 
 describe('transaction-trigger', () => {
-	it('should process triggers', async function () {
+	it('should process triggers', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('userA/artur/project/tds').delete()

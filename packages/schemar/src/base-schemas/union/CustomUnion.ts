@@ -10,7 +10,8 @@ export interface $$Union {
 }
 
 export interface CustomUnion<O extends Partial<UnionOptions>>
-	extends $$Union, CustomSchema<O> {
+	extends $$Union,
+		CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Union'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnionOptions
@@ -22,7 +23,8 @@ export interface CustomUnion<O extends Partial<UnionOptions>>
 }
 
 export interface CustomUnion$<O extends Partial<UnionOptions>>
-	extends $$Union, CustomSchema$<O> {
+	extends $$Union,
+		CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Union'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnionOptions

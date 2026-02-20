@@ -22,7 +22,6 @@ import type {
 } from '~'
 
 describe('StyledComponent', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -42,7 +41,6 @@ describe('StyledComponent', () => {
 		$Assert.is<A, StyledComponentLike<StyledSubject, {}>>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type - second argument', () => {
 		expect.assertions(0)
 
@@ -69,7 +67,6 @@ describe('StyledComponent', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type - hard', () => {
 		expect.assertions(0)
 
@@ -105,7 +102,6 @@ describe('StyledComponent', () => {
 		// >()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
@@ -134,7 +130,6 @@ describe('StyledComponent', () => {
 		// >()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('is usable', <Comp extends IStyledComponent>() => {
 		expect.assertions(0)
 
@@ -158,7 +153,6 @@ describe('StyledComponent', () => {
 		$Assert.is<C, { cssS: Css }>() // hmm (?)
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('always has OuterProps - easy', () => {
 		expect.assertions(0)
 

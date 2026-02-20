@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -55,7 +55,9 @@ describe('OmitPrivate', () => {
 					readonly d: 4 | undefined
 					get e(): 5
 				} & ((props: { a: 1 }) => string) &
-					(new (arg: { b: 2 }) => number)
+					(new (arg: {
+						b: 2
+					}) => number)
 			>
 		>()
 	})

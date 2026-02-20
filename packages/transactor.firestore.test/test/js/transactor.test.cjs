@@ -9,8 +9,8 @@ const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
 
-describe('transactor', function () {
-	it('throws on unknown options', async function () {
+describe('transactor', () => {
+	it('throws on unknown options', async () => {
 		expect.hasAssertions()
 		// @ts-expect-error ...
 		expect(() => createFirestoreTransactor(firestore, { asd: 123 })).toThrow(

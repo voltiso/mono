@@ -13,8 +13,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('update', function () {
-	it('should update nested field', async function () {
+describe('update', () => {
+	it('should update nested field', async () => {
 		expect.hasAssertions()
 
 		const id = 'artur'
@@ -55,7 +55,7 @@ describe('update', function () {
 		expect(doc?.dataWithId()).toMatchObject({ ...expected, id })
 	})
 
-	it('should create objects if needed', async function () {
+	it('should create objects if needed', async () => {
 		expect.hasAssertions()
 
 		await db('a/a').set({ x: 1 })
@@ -73,7 +73,7 @@ describe('update', function () {
 		await expect(db('a/a').y.yy).resolves.toBe(2)
 	})
 
-	it('should throw if document does not exist', async function () {
+	it('should throw if document does not exist', async () => {
 		expect.hasAssertions()
 
 		await db('a/aa').delete()

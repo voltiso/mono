@@ -24,7 +24,8 @@ export function isSyncerSwitchSync(x: unknown): x is SyncerSwitchSync {
 //
 
 export interface SyncerSwitch<T = unknown>
-	extends SyncerSwitchAsync<T>, SyncerSwitchSync<T> {}
+	extends SyncerSwitchAsync<T>,
+		SyncerSwitchSync<T> {}
 
 export type PartialSyncerSwitch<T = unknown> = UndefinedFromOptional<
 	Partial<SyncerSwitch<T>>

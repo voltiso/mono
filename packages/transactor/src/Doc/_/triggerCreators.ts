@@ -46,7 +46,6 @@ function assertNotAfter(
 	fastAssert(!x.after)
 }
 
-// eslint-disable-next-line @typescript-eslint/max-params
 function logTrigger(
 	name: string,
 	when: 'before' | 'after' | 'on',
@@ -56,7 +55,6 @@ function logTrigger(
 	// $AssumeType<AfterTriggerParams<D>>(params)
 	if (!params.transactor._options.log) return
 
-	// eslint-disable-next-line no-console
 	console.log(
 		pc.gray(params.path.toString()),
 		pc.inverse(`${when} ${event}`),

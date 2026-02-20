@@ -13,5 +13,4 @@ export interface RscStyle {
 
 // /** `string` to be passed to client over network */
 // export const RscStyleContext =
-// 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 // 	createServerContext && createServerContext<RscStyle | null>(`RscStyle`, null)

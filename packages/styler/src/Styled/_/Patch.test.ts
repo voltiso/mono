@@ -8,7 +8,6 @@ import { $Assert } from '@voltiso/util'
 import type { FastMergeProps_, Props } from '~/react-types'
 
 describe('Path', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P0 extends Props, P1 extends Props>() => {
 		expect.assertions(0)
 

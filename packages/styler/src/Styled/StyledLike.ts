@@ -1,5 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
 
 import type { $Override_ } from '@voltiso/util'
 

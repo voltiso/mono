@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type {
 	AlsoAccept,
 	BASE_OPTIONS,
@@ -66,7 +68,6 @@ export const defaultHandlerOptions: Handler.Options.Default &
 	Handler.Options.Hidden<Handler.Options.Default>
 >().value(
 	Object.freeze({
-		// eslint-disable-next-line sonarjs/no-undefined-assignment
 		name: undefined,
 	}),
 ) as never
@@ -105,7 +106,8 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 
 	constructor(partialOptions: O & HandlerImpl<O>[HIDDEN_OPTIONS]) {
 		super({ ...defaultHandlerOptions, ...partialOptions } as never)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this) as never
 	}
 
@@ -122,7 +124,6 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 	//
 
 	[CALL](...args: unknown[]): never {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this._call(UNSET as never, ...(args as any)) as never
 	}
 
@@ -141,16 +142,13 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 	// TODO: `BoundCallable` should have this functionality embedded maybe? And detect if called via Function.prototype.call or Function.prototype.apply?
 
 	call(thisArg: unknown, ...args: unknown[]): unknown {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this._call(thisArg as never, ...(args as any))
 	}
 
 	bind(thisArg: unknown, ...args: unknown[]): unknown {
-		// eslint-disable-next-line unicorn/no-this-assignment, consistent-this, @typescript-eslint/no-this-alias
 		const self = this
 		return Function.prototype.bind.call(
 			function (this: unknown, ...moreArgs: unknown[]) {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				return self._call(this as never, ...(moreArgs as any))
 			},
 			thisArg,
@@ -159,7 +157,6 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 	}
 
 	apply(thisArg: unknown, args: unknown[]): unknown {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this._call(thisArg as never, ...(args as any))
 	}
 }

@@ -62,5 +62,6 @@ export function arraySetUpdateIt<Add, Remove>(params: {
 }
 
 export function isArraySetUpdateIt(x: unknown): x is ArraySetUpdateIt {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__arraySetUpdateIt')
 }

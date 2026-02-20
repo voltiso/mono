@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-nested-functions */
-
 import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
 import {
 	_getPackageForFile,
@@ -40,7 +38,7 @@ export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			const options: TransformOptions = _deepMerge2(
 				defaultTransformOptions as never,
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 				(pluginOptions as never) ?? {},
 			) as never
 			const ctx: TransformContext = {
@@ -124,7 +122,6 @@ export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 					// 	if (declaration) {
 					// 		while (
 					// 			!ts.isImportDeclaration(declaration) &&
-					// 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					// 			declaration.parent
 					// 		) {
 					// 			declaration = declaration.parent

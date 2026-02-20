@@ -44,7 +44,6 @@ export class PrototypePollutionError<
 
 		super(message, options)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 
 		this.name = 'PrototypePollutionError'
@@ -100,6 +99,7 @@ export function isPolluting(
 export function isPolluting(
 	...args: readonly [keyof any] | readonly [object, keyof any]
 ): boolean {
+	// biome-ignore lint/complexity/noArguments: .
 	if (arguments.length === 1) {
 		const [key] = args
 		return key === 'constructor' || key === '__proto__'

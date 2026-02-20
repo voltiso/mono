@@ -6,16 +6,10 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "v lintTsc",
-    "__________TS_TRACE": "__________",
-    "trace": "v trace",
-    "trace:run": "v traceRun"
+    "__________TURBO": "__________",
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "devDependencies": {
@@ -31,8 +25,6 @@
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transactor.localstore": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "@~/workspace": "workspace:^",
-    "jest": "^30.2.0",
     "random-seed": "^0.3.0"
   }
 }

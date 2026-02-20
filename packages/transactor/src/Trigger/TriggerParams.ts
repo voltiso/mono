@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
-/* eslint-disable es-x/no-global-this */
-
 import type { If } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
@@ -44,8 +40,8 @@ export const TRIGGER_PARAMS_TYPE_INFO: TRIGGER_PARAMS_TYPE_INFO =
 export interface TriggerParams<
 	D extends $$Doc = $$Doc,
 	ThisExists extends boolean = boolean,
->
-	extends PathMatches, DocRefContext {
+> extends PathMatches,
+		DocRefContext {
 	//
 	doc: If<ThisExists, D, null>
 
@@ -86,5 +82,6 @@ export namespace TriggerParams {
 	export type OnGet<D extends $$Doc> = TriggerParams<D>
 
 	export interface BeforeCommit<D extends $$Doc = $$Doc>
-		extends TriggerParams<D>, GetIntrinsicFields<D> {}
+		extends TriggerParams<D>,
+			GetIntrinsicFields<D> {}
 }

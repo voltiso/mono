@@ -14,7 +14,6 @@ let helloPrinted = false
 function _helloOnce() {
 	if (helloPrinted) return
 
-	// eslint-disable-next-line no-console
 	console.log(moduleIcon, pc.gray('@voltiso/transform/callInfo'))
 	helloPrinted = true
 }
@@ -24,7 +23,6 @@ export function logCallInfoNode(ctx: TransformContext, node: ts.Node): void {
 
 	_helloOnce()
 
-	// eslint-disable-next-line no-console
 	console.log(
 		moduleIcon,
 		pc.blue(getNodeText(ctx, node)),

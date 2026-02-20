@@ -58,13 +58,12 @@ function getTimeStr(date: Date) {
 //
 
 export class AssertorError extends Error {
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	constructor(options: AssertorErrorOptions) {
 		const {
 			name,
-			// eslint-disable-next-line destructuring/no-rename
+
 			message: providedMessage,
-			// eslint-disable-next-line destructuring/no-rename
+
 			arguments: args,
 			callInfo,
 			...otherOptions
@@ -75,7 +74,6 @@ export class AssertorError extends Error {
 		const dateStr = getTimeStr(new Date())
 		messageParts.push(pc.gray(`[${dateStr}]`))
 
-		// eslint-disable-next-line unicorn/prefer-single-call
 		messageParts.push('⛔')
 
 		if (callInfo?.expression && callInfo.expression !== name)
@@ -83,7 +81,6 @@ export class AssertorError extends Error {
 				'AssertorError internal: callInfo does not match expression name',
 			)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (callInfo?.expression && callInfo.arguments) {
 			let str: string
 
@@ -149,7 +146,7 @@ export class AssertorError extends Error {
 		super(message, otherOptions)
 
 		this.name = 'AssertorError'
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
+
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		if (this.stack) this.stack = hackStack(this.stack)
 
@@ -158,7 +155,7 @@ export class AssertorError extends Error {
 		if (!haveLocation && this.stack) {
 			const parsedStack = parseStackTrace(this.stack)[0]
 			if (parsedStack) {
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				// biome-ignore lint/style/noNonNullAssertion: .
 				const locationStr = `${parsedStack.path!}:${
 					parsedStack.line
 				}:${parsedStack.column}`

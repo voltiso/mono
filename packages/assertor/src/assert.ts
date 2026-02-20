@@ -11,8 +11,8 @@ import type {
 	Schema,
 	Type,
 } from '@voltiso/schemar'
-import { isSchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { isSchema } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept, AtLeast1, Constructor, Falsy } from '@voltiso/util'
 import { ProtoCallable } from '@voltiso/util'
@@ -48,12 +48,12 @@ export interface AssertFunction {
 	schema<S extends $$Schemable>(
 		schema: S,
 		value: Type<S> | AlsoAccept<unknown>,
-		// eslint-disable-next-line sonarjs/variable-name
+
 		__callInfo?: CallInfo | undefined,
 	): asserts value is Type<S>
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	// eslint-disable-next-line sonarjs/variable-name
+
 	not(value: unknown, __callInfo?: CallInfo | undefined): asserts value is Falsy
 
 	//
@@ -85,8 +85,7 @@ export interface AssertFunction {
 
 	readonly array: Assertor<typeof s.array>
 
-	// eslint-disable-next-line sonarjs/no-built-in-override
-	instance<C extends Constructor>(constructor: C): Assertor<Instance<C>>
+	instance<C extends Constructor>(ctor: C): Assertor<Instance<C>>
 }
 
 const cache = new Map<string, Assertor<$$Schema>>()
@@ -108,10 +107,8 @@ const _getAssert: (name: string) => AssertFunction = name =>
 	ProtoCallable({
 		prototype: {
 			schema(schema: $$Schemable, value: unknown, ...rest: any) {
-				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 				return new Assertor(`${name}.schema`, s.schema(schema), {
 					argumentsPrefix: [schema],
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				})(value, ...rest)
 			},
 
@@ -214,22 +211,17 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			//
 
-			// eslint-disable-next-line sonarjs/no-built-in-override
-			instance(constructor: Constructor) {
-				return new Assertor(
-					`${name}.instance`,
-					s.instance(constructor),
-				) as never
+			instance(ctor: Constructor) {
+				return new Assertor(`${name}.instance`, s.instance(ctor)) as never
 			},
 
 			//
 
 			/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-			// eslint-disable-next-line sonarjs/variable-name
+
 			not(value: unknown, __callInfo?: CallInfo | undefined) {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				const assertor = _getAssertor(`${name}.not`, s.falsy) as any
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 				assertor(value, __callInfo)
 			},
 		},
@@ -237,18 +229,16 @@ const _getAssert: (name: string) => AssertFunction = name =>
 		call: (...args: readonly unknown[]) => {
 			if (args.length === 1 && !isSchema(args[0])) {
 				const assertor = _getAssertor(name, s.truthy)
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 				;(assertor as any)(args[0])
 			}
 
 			const [schema, value, ...rest]: readonly [Schema, unknown, ...unknown[]] =
 				isSchema(args[0]) ? (args as never) : ([s.truthy, ...args] as never)
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			const assertor = new Assertor(name, schema, {
 				argumentsPrefix: isSchema(args[0]) ? [args[0]] : [],
 			}) as any
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 			assertor(value, ...rest)
 		},
 	})

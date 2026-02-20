@@ -126,7 +126,6 @@ export const defaultTransactorOptions = define<TransactorOptions>().value({
 	onUnknownField: 'warning',
 	onValidationError: 'error',
 
-	// eslint-disable-next-line no-console
 	onWarning: console.warn,
 
 	checkDecorators: true,

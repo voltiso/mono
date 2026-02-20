@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsOptional } from '~'
 
@@ -16,7 +16,6 @@ describe('isOptional', () => {
 		$Assert.is<IsOptional<{ a: 1 | undefined; b: 2 }, 'a'>, false>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('generics', <T extends { a?: 1 }>() => {
 	// 	expect.assertions(0)
 

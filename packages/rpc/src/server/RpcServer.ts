@@ -1,12 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-/* eslint-disable sonarjs/cyclomatic-complexity */
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
-import { SchemarError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { SchemarError } from '@voltiso/schemar'
 import { $AssumeType, BoundCallable, CALL } from '@voltiso/util'
 
 import { shorten } from '~/_shared'
@@ -50,7 +46,7 @@ export class _RpcServer<
 
 		this.options = options
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this)
 	}
 
@@ -60,7 +56,6 @@ export class _RpcServer<
 		void this.options.context._context.run({ request, response }, async () => {
 			// console.log('RPC server call - in context')
 
-			// eslint-disable-next-line destructuring/no-rename
 			const { path, args: serializedArgs } = request.body as {
 				path: string[]
 				args: unknown[]
@@ -80,28 +75,23 @@ export class _RpcServer<
 				s.array(s.string).validate(path)
 
 				if (this.options.log)
-					// eslint-disable-next-line no-console
 					console.log(shorten(logName, this.options.logMaxLength))
 
 				let handler: any = this.options.handlers
 
 				for (const p of path) {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 					if (!Object.keys(handler).includes(p))
 						throw new Error(`method ${path.join('.')} does not exist`)
 
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 					handler = handler[p]
 				}
 
 				if (typeof handler !== 'function')
 					throw new Error(`method ${path.join('.')} does not exist`)
 
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 				const result = (await handler(...args)) as unknown
 
 				if (this.options.log)
-					// eslint-disable-next-line no-console
 					console.log(
 						shorten(
 							`${logName} === ${JSON.stringify(result)}`,
@@ -115,7 +105,6 @@ export class _RpcServer<
 
 				response.json({ result: serializedResult })
 			} catch (error) {
-				// // eslint-disable-next-line no-console
 				// console.error(logName, 'throws', error) // ! SHOULD BE LOGGED ?
 
 				if (this.options.serializer)

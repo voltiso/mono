@@ -20,10 +20,10 @@ describe('isConstructor', () => {
 		expect(isConstructor(Date)).toBeTruthy()
 
 		if (!areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(isConstructor(() => 0)).toBeFalsy()
 		}
 
+		// biome-ignore lint/complexity/useArrowFunction: .
 		expect(isConstructor(function () {})).toBeTruthy()
 	})
 })

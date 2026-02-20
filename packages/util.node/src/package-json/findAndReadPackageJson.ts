@@ -1,15 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-
 import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 
 import type { SyncerPromise } from '@voltiso/util'
 import { $fastAssert, runAsync, runSync } from '@voltiso/util'
-import type { PackageJson } from '@voltiso/util.package-json'
-
+import type { PackageJson } from 'type-fest'
 import { findPackageJsonSyncer } from './findPackageJson'
 
 export function* findAndReadPackageJsonSyncer(
@@ -19,9 +16,8 @@ export function* findAndReadPackageJsonSyncer(
 	$fastAssert(packageJsonPath)
 
 	const packageJsonBuffer = (yield {
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
 		async: () => fs.readFile(packageJsonPath),
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
+
 		sync: () => fsSync.readFileSync(packageJsonPath),
 	}) as Buffer
 

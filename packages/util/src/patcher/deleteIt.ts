@@ -24,6 +24,7 @@ export const deleteIt: DeleteIt = blackbox({
 })
 
 export function isDeleteIt(x: unknown): x is DeleteIt {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__deleteIt')
 }
 
@@ -52,5 +53,6 @@ export const deleteItIfPresent: DeleteItIfPresent = blackbox({
 })
 
 export function isDeleteItIfPresent(x: unknown): x is DeleteItIfPresent {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__deleteItIfPresent')
 }

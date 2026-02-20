@@ -13,7 +13,6 @@ let initialLogDone = false
 function beforeLog() {
 	if (initialLogDone) return
 
-	// eslint-disable-next-line no-console
 	console.log(moduleIcon, pc.gray('[@voltiso/transform/strip]'))
 	initialLogDone = true
 }
@@ -22,7 +21,7 @@ export function logStrippedNode(ctx: TransformContext, node: ts.Node): void {
 	if (ctx.options.silent) return
 
 	beforeLog()
-	// eslint-disable-next-line no-console
+
 	console.log(
 		moduleIcon,
 		'strip',

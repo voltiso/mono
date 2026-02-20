@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type { Assume, Callable } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
@@ -17,7 +19,6 @@ import type {
 
 import { FunctionImpl } from './FunctionImpl'
 
-// eslint-disable-next-line sonarjs/no-built-in-override
 export type Function<F extends (...args: any) => any> = F extends (
 	this: infer This,
 	...rest: any[]
@@ -51,7 +52,7 @@ export type FunctionConstructor = new <
 	}>
 >
 
-// eslint-disable-next-line sonarjs/no-globals-shadowing, sonarjs/no-built-in-override
+// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 export const Function = lazyConstructor(
 	() => FunctionImpl,
 ) as unknown as FunctionConstructor

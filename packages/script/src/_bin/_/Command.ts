@@ -6,5 +6,6 @@ export interface CommandOptions {
 }
 
 export interface Command {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	(options: CommandOptions): Promise<void>
 }

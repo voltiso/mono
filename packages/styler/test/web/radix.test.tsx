@@ -7,7 +7,6 @@ import * as Checkbox from '@radix-ui/react-checkbox'
 import { style } from '~'
 
 describe('radix', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

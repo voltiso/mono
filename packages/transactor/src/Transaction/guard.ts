@@ -21,7 +21,6 @@ export const triggerGuard = async <R>(
 	const prevNumTriggersNested = ctx.transaction._numTriggersNested
 	const prevExecContext = ctx.transaction._execContext
 	try {
-		// eslint-disable-next-line no-plusplus
 		ctx.transaction._numTriggersNested++
 		ctx.transaction._execContext = ctx.docRef.path
 		return await func()
@@ -34,9 +33,8 @@ export const triggerGuard = async <R>(
 
 		throw error
 	} finally {
-		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._numTriggersNested = prevNumTriggersNested
-		// eslint-disable-next-line require-atomic-updates
+
 		ctx.transaction._execContext = prevExecContext
 	}
 }
@@ -54,7 +52,6 @@ export const methodGuard = async <R>(
 	const prevNumMethodsNested = ctx.transaction._numMethodsNested
 	const prevExecContext = ctx.transaction._execContext
 	try {
-		// eslint-disable-next-line no-plusplus
 		ctx.transaction._numMethodsNested++
 		ctx.transaction._execContext = ctx.docRef.path
 		return await func()
@@ -67,9 +64,8 @@ export const methodGuard = async <R>(
 
 		throw error
 	} finally {
-		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._numMethodsNested = prevNumMethodsNested
-		// eslint-disable-next-line require-atomic-updates
+
 		ctx.transaction._execContext = prevExecContext
 	}
 }

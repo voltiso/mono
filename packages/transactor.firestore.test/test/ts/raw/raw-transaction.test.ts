@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
@@ -17,7 +15,7 @@ const db = createFirestoreTransactor(firestore, {
 })
 
 describe('raw-transaction', () => {
-	it('should use async storage (get)', async function () {
+	it('should use async storage (get)', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async t => {
@@ -27,7 +25,7 @@ describe('raw-transaction', () => {
 		})
 	})
 
-	it('should use async storage (update)', async function () {
+	it('should use async storage (update)', async () => {
 		expect.hasAssertions()
 
 		await db('userG/artur').set({ age: 12 })
@@ -41,7 +39,7 @@ describe('raw-transaction', () => {
 		await expect(db('userG/artur').data['age']).resolves.toBe(12)
 	})
 
-	it('should detect access after transaction is committed', async function () {
+	it('should detect access after transaction is committed', async () => {
 		expect.hasAssertions()
 
 		let t: Transaction
@@ -53,7 +51,7 @@ describe('raw-transaction', () => {
 		expect(() => t('userG/artur').set({ age: 994 })).toThrow('missing await')
 	})
 
-	it('should commit local object changes', async function () {
+	it('should commit local object changes', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async db => {
@@ -75,7 +73,7 @@ describe('raw-transaction', () => {
 		expect(adam.data['x']).toBeUndefined()
 	})
 
-	it('should commit local object changes recursively', async function () {
+	it('should commit local object changes recursively', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async () => {
@@ -92,7 +90,7 @@ describe('raw-transaction', () => {
 		expect(adam.address.street).toBe('b')
 	})
 
-	it('should commit local object changes recursively after awaiting sub-objects', async function () {
+	it('should commit local object changes recursively after awaiting sub-objects', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async t => {
@@ -123,7 +121,7 @@ describe('raw-transaction', () => {
 		expect((await db('userG', 'adam').a).b.c).toStrictEqual({ d: 99 })
 	})
 
-	it('should not allow transactions inside transactions', async function () {
+	it('should not allow transactions inside transactions', async () => {
 		expect.hasAssertions()
 
 		expect(db._transactionContext.hasValue).toBeFalsy()
@@ -180,11 +178,11 @@ describe('raw-transaction', () => {
 
 		db.allowConcurrentTransactions = 'warn'
 
-		let _error
+		let _error: any
 
 		db._options.onWarning = error => {
 			_error = error
-			// eslint-disable-next-line no-console
+
 			console.warn(error)
 		}
 
@@ -193,7 +191,7 @@ describe('raw-transaction', () => {
 				await sleep(100)
 				await db._runWithContext(
 					{ transaction: {} as never, db: {} as never },
-					// eslint-disable-next-line sonarjs/no-nested-functions
+
 					async () => {
 						await sleep(100)
 						await db.runTransaction(async () => {

@@ -5,9 +5,8 @@ import type { $Override_ } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$, NumberOptions } from '~'
 
-export interface CustomNumber<
-	O extends Partial<NumberOptions>,
-> extends CustomSchema<O> {
+export interface CustomNumber<O extends Partial<NumberOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
@@ -23,9 +22,8 @@ export interface CustomNumber<
 
 //
 
-export interface CustomNumber$<
-	O extends Partial<NumberOptions>,
-> extends CustomSchema$<O> {
+export interface CustomNumber$<O extends Partial<NumberOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 

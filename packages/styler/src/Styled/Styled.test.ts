@@ -15,7 +15,6 @@ import type { IStyled } from './IStyled'
 import type { Styled } from './StyledImpl'
 
 describe('Styled', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props, C extends IStylable | null>() => {
 		expect.assertions(0)
 

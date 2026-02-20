@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -14,7 +14,6 @@ import { style } from '~'
 import { renderApp } from './common'
 
 describe('customCss', () => {
-	// eslint-disable-next-line jest/no-hooks
 	afterEach(() => {
 		cleanup() // required after upgrading testing library
 	})
@@ -95,7 +94,7 @@ describe('customCss', () => {
 		expect(button).toHaveStyle({ height: '666px' })
 
 		renderApp(<Button data-testid='test-2' css={{ big: true }} />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		button = screen.getByTestId('test-2')
 
 		expect(button).toHaveStyle({ height: '666px' })

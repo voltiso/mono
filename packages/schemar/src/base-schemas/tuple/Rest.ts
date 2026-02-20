@@ -1,8 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable @typescript-eslint/class-methods-use-this */
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
 
 import { BoundCallable, CALL } from '@voltiso/util'
 
@@ -14,8 +13,7 @@ import { unknown } from '../unknown/Unknown'
 export type __hack_Rest = Unknown$
 
 export interface UnknownRest extends Rest<Unknown> {
-	// eslint-disable-next-line @stylistic/member-delimiter-style
-	readonly element: Unknown;
+	readonly element: Unknown
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
@@ -40,11 +38,12 @@ export type IS_REST = Voltiso.Schemar.IS_REST
 export const IS_REST: IS_REST = /* @__PURE__ */ Voltiso.Schemar.IS_REST
 
 // !
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface Rest<S extends $$Schemable> {
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class Rest<S extends $$Schemable = $$Schemable> {
 	readonly [Voltiso.Schemar.IS_REST] = true
 
@@ -52,7 +51,8 @@ export class Rest<S extends $$Schemable = $$Schemable> {
 
 	constructor(element: S) {
 		this.element = element
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this)
 	}
 

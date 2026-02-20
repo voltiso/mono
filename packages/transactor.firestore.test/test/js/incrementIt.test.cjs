@@ -17,8 +17,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('incrementIt', function () {
-	it('works', async function () {
+describe('incrementIt', () => {
+	it('works', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('friend/artur').set({ age: 20 })
@@ -27,7 +27,7 @@ describe('incrementIt', function () {
 		await expect(db('friend/artur').data['age']).resolves.toBe(21)
 	})
 
-	it('works with chained updates within transaction', async function () {
+	it('works with chained updates within transaction', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('friend/artur').set({ age: 20 })
@@ -39,7 +39,7 @@ describe('incrementIt', function () {
 		await expect(db('friend/artur').data['age']).resolves.toBe(31)
 	})
 
-	it('passes-through updates to firestore (no throw on undefined += x)', async function () {
+	it('passes-through updates to firestore (no throw on undefined += x)', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('friend/artur').set({ age: 20 })
@@ -65,7 +65,7 @@ describe('incrementIt', function () {
 		})
 	})
 
-	it('passes-through updates to firestore (no throw on undefined += x) - in transaction', async function () {
+	it('passes-through updates to firestore (no throw on undefined += x) - in transaction', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('friend/artur').set({ age: 20 })

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
 import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '~/proxy'
 
 export function getProxyHandlers({
@@ -54,7 +52,7 @@ export function getProxyHandlers({
 
 		apply(_t, thisArg, argArray) {
 			load()
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+
 			return Reflect.apply(state.value as never, thisArg, argArray) as never
 		},
 	}

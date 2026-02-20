@@ -1,17 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-console */
-
 import * as jestDevServer from 'jest-dev-server'
 
 import { getCwd } from './_/getCwd'
 import { getFirebaseJsonPath } from './_/getFirebaseJsonPath'
 import { writeFirebaseJson } from './_/writeFirebaseJson'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 async function globalSetup() {
-	// eslint-disable-next-line import/dynamic-import-chunkname
 	const getPortModule = await import('get-port')
 	const getPort = getPortModule.default
 
@@ -47,13 +43,10 @@ async function globalSetup() {
 
 	console.log('firebase emulator started!')
 
-	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['FIRESTORE_EMULATOR_HOST'] = `localhost:${port}`
 
-	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['PORT'] = `${port}`
 	console.log('jest/globalSetup.ts complete!')
 }
 
-// eslint-disable-next-line import/no-default-export
 export default globalSetup

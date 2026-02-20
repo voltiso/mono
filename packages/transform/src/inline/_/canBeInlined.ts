@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/nested-control-flow */
-/* eslint-disable sonarjs/cyclomatic-complexity */
-
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import * as pc from 'picocolors'
 import * as ts from 'typescript'
@@ -25,7 +22,7 @@ export function canBeInlined(
 		ctx.typeChecker
 			.getSymbolsInScope(
 				ctx.sourceFile,
-				// eslint-disable-next-line no-bitwise
+
 				ts.SymbolFlags.Type |
 					ts.SymbolFlags.Class |
 					ts.SymbolFlags.Interface |
@@ -38,7 +35,7 @@ export function canBeInlined(
 		ctx.typeChecker
 			.getSymbolsInScope(
 				ctx.sourceFile,
-				// eslint-disable-next-line no-bitwise
+
 				ts.SymbolFlags.Variable |
 					ts.SymbolFlags.Function |
 					ts.SymbolFlags.Method |
@@ -113,7 +110,6 @@ export function canBeInlined(
 				', ',
 			)} \n  @ ${getNodePositionStr(node)}`
 
-			// eslint-disable-next-line no-console
 			console.warn(pc.bgRed(message))
 
 			if (ctx.options.onInlineError === 'fail') throw new Error(message)
@@ -136,10 +132,10 @@ export function canBeInlined(
 
 		for (const symbol of symbolsOutOfScope) {
 			if (aliasSymbols.has(symbol)) {
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				// biome-ignore lint/style/noNonNullAssertion: .
 				const aliasSymbol = aliasSymbols.get(symbol)!
 				const aliasedSymbol = ctx.typeChecker.getAliasedSymbol(aliasSymbol)
-				// eslint-disable-next-line no-bitwise
+
 				if (aliasedSymbol.flags & ts.SymbolFlags.Value) {
 					symbolsOutOfScope.delete(symbol)
 				}
@@ -155,7 +151,6 @@ export function canBeInlined(
 				', ',
 			)} \n  @ ${getNodePositionStr(node)}`
 
-			// eslint-disable-next-line no-console
 			console.warn(pc.bgRed(message))
 
 			if (ctx.options.onInlineError === 'fail') throw new Error(message)
@@ -180,7 +175,6 @@ export function canBeInlined(
 					child.text
 				}' \n  @ ${getNodePositionStr(node)}`
 
-				// eslint-disable-next-line no-console
 				console.warn(pc.bgRed(message))
 
 				if (ctx.options.onInlineError === 'fail') throw new Error(message)
@@ -201,7 +195,6 @@ export function canBeInlined(
 	// 		node,
 	// 	)}`
 
-	// 	// eslint-disable-next-line no-console
 	// 	console.warn(pc.bgRed(message))
 
 	// 	// !!! do not fail on type query nodes - ok?

@@ -18,9 +18,7 @@ import type { StyledComponentProps } from './StyledComponentWithProps'
 export interface CustomStyledComponent<
 	C extends StyledSubject,
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
->
-	extends
-		Styled<_<{ Component: C } & $>>,
+> extends Styled<_<{ Component: C } & $>>,
 		ForwardRefExoticComponent<
 			StyledComponentProps<C, $['Props'], $['CustomCss']>
 		> {}
@@ -31,9 +29,7 @@ export interface CustomStyledComponent<
 export interface StyledComponentLike<
 	C extends StyledSubject,
 	P extends Props = {},
->
-	extends
-		StyledLike<{ Component: C; Props: P; CustomCss: {} }>,
+> extends StyledLike<{ Component: C; Props: P; CustomCss: {} }>,
 		ForwardRefExoticComponent<
 			FastMergeProps_<
 				ComponentPropsWithRef_<C>,

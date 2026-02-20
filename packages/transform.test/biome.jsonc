@@ -1,0 +1,27 @@
+{
+	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+	"extends": "//",
+
+	"linter": {
+		"rules": {
+			"suspicious": {
+				"noShadowRestrictedNames": "off",
+				"noEmptyInterface": "off"
+			},
+
+			"complexity": {
+				"noUselessEmptyExport": "off"
+			},
+
+			"style": {
+				"useImportType": "off",
+				"useExportType": "off",
+				"useTemplate": "off"
+			}
+		}
+	},
+
+	"assist": {
+		"enabled": false
+	}
+}

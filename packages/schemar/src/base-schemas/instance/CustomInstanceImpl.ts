@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import type { Constructor } from '@voltiso/util'
 import {
 	$fastAssert,
@@ -9,6 +8,7 @@ import {
 	OPTIONS,
 	stringFrom,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -24,12 +24,13 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomInstanceImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: InstanceOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: InstanceOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomInstance<O>

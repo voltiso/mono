@@ -7,7 +7,6 @@ import { $Assert } from '@voltiso/util'
 import { style } from '~'
 
 describe('assign', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('extended', () => {
 		expect.assertions(0)
 

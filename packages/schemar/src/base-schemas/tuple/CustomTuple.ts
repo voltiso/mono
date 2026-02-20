@@ -8,7 +8,8 @@ import type { $$Tuple, CustomSchema, CustomSchema$, TupleOptions } from '~'
 //
 
 export interface CustomTuple<O extends Partial<TupleOptions>>
-	extends $$Tuple, CustomSchema<O> {
+	extends $$Tuple,
+		CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 
@@ -29,7 +30,8 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 //
 
 export interface CustomTuple$<O extends Partial<TupleOptions>>
-	extends $$Tuple, CustomSchema$<O> {
+	extends $$Tuple,
+		CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 

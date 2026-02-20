@@ -13,10 +13,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 let numCalls = 0
 
-// eslint-disable-next-line jest/require-hook
 db('computer/*').beforeCommit(function () {
 	numCalls++
 
@@ -24,8 +22,8 @@ db('computer/*').beforeCommit(function () {
 	if (this && this.balance === 0) throw new Error('balance cannot be 0')
 })
 
-describe('beforeCommit', function () {
-	it('should process beforeCommit', async function () {
+describe('beforeCommit', () => {
+	it('should process beforeCommit', async () => {
 		expect.hasAssertions()
 
 		numCalls = 0

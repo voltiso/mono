@@ -1,9 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { UNSET } from '_'
 import { $Assert } from '_'
-import { describe, expect, it } from '@jest/globals'
 
 import type { Callable, WithCALL } from '~/function'
 
@@ -12,11 +12,13 @@ import { CustomArrowCallable } from './ArrowCallable'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
 
 describe('ArrowCallable', () => {
-	it('type', <O extends
-		| ArrowCallableOptions
-		| WithCALL
-		| Callable<{ this: void }>
-		| UNSET>() => {
+	it('type', <
+		O extends
+			| ArrowCallableOptions
+			| WithCALL
+			| Callable<{ this: void }>
+			| UNSET,
+	>() => {
 		expect.assertions(0)
 
 		$Assert.is<ArrowCallable<O>, ArrowCallable>()
@@ -43,7 +45,6 @@ describe('ArrowCallable', () => {
 			shape: new Proxy(
 				{},
 				{
-					// eslint-disable-next-line sonarjs/function-return-type
 					get(_t, p) {
 						return p
 					},

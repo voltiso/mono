@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
@@ -10,6 +9,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { Literal } from '~/core-schemas/literal/Literal'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
@@ -26,6 +26,7 @@ $fastAssert(EXTENDS)
 $fastAssert(OPTIONS)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomBigintImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: BigintOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: BigintOptions.Default
@@ -38,7 +39,7 @@ export interface CustomBigintImpl<O> {
 	// >
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBigint<O>
@@ -55,7 +56,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
@@ -63,7 +64,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	[CALL]<L extends bigint>(literals: Set<L>): Literal<L>
 	[CALL]<L extends bigint>(...args: L[] | [Set<L>]): Literal<L>
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends bigint>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal<L>(literals as never) as never
@@ -85,7 +85,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 				issues.push(
 					new ValidationIssue({
 						name: this[Voltiso.OPTIONS].name,
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
 						expected: { description: `at least ${this.getMin}` },
 						received: { value },
 					}),
@@ -99,7 +99,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 				issues.push(
 					new ValidationIssue({
 						name: this[Voltiso.OPTIONS].name,
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
 						expected: { description: `at most ${this.getMax}` },
 						received: { value },
 					}),
@@ -118,7 +118,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'bigint'
 	}

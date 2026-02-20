@@ -21,10 +21,8 @@ export function consumeCssProps<CustomCss extends object>(params: {
 
 		// const value = prepare(rawValue, params.theme, params.customCss)
 
-		// eslint-disable-next-line unicorn/no-array-reverse
 		for (const entry of [...list].reverse()) {
 			if (typeof entry === 'function') {
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (entry.length > 0 || Boolean(value))
 					params.styles.push(
 						prepare(entry(value as never), {

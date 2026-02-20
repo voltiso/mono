@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-console */
-/* eslint-disable n/no-sync */
-
 // import * as fs from 'node:fs'
 
 import * as path from 'node:path'
@@ -54,12 +51,10 @@ function getLoaderFromFilename(filename: string): string {
 
 //
 
-// // eslint-disable-next-line unicorn/prefer-module
 // const isCjs = typeof require === 'function'
 
 // console.log('config.jest/transform', { isCjs })
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getJestTransform(options?: { format?: 'cjs' | 'esm' }) {
 	return {
 		process(source: string, filename: string) {
@@ -75,9 +70,8 @@ export function getJestTransform(options?: { format?: 'cjs' | 'esm' }) {
 			if (isReactNative) {
 				// console.log('input code', code)
 				// code = flowRemoveTypes(code).toString()
-				let babelResult
 				try {
-					babelResult = transformSync(code, {
+					const babelResult = transformSync(code, {
 						plugins: [
 							babelPluginSyntaxHermesParser,
 							babelPluginTransformFlowStripTypes,

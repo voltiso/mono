@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import { $fastAssert, lazyConstructor } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { SchemarError } from '~/error'
@@ -17,18 +17,18 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomAnyImpl<O> {
 	readonly [Voltiso.DEFAULT_OPTIONS]: AnyOptions.Default
 	readonly [Voltiso.BASE_OPTIONS]: AnyOptions
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomAnyImpl<
 	O extends Partial<AnyOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Any' as const;
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Any' as const
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isAnySchema(other) || isSchemaInferrer(other) || isUnknownSchema(other))
 			return true

@@ -27,7 +27,6 @@ export type GetUnknownPathTokens<P extends string> = _GetUnknownPathTokens<
 export function getUnknownPathTokens<P extends string>(
 	pattern: P,
 ): GetUnknownPathTokens<P> {
-	// eslint-disable-next-line sonarjs/regular-expr
 	return [...pattern.matchAll(/\{([^{}]*)\}|\*{1,2}/gu)].map(r => {
 		const res = r[1] ?? r[0]
 		fastAssert(res)

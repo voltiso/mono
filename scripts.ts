@@ -3,18 +3,15 @@
 
 // ! shared scripts - run using `v` binary from `@voltiso/script`
 
-/* eslint-disable sonarjs/no-duplicate-string */
-
 import * as fs from 'node:fs'
 import { glob } from 'node:fs/promises'
 import * as path from 'node:path'
 
-import { run } from '@voltiso/script'
+import { parallel, run } from '@voltiso/script'
 
 const packageJson = JSON.parse(
-	// eslint-disable-next-line n/no-sync
 	fs.readFileSync(path.join(process.cwd(), 'package.json')).toString(),
-) as { name?: string }
+) as { name?: string; private?: boolean }
 
 //
 
@@ -36,16 +33,13 @@ function turbo(...scriptNames: string[]) {
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
-function turboDependents(...scriptNames: string[]) {
-	return `${finalEnvStr} pnpm -w exec turbo run --filter=...^${
-		packageJson.name ?? '//'
-	} ${scriptNames.join(' ')} --output-logs=new-only`
-}
+// function turboDependents(...scriptNames: string[]) {
+// 	return `${finalEnvStr} pnpm -w exec turbo run --filter=...^${
+// 		packageJson.name ?? '//'
+// 	} ${scriptNames.join(' ')} --output-logs=new-only`
+// }
 
 //
-
-// const numCpuThreads = os.cpus().length
-// void numCpuThreads // unused
 
 function turboAllPackages(
 	scriptName: string,
@@ -67,44 +61,72 @@ function turboAllPackages(
 // !
 // ! Workspace-level
 
-export const prepareWorkspace = `pnpm -w exec turbo run build:esm --filter=//^... --output-logs=new-only`
+export const allBuild = turboAllPackages('build')
+export const allCheck = turboAllPackages('check')
 
-export const devWorkspace = turboAllPackages('dev', { concurrency: 1_000 })
-
-export const lintTscWorkspace = turboAllPackages('lint:tsc')
-
-export const lintEslintWorkspace = turboAllPackages('lint:eslint', {
-	concurrency: 3, // ! high memory usage - eslint can crash
-	// concurrency: numCpuThreads * 0.5,
-})
-
-export const lintWorkspace = [lintTscWorkspace, lintEslintWorkspace]
-
-export const depcheckWorkspace = turboAllPackages('depcheck')
-export const areTheTypesWrongWorkspace = turboAllPackages('areTheTypesWrong')
-
-export const testWorkspace = turboAllPackages('test')
-
-export const buildCjsWorkspace = turboAllPackages('build:cjs')
-export const buildEsmWorkspace = turboAllPackages('build:esm')
-
-export const buildWorkspace = [buildCjsWorkspace, buildEsmWorkspace]
-
-/** No point using it directly */
-export const installWorkspace = 'pnpm install'
-
-export const checkWorkspace = [
-	installWorkspace,
-	// turboAllPackages('fix:prettier'),
-	buildWorkspace,
-	depcheckWorkspace,
-	areTheTypesWrongWorkspace,
-	testWorkspace,
-	lintWorkspace,
-]
+export const workspacePrepare = `pnpm -w exec turbo run build --filter=//^... --output-logs=new-only`
 
 // !
 // ! Per-package
+
+export const build = [
+	parallel('buildEsm', 'buildCjs', 'compatDirsWrite', 'typecov'),
+]
+
+export const buildEsm = () => {
+	const tsConfig = 'tsconfig.build.esm.json'
+	if (!fs.existsSync(path.join(process.cwd(), tsConfig))) return []
+	return [
+		'rimraf dist/esm',
+		`tspc -b ${tsConfig}`,
+		`echo '{"type":"module"}' > dist/esm/package.json`,
+	]
+}
+
+export const buildCjs = () => {
+	const tsConfig = 'tsconfig.build.cjs.json'
+	if (!fs.existsSync(path.join(process.cwd(), tsConfig))) return []
+	return [
+		'rimraf dist/cjs',
+		`tspc -b ${tsConfig}`,
+		`echo '{"type":"commonjs"}' > dist/cjs/package.json`,
+	]
+}
+
+export const compatDirsWrite = 'pnpm exec v compatDirs write'
+
+export const typecov = [
+	'type-coverage --project tsconfig.build.esm --update || true',
+]
+
+//
+
+export const check = parallel(
+	'checkDepcheck',
+	'checkAttw',
+	'checkBiome',
+	'checkTsc',
+	'test',
+)
+
+export const checkDepcheck = 'depcheck'
+export const checkAttw = () => {
+	if (!packageJson.private) return 'attw --pack'
+	return null
+}
+export const checkBiome = 'biome check'
+export const checkTsc = () => {
+	if (!fs.existsSync(path.join(process.cwd(), 'tsconfig.json'))) return null
+	return 'tsc -b'
+}
+
+//
+
+export const clean = 'rimraf node_modules dist'
+
+//
+
+export const dev = 'devEsm'
 
 export const devCjs =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
@@ -112,121 +134,46 @@ export const devCjs =
 export const devEsm =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.esm.json --watch --noUnusedLocals false --noUnusedParameters false'
 
-export const dev = devCjs
-
 //
 
-export const build = [installWorkspace, turbo('build:esm', 'build:cjs')]
+// export const traceRun = [
+// 	'rimraf traceDir',
+// 	'tsc --generateTrace traceDir | gnomon',
+// 	'simplify-trace-types traceDir/types.json traceDir/types-simplified.json',
+// ]
 
-export const buildEsm = [
-	'rimraf dist/esm',
-	'tspc -b tsconfig.build.esm.json',
-	`echo '{"type":"module"}' > dist/esm/package.json`,
-]
+// export const traceAnalyze = [
+// 	// 'reset',
+// 	'analyze-trace traceDir',
+// 	'code traceDir/types-simplified.json',
+// ]
 
-export const buildCjs = [
-	'rimraf dist/cjs',
-	'tspc -b tsconfig.build.cjs.json',
-	`echo '{"type":"commonjs"}' > dist/cjs/package.json`,
-]
-
-//
-
-export const lint = [
-	installWorkspace,
-	turbo('fix:prettier', 'depcheck', 'lint:tsc', 'lint:eslint'),
-]
-
-export const fixPrettier = 'prettier --write --log-level error .'
-export const depcheck = 'depcheck'
-export const lintTsc = 'tsc -b'
-export const lintEslint =
-	'cross-env TIMING=1 NODE_OPTIONS=--max_old_space_size=24000 FORCE_COLOR=1 eslint --max-warnings=0 .'
-
-//
-
-export const typecov = [
-	'type-coverage --project tsconfig.build.cjs --update || true',
-]
-
-export const traceRun = [
-	'rimraf traceDir',
-	'tsc --generateTrace traceDir | gnomon',
-	'simplify-trace-types traceDir/types.json traceDir/types-simplified.json',
-]
-
-export const traceAnalyze = [
-	// 'reset',
-	'analyze-trace traceDir',
-	'code traceDir/types-simplified.json',
-]
-
-export const trace = ['reset', turbo('trace:run'), traceAnalyze]
-
-export const clean = 'rimraf node_modules dist'
-
-export const areTheTypesWrong = 'attw --pack'
-
-export const prepublishOnly = [
-	'prepareWorkspace',
-
-	turbo(
-		'build:esm',
-		'build:cjs',
-		'test',
-		//
-		'fix:prettier',
-		'depcheck',
-		'lint:tsc',
-		'lint:eslint',
-		//
-		'typecov',
-		'compatDirs',
-	),
-
-	areTheTypesWrong,
-
-	turboDependents('test'),
-]
+// export const trace = ['reset', turbo('trace:run'), traceAnalyze]
 
 export async function runTestPackages(): Promise<void> {
 	const name = packageJson.name?.split('/')[1]
 
 	for await (const pkg of glob(`../${name}.*test*`)) {
 		await run(
-			`pnpm -w exec turbo run --filter=./packages/${pkg.slice(3)} test lint:tsc lint:eslint --output-logs=new-only`,
+			`pnpm -w exec turbo run --filter=./packages/${pkg.slice(3)} check --output-logs=new-only`,
 		)
 	}
 }
 
-export const prepublishOnlyFast = [
-	'prepareWorkspace',
-
-	turbo(
-		'build:esm',
-		'build:cjs',
-		'test',
-		'typecov',
-		'fix:prettier',
-		// 'lint:eslint',
-		'lint:tsc',
-		'depcheck',
-		'compatDirs', // ! added - should it be here?
-	),
-
-	areTheTypesWrong,
-
+export const prepublishOnly = [
+	'workspacePrepare',
+	turbo('build', 'check'),
 	runTestPackages,
+	// turboDependents('test'), // ! slow
 ]
+
+//
 
 // must not include `"` (or escape them)
 const testNodeOptions = [
 	`--experimental-vm-modules`, // no longer required?
-	// '--import esbuild-node-loader', // ! doesn't work
-	// '--import tsx', // ok
+	'--import tsx',
 ]
-
 const testNodeOptionsStr = testNodeOptions.join(' ')
-
 // default per-package test command
-export const test = `cross-env NODE_OPTIONS="${testNodeOptionsStr}" jest --silent`
+export const test = `cross-env NODE_OPTIONS="${testNodeOptionsStr}" jest --silent --passWithNoTests`

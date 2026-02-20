@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/cyclomatic-complexity */
-/* eslint-disable sonarjs/expression-complexity */
-/* eslint-disable sonarjs/no-nested-functions */
-
 import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
 import { defaultTransformOptions } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
@@ -64,12 +60,11 @@ export function stripTransform(
 		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			// console.log('compile', sourceFile.fileName)
 
-			// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 			const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
 
 			const options: StripTransformOptions = _deepMerge2(
 				defaultTransformOptions as never,
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 				(pluginOptions as never) ?? {},
 			) as never
 
@@ -130,7 +125,6 @@ export function stripTransform(
 
 				const oldShouldStrip = ctx.shouldStripBecauseOfSymbol
 
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				ctx.shouldStripBecauseOfSymbol = undefined as any
 
 				const result = ts.visitEachChild(node, visitor, transformationContext)
@@ -146,7 +140,6 @@ export function stripTransform(
 							.map(node => node.name.getText())
 							.includes(ctx.shouldStripBecauseOfSymbol.name)
 					) {
-						// eslint-disable-next-line sonarjs/no-undefined-assignment
 						ctx.shouldStripBecauseOfSymbol = undefined
 					}
 

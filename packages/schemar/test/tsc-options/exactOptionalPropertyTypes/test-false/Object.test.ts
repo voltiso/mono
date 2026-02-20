@@ -15,7 +15,6 @@ import type {
 } from '~'
 import * as s from '~'
 
-// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
 		$Assert.is<CustomObject<O>, Schema>()
@@ -82,7 +81,6 @@ describe('object', () => {
 		// type _A = _<
 		// 	OmitByValue_<
 		// 		{
-		// 			// eslint-disable-next-line etc/no-internal
 		// 			[k in keyof T]: GetObjectType._ShouldForceOptional<
 		// 				T[k],
 		// 				Get_<Shape, k>
@@ -94,7 +92,6 @@ describe('object', () => {
 		// 	> &
 		// 		OmitByValue_<
 		// 			{
-		// 				// eslint-disable-next-line etc/no-internal
 		// 				[k in keyof T]?: GetObjectType._ShouldForceOptional<
 		// 					T[k],
 		// 					Get_<Shape, k>

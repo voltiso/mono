@@ -27,9 +27,9 @@ export interface StyledComponentWithProps<
 	C extends StyledSubject,
 	P extends Props,
 > extends CustomStyledComponent<
-	C,
-	{
-		Props: P
-		CustomCss: {}
-	}
-> {}
+		C,
+		{
+			Props: P
+			CustomCss: {}
+		}
+	> {}

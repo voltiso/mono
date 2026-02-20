@@ -2,10 +2,8 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
   - _
   - '~'
   - '@voltiso/config.ts'
   - '@voltiso/config.tsdoc'
-  - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest'

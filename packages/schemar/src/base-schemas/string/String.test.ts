@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable security/detect-unsafe-regex */
-
 import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -138,7 +136,6 @@ describe('string', () => {
 				x => `not equal '${x}'`,
 			)
 			.regex(
-				// eslint-disable-next-line sonarjs/regular-expr
 				/^[\da-z]+(?:-[\da-z]+)*$/u,
 				'be lowercase with single hyphen separators',
 			)

@@ -15,8 +15,8 @@ import type {
 	Schema,
 	Schemable,
 } from '~'
-import { isStringSchema } from '~'
 import * as s from '~'
+import { isStringSchema } from '~'
 
 describe('array', () => {
 	it('generic', <O extends Partial<ArrayOptions>>() => {

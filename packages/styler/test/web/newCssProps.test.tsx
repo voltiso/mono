@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -13,7 +13,6 @@ import { style } from '~'
 
 import { renderApp } from './common'
 
-// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
 afterEach(() => {
 	cleanup() // required after upgrading testing library
 })

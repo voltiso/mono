@@ -58,7 +58,6 @@ describe('array', () => {
 		$Assert<IsIdentical<(typeof b)['getLength'], number>>()
 
 		// @ts-expect-error unknownTuple does not have getLength
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		;() => s.tuple.getLength
 	})
 

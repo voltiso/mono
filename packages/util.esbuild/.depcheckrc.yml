@@ -2,6 +2,5 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
   - '@voltiso/config.ts'
   - rimraf

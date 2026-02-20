@@ -7,7 +7,7 @@ export class VoltisoScriptError extends Error {
 		options?: ErrorOptions | undefined,
 	) {
 		super(message, options)
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
+
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoScriptError'
 	}

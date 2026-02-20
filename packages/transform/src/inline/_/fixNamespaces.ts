@@ -13,7 +13,6 @@ import type { SymbolObject } from './SymbolObject'
 // ): node is ts.TypeReferenceNode {
 // 	const result =
 // 		!!(node.flags & ts.NodeFlags.Synthesized) &&
-// 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 // 		(node as any).typeName?.symbol !== undefined
 
 // 	// if (result) console.log('\n\n FOUND SYNTHESIZED NODE', node, '\n\n')
@@ -27,18 +26,15 @@ export function fixNamespaces(ctx: TransformContext, node: ts.Node): ts.Node {
 		// console.log(
 		// 	'visit',
 		// 	stringFromSyntaxKind(node.kind),
-		// 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		// 	(node as any).escapedText || (node as any).name?.escapedText,
 		// 	{
 		// 		isTypeReference: ts.isTypeReferenceNode(node),
-		// 		// isSynthesized: isSynthesizedTypeReferenceNode(node),
 		// 	},
 		// )
 
 		if (ts.isIdentifier(node)) {
 			// console.log('!!! found identifier', node)
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			const symbol = (node as any).symbol as SymbolObject | undefined
 
 			if (!symbol) return node
@@ -50,7 +46,6 @@ export function fixNamespaces(ctx: TransformContext, node: ts.Node): ts.Node {
 		}
 
 		// if (ts.isTypeReferenceNode(node)) {
-		// 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
 		// 	const symbolPath = getSymbolPath((node.typeName as any).symbol)
 		// 	if (symbolPath.length === 0) return node
 

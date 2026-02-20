@@ -5,7 +5,6 @@ import { statSync } from 'node:fs'
 import * as path from 'node:path'
 
 export function getGitForDirUncached(dir: string): string | undefined {
-	// eslint-disable-next-line no-param-reassign
 	dir = path.resolve(dir)
 
 	let current = dir
@@ -14,7 +13,6 @@ export function getGitForDirUncached(dir: string): string | undefined {
 		const gitDirPath = path.join(current, '.git')
 
 		try {
-			// eslint-disable-next-line security/detect-non-literal-fs-filename, n/no-sync
 			const stats = statSync(gitDirPath)
 
 			if (stats.isDirectory()) {

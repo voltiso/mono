@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -120,9 +120,8 @@ describe('get', () => {
 		// @ts-expect-error path does not exist
 		const aa2 = tryGet(a, ['a'] as const)
 
-		// eslint-disable-next-line jest/no-unnecessary-assertion
 		expect(aa).toBeUndefined()
-		// eslint-disable-next-line jest/no-unnecessary-assertion
+
 		expect(aa2).toBeUndefined()
 
 		const aaa = tryGet(a, 'b' as const, 'c' as const, 'd' as const)

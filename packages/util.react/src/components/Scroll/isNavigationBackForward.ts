@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 function getLocationHref() {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	return typeof window === 'undefined' ? undefined : window.location?.href
 }
 
@@ -21,9 +20,7 @@ export function isNavigationBackForward(params?: {
 		return true
 	} else
 		return (
-			// eslint-disable-next-line @typescript-eslint/no-deprecated
 			window.performance.navigation.type ===
-			// eslint-disable-next-line @typescript-eslint/no-deprecated
 			window.performance.navigation.TYPE_BACK_FORWARD
 		)
 }

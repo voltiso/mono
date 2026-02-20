@@ -16,7 +16,6 @@ import {
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import { _checkDecorators } from '~/decorators'
 import type { $$Doc, Doc } from '~/Doc'
 import { IndexedDoc } from '~/Doc'
 import type { WithDocRef } from '~/DocRef'
@@ -28,6 +27,7 @@ import {
 	getSchema,
 	processTriggers,
 } from '~/DocRef'
+import { _checkDecorators } from '~/decorators'
 import { TransactorError } from '~/error'
 import type { RootReplaceIt } from '~/it'
 import type { WithTransaction } from '~/Transaction'
@@ -63,23 +63,19 @@ function isRecord(updates: Updates): updates is UpdatesRecord {
 	return updates.constructor === Object
 }
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 function check<T extends Updates>(
 	ctx: WithDocRef,
 	updates: T,
 	params?: StripParams,
 ): T {
 	if (isReplaceIt(updates)) {
-		// eslint-disable-next-line no-param-reassign
 		updates = check(ctx, updates.__replaceIt as never, params)
 		return replaceIt(updates) as never
 	}
 
 	if (!isRecord(updates)) return updates
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	if ((updates as any)?.__voltiso) {
-		// eslint-disable-next-line no-param-reassign
 		updates = omit(updates as never, '__voltiso')
 	}
 
@@ -145,7 +141,7 @@ async function rawUpdate(
 ): Promise<IndexedDoc | null | undefined> {
 	_checkDecorators(ctx)
 	fastAssert(updates)
-	// eslint-disable-next-line no-param-reassign
+
 	updates = check(ctx, updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
@@ -157,12 +153,11 @@ async function rawUpdate(
 	let data: object | null | undefined // undefined -> unknown; null -> deleted
 
 	const needTransaction = Boolean(
-		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
-		schema ||
-		afterTriggers.length > 0 ||
-		beforeCommits.length > 0 ||
-		ctx.transactor.refCounters,
+			schema ||
+			afterTriggers.length > 0 ||
+			beforeCommits.length > 0 ||
+			ctx.transactor.refCounters,
 	)
 
 	if (needTransaction) {
@@ -184,7 +179,6 @@ async function rawUpdate(
 
 	if (!data) return data
 
-	// eslint-disable-next-line unicorn/consistent-destructuring
 	const dataWithoutId = withoutId(data, ctx.docRef.id)
 	const finalData = withVoltisoEntry(ctx, dataWithoutId)
 	return new IndexedDoc(ctx, finalData as never) as never
@@ -214,7 +208,6 @@ async function transactionUpdateImpl(
 	options: Partial<StripParams>,
 ): Promise<IndexedDoc | null | undefined>
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 async function transactionUpdateImpl(
 	ctx: CtxWithTransaction,
 	updates: Updates,
@@ -228,7 +221,6 @@ async function transactionUpdateImpl(
 	const options = { ...defaultOptions, ...partialOptions }
 
 	if (ctx.transactor._options.log) {
-		// eslint-disable-next-line no-console
 		console.log(
 			`transactionUpdateImpl(${ctx.docRef.path.toString()}, ${stringFrom(
 				updates,
@@ -257,12 +249,11 @@ async function transactionUpdateImpl(
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
-		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
-		beforeCommits.length > 0 ||
-		afterTriggers.length > 0 ||
-		schema ||
-		ctx.transactor.refCounters,
+			beforeCommits.length > 0 ||
+			afterTriggers.length > 0 ||
+			schema ||
+			ctx.transactor.refCounters,
 	)
 
 	if (needReadWrite) {
@@ -271,10 +262,8 @@ async function transactionUpdateImpl(
 		if (options.create && cacheEntry.data)
 			throw new TransactorError(`${ctx.docRef.path.toString()} already exists`)
 
-		// eslint-disable-next-line no-param-reassign
 		if (cacheEntry.data) updates = check(ctx, updates, options)
 		else {
-			// eslint-disable-next-line no-param-reassign
 			updates = check(ctx, updates, {
 				...options,
 				onConstField: 'ignore',
@@ -283,7 +272,6 @@ async function transactionUpdateImpl(
 
 		await processTriggers(ctx, { updates })
 	} else {
-		// eslint-disable-next-line no-param-reassign
 		updates = check(ctx, updates)
 
 		let { data } = cacheEntry
@@ -332,11 +320,10 @@ function transactionUpdate(
 	// check if there's `await` outside this function
 	transaction._numFloatingPromises += 1
 	return {
-		// eslint-disable-next-line unicorn/no-thenable
+		// biome-ignore lint/suspicious/noThenProperty: .
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
 		},
 	}
@@ -375,7 +362,6 @@ export function update(
 
 	const ctxOverride = ctx.transactor._getTransactionContext()
 
-	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 	if (isWithTransaction(ctx)) {

@@ -78,7 +78,7 @@ export interface SubjectTreeConstructor<
 // 	return a
 // }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class SubjectTreeConstructor<
 	TO extends Partial<SubjectTreeTypeOptions>,
 > {
@@ -102,7 +102,7 @@ export class SubjectTreeConstructor<
 
 		Object.setPrototypeOf(SubjectTree, this)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky
 		return SubjectTree as never
 	}
 

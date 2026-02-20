@@ -15,8 +15,8 @@ const db = createTransactor({
 
 const doctors = db('doctor')
 
-describe('update', function () {
-	it('updates without returning data when no triggers or schemas', async function () {
+describe('update', () => {
+	it('updates without returning data when no triggers or schemas', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').delete()
@@ -46,7 +46,7 @@ describe('update', function () {
 		})
 	})
 
-	it('does not allow updates of deleted document #1a', async function () {
+	it('does not allow updates of deleted document #1a', async () => {
 		expect.hasAssertions()
 
 		await expect(
@@ -57,7 +57,7 @@ describe('update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('does not allow updates of deleted document #1b', async function () {
+	it('does not allow updates of deleted document #1b', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony2').set({ asd: 1 })
@@ -70,7 +70,7 @@ describe('update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('does not allow updates of deleted document #2', async function () {
+	it('does not allow updates of deleted document #2', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').delete()
@@ -82,7 +82,7 @@ describe('update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('updates without returning data when no triggers or schemas - when in transaction', async function () {
+	it('updates without returning data when no triggers or schemas - when in transaction', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').set({ asd: 1 })

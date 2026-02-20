@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './applySchema'
+export type * from './Context'
 export * from './callMethod'
 export * from './collectTriggerResult'
-export type * from './Context'
 export type * from './data'
 export * from './getAfterTriggers'
 export * from './getAggregateSchemables'

@@ -2,7 +2,6 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
   - '@firebase/app-types'
   - '@voltiso/config.ts'
   - '@voltiso/config.jest'

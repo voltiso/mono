@@ -9,7 +9,6 @@ import type { ComponentProps } from 'react'
 import { style } from '~'
 
 describe('newProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('infers prop types', () => {
 		expect.assertions(0)
 

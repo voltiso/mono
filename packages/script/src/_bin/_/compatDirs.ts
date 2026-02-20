@@ -14,11 +14,11 @@ import type { Command } from './Command'
 
 const subCommands = {
 	get: async () => {
-		// eslint-disable-next-line import/dynamic-import-chunkname
 		const utilNode = await import('@voltiso/util.node')
 		const packageJson = await utilNode.getPackageJsonCached(path.resolve())
+		packageJson.exports
 		const directories = getCompatDirNames(packageJson)
-		// eslint-disable-next-line no-console
+
 		console.log(directories.join(' '))
 	},
 
@@ -30,7 +30,6 @@ type CommandName = keyof typeof subCommands
 
 const subCommandNames = Object.keys(subCommands) as CommandName[]
 
-// eslint-disable-next-line sonarjs/variable-name
 function isMyCommandName(string_: unknown): string_ is CommandName {
 	if (typeof string_ !== 'string') return false
 

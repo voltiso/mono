@@ -3,8 +3,8 @@
 
 import { describe, expect, it } from '@jest/globals'
 import type { CustomString$, Schema } from '@voltiso/schemar'
-import { SCHEMA_NAME } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { SCHEMA_NAME } from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'

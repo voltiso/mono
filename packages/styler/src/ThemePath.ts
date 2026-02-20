@@ -9,9 +9,8 @@ export class ThemePath {
 	constructor(path: string[] = []) {
 		this.path = path
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(this, {
-			// eslint-disable-next-line sonarjs/function-return-type
 			get: (target, key, receiver) => {
 				if (typeof key === 'symbol' || key in target)
 					return Reflect.get(target, key, receiver)

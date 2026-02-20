@@ -6,14 +6,10 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________TEST": "__________",
-    "test": "NODE_OPTIONS=\"--experimental-vm-modules --import tsx\" jest --silent",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "v lintTsc",
-    "fix": "eslint . --fix"
+    "__________TURBO": "__________",
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "devDependencies": {
@@ -30,15 +26,11 @@
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transactor.firestore": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "@~/workspace": "workspace:^",
-    "eslint": "^9.39.2",
     "firebase-admin": "^13.4.0",
     "firebase-tools": "^15.6.0",
     "get-port": "^7.0.0",
-    "jest": "^30.2.0",
     "jest-dev-server": "^11.0.0",
     "random-seed": "^0.3.0",
-    "tsx": "^4.19.4",
     "zone.js": "^0.16.0"
   }
 }

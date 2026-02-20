@@ -1,8 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable es-x/no-global-this */
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
 
 import type { RelaxSchema_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
@@ -52,8 +51,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	export namespace Options {
 		export interface Default
-			extends
-				Handler.Options.Default,
+			extends Handler.Options.Default,
 				Omit<Options, keyof Handler.Options.Default> {
 			IsAsync: true
 
@@ -62,8 +60,8 @@ export namespace SingleOverloadHandlerDetail {
 			return: s.Void
 		}
 
-		export interface Hidden<O extends Options> extends Handler.Options
-			.Hidden<O> {
+		export interface Hidden<O extends Options>
+			extends Handler.Options.Hidden<O> {
 			// implementation?: GetImplementation<O> | undefined
 		}
 	}
@@ -266,7 +264,6 @@ export class SingleOverloadHandlerImpl<
 		) as unknown as s.Schema
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 		const result = (this.getImplementation as Function).call(
 			validThis as never,
 			...validParameters,
@@ -279,7 +276,6 @@ export class SingleOverloadHandlerImpl<
 			return validResult
 		}
 
-		// eslint-disable-next-line promise/prefer-await-to-then
 		if (isPromiseLike(result)) return result.then(finalize)
 		else return finalize(result)
 	}
@@ -324,7 +320,6 @@ export class SingleOverloadHandlerImpl<
 		}) as never
 	}
 
-	// eslint-disable-next-line sonarjs/no-identical-functions
 	returnSync<ReturnSchema extends s.$$Schemable>(
 		returnSchema: ReturnSchema,
 	): SingleOverloadHandlerDetail.WithReturnSync<this, ReturnSchema> {

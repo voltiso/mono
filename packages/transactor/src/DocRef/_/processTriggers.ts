@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/informative-docs */
-
 import { assert } from '@voltiso/assertor'
 import { deepFrozen, isDefined, isDeleteIt, isReplaceIt } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
@@ -14,8 +12,8 @@ import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
 
 import { applyUpdates } from '../methods'
-import { collectTriggerResult } from './collectTriggerResult'
 import type { DocRefContext } from './Context'
+import { collectTriggerResult } from './collectTriggerResult'
 import { getAfterTriggers } from './getAfterTriggers'
 import { getCacheEntry } from './getCacheEntry'
 import { getSchema } from './getSchema'
@@ -85,14 +83,12 @@ async function loop(ctx: DocRefContext.AlsoWithTransaction) {
 
 	// console.log('processTriggers loop', afterTriggers.length, ctx.docRef.path.toString())
 
-	// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 	for (let iter = 0; ; ++iter) {
 		if (iter >= MAX_ITERS) throw new TransactorError('Trigger loop')
 
 		let change = false
 
 		for (let idx = 0; idx < afterTriggers.length; ++idx) {
-			// eslint-disable-next-line no-await-in-loop
 			change = await processAfterTrigger(ctx, idx)
 
 			if (change) break
@@ -127,8 +123,7 @@ export async function processTriggers(
 
 	// apply updates
 	const data = isDefined(params?.updates)
-		? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			applyUpdates(cacheEntry.data, params?.updates as never)
+		? applyUpdates(cacheEntry.data, params?.updates as never)
 		: cacheEntry.data
 
 	assert(!isReplaceIt(data))

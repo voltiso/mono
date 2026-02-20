@@ -16,17 +16,17 @@ describe('useObservable', () => {
 		const a$ = {} as unknown as
 			| RequiredSubjectTree<true>
 			| RequiredSubjectTree<false>
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+
 		const a = () => useObservable(a$)
 		$Assert<IsIdentical<ReturnType<typeof a>, boolean>>()
 
 		const b$ = {} as unknown as RequiredSubjectTree<boolean>
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+
 		const b = () => useObservable(b$)
 		$Assert<IsIdentical<ReturnType<typeof b>, boolean>>()
 
 		const c$ = {} as unknown as BehaviorSubject<true> | BehaviorSubject<false>
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+
 		const c = () => useObservable(c$)
 		$Assert<IsIdentical<ReturnType<typeof c>, boolean>>()
 	})

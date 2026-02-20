@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import { $fastAssert, lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomInstance, CustomInstance$ } from './CustomInstance'
@@ -27,12 +29,12 @@ export const Instance$ = lazyConstructor(
 //
 
 export type UnknownInstance = <TInstance extends object>(
-	// eslint-disable-next-line sonarjs/no-built-in-override
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 	constructor: abstract new (...args: any) => TInstance,
 ) => Instance<TInstance>
 
 export type UnknownInstance$ = <TInstance extends object>(
-	// eslint-disable-next-line sonarjs/no-built-in-override
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 	constructor: abstract new (...args: any) => TInstance,
 ) => Instance$<TInstance>
 

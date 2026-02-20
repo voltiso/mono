@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
+
 import { SCHEMA_NAME } from '_'
 
 import type {
@@ -57,7 +59,6 @@ export interface IObject$ extends $$Object, Schema$ {
 
 	get plain(): $$Object
 
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	index(key: $$Schemable, value: $$Schemable): $$Object
 	index(value: $$Schemable): $$Object
 }

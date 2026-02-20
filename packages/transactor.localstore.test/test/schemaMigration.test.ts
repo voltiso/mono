@@ -31,8 +31,8 @@ class Dog extends Doc.with({
 
 const dogs = db('dog').register(Dog)
 
-describe('schemaMigration', function () {
-	it('works', async function () {
+describe('schemaMigration', () => {
+	it('works', async () => {
 		expect.hasAssertions()
 
 		await database.doc('dog/nala').set({})

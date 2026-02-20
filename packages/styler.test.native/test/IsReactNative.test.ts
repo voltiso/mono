@@ -6,7 +6,6 @@ import type { IsReactNative } from '@voltiso/styler'
 import { $Assert } from '@voltiso/util'
 
 describe('IsReactNative', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.assertions(0)
 

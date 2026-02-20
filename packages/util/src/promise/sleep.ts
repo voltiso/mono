@@ -20,7 +20,6 @@ export function sleep(
 ): Promise<void> & SleepController {
 	const controller: Partial<SleepController> = {}
 
-	// eslint-disable-next-line promise/avoid-new
 	const result: Promise<void> & Partial<SleepController> = new Promise<void>(
 		(resolve, reject) => {
 			const handler = () => {

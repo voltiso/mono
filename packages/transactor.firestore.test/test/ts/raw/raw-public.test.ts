@@ -20,13 +20,11 @@ const db = new Transactor(firestore, firestoreModule, {
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 db('fairyAhj/*').public({
 	specialty: s.string.optional,
 })
 
 describe('raw-public', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('should validate schema', async () => {
 		expect.hasAssertions()
 
@@ -34,10 +32,8 @@ describe('raw-public', () => {
 
 		await expect(
 			db('fairyAhj', 'anthony').set({ favoriteOrganMarket: 'WHM' }),
-			// eslint-disable-next-line jest/valid-expect-with-promise
 		).rejects.toThrow('favoriteOrganMarket')
 
-		// eslint-disable-next-line jest/valid-expect-with-promise
 		await expect(db('fairyAhj/anthony')).resolves.toBeNull()
 
 		const x = db(

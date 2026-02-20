@@ -16,17 +16,16 @@ const db = createFirestoreTransactor(firestore, {
 /** @type {PromiseLike<unknown>[]} */
 const promises = []
 
-// eslint-disable-next-line jest/require-hook
 db('counterAbc/*')
 	.afterCreateOrUpdate(function () {
 		this.data['value'] ||= 0
 	})
 	.method('increment', function (x) {
 		// @ts-expect-error ...
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+
 		this.value += x
 	})
-	.method('floatSomePromises', async function () {
+	.method('floatSomePromises', async () => {
 		// const { db } = this
 		promises.push(db('dinosaurAbc/a').set({ age: 1 })) // A
 		await db('dinosaurAbc/a').set({ age: 1 })
@@ -35,7 +34,7 @@ db('counterAbc/*')
 		promises.push(db('dinosaurAbc/b').set({ age: 1 })) // C
 	})
 
-describe('method', function () {
+describe('method', () => {
 	it('should process method', async () => {
 		expect.hasAssertions()
 

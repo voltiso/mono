@@ -24,7 +24,7 @@ export function omitIfPresent<
 
 	for (const key of keys) {
 		assertNotPolluting(key)
-		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+
 		delete r[key as unknown as keyof O]
 	}
 

@@ -1,7 +1,5 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
@@ -51,7 +49,7 @@ const doctors = db('doctor').register(Doctor)
 const things = db('thing').register(IndexedDoc)
 
 describe('class', () => {
-	it('should not allow setting private fields', async function () {
+	it('should not allow setting private fields', async () => {
 		expect.hasAssertions()
 
 		await database.doc('doctor/anthony').delete()
@@ -64,7 +62,7 @@ describe('class', () => {
 		await expect(doctors('anthony')).resolves.toBeNull()
 	})
 
-	it('should assume empty schema if privateSchema is provided', async function () {
+	it('should assume empty schema if privateSchema is provided', async () => {
 		expect.hasAssertions()
 		// @ts-expect-error illegalField does not exist
 		await expect(doctors('anthony').set({ illegalField: 123 })).rejects.toThrow(
@@ -74,7 +72,7 @@ describe('class', () => {
 		await expect(doctors('anthony')).resolves.toBeNull()
 	})
 
-	it('should allow any data for tables without schemas', async function () {
+	it('should allow any data for tables without schemas', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = false
@@ -90,7 +88,7 @@ describe('class', () => {
 		})
 	})
 
-	it('should allow IndexedDoc even if requireSchemas === true', async function () {
+	it('should allow IndexedDoc even if requireSchemas === true', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = true
@@ -100,7 +98,7 @@ describe('class', () => {
 		await expect(things('ggggg').set({ thingB: 234 })).resolves.toBeTruthy()
 	})
 
-	it('should allow private fields access via method', async function () {
+	it('should allow private fields access via method', async () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
@@ -113,7 +111,7 @@ describe('class', () => {
 		})
 	})
 
-	it('should allow private fields access via triggers', async function () {
+	it('should allow private fields access via triggers', async () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
@@ -126,7 +124,7 @@ describe('class', () => {
 		})
 	})
 
-	it('should allow modifying private fields from the same doc', async function () {
+	it('should allow modifying private fields from the same doc', async () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})

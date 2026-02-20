@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-depth */
-
 import type { Unit } from '~/_/StyledData/IStyledData'
 import type { RelaxedCss } from '~/Css'
 
@@ -40,7 +38,6 @@ export function combineNestedSelectors(
 
 //
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function getAtomicStyles(
 	options: { unit: Unit },
 	renderer: WebRenderer,
@@ -69,7 +66,6 @@ export function getAtomicStyles(
 			const inners = getAtomicStyles(options, renderer, v as never)
 
 			if (outer.mediaQueries.length > 0) {
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				for (const inner of inners) {
 					for (const override of inner.overrides) {
 						override.mediaQueries = [
@@ -81,7 +77,6 @@ export function getAtomicStyles(
 			}
 
 			if (outer.selectors.length > 1 || outer.selectors[0] !== '&') {
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				for (const inner of inners) {
 					inner.selectors = combineNestedSelectors(
 						outer.selectors,
@@ -99,7 +94,7 @@ export function getAtomicStyles(
 				overrides: [
 					{
 						mediaQueries: [],
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
 						values: Array.isArray(v) ? v : [v],
 					},
 				],

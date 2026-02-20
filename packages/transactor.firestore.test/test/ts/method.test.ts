@@ -57,8 +57,8 @@ class Counter extends Doc.with({
 
 const counters = db('office').register(Counter)
 
-describe('method', function () {
-	it('should process method', async function () {
+describe('method', () => {
+	it('should process method', async () => {
 		expect.hasAssertions()
 
 		const counter = await counters.add({})
@@ -77,7 +77,7 @@ describe('method', function () {
 		expect((await db('office', id))!.data['value']).toBe(1101)
 	})
 
-	it('should detect floating promises', async function () {
+	it('should detect floating promises', async () => {
 		expect.hasAssertions()
 
 		await counters('asd').set({})

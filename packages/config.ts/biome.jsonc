@@ -1,0 +1,17 @@
+{
+	"$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+
+	"extends": "//",
+
+	"overrides": [
+		{
+			"includes": ["build.json", "build/*.json"],
+			"json": {
+				"parser": {
+					"allowComments": true,
+					"allowTrailingCommas": true
+				}
+			}
+		}
+	]
+}

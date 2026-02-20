@@ -13,11 +13,10 @@ export class NumberImpl extends lazyConstructor(() => CustomNumberImpl)<{}> {
 	constructor() {
 		super(defaultNumberOptions as never)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends number>(...args: L[] | [Set<L>]): Literal<L> {
 		return literal<L>(...args)
 	}

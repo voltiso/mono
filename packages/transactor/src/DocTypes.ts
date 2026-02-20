@@ -1,13 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
-/* eslint-disable es-x/no-global-this */
-
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | ANY_DOC
 
 export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | ANY_DOC

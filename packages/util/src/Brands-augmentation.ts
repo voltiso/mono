@@ -6,7 +6,8 @@
  *
  * 🌿 **Type-only** (no value at runtime)
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+
+// biome-ignore lint/suspicious/noEmptyInterface: declaration merging
 export interface Brands {
 	// name: {
 	// 	dog: unknown

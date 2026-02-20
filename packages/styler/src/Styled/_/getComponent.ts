@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ForwardedRef } from 'react'
 import type React from 'react'
+import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
 import type { IForwardRefRenderFunction } from '~/_/StyledData'
@@ -32,7 +32,6 @@ export function getComponent<
 
 	// // forward ref (but not css)
 	// if (typeof data.component === 'function' && data.component.length === 2) {
-	// 	// eslint-disable-next-line no-param-reassign
 	// 	data = {
 	// 		...data,
 	// 		component: forwardRef(data.component as never),

@@ -116,7 +116,6 @@ export function useCustomReactiveEffect(
 			try {
 				mutable.destructor()
 			} finally {
-				// eslint-disable-next-line sonarjs/no-undefined-assignment
 				mutable.destructor = undefined
 			}
 		}
@@ -154,7 +153,7 @@ export function useCustomReactiveEffect(
 
 			const subscription = dep
 				// .pipe(skip(1))
-				// eslint-disable-next-line rxjs/no-ignored-error
+
 				.subscribe(() => {
 					if (mutable.isEffectRunning) return
 
@@ -181,7 +180,7 @@ export function useCustomReactiveEffect(
 	 * because we don't want to miss updates between now and first effect phase
 	 */
 	if (options.isImmediate || options.isReactiveOnly) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useImmediateEffect(() => {
 			subscribe()
 
@@ -195,7 +194,7 @@ export function useCustomReactiveEffect(
 			}
 		}, deps)
 	} else {
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useEffect(() => {
 			subscribe()
 
@@ -205,7 +204,8 @@ export function useCustomReactiveEffect(
 				unsubscribe()
 				cleanup()
 			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
+
+			// biome-ignore lint/correctness/useExhaustiveDependencies: .
 		}, deps)
 	}
 }

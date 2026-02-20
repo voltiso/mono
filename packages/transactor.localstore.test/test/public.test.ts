@@ -21,8 +21,8 @@ class Doctor extends Doc.with({
 
 const doctors = db('doctor').register(Doctor)
 
-describe('public', function () {
-	it('should validate schema', async function () {
+describe('public', () => {
+	it('should validate schema', async () => {
 		expect.hasAssertions()
 
 		await database.doc('doctor/anthony').delete()

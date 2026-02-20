@@ -13,21 +13,19 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 let numCalls = 0
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-// eslint-disable-next-line jest/require-hook
-db('account/*').afterDelete(function ({ before }) {
+
+db('account/*').afterDelete(({ before }) => {
 	numCalls++
 
 	// @ts-expect-error ...
 	if (before.balance) throw new Error('cannot delete: balance not 0')
 })
 
-describe('afterDelete', function () {
-	it('should not be called on create or update', async function () {
+describe('afterDelete', () => {
+	it('should not be called on create or update', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('account/artur').delete()
@@ -43,7 +41,7 @@ describe('afterDelete', function () {
 		expect(numCalls).toBe(0)
 	})
 
-	it('should be called on delete', async function () {
+	it('should be called on delete', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('account/artur').delete()

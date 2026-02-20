@@ -2,14 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 
 import { style } from '~'
 
 import { renderApp } from './common'
 
-// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
 afterEach(() => {
 	cleanup() // required after upgrading testing library
 })
@@ -51,7 +50,6 @@ describe('props', () => {
 
 		renderApp(<Button data-testid='a' />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'button')
 	})
 
@@ -64,11 +62,9 @@ describe('props', () => {
 
 		renderApp(<Button data-testid='a' type='radio' />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'radio')
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not allow unknown props', () => {
 		expect.assertions(0)
 

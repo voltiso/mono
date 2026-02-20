@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react'
 export function useIsPageLoaded(): boolean {
 	if (typeof document === 'undefined') return false // ssr
 
-	// eslint-disable-next-line react-hooks/hooks, react-hooks/rules-of-hooks
+	// biome-ignore lint/correctness/useHookAtTopLevel: .
 	const [isPageLoaded, setIsPageLoaded] = useState(
 		false, // consistent with server
 		// () => document.readyState === 'complete',
 	)
 
-	// eslint-disable-next-line react-hooks/hooks, react-hooks/rules-of-hooks
+	// biome-ignore lint/correctness/useHookAtTopLevel: .
 	useEffect(() => {
 		if (isPageLoaded) return undefined
 

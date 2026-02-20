@@ -38,7 +38,7 @@ export function infer(x: $$Schemable): $$Schema {
  *
  * - Especially in generic contexts
  */
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
+
 export function infer_(x: $$Schemable): $$Schema {
 	if (isSchema(x)) {
 		return x as never
@@ -51,7 +51,6 @@ export function infer_(x: $$Schemable): $$Schema {
 		return literal(x as InferableLiteral) as never
 	} else if (isConstructor(x)) {
 		return instance(x) as never
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	} else if (Array.isArray(x)) return tuple(...x) as never
 	else if (isPlainObject(x) && Object.keys(x).length === 0) {
 		return nonNullish as never

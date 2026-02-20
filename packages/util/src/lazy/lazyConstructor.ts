@@ -19,7 +19,9 @@ import { $fastAssert } from '_'
  * @returns The same constructor (proxy)
  */
 export function lazyConstructor<
-	Class extends abstract new (...args: any) => object,
+	Class extends abstract new (
+		...args: any
+	) => object,
 >(getClass: () => Class): Class {
 	let cls: Class | undefined
 
@@ -78,11 +80,6 @@ export function lazyConstructor<
 // // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '~'
-
-// /* eslint-disable unicorn/consistent-function-scoping */
-// /* eslint-disable @typescript-eslint/no-empty-function */
-// /* eslint-disable @typescript-eslint/no-unsafe-argument */
-// /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 // export function lazyConstructor<T extends object>(getValue: () => T): T {
 // 	let value: T

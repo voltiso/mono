@@ -19,7 +19,7 @@ export const Void$ = lazyConstructor(
 export type Void$Constructor = new () => Void$
 
 //
-// eslint-disable-next-line sonarjs/variable-name
+
 const void_ = lazyObject(() => new Void$())
 
 export { void_ as void }

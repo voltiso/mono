@@ -1,10 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/prefer-readonly */
-
-import { $Assert, $Is } from '_'
 import { describe, it } from '@jest/globals'
+import { $Assert, $Is } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -50,6 +48,7 @@ describe('OmitInternal', () => {
 		$Assert.is<B, [1, 1, 0, 2]>()
 
 		// @ts-expect-error oops! Bb is `any`
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		type Bb = C['#es']
 	})
 })

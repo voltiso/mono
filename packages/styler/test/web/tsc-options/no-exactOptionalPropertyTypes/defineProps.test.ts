@@ -17,7 +17,6 @@ import type { ComponentProps } from 'react'
 import { style } from '~'
 
 describe('defineProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('compiler options is set', () => {
 		expect.assertions(0)
 
@@ -25,7 +24,6 @@ describe('defineProps', () => {
 		$Assert.is<exactOptionalPropertyTypes, false>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('allows undefined default', () => {
 		expect.assertions(0)
 

@@ -13,7 +13,6 @@ export async function runMigration<D extends $$Doc>(
 	doc: D,
 	migration: Migration<D>,
 ): Promise<void> {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!doc) return
 	$AssumeType<Doc>(doc)
 
@@ -22,7 +21,6 @@ export async function runMigration<D extends $$Doc>(
 	await ctx.transactor.runTransaction(async () => {
 		await migration(doc)
 
-		// eslint-disable-next-line require-atomic-updates
 		doc.data.__voltiso.migrations[migration.migrationName] = {
 			migratedAt: new Date(),
 		}
@@ -34,13 +32,11 @@ export async function runMigrations<D extends $$Doc>(
 	doc: D,
 	migrations: Migration<D>[],
 ): Promise<void> {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!doc) return
 
 	for (const migration of migrations) {
 		fastAssert(migration.migrationName)
 
-		// eslint-disable-next-line no-await-in-loop
 		await runMigration(ctx, doc, migration)
 	}
 }

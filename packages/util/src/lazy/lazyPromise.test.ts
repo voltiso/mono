@@ -17,7 +17,7 @@ class DocumentReference {
 	}
 
 	constructor() {
-		// eslint-disable-next-line sonarjs/no-async-constructor
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return new Proxy(
 			protoLink(
 				lazyPromise(() => this.get()),
@@ -40,7 +40,6 @@ describe('lazyPromise', () => {
 	it('zone.js imported correctly', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line promise/spec-only
 		expect(Promise.name).toBe('ZoneAwarePromise')
 
 		const promise = (async () => {})()

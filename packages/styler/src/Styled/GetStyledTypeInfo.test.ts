@@ -11,7 +11,6 @@ import type { Styled } from './StyledImpl'
 import type { StyledLike } from './StyledLike'
 
 describe('GetStyledTypeInfo', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', <$ extends Partial<StyledTypeInfo>>() => {
 		expect.assertions(0)
 

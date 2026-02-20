@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-private-fields */
-/* eslint-disable es-x/no-class-instance-fields */
-/* eslint-disable @typescript-eslint/prefer-readonly */
-
 import { assert } from '@voltiso/assertor'
 import type {
 	Brand,
@@ -98,7 +94,6 @@ export type CollectionPatternString<S extends string = string> = S &
  */
 export function isPathString(str: unknown): str is DbPathString {
 	return (
-		// eslint-disable-next-line sonarjs/expression-complexity
 		typeof str === 'string' &&
 		str !== '' &&
 		!str.startsWith('/') &&
@@ -110,7 +105,6 @@ export function isPathString(str: unknown): str is DbPathString {
 
 export function isPatternString(str: unknown): str is DbPatternString {
 	return (
-		// eslint-disable-next-line sonarjs/expression-complexity
 		typeof str === 'string' &&
 		str !== '' &&
 		!str.startsWith('/') &&
@@ -206,19 +200,17 @@ export interface DefaultDocPathOptions extends DocPathOptions {
 	doc: ANY_DOC
 }
 
-export interface CustomDocPath<
-	PartialOptions extends Partial<DocPathOptions>,
-> extends DocBrand<
-	GetDocTag<Override<DefaultDocPathOptions, PartialOptions>['doc']>
-> {
+export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
+	extends DocBrand<
+		GetDocTag<Override<DefaultDocPathOptions, PartialOptions>['doc']>
+	> {
 	//
 }
 
-export interface DocPath<
-	TDoc extends $$DocRelatedLike = ANY_DOC,
-> extends CustomDocPath<{ doc: TDoc }> {}
+export interface DocPath<TDoc extends $$DocRelatedLike = ANY_DOC>
+	extends CustomDocPath<{ doc: TDoc }> {}
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomDocPath<
 	PartialOptions extends Partial<DocPathOptions>,
 > extends Path<Override<DefaultDocPathOptions, PartialOptions>['path']> {

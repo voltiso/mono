@@ -6,7 +6,7 @@ import {
 	defaultPatchOptions,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
-	// eslint-disable-next-line sonarjs/no-built-in-override
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 	hasOwnProperty,
 	patch,
 	replaceIt,
@@ -14,7 +14,6 @@ import {
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
 
-// eslint-disable-next-line sonarjs/redundant-type-aliases
 type State = unknown
 type StateObject = Record<string, State>
 
@@ -103,7 +102,6 @@ class StatePatcher_<S extends StateObject> {
 
 		this._swapProto()
 
-		// // eslint-disable-next-line no-constructor-return
 		// return BoundCallable(this)
 	}
 
@@ -145,13 +143,13 @@ class StatePatcher_<S extends StateObject> {
 	 * - (like React's .update() on class components)
 	 */
 	update(updateValue: PatchFor<S>): void {
-		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+		// biome-ignore lint/correctness/noVoidTypeReturn: .
 		return this.patch(updateValue, { depth: 1 })
 	}
 
 	/** Same as `.patch()` with `depth === 0` */
 	set(newValue: S): void {
-		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+		// biome-ignore lint/correctness/noVoidTypeReturn: .
 		return this.patch(newValue as never, { depth: 0 })
 	}
 
@@ -184,21 +182,17 @@ export function useStatePatcher<S extends StateObject>(
 ): StatePatcher<S> {
 	const forceUpdate = useUpdate()
 
-	const statePatcher = useMemo(
-		() => {
-			const state =
-				typeof initialState === 'function' ? initialState() : initialState
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
+	const statePatcher = useMemo(() => {
+		const state =
+			typeof initialState === 'function' ? initialState() : initialState
 
-			return new StatePatcher(state, forceUpdate)
-		},
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	)
+		return new StatePatcher(state, forceUpdate)
+	}, [])
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	const handler: ProxyHandler<StatePatcher<S>> = useMemo(
 		() => ({
-			// eslint-disable-next-line @typescript-eslint/max-params
 			set(t, p, v, r) {
 				if (hasOwnProperty(t, p)) {
 					return Reflect.set(t, p, v, r)
@@ -222,16 +216,15 @@ export function useStatePatcher<S extends StateObject>(
 				// return Reflect.getOwnPropertyDescriptor(statePatcher.raw, p)
 			},
 		}),
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+
 		[],
 	)
 
 	// let's pretend we're immutable
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	return useMemo(
 		() => new Proxy(statePatcher, handler),
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+
 		[statePatcher.raw],
 	)
 }

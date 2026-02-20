@@ -18,7 +18,6 @@ import { CustomDocPath } from '~/Path/Path'
 import type { CanonicalPath } from './CanonicalPath'
 import type { DbContext, DbParentContext } from './Context'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Db {
 	<Tokens extends readonly string[]>(
 		...pathTokens: Tokens
@@ -28,16 +27,17 @@ export interface Db {
 }
 
 /** In transaction or not */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class Db {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	protected _context: DbContext
 
 	constructor(parentContext: DbParentContext) {
 		this._context = { ...parentContext, db: this as never }
 		const newThis = BoundCallable(this)
 		newThis._context.db = newThis
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return newThis
 	}
 

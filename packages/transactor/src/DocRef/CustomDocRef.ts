@@ -35,14 +35,12 @@ import { _CustomDocRef } from './_CustomDocRef'
 
 //
 
-// eslint-disable-next-line import/export
 export const CustomDocRef = lazyConstructor(
 	() => _CustomDocRef,
 ) as unknown as CustomDocRef.Constructor
 
 export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
-	extends
-		$$DocRef,
+	extends $$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
 		CustomDocRef.IntrinsicFields<O> {
 	readonly [Voltiso.OPTIONS]: CustomDocRef.Options.Get<O>
@@ -98,8 +96,7 @@ export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 // 	: never
 
 export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
-	extends
-		CustomDocRefBase<O>,
+	extends CustomDocRefBase<O>,
 		PromiseLike<
 			| GetDoc<CustomDocRef.Options.Get<O>['doc']>
 			| CustomDocRef.MaybeNull<CustomDocRef.Options.Get<O>>
@@ -148,7 +145,6 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 	// get Final(): this
 }
 
-// eslint-disable-next-line import/export
 export namespace CustomDocRef {
 	// export type Get<O extends Partial<Options>> = Base<O>
 	// & Extra<Options.Get<O>['doc']> // ! disable this stuff...
@@ -167,7 +163,6 @@ export namespace CustomDocRef {
 
 	// /** 🟢 The statically-known members */
 	// export interface Base<O extends Partial<DocRef.Options>>
-	// 	// eslint-disable-next-line etc/no-internal
 	// 	extends _CustomDocRef<Options.Get<O>> {}
 
 	export interface IntrinsicFields<O extends Partial<Options>> {

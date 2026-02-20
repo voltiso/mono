@@ -11,7 +11,6 @@ import { Pressable, View } from 'react-native'
 
 import { renderApp } from './common'
 
-// eslint-disable-next-line react/forbid-component-props, import/newline-after-import
 ;<Pressable style={{}} />
 
 const Button = style(Pressable)
@@ -51,7 +50,7 @@ describe('forwardRefPressable', () => {
 		)
 
 		const view = renderApp(<Component testID='a' big={false} />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
+
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -60,7 +59,6 @@ describe('forwardRefPressable', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('forwardRef - complex', () => {
 		expect.assertions(0)
 
@@ -82,7 +80,7 @@ describe('forwardRefPressable', () => {
 		)
 
 		const view = renderApp(<Component testID='a' big={false} />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
+
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -91,12 +89,11 @@ describe('forwardRefPressable', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works with forwardRef #2 - but requires className (static assert)', () => {
 		expect.assertions(0)
 
 		// @ts-expect-error no properties in common
-
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		const Component = style(React.forwardRef(() => null))
 		// Assert.is<typeof Component, `Error${string}`>()
 	})
@@ -121,7 +118,7 @@ describe('forwardRefPressable', () => {
 		const StyledButton = myStyle(Button)
 
 		const view = renderApp(<StyledButton small testID='test' />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
+
 		const button = view.getByTestId('test')
 
 		expect(button.props.style).toMatchObject({
@@ -151,7 +148,7 @@ describe('forwardRefPressable', () => {
 		$Assert.is<typeof Button, (...args: any) => any>()
 
 		type B = React.ComponentPropsWithRef<typeof View>['ref']
-		// eslint-disable-next-line @typescript-eslint/no-deprecated
+
 		$Assert.is<B, React.LegacyRef<View> | undefined>()
 
 		// type C = typeof Button extends (arg: infer R) => any ? R : never
@@ -215,6 +212,7 @@ describe('forwardRefPressable', () => {
 		// type AA = View['props']
 
 		// allow using `View` instead of `typeof View`
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		const B = myStyle.forwardRef<View>((props, _ref) => {
 			// $Assert<IsIdentical<typeof props.children, React.ReactNode>>()
 			void props.content
@@ -260,7 +258,6 @@ describe('forwardRefPressable', () => {
 
 		expect(instance).toBeInstanceOf(View)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.children[0]).toBe('myContent')
@@ -273,12 +270,10 @@ describe('forwardRefPressable', () => {
 
 		const AnotherButton = Button.css({ margin: 42 })
 
-		// eslint-disable-next-line testing-library/render-result-naming-convention
 		const view2 = renderApp(
 			<AnotherButton testID='button' content='test' css={{ margin: 4242 }} />,
 		)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const anotherButton = view2.getByTestId('button')
 
 		expect(anotherButton.props.style).toMatchObject({
@@ -303,7 +298,6 @@ describe('forwardRefPressable', () => {
 
 		const view = renderApp(<Another testID='a' magic />)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({ margin: 123 })

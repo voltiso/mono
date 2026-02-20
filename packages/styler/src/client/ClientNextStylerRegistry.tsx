@@ -15,7 +15,6 @@ import { RendererContext } from './context'
 export const ClientNextStylerRegistry = (props: {
 	readonly children: React.ReactNode
 }): JSX.Element => {
-	// eslint-disable-next-line react/hook-use-state
 	const [renderer] = useState(() => new WebRenderer())
 
 	useServerInsertedHTML(() => {
@@ -27,7 +26,8 @@ export const ClientNextStylerRegistry = (props: {
 				data-voltiso-ssr=''
 				key={renderer.numFlushes}
 				/** Cannot use children - it would escape e.g. `>` characters */
-				// eslint-disable-next-line react/no-danger
+
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: .
 				dangerouslySetInnerHTML={{ __html: ssrStyle }}
 			/>
 		)

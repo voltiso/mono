@@ -41,7 +41,6 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 ): CustomBoundCallable<Options> {
 	const callable = _CustomBoundCallableNoClone(options)
 
-	// eslint-disable-next-line @typescript-eslint/unbound-method
 	const { call, shape } = options
 
 	// have to implement clone - need to rebind the callable to new `this`
@@ -59,7 +58,6 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 		options?: NonStrictPartial<CloneOptions> | undefined,
 	) {
 		if (innerClone) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			const newInstance: WithCloneFunction = (innerClone as any).call(
 				this,
 				options,
@@ -86,9 +84,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 		if (ownCloneDescriptor) descriptors.clone = ownCloneDescriptor as never
 		else delete (descriptors as Partial<typeof descriptors>).clone
 
-		// eslint-disable-next-line unicorn/consistent-destructuring
 		for (const key of options?.omit ?? []) {
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete descriptors[key as never]
 		}
 
@@ -111,6 +107,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 
 	// bind-call-apply for react-native
 
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	if (!Object.prototype.hasOwnProperty.call(callable, 'bind'))
 		Object.defineProperty(callable, 'bind', {
 			value(thisArg: unknown, ...args: unknown[]) {
@@ -121,6 +118,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 			enumerable: false,
 		})
 
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	if (!Object.prototype.hasOwnProperty.call(callable, 'call'))
 		Object.defineProperty(callable, 'call', {
 			value(thisArg: unknown, ...args: unknown[]) {
@@ -131,6 +129,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 			enumerable: false,
 		})
 
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	if (!Object.prototype.hasOwnProperty.call(callable, 'apply'))
 		Object.defineProperty(callable, 'apply', {
 			value(thisArg: unknown, ...args: unknown[]) {

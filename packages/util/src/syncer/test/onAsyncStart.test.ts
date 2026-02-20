@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-/* eslint-disable require-yield */
-/* eslint-disable jest/require-hook */
-
 import { describe, expect, it } from '@jest/globals'
 
 import { runAsync, runSync } from '~/syncer/run'
@@ -13,7 +9,7 @@ import type { SyncerPromise } from '~/syncer/SyncerPromise'
 describe('onAsyncStart', () => {
 	let anotherFuncFlag = false
 
-	// eslint-disable-next-line sonarjs/generator-without-yield
+	// biome-ignore lint/correctness/useYield: .
 	function* anotherFunc() {
 		anotherFuncFlag = true
 		return 'hi'

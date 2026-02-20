@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert, $Is } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert, $Is } from '_'
 
 import type { AbstractNewable, Newable } from './Newable'
 
@@ -13,7 +13,9 @@ describe('Newable', () => {
 		$Assert.isSubtype<new (x: number) => number, Newable>()
 
 		$Assert.isSubtype<
-			new (x: number) => { a: 1 },
+			new (
+				x: number,
+			) => { a: 1 },
 			Newable<{ arguments: number[]; return: { a: 1 } }>
 		>()
 

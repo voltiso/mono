@@ -27,7 +27,6 @@ export class ValidationIssueImpl implements ValidationIssue {
 		if (p.received) this.received = p.received
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	toString(
 		options?: { skipReceived?: boolean | undefined } | undefined,
 	): string {

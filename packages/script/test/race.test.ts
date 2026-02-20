@@ -24,11 +24,11 @@ describe('Script Runner: Race Mode', () => {
 
 	it('should abort the loser when the winner finishes', async () => {
 		// We'll use a file as a "heartbeat" to see if the loser kept running
-		// eslint-disable-next-line import/dynamic-import-chunkname
+
 		const fs = await import('node:fs')
-		// eslint-disable-next-line sonarjs/publicly-writable-directories
+
 		const heartbeatFile = '/tmp/voltiso-script-test-loser-heartbeat.txt'
-		// eslint-disable-next-line n/no-sync
+
 		if (fs.existsSync(heartbeatFile)) fs.unlinkSync(heartbeatFile)
 
 		const script = {
@@ -39,12 +39,10 @@ describe('Script Runner: Race Mode', () => {
 			],
 		}
 
-		// eslint-disable-next-line n/no-sync
 		expect(fs.existsSync(heartbeatFile)).toBe(false)
 
 		await run(script)
 
-		// eslint-disable-next-line n/no-sync
 		expect(fs.existsSync(heartbeatFile)).toBe(false)
 
 		// console.log('run finished')
@@ -54,7 +52,6 @@ describe('Script Runner: Race Mode', () => {
 
 		// console.log('final check')
 
-		// eslint-disable-next-line n/no-sync
 		expect(fs.existsSync(heartbeatFile)).toBe(false)
 	})
 

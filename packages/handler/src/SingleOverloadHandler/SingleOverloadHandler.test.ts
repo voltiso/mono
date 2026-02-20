@@ -27,7 +27,6 @@ describe('checked', () => {
 	})
 
 	it('return sync', () => {
-		// eslint-disable-next-line n/no-sync
 		const handler = checked.returnSync(s.number.min(222)).implement(() => 123)
 		$Assert.is<typeof handler, () => number>()
 

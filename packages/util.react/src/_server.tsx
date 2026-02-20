@@ -8,7 +8,6 @@
 // 		[name]: ((props: P) => <Client {...props} />) as React.FC<P>,
 // 	}
 
-// 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 // 	const result = resultWrapper[name]!
 
 // 	result.displayName = `server(${Client.displayName || Client.name})`

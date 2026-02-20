@@ -7,9 +7,8 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { RecordOptions } from './RecordOptions'
 
-export interface CustomRecord<
-	O extends Partial<RecordOptions>,
-> extends CustomSchema<O> {
+export interface CustomRecord<O extends Partial<RecordOptions>>
+	extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 
 	readonly [Voltiso.BASE_OPTIONS]: RecordOptions
@@ -28,9 +27,8 @@ export interface CustomRecord<
 
 //
 
-export interface CustomRecord$<
-	O extends Partial<RecordOptions>,
-> extends CustomSchema$<O> {
+export interface CustomRecord$<O extends Partial<RecordOptions>>
+	extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 
 	readonly [Voltiso.BASE_OPTIONS]: RecordOptions

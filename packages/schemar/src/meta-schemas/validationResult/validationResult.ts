@@ -39,7 +39,7 @@ export function validationResult<Value extends $$Schemable>(
 	return or(
 		{
 			isValid: true,
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+
 			value: value as Value, // ! TS bug?
 			issues: tuple(),
 		},

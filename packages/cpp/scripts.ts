@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import fs from 'node:fs/promises'
 
 import { run } from '@voltiso/script'
@@ -11,11 +9,7 @@ import { installVcpkg } from '@voltiso/script.cmake'
 
 const vcpkgVersion = '2026.01.16'
 
-// export const prepare: Promise<Script> = configure({ type: 'Debug' })
-
 export const clean = 'rimraf build vcpkg compile_commands.json'
-
-// cd build/Debug && GTEST_COLOR=1 ctest --output-on-failure ${target}
 
 interface Options {
 	compiler: string
@@ -41,7 +35,7 @@ export async function exists(fileName: string): Promise<boolean> {
 
 //
 
-export const prepare = [
+export const prepublishOnly = [
 	() => installVcpkg(vcpkgVersion),
 	`ln -sf ${dir({ compiler: 'clang-20', buildType: 'Release' })}/compile_commands.json`,
 ]
@@ -64,6 +58,8 @@ export const test = [
 	`cmake --build --preset ${preset(testOptions)} --target voltiso-util-test`,
 	`cd ${dir(testOptions)} && GTEST_COLOR=1 ctest --output-on-failure voltiso-util-test`,
 ]
+
+export const check = test
 
 //
 

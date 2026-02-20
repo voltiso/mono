@@ -20,7 +20,6 @@ declare module '..' {
 }
 
 class MyMysticDoctor extends Doc('myMysticDoctor').with({}) {}
-
 // @ts-expect-error does not exist in DocTypes interface
 ;() => Doc('doesNotExist')
 

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type {
 	$$SchemableObject,
 	InferableLiteral,
@@ -44,12 +46,10 @@ function _initializeResult<S extends $$SchemableObject>(
 		(_value: SchemaLike | InferableLiteral, path) => {
 			const dataValue$ = get(
 				data$,
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				...(path.map(name => `${String(name)}$`) as any),
 			) as unknown as SubjectTree<string>
 
 			const deepShapeEntry = s.schema(
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				get(deepShape as any, ...(path as any)) as unknown as InferableObject,
 			)
 
@@ -66,7 +66,6 @@ function _initializeResult<S extends $$SchemableObject>(
 				issues: initialValidationResult.issues,
 
 				props: {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
 					value: tryGet(data$.value as never, ...(path as any)) || '',
 
 					onChange: (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +81,7 @@ function _initializeResult<S extends $$SchemableObject>(
 
 						const valueProp$ = get(
 							mutable.result$.fields$,
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
 							...(valuePropPath.map(name => `${name}$`) as any),
 						) as SubjectTree<unknown>
 
@@ -97,7 +96,7 @@ function _initializeResult<S extends $$SchemableObject>(
 
 						const issues$ = get(
 							mutable.result$.fields$,
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
 							...(issuesPath.map(name => `${name}$`) as any),
 						) as unknown as SubjectTree<ValidationIssue[]>
 
@@ -134,7 +133,6 @@ function _initializeResult<S extends $$SchemableObject>(
 					}
 				}
 
-				// eslint-disable-next-line sonarjs/void-use
 				void options.onSubmit(data$.value)
 			},
 
@@ -157,39 +155,34 @@ export const useForm = <S extends $$SchemableObject>(
 		result$: 0 as never,
 	}))
 
-	mutable.result$ = useMemo(
-		() => {
-			const initialValue = _initializeResult<S>(options, mutable)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
+	mutable.result$ = useMemo(() => {
+		const initialValue = _initializeResult<S>(options, mutable)
 
-			const nestedSubject$ = new SubjectTree<UseForm.RawResult<S>>(initialValue)
+		const nestedSubject$ = new SubjectTree<UseForm.RawResult<S>>(initialValue)
 
-			// const subs = (nestedSubject.fields as SubjectTree<unknown>).subscribe(
-			// 	value => {
-			// 		console.log('!! INITIAL', value)
-			// 	},
-			// )
+		// const subs = (nestedSubject.fields as SubjectTree<unknown>).subscribe(
+		// 	value => {
+		// 		console.log('!! INITIAL', value)
+		// 	},
+		// )
 
-			// subs.unsubscribe()
+		// subs.unsubscribe()
 
-			return nestedSubject$
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	)
+		return nestedSubject$
+	}, [])
 
 	return mutable.result$ as never
 
 	// const handleError = useCallback(
 	// 	async (e: unknown) => {
 	// 		if (current.onError && e instanceof Error) await current.onError(e)
-	// 		// eslint-disable-next-line no-console
 	// 		else console.error('unhandled exotic error', e)
 	// 	},
 	// 	[current],
 	// )
 
 	// const validate = useCallback(
-	// 	// eslint-disable-next-line complexity, unicorn/no-object-as-default-parameter
 	// 	async (options = { beforeSubmit: false }) => {
 	// 		try {
 	// 			let focusSet = false
@@ -199,10 +192,8 @@ export const useForm = <S extends $$SchemableObject>(
 	// 			if (!r.isValid) {
 	// 				for (const issue of r.issues) {
 	// 					const { path } = issue
-	// 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	// 					let c = validationResults as any
 	// 					for (const p of path) {
-	// 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-multi-assign, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
 	// 						c = c[p] = c[p] || {}
 	// 					}
 	// 					const r = c as ValidationResult
@@ -221,12 +212,9 @@ export const useForm = <S extends $$SchemableObject>(
 	// 			}
 	// 			for (const k of getKeys(state.data)) {
 	// 				if (
-	// 					// eslint-disable-next-line security/detect-object-injection
 	// 					!validationResults[k] &&
-	// 					// eslint-disable-next-line security/detect-object-injection
 	// 					!(current.validators || ({} as any))[k]
 	// 				) {
-	// 					// eslint-disable-next-line security/detect-object-injection
 	// 					validationResults[k] = { success: true }
 	// 				}
 	// 			}
@@ -252,12 +240,9 @@ export const useForm = <S extends $$SchemableObject>(
 	// 							Validator,
 	// 						][]
 	// 					)
-	// 						// eslint-disable-next-line security/detect-object-injection
 	// 						.filter(([field, _]) => !state.validationResults[field])
 	// 						.map(async ([field, validator]) => {
-	// 							// eslint-disable-next-line security/detect-object-injection
 	// 							const r = await validator(state.data[field])
-	// 							// eslint-disable-next-line security/detect-object-injection
 	// 							if (state.data[field] !== prevData[field]) return
 	// 							state.validationResults = {
 	// 								...state.validationResults,

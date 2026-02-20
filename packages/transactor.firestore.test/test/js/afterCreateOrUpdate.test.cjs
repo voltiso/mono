@@ -4,7 +4,6 @@
 'use strict'
 
 const { describe, expect, it } = require('@jest/globals')
-/* eslint-disable jest/require-hook */
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -21,8 +20,8 @@ db('mother/{user}').afterCreateOrUpdate(function () {
 	++counter
 })
 
-describe('afterCreateOrUpdate', function () {
-	it('should modify fields', async function () {
+describe('afterCreateOrUpdate', () => {
+	it('should modify fields', async () => {
 		expect.hasAssertions()
 
 		await db('mother', 'artur').delete()
@@ -36,7 +35,7 @@ describe('afterCreateOrUpdate', function () {
 		})
 	})
 
-	it('should not be called on delete', async function () {
+	it('should not be called on delete', async () => {
 		expect.hasAssertions()
 
 		counter = 0

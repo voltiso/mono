@@ -24,6 +24,7 @@ export const keepIt: KeepIt = blackbox({
 })
 
 export function isKeepIt(x: unknown): x is KeepIt {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__keepIt')
 }
 
@@ -50,5 +51,6 @@ export const keepItIfPresent: KeepItIfPresent = blackbox({
 })
 
 export function isKeepItIfPresent(x: unknown): x is KeepItIfPresent {
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(x || {}, '__keepItIfPresent')
 }

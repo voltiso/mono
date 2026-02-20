@@ -57,7 +57,6 @@ export function clone<X, Options extends NonStrictPartial<CloneOptions>>(
 		assign(r, x, options)
 		return r as never
 	} else if (typeof x === 'function') {
-		// eslint-disable-next-line func-style
 		const clonedFunction = function (this: unknown, ...args: unknown[]) {
 			return Function.prototype.call.call(x, this, ...args) as never
 		}

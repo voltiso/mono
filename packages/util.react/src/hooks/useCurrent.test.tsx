@@ -14,7 +14,6 @@ describe('useCurrent', () => {
 		let lastVal
 
 		const C: FC = () => {
-			// eslint-disable-next-line react-hooks/globals
 			lastVal = useCurrent({ a: 1 })
 			return null
 		}

@@ -105,7 +105,6 @@ describe('lazyObject', () => {
 		)
 
 		if (areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toMatchObject({
 				configurable: false,
 				enumerable: false,
@@ -113,32 +112,26 @@ describe('lazyObject', () => {
 				writable: true,
 			})
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toStrictEqual(
 				Object.getOwnPropertyDescriptor(a, 'prototype'),
 			)
 		}
 
 		if (areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptors(b)).toMatchObject(
 				Object.getOwnPropertyDescriptors(a),
 			)
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
 				Object.getOwnPropertyDescriptors(a),
 			)
 		}
 
 		if (areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyNames(b)).toStrictEqual(
-				// eslint-disable-next-line jest/no-conditional-expect
 				expect.arrayContaining(Object.getOwnPropertyNames(a)),
 			)
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
 				Object.getOwnPropertyDescriptors(a),
 			)

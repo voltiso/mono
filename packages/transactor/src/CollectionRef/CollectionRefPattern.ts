@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 // import { assertZod } from '~/assertZod'
 import type { InferableObject } from '@voltiso/schemar'
 import type { $Decrement, IsCompatible, Length } from '@voltiso/util'
@@ -46,6 +44,7 @@ export interface CollectionRefPattern<
 > {
 	// [CALL]
 
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	<Tokens extends string[]>(
 		...tokens: Tokens
 	): IsCompatible<
@@ -56,7 +55,7 @@ export interface CollectionRefPattern<
 		: IsCompatible<
 					$Decrement<Length<Tokens>>,
 					Length<GetUnknownPathTokens<Pattern>>
-			  > extends true
+				> extends true
 			? WeakDocRef<GetDocRepresentative<Doc>>
 			: CollectionRefPattern<
 					ApplyUnknownPathTokens<Pattern, Tokens>,
@@ -64,9 +63,10 @@ export interface CollectionRefPattern<
 				>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CollectionRefPattern<
 	Pattern extends string = string,
+	// biome-ignore lint/correctness/noUnusedVariables: .
 	Doc extends $$DocRelated = ANY_DOC,
 > {
 	// /** Type-only */
@@ -81,7 +81,7 @@ export class CollectionRefPattern<
 		this.pattern = pattern
 		this.patternUnknownTokens = getUnknownPathTokens(pattern)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this) as never
 	}
 

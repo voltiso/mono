@@ -1,8 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import { $fastAssert } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
 
 import type { $$Schema, Schema, Schema$ } from '~'
 

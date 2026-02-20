@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable es-x/no-global-this */
-
 import type { Brands, CustomBrand_, PropertyPath } from '@voltiso/util'
 
 import type { DocTag } from '~/DocTypes'
@@ -47,13 +44,13 @@ export interface TransactorBrand<
 		| keyof Brands[TRANSACTOR] = [],
 	detail = {},
 > extends TransactorBrand.ForPath<
-	path extends keyof Brands[TRANSACTOR]
-		? [path]
-		: path extends PropertyPath.ForObject<Brands[TRANSACTOR]> | []
-			? path
-			: never,
-	detail
-> {}
+		path extends keyof Brands[TRANSACTOR]
+			? [path]
+			: path extends PropertyPath.ForObject<Brands[TRANSACTOR]> | []
+				? path
+				: never,
+		detail
+	> {}
 
 export namespace TransactorBrand {
 	export type ForPath<

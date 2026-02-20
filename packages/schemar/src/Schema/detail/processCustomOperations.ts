@@ -40,7 +40,6 @@ export function _processCustomOperations(
 
 	let value = input.value
 
-	// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 	for (const operation of input.schema.getCustomOperations) {
 		if (operation.type === 'check') {
 			if (!operation.checkIfValid(value)) {
@@ -62,7 +61,6 @@ export function _processCustomOperations(
 
 				break // design choice - do not call next checks if failed
 			}
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		} else if (operation.type === 'transform') {
 			if (issues.length > 0) break // do not call transforms with invalid input value
 
@@ -72,7 +70,7 @@ export function _processCustomOperations(
 				const result = schema(operation.condition).exec(nextValue, {
 					onUnknownProperty: 'ignore',
 				})
-				// eslint-disable-next-line sonarjs/nested-control-flow
+
 				if (result.isValid) {
 					nextValue = result.value
 				} else continue // skip this operation
@@ -107,7 +105,7 @@ export interface ProcessResult {
 /** @internal */
 export function _process(input: ProcessInput): ProcessResult {
 	// ! access protected member
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+
 	const issues: ValidationIssue[] = (input.schema as any)._getIssues(
 		input.value,
 		input.options,

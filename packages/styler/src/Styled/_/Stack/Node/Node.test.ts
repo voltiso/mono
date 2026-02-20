@@ -9,7 +9,6 @@ import type { Props } from '~/react-types'
 import type { INode, Node } from './Node'
 
 describe('Node', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/style/noNonNullAssertion: . */
+
 import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { Doc } from '@voltiso/transactor'
@@ -15,7 +17,6 @@ const db = createFirestoreTransactor(firestore, {
 
 const promises: PromiseLike<unknown>[] = []
 
-// eslint-disable-next-line jest/require-hook
 db('president/*')
 	.public({ value: s.number.default(0) })
 	.method('increment', function (this: Doc & { value: number }, x: number) {
@@ -24,7 +25,7 @@ db('president/*')
 	.method('incrementObj', function (params: { incrementBy: number }) {
 		;(this.data['value'] as number) += params.incrementBy
 	})
-	.method('floatSomePromises', async function () {
+	.method('floatSomePromises', async () => {
 		// console.log('floatSomePromises')
 		// const db = this.db
 		promises.push(db('thief/a').set({ age: 1 })) // A
@@ -35,8 +36,8 @@ db('president/*')
 		promises.push(db('thief/a').set({ age: 1 })) // C
 	})
 
-describe('raw-method', function () {
-	it('should process method', async function () {
+describe('raw-method', () => {
+	it('should process method', async () => {
 		expect.hasAssertions()
 
 		const counter = await db('president').add({})
@@ -51,7 +52,7 @@ describe('raw-method', function () {
 		expect((await db('president', id))!.data['value']).toBe(1100)
 	})
 
-	it('should detect floating promises', async function () {
+	it('should detect floating promises', async () => {
 		expect.hasAssertions()
 
 		await db('president/asd').set({})

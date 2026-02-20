@@ -9,7 +9,6 @@ import type { SymbolObject } from './SymbolObject'
 function isWithTypeParameters(node: ts.Node): node is ts.Node & {
 	typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>
 } {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	return !!(node as any)?.typeParameters
 }
 
@@ -17,7 +16,6 @@ export function collectSymbolNames(node: ts.Node): Set<string> {
 	const result = new Set<string>()
 
 	if (ts.isTypeReferenceNode(node) && ts.isIdentifier(node.typeName)) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
 		const symbol: SymbolObject = (node.typeName as any)?.symbol
 
 		result.add(getSymbolPath(symbol)[0] ?? node.typeName.text)

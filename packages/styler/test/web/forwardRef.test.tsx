@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
@@ -54,7 +54,6 @@ const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 const AnotherButton = OtherRedButton2.mapProp('big', (x?: boolean) => !x)
 
 describe('forwardRef', () => {
-	// eslint-disable-next-line jest/no-hooks
 	afterEach(() => {
 		cleanup() // required after upgrading testing library
 	})
@@ -77,7 +76,6 @@ describe('forwardRef', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('forwardRef - complex', () => {
 		expect.assertions(0)
 
@@ -107,11 +105,11 @@ describe('forwardRef', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works with forwardRef #2 - but requires className (static assert)', () => {
 		expect.assertions(0)
 
 		// @ts-expect-error no properties in common
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		const Component = style(forwardRef(() => null))
 		// Assert.is<typeof Component, `Error${string}`>()
 	})
@@ -140,7 +138,7 @@ describe('forwardRef', () => {
 		const StyledButton = myStyle(Button)
 
 		renderApp(<StyledButton small data-testid='test' />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		const button = screen.getByTestId('test')
 
 		expect(button).toHaveStyle({
@@ -250,7 +248,6 @@ describe('forwardRef', () => {
 			/>,
 		)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const anotherButton = screen.getByTestId('button')
 
 		expect(anotherButton).toHaveStyle({
@@ -280,7 +277,6 @@ describe('forwardRef', () => {
 		expect(button).toHaveStyle({ margin: '123px' })
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type-test from api-shop', () => {
 		expect.assertions(0)
 

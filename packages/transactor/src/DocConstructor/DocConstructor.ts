@@ -36,9 +36,8 @@ import type { Trigger } from '~/Trigger'
 import type { DocDerivedData } from './_/DocDerivedData'
 import type { $$DocConstructor } from './IDocConstructor'
 
-export interface DocConstructor<
-	TI extends DocTI = DocTI,
-> extends $$DocConstructor {
+export interface DocConstructor<TI extends DocTI = DocTI>
+	extends $$DocConstructor {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 

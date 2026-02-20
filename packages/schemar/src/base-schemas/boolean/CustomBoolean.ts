@@ -5,9 +5,8 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { BooleanOptions } from './BooleanOptions'
 
-export interface CustomBoolean<
-	O extends Partial<BooleanOptions>,
-> extends CustomSchema<O> {
+export interface CustomBoolean<O extends Partial<BooleanOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Boolean'
 
@@ -17,9 +16,8 @@ export interface CustomBoolean<
 
 //
 
-export interface CustomBoolean$<
-	O extends Partial<BooleanOptions>,
-> extends CustomSchema$<O> {
+export interface CustomBoolean$<O extends Partial<BooleanOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Boolean'
 

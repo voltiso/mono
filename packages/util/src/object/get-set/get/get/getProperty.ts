@@ -29,7 +29,6 @@ export class GetPropertyError<
 		)}, ${stringFrom(property)})`
 		super(message, options)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 
 		this.object = object
@@ -70,7 +69,6 @@ export function getProperty<
 	Obj extends object,
 	Property extends keyof Obj | UnknownProperty,
 >(object: Obj, property: Property): GetPropertyComplex<Obj, Property> {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (object === null || object === undefined)
 		throw new GetPropertyError(object, property)
 
@@ -82,6 +80,7 @@ export function getProperty<
 	if (
 		result === undefined &&
 		// !((property as keyof any) in object) &&
+		// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 		!Object.prototype.hasOwnProperty.call(object, property)
 	)
 		throw new GetPropertyError(object, property)

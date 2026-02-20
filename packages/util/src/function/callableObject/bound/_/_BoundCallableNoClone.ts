@@ -13,7 +13,6 @@ import { CALL, CustomArrowCallable } from '~/function'
 export function _CustomBoundCallableNoClone<
 	Options extends BoundCallableOptions,
 >(options: Options): CustomBoundCallable<Options> {
-	// eslint-disable-next-line @typescript-eslint/unbound-method
 	const { call, shape } = options
 
 	const callable: CustomBoundCallable<Options> = CustomArrowCallable({

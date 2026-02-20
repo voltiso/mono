@@ -28,7 +28,6 @@ export function _getPackageForDirUncached(
 ): _GetPackageForDirResult {
 	const packageJsonPath = path.join(dir, 'package.json')
 	try {
-		// eslint-disable-next-line security/detect-non-literal-fs-filename, n/no-sync
 		const buffer = fs.readFileSync(packageJsonPath)
 		const packageJsonStr = buffer.toString()
 
@@ -51,7 +50,7 @@ export function _getPackageForDir(dir: string): _GetPackageForDirResult {
 	}
 
 	const result = packageJsonsByDir.get(dir)
-	// eslint-disable-next-line unicorn/consistent-assert
+
 	assert(result)
 	return result
 }

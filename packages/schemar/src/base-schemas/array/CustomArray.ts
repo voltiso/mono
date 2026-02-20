@@ -10,7 +10,8 @@ import type { ArrayOptions } from './ArrayOptions'
 //
 
 export interface CustomArray<O extends Partial<ArrayOptions>>
-	extends $$Array, CustomSchema<O> {
+	extends $$Array,
+		CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 
@@ -29,7 +30,8 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 //
 
 export interface CustomArray$<O extends Partial<ArrayOptions>>
-	extends $$Array, CustomSchema$<O> {
+	extends $$Array,
+		CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 

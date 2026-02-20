@@ -14,14 +14,14 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 		const update = useUpdate()
 
 		if (typeof window !== 'undefined')
-			// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+			// biome-ignore lint/correctness/useExhaustiveDependencies: .
+			// biome-ignore lint/correctness/useHookAtTopLevel: .
 			useLayoutEffect(update, [])
 
 		// if (!ctx.Element) {
 		// 	ctx.Element = props.Element || 'div'
 		// }
 
-		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!ctx.areChildrenConsumed) {
 			// console.log(
 			// 	'Source: firstRenderChildren not consumed yet - do not create portal',

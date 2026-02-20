@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, render, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
@@ -53,7 +53,6 @@ const renderApp = (children: ReactNode) =>
 	)
 
 describe('theme', () => {
-	// eslint-disable-next-line jest/no-hooks
 	afterEach(() => {
 		cleanup() // required after upgrading testing library
 	})
@@ -73,11 +72,10 @@ describe('theme', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('string literal', () => {
 		expect.hasAssertions()
 		expect(`${t.a.b.c[11]}px solid red`).toBe(
-			// eslint-disable-next-line no-template-curly-in-string
+			// biome-ignore lint/suspicious/noTemplateCurlyInString: .
 			'${a.b.c.11}px solid red',
 			// '$__STYLER__{a.b.c.11}px solid red',
 		)
@@ -98,7 +96,6 @@ describe('theme', () => {
 		expect.hasAssertions()
 
 		const Button = style('button').css({
-			// eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
 			boxShadow: `${t.a.b.c}px solid red`,
 		})
 		renderApp(<Button />)

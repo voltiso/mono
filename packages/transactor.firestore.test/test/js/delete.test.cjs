@@ -13,8 +13,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('delete', function () {
-	it('should delete document', async function () {
+describe('delete', () => {
+	it('should delete document', async () => {
 		expect.hasAssertions()
 
 		await db('users', 'artur').set({ age: 20 })

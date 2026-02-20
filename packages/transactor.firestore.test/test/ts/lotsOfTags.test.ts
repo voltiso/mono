@@ -122,7 +122,6 @@ declare module '@voltiso/transactor' {
 }
 
 describe('lotsOfTags', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		const r = db('a', 'b', 'c', 'd')
 		$Assert.is<typeof r, WeakDocRef<typeof ANY_DOC>>()

@@ -13,7 +13,7 @@ describe('README.md - usage', () => {
 
 		const myShape = {
 			name: s.string,
-			// eslint-disable-next-line sonarjs/regular-expr
+
 			version: s.string.regex(/^\d+\.\d+\.\d+$/u), // simplified
 			license: s.string.regex(/^[A-Z]\d$/u).optional,
 

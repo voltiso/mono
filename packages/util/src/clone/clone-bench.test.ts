@@ -29,14 +29,12 @@ describe('clone', () => {
 			c: new Date(),
 		}
 
-		// eslint-disable-next-line @typescript-eslint/strict-void-return
 		const myTime = bench(() => deepClone(o))
-		// eslint-disable-next-line @typescript-eslint/strict-void-return
+
 		const otherTime = bench(() => cloneLib(o))
 
 		const q = myTime / otherTime
 
-		// eslint-disable-next-line no-console
 		console.log('q ==', q)
 
 		expect(q).toBeLessThan(5)

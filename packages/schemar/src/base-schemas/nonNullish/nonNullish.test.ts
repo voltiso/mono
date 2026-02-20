@@ -26,7 +26,6 @@ describe('nonNullish', () => {
 
 		// ! what was the difference between `infer` and `schema`??
 
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.infer({}).toString()).toBe('{}')
 		expect(s.schema({}).toString()).toBe('{}')
 

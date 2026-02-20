@@ -57,7 +57,7 @@ export declare namespace SchemarAnd {
 			: A extends {
 						Output: unknown
 						Input: unknown
-				  }
+					}
 				? B extends {
 						Output: unknown
 						Input: unknown
@@ -68,7 +68,6 @@ export declare namespace SchemarAnd {
 
 	//
 
-	// eslint-disable-next-line sonarjs/no-built-in-override
 	export namespace Object {
 		export type Get<Output, Input> =
 			IsIdentical<Output, Input> extends true

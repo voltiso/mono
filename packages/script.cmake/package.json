@@ -28,28 +28,11 @@
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________DEV": "__________",
-    "dev": "v dev",
-    "__________TEST": "__________",
-    "test": "echo \"no tests yet!\"",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "tspc -b",
-    "depcheck": "depcheck",
-    "areTheTypesWrong": "v areTheTypesWrong",
-    "fix": "v fix",
-    "fix:prettier": "v fixPrettier",
-    "fix:eslint": "v fixEslint",
-    "__________BUILD": "__________",
+    "__________TURBO": "__________",
     "build": "v build",
-    "build:cjs": "v buildCjs",
-    "build:esm": "v buildEsm",
-    "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnlyFast",
-    "__________MISC": "__________",
-    "clean": "v clean",
-    "typecov": "v typecov"
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "peerDependencies": {
@@ -59,7 +42,6 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "@~/workspace": "workspace:^",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   },
@@ -68,6 +50,6 @@
     "node": ">=15.0.0"
   },
   "typeCoverage": {
-    "is": 0
+    "is": 100
   }
 }

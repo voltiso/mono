@@ -15,7 +15,7 @@ export function hasNodeInlineComment(
 	const commentRanges = ts.getLeadingCommentRanges(nodeFullText, 0) || []
 	for (const commentRange of commentRanges) {
 		if (commentRange.kind !== ts.SyntaxKind.MultiLineCommentTrivia) continue
-		// eslint-disable-next-line unicorn/prefer-set-has
+
 		const comment = nodeFullText.slice(commentRange.pos, commentRange.end)
 		// console.log(`COMMENT: "${comment}"`)
 		const validInlineComments = ['@inline', '@__INLINE__', '#__INLINE__']

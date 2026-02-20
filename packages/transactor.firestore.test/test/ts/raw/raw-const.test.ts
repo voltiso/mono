@@ -16,7 +16,6 @@ interface Transfer extends Doc {
 	triggerCondition: boolean
 }
 
-// eslint-disable-next-line jest/require-hook
 db('transferB/*')
 	.publicOnCreation({
 		amount: s.number.min(0),
@@ -31,7 +30,7 @@ db('transferB/*')
 		if (this && this.triggerCondition) this.amount = 1919
 	})
 
-describe('raw-const', function () {
+describe('raw-const', () => {
 	it('should throw if no decorators (checkDecorators === true)', async () => {
 		expect.hasAssertions()
 
@@ -47,12 +46,12 @@ describe('raw-const', function () {
 		}
 	})
 
-	it('should not allow creating without required const schema fields', async function () {
+	it('should not allow creating without required const schema fields', async () => {
 		expect.hasAssertions()
 		await expect(db('transferB/a').set({})).rejects.toThrow('amount')
 	})
 
-	it('should not allow updating const schema fields', async function () {
+	it('should not allow updating const schema fields', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('transferB/asd').delete()
@@ -63,7 +62,7 @@ describe('raw-const', function () {
 		)
 	})
 
-	it('should allow updating const schema fields from actions', async function () {
+	it('should allow updating const schema fields from actions', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('transferB/superBank').delete()
@@ -75,7 +74,7 @@ describe('raw-const', function () {
 		})
 	})
 
-	it('should allow updating const schema fields from triggers', async function () {
+	it('should allow updating const schema fields from triggers', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('transferB/superBankB').delete()

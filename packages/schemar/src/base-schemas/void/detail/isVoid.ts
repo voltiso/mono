@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { SCHEMA_NAME } from '_'
 import { lazyFunction } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
 
 import type { IVoid, IVoid$ } from './IVoid'
 

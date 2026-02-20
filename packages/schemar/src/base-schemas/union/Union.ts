@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import { lazyConstructor } from '@voltiso/util'
 
 import type { $$Schemable, CustomUnion, CustomUnion$, Type } from '~'
@@ -9,17 +11,19 @@ import { UnionImpl } from './_/UnionImpl'
 
 //
 
-export interface Union<Ts extends $$Schemable[]> extends CustomUnion<{
-	// schemas: Ts
-	Output: Ts extends any ? Type<Ts[number], { kind: 'out' }> : never
-	Input: Ts extends any ? Type<Ts[number], { kind: 'in' }> : never
-}> {}
+export interface Union<Ts extends $$Schemable[]>
+	extends CustomUnion<{
+		// schemas: Ts
+		Output: Ts extends any ? Type<Ts[number], { kind: 'out' }> : never
+		Input: Ts extends any ? Type<Ts[number], { kind: 'in' }> : never
+	}> {}
 
-export interface Union$<Ts extends $$Schemable[]> extends CustomUnion$<{
-	// schemas: Ts
-	Output: Ts extends any ? Type<Ts[number], { kind: 'out' }> : never
-	Input: Ts extends any ? Type<Ts[number], { kind: 'in' }> : never
-}> {}
+export interface Union$<Ts extends $$Schemable[]>
+	extends CustomUnion$<{
+		// schemas: Ts
+		Output: Ts extends any ? Type<Ts[number], { kind: 'out' }> : never
+		Input: Ts extends any ? Type<Ts[number], { kind: 'in' }> : never
+	}> {}
 
 //
 

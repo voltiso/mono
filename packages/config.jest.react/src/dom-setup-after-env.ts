@@ -3,7 +3,6 @@
 
 // console.log('!!!', 'setup ESM')
 
-// // eslint-disable-next-line import/no-unassigned-import
 // import 'source-map-support/register'
-// eslint-disable-next-line import/no-unassigned-import
+
 import '@testing-library/jest-dom/jest-globals'

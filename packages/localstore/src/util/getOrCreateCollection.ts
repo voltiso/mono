@@ -10,6 +10,6 @@ export function getOrCreateCollection(
 	store: Localstore,
 	path: CollectionPath,
 ): Collection {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/no-nested-assignment
+	// biome-ignore lint/suspicious/noAssignInExpressions: .
 	return (store._collections[path] ||= new Collection())
 }

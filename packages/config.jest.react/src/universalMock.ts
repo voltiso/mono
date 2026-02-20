@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable tsdoc/syntax */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 /**
  * A Universal Recursive Proxy Mock.
  *
@@ -51,5 +48,4 @@ const proxy: any = new Proxy(() => proxy, {
 	},
 })
 
-// eslint-disable-next-line import/no-default-export
 export default proxy

@@ -8,14 +8,13 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "prepublishOnly": "v prepare",
-    "clean": "v clean",
-    "test": "v test",
-    "bench": "v bench"
+    "__________TURBO": "__________",
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/script.cmake": "workspace:^"
   },

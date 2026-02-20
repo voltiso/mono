@@ -21,7 +21,8 @@ export function fastAssert(
 	const error = new Error(finalMessage)
 	$fastAssert(error.stack)
 	let stack = error.stack.split('\n')
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
+	// biome-ignore lint/style/noNonNullAssertion: .
 	stack = [stack[0]!, ...stack.slice(2)]
 	error.stack = stack.join('\n')
 	// console.log('error', error)

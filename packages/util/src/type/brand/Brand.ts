@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import type { UNSET } from '_/symbols/unset'
 
 import type { Brands } from '~/Brands-augmentation'
@@ -81,10 +79,8 @@ export type _CustomBrandEntry<B, detail> = Nest_<
  *
  * 🌿 **Type-only** (no value at runtime)
  */
-export interface Brand<B extends BrandReference> extends CustomBrand<
-	B,
-	Brand.GetConstraint<B>
-> {}
+export interface Brand<B extends BrandReference>
+	extends CustomBrand<B, Brand.GetConstraint<B>> {}
 
 // export interface Branded<path extends BrandPath>
 // 	extends CustomBranded<path, Brand.GetConstraint<path>> {}

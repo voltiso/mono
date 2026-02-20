@@ -10,7 +10,6 @@ const IN_SCOPE = Symbol('in scope')
 
 type InScopeProxy = typeof IN_SCOPE
 
-// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type InScope = /** @inline */ InScopeProxy
 
 export type InScope2 = /** @inline */ typeof importedValue

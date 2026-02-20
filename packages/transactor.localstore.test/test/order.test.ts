@@ -63,7 +63,6 @@ class OrderApiTest extends Doc('orderApiTest')
 		for (const field of Object.keys(sPublicFields)) {
 			newHistoryStamp[field] = this.data[field as never]
 
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			if (newHistoryStamp[field] === undefined) delete newHistoryStamp[field]
 		}
 
@@ -88,6 +87,7 @@ describe('order', () => {
 		expect(orders).toBeTruthy()
 
 		// @ts-expect-error unused
+		// biome-ignore lint/correctness/noUnusedVariables: .
 		type OrderData = ReturnType<OrderApiTest['dataWithId']>
 	})
 })

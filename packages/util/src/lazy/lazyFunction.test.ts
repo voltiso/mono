@@ -6,6 +6,7 @@ import { describe, expect, it } from '@jest/globals'
 import { areArrowFunctionsTranspiled } from '~/misc'
 
 import { lazyFunction } from './lazyFunction'
+
 // import { $fastAssert } from '_/$strip/$assert'
 
 describe('lazyFunction', () => {
@@ -25,7 +26,6 @@ describe('lazyFunction', () => {
 		expect(typeof b).toBe('function')
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('strict mode', () => {
 	// 	expect.hasAssertions()
 
@@ -115,6 +115,7 @@ describe('lazyFunction', () => {
 			s: 'abc',
 		})
 
+		// biome-ignore lint/complexity/useArrowFunction: .
 		const b = lazyFunction(function () {
 			called = true
 			return a
@@ -161,12 +162,10 @@ describe('lazyFunction', () => {
 		// !
 
 		if (areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toStrictEqual(
 				Object.getOwnPropertyDescriptor(a, 'prototype'),
 			)
 		} else {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toStrictEqual({
 				...Object.getOwnPropertyDescriptor(a, 'prototype'),
 				configurable: true,
@@ -174,34 +173,30 @@ describe('lazyFunction', () => {
 		}
 
 		if (areArrowFunctionsTranspiled) {
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
 				Object.getOwnPropertyDescriptors(a),
 			)
 		} else {
 			const expected = Object.getOwnPropertyDescriptors(a)
 
-			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyDescriptors(b)).toMatchObject({
 				...expected,
 
 				// ! THIS DIFFERS IN CJS VS ESM
 				// arguments: {
 				// 	...expected['arguments'],
-				// 	// eslint-disable-next-line jest/no-conditional-expect
 				// 	configurable: expect.any(Boolean),
 				// },
 
 				// caller: {
 				// 	...expected['caller'],
-				// 	// eslint-disable-next-line jest/no-conditional-expect
 				// 	configurable: expect.any(Boolean),
 				// },
 				// !
 
 				prototype: {
 					...expected['prototype'],
-					// eslint-disable-next-line jest/no-conditional-expect
+
 					configurable: expect.any(Boolean),
 				},
 			})
@@ -240,7 +235,6 @@ describe('lazyFunction', () => {
 
 	// can't make it work with constructors unfortunately...
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('constructor', () => {
 	// 	expect.hasAssertions()
 
@@ -260,7 +254,7 @@ describe('lazyFunction', () => {
 	// 	const FunB = () => {}
 	// 	FunB.prototype = FunA.prototype
 
-	// 	// @ts-ignore
+	// 	// @ts-expect-error
 	// 	const x = new FunB()
 
 	// 	const cc = new CC()

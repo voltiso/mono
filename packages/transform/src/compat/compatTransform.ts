@@ -1,16 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-nested-conditional */
-/* eslint-disable sonarjs/nested-control-flow */
-/* eslint-disable sonarjs/cyclomatic-complexity */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable sonarjs/expression-complexity */
-/* eslint-disable max-depth */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable n/no-sync */
-/* eslint-disable security/detect-non-literal-fs-filename */
-
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 
@@ -129,7 +119,6 @@ export function compatTransform(
 			let isDirnameDeclarationCreated = false
 			let isDirnamePresent = false
 
-			// eslint-disable-next-line sonarjs/function-return-type
 			const visitor: ts.Visitor = node => {
 				// console.log('visitor', ts.SyntaxKind[node.kind])
 
@@ -172,8 +161,7 @@ export function compatTransform(
 					const isTypeOnly = ts.isLiteralTypeNode(node.parent)
 						? false
 						: ts.isImportDeclaration(node.parent)
-							? // eslint-disable-next-line @typescript-eslint/no-deprecated
-								node.parent.importClause?.isTypeOnly
+							? node.parent.importClause?.isTypeOnly
 							: node.parent.isTypeOnly
 
 					if (!isTypeOnly || options.afterDeclarationsHack) {

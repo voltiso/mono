@@ -7,7 +7,6 @@ import type * as React from 'react'
 export function _createElement(
 	elementType: keyof React.JSX.IntrinsicElements,
 ): HTMLElement | undefined {
-	// eslint-disable-next-line unicorn/no-negated-condition
 	if (typeof document !== 'undefined')
 		return document.createElement(elementType)
 	else return undefined

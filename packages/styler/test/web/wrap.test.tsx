@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
@@ -11,7 +11,6 @@ import { style } from '~'
 
 import { renderApp } from './common'
 
-// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
 afterEach(() => {
 	cleanup() // required after upgrading testing library
 })
@@ -24,7 +23,6 @@ describe('wrap', () => {
 
 		renderApp(<Component data-testid='test'>Hello</Component>)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const myComponent = screen.getByTestId('test')
 
 		expect(myComponent).toContainHTML(
@@ -41,7 +39,6 @@ describe('wrap', () => {
 
 		renderApp(<Component data-testid='test'>Hello</Component>)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const myComponent = screen.getByTestId('test')
 
 		expect(myComponent).toContainHTML(
@@ -91,9 +88,7 @@ describe('wrap', () => {
 		renderApp(
 			<MyDiv
 				data-testid='test'
-				// eslint-disable-next-line react/forbid-component-props
 				className='xxxxx'
-				// eslint-disable-next-line react/forbid-component-props
 				style={{ flex: 1 }}
 				css={{ margin: 1 }}
 				contentX='contentValue'
@@ -102,7 +97,6 @@ describe('wrap', () => {
 			</MyDiv>,
 		)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const myDiv = screen.getByTestId('test')
 
 		expect(myDiv).toHaveClass('BDsg4w xxxxx', { exact: true })
@@ -112,12 +106,10 @@ describe('wrap', () => {
 		expect(myDiv).not.toHaveAttribute('content')
 		expect(myDiv).not.toHaveAttribute('footerColor')
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const myFooter2 = screen.getByTestId('MyFooter2')
 
 		expect(myFooter2).toHaveStyle({ color: 'rgb(255, 0, 0)' })
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const myFooter1 = screen.getByTestId('MyFooter1')
 
 		expect(myFooter1).toHaveStyle({ color: 'canvastext' })

@@ -25,7 +25,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 	handlers,
 	autoCreateTarget,
 }) =>
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
+	// biome-ignore lint/complexity/useArrowFunction: .
 	async function ({
 		transactor,
 		__voltiso,
@@ -49,9 +49,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 		// console.log('aggregate', before, after)
 
-		const data: GetDataWithId<$$Doc> =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			(before as never) || (after as never)
+		const data: GetDataWithId<$$Doc> = (before as never) || (after as never)
 
 		assert(data)
 		assert(data.__voltiso)
@@ -66,11 +64,9 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 		const awaitedTargetHandlerResult = await targetHandlerResult
 
 		const [targets, awaitedTargets] =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-nested-ternary
 			awaitedTargetHandlerResult === null
 				? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
-				: // eslint-disable-next-line sonarjs/no-nested-conditional
-					Array.isArray(awaitedTargetHandlerResult)
+				: Array.isArray(awaitedTargetHandlerResult)
 					? [
 							awaitedTargetHandlerResult,
 							await Promise.all(awaitedTargetHandlerResult),
@@ -80,7 +76,6 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 							[awaitedTargetHandlerResult],
 						]
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		__voltiso.aggregateSource[name] ||= {} // ! !!
 
 		const sourceInfo = __voltiso.aggregateSource[name]
@@ -92,17 +87,13 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 			if (finalTarget === undefined) continue
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!finalTarget) {
 				const handlerReturnedRef = isDocRef(target)
 
 				if (handlerReturnedRef && autoCreateTarget) {
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					try {
-						// eslint-disable-next-line no-await-in-loop
 						finalTarget = await target.set()
 					} catch (error) {
-						// eslint-disable-next-line no-console
 						console.error(
 							`aggregate trigger for source '${
 								path.toString() as unknown as string
@@ -116,7 +107,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 					}
 				} else {
 					let additionalInfo = ''
-					// eslint-disable-next-line sonarjs/nested-control-flow
+
 					if (!autoCreateTarget)
 						additionalInfo = ' - hint: you can use `autoCreateTarget: true`'
 
@@ -142,7 +133,6 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 					finalTarget.aggregateSchemas[name],
 
-					// eslint-disable-next-line @typescript-eslint/no-deprecated
 					handlers.initialValue,
 				),
 
@@ -156,21 +146,18 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			// console.log('old target info', targetInfo, { wasAlreadyProcessed })
 
 			if (before && wasAlreadyProcessed) {
-				// eslint-disable-next-line no-await-in-loop
 				targetInfo.value = await handlers.exclude.call(
 					getDocDataView(before, ctx),
 					targetInfo.value as never,
 				)
 				targetInfo.numSources -= 1
 
-				// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 				delete sourceInfo[finalTargetPath]
 			}
 
 			// assert(targetInfo.value.length === targetInfo.numSources, 'A')
 
 			if (after) {
-				// eslint-disable-next-line no-await-in-loop
 				targetInfo.value = await handlers.include.call(
 					getDocDataView(after, ctx),
 					targetInfo.value as never,

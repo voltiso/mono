@@ -6,7 +6,6 @@ import { describe, expect, it } from '@jest/globals'
 import { style } from '~'
 
 describe('undefined', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works (static)', () => {
 		expect.assertions(0)
 

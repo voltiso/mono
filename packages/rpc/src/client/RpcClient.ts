@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type { Handlers, PromisifyHandlers } from '~/_shared'
 
 import type { RpcClientOptions } from './RpcClientOptions'
@@ -37,7 +35,7 @@ export class _RpcClient<THandlers extends Handlers> {
 
 		const clientPath = new RpcClientPath(this as never, [])
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(this, {
 			get(target, p, receiver) {
 				if (p in target) return Reflect.get(target, p, receiver) as never

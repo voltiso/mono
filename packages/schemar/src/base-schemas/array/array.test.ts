@@ -6,8 +6,8 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { Output_, Schema } from '~'
-import { isArraySchema, schema } from '~'
 import * as s from '~'
+import { isArraySchema, schema } from '~'
 
 describe('array', () => {
 	it('type', () => {
@@ -247,7 +247,6 @@ describe('array', () => {
 	it('toString', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.array.getElementSchema.toString()).toBe('unknown')
 
 		expect(s.array.toString()).toBe('unknown[]')
@@ -273,7 +272,7 @@ describe('array', () => {
 	})
 
 	// ! currently disabled typings for this
-	// eslint-disable-next-line jest/no-commented-out-tests
+
 	// it('AtLeast1 - type', () => {
 	// 	const a = s.array(1).minLength(1)
 	// 	type A = typeof a.Output

@@ -2,10 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export function patchRequireForEsbuild(): void {
-	// eslint-disable-next-line n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
 	const Module = require('node:module') as NodeJS.Require
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	const originalRequire = Module.prototype.require as NodeJS.Require
 
 	function newRequire(this: unknown, id: string): never {
@@ -22,6 +20,5 @@ export function patchRequireForEsbuild(): void {
 	}
 	Object.setPrototypeOf(newRequire, originalRequire)
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, sonarjs/class-prototype
 	Module.prototype.require = newRequire
 }

@@ -9,7 +9,6 @@ class Base {
 	a: number
 
 	constructor() {
-		// eslint-disable-next-line unicorn/prefer-class-fields
 		this.a = 123
 		freeze(this, ['a'])
 	}

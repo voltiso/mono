@@ -1,10 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -12,7 +10,7 @@ import { CallableConstructor } from './CallableConstructor'
 
 class _Cls {
 	constructor(n: number)
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	constructor(s: string)
 
 	constructor(arg: string | number) {
@@ -30,16 +28,18 @@ class _Cls {
 	static readonly _staticData: (number | bigint | symbol)[] = []
 
 	static addStaticData(this: typeof _Cls, arg: number): Cls
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	static addStaticData(this: typeof _Cls, arg: bigint | symbol): Cls
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	static addStaticData(this: typeof _Cls, arg: symbol): Cls
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls
 
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls {
+		// biome-ignore lint/complexity/noThisInStatic: .
 		class Cls extends this {
 			static override readonly _staticData: (number | bigint | symbol)[] = [
+				// biome-ignore lint/complexity/noThisInStatic: .
 				...super._staticData,
 				arg,
 			]
@@ -54,11 +54,10 @@ class _Derived extends _Cls {
 }
 
 function call(s: symbol): typeof _Cls
-// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 function call(b: bigint): typeof _Cls
 function call(b: string): string
 
-// eslint-disable-next-line sonarjs/function-return-type
 function call(
 	this: typeof _Cls,
 	arg: bigint | symbol | string,
@@ -87,7 +86,6 @@ describe('callableConstructor', () => {
 
 		expect(() => cls()).toThrow('not a function')
 
-		// eslint-disable-next-line sonarjs/inconsistent-function-call
 		const value = Cls('aaa')
 
 		expect(value).toBe('aaa')
@@ -97,7 +95,6 @@ describe('callableConstructor', () => {
 
 		const cls3 = new Cls3('3')
 
-		// eslint-disable-next-line sonarjs/inconsistent-function-call
 		const cls2 = new Cls2('2')
 
 		expect(cls2._val).toBe('2')

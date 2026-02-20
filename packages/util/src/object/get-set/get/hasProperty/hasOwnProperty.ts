@@ -6,12 +6,13 @@ import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 import { assertNotPolluting } from '~/object'
 import { stringFrom } from '~/string'
 
-// eslint-disable-next-line sonarjs/no-built-in-override
+// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 export function hasOwnProperty<Obj extends object, Key extends keyof any>(
 	obj: Obj,
 	key: Key,
 ): key is Key & keyof Obj {
 	assertNotPolluting(obj, key)
+	// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 	return Object.prototype.hasOwnProperty.call(obj, key)
 }
 

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsEqual, IsIdentical } from '~/type'
 
@@ -30,7 +30,7 @@ describe('join', () => {
 	})
 
 	// ! TODO
-	// eslint-disable-next-line jest/no-commented-out-tests
+
 	// it('handles unknown tails', () => {
 	// 	type A = Join<['a', 'b', ...string[]], {separator: '|'}>
 	// })

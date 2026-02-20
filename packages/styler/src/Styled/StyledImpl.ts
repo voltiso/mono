@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/informative-docs */
-/* eslint-disable @typescript-eslint/unified-signatures */
-
 import type {
 	MapOrUndefined,
 	PickOptional,
@@ -16,7 +13,7 @@ import { tryAt } from '@voltiso/util'
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type { IStyledDataMod, StyledData, Unit } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
-import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
+import { STYLED_TYPE_INFO as $, STYLED_DATA as DATA } from '~/_/symbols'
 import type {
 	ForwardRefAndCssRenderFunction,
 	ForwardRefRenderFunction,
@@ -36,8 +33,8 @@ import type { RelaxedStyleFromProps, StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
 import type {
 	GetStyledCss as C,
-	GetStyledRelaxedCss as RelaxedC,
 	GetStyledTypeInfo as G,
+	GetStyledRelaxedCss as RelaxedC,
 } from './GetStyledTypeInfo'
 import type { IStyled } from './IStyled'
 import { isStyled } from './IStyled'
@@ -59,7 +56,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 			if (alreadyHaveCustomCss ?? incomingCustomCss) {
 				const customCss = { ...alreadyHaveCustomCss, ...incomingCustomCss }
-				// eslint-disable-next-line no-param-reassign
+
 				newData = {
 					...newData,
 					stack: newData.stack.map(node => ({ ...node, customCss })),
@@ -102,7 +99,8 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 				: getComponent(data as never)
 
 		Object.setPrototypeOf(r, this)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return r as never
 	}
 
@@ -265,9 +263,9 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	cssProps<PropNames extends (keyof C<$>)[]>(
 		...propNames: PropNames
-	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore TS2590: Expression produces a union type that is too complex to represent.
-	Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
+		// biome-ignore lint/suspicious/noTsIgnore: .
+		// @ts-ignore TS2590: too complex...
+	): Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
 
 		const cssProps = {} as Record<string, unknown[]>
@@ -510,6 +508,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		name: Name,
 		value?: PropValue<P<$>, P<$>[Name]>,
 	): ForcePatch<this, { Props: { [k in Name]?: P<$>[Name] | undefined } }> {
+		// biome-ignore lint/complexity/noArguments: .
 		const myValue = arguments.length === 1 ? true : value
 		// assert(typeof myValue !== 'undefined')
 		return this._clone({
@@ -819,6 +818,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		propName: PropName,
 		defaultValue?: PV,
 	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }> {
+		// biome-ignore lint/complexity/noArguments: .
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			stack: [
@@ -883,6 +883,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		propName: PropName,
 		defaultValue?: PV,
 	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }> {
+		// biome-ignore lint/complexity/noArguments: .
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			domDefaults: {
@@ -1013,7 +1014,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			>,
 	): ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 
-	// eslint-disable-next-line sonarjs/function-return-type
 	defineProps<DefinedProps extends Props>(
 		defaultValues?: Partial<UndefinedFromOptional<DefinedProps>> &
 			MapOrUndefined<

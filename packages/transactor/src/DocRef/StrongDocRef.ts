@@ -10,12 +10,11 @@ import type {
 } from '~'
 
 /** Strong document reference - with ref-counting ✅ */
-export interface DocRef<
-	doc extends $$DocRelated = ANY_DOC,
-> extends CustomDocRef<{
-	doc: doc
-	isStrong: true
-}> {
+export interface DocRef<doc extends $$DocRelated = ANY_DOC>
+	extends CustomDocRef<{
+		doc: doc
+		isStrong: true
+	}> {
 	// get Final(): this
 }
 

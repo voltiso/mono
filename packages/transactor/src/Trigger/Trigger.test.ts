@@ -35,7 +35,6 @@ describe('Trigger', () => {
 		void MyDoc
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('explicit params', () => {
 	// 	expect.assertions(0)
 

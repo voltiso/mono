@@ -5,7 +5,6 @@ ignorePatterns:
   - dist/
 
 ignores:
-  - '@~/workspace'
   - '~'
   - '@voltiso/config.ts'
   - '@voltiso/config.tsdoc'

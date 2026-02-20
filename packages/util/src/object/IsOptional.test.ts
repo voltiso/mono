@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { strictNullChecks } from '~/tsc-options'
 
@@ -22,7 +22,7 @@ describe('isOptional', () => {
 	})
 
 	// ! the example below works differently in new TS
-	// eslint-disable-next-line jest/no-commented-out-tests
+
 	// it('generics', <T extends { a?: 1 }>() => {
 	// 	expect.assertions(0)
 

@@ -4,6 +4,6 @@
 import { useEffect } from 'react'
 
 export function useOnMount(handleMount: () => void): void {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	useEffect(handleMount, [])
 }

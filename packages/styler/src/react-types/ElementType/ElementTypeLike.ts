@@ -12,6 +12,7 @@ export interface ReactElementLike<P = any> {
 }
 
 export interface FunctionComponentLike<P = any> {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	(props: any): ReactNodeLike<P> // ReactElementLike<P> | null
 }
 

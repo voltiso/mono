@@ -51,7 +51,7 @@ export function getBeforeCommits(
 						__voltiso.aggregateTarget,
 					)) {
 						assert(targetInfo)
-						// eslint-disable-next-line sonarjs/nested-control-flow
+
 						if (targetInfo.numSources !== 0)
 							throw new TransactorError(
 								`cannot delete ${path.toString()}: it's an active aggregation target (${

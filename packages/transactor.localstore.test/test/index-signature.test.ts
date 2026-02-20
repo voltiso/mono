@@ -25,8 +25,8 @@ class User extends Doc.with({
 
 const users = db('userSig').register(User)
 
-describe('index-signature', function () {
-	it('works', async function () {
+describe('index-signature', () => {
+	it('works', async () => {
 		expect.hasAssertions()
 
 		await database.doc('userSig/a').delete()

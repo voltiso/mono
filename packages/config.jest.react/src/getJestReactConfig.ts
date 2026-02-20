@@ -7,7 +7,6 @@ import { getJestConfig } from '@voltiso/config.jest'
 import type { Config } from 'jest'
 import resolve from 'resolve'
 
-// eslint-disable-next-line unicorn/prefer-module
 const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat
 
 // 1. Resolve RN setup once, but don't apply it yet
@@ -24,7 +23,6 @@ try {
 //
 
 function getJestReactWebConfig(options: {
-	// eslint-disable-next-line sonarjs/use-type-alias
 	format?: 'cjs' | 'esm' | undefined
 }) {
 	const baseConfig = getJestConfig(options)

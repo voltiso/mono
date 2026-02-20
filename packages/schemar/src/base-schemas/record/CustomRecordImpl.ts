@@ -1,8 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import { $fastAssert, lazyConstructor } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
 
 import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -17,12 +19,13 @@ import type { RecordOptions } from './RecordOptions'
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomRecordImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: RecordOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: RecordOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomRecord<O>
@@ -50,7 +53,6 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		return this[Voltiso.OPTIONS].valueSchema as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getShape(): {} {
 		return {}
 	}
@@ -64,7 +66,6 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		]
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 	}
@@ -73,7 +74,6 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		x: unknown,
 		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		return (this._object as any)._getIssues(x, options) as never
 	}
 
@@ -81,7 +81,6 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		x: unknown,
 		options?: Partial<ValidationOptions> | undefined,
 	): unknown {
-		// eslint-disable-next-line no-param-reassign, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		x = (this._object as any)._fix(x, options) as never
 		return x
 	}

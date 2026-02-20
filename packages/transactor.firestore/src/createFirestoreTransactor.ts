@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/unified-signatures */
-
 import type { TransactorOptions } from '@voltiso/transactor'
 import { Transactor } from '@voltiso/transactor'
 import type { Firestore } from 'firebase-admin/firestore'
@@ -20,7 +18,6 @@ type Args =
 	| [Firestore, Partial<TransactorOptions>]
 
 function isFirestore(x: unknown): x is Firestore {
-	// eslint-disable-next-line @typescript-eslint/unbound-method
 	return Boolean((x as Firestore | null)?.recursiveDelete)
 }
 

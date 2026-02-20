@@ -3,8 +3,8 @@
 
 import { $assert } from '@voltiso/assertor'
 import type { $$SchemableObject, IObject$, Schema } from '@voltiso/schemar'
-import { isObjectSchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { isObjectSchema } from '@voltiso/schemar'
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
@@ -36,7 +36,6 @@ export function getIdSchemas(ref: $$DocRef): Schema<string>[] {
 	return ref._idSchemas
 }
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function getSchema(ref: $$DocRef): IntrinsicFieldsSchema | null {
 	$AssumeType<_CustomDocRef>(ref)
 
@@ -87,7 +86,7 @@ export function getSchema(ref: $$DocRef): IntrinsicFieldsSchema | null {
 		ref._publicOnCreationSchema = s.object({}) as never
 		ref._privateSchema = s.object({}) as never
 
-		// eslint-disable-next-line sonarjs/no-nested-assignment
+		// biome-ignore lint/suspicious/noAssignInExpressions: .
 		return (ref._schema = null)
 	}
 
@@ -113,7 +112,7 @@ export function getSchema(ref: $$DocRef): IntrinsicFieldsSchema | null {
 	for (const schema of privateSchemas) {
 		thisSchema = thisSchema.and(schema) as never
 		// console.log({ schema })
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+
 		$assert(isObjectSchema(thisSchema), `after and'ing with ${schema}`)
 		ref._privateSchema = ref._privateSchema.and(schema) as never
 	}

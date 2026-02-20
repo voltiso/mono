@@ -1,16 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import { $assert } from '@voltiso/assertor'
 import { Context } from '@voltiso/context'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IsUnion, MaybePromise, Tail, Throw } from '@voltiso/util'
 import { $AssumeType, staticImplements, tryAt } from '@voltiso/util'
-
-import { checkEnv } from '~/checkEnv'
 import type { CollectionRef } from '~/CollectionRef'
+import { checkEnv } from '~/checkEnv'
 import type { DatabaseContext, FirestoreLikeModule } from '~/DatabaseContext'
 import { Db } from '~/Db/Db'
 import type { DTI, IndexedDoc } from '~/Doc'
@@ -63,7 +60,8 @@ export class Transactor extends Db {
 	get databaseModule(): DatabaseContext {
 		// $assert(this._databaseContext.database)
 		// $assert(this._databaseContext.module)
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
+		// biome-ignore lint/style/noNonNullAssertion: hacky hacky
 		return this._databaseContext!
 	}
 
@@ -166,7 +164,6 @@ export class Transactor extends Db {
 
 		$AssumeType<TransactorConstructorParametersNoUndefined, typeof args>(args)
 
-		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (args.length) {
 			case 1:
 				;[partialOptions] = args
@@ -181,7 +178,6 @@ export class Transactor extends Db {
 				break
 
 			default:
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (args.length > 3)
 					throw new TransactorError('expected 0, 1 or 2 arguments')
 		}
@@ -277,7 +273,6 @@ export class Transactor extends Db {
 		return this._options.refCounters
 	}
 
-	// eslint-disable-next-line sonarjs/function-return-type
 	get allowConcurrentTransactions(): boolean | 'warn' {
 		return this._options.allowConcurrentTransactions
 	}
@@ -286,7 +281,6 @@ export class Transactor extends Db {
 		this._options.allowConcurrentTransactions = value
 	}
 
-	// eslint-disable-next-line sonarjs/function-return-type
 	get checkDecorators(): boolean | 'warn' {
 		return this._options.checkDecorators
 	}

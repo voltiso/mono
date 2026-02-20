@@ -3,15 +3,14 @@
 
 import { describe, expect, it } from '@jest/globals'
 import { act, render } from '@testing-library/react'
-import { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import { ValidationIssue } from '@voltiso/schemar'
 import { $fastAssert, sleep } from '@voltiso/util'
 import { useObservable } from '@voltiso/util.react.rxjs'
 import { CustomSubjectTree } from '@voltiso/util.rxjs'
 import { ReplaySubject } from 'rxjs'
-
-import { useForm } from './useForm'
 import type { UseForm } from './UseForm-types'
+import { useForm } from './useForm'
 
 describe('useForm', () => {
 	it('works', () => {
@@ -54,10 +53,8 @@ describe('useForm', () => {
 
 				validators: {
 					name: async (value: string) => {
-						// eslint-disable-next-line rxjs/no-ignored-replay-buffer
 						const subject = new ReplaySubject<ValidationIssue>()
 
-						// eslint-disable-next-line sonarjs/no-nested-functions
 						async function run() {
 							// no sleep - push issue synchronously before subject is listened on
 							if (value.toLowerCase() !== value)
@@ -103,6 +100,7 @@ describe('useForm', () => {
 			const fields = useObservable(form$.fields)
 
 			return (
+				// biome-ignore lint/complexity/noUselessFragments: .
 				<>
 					<form {...formProps}>
 						<input {...fields.name.props} />

@@ -13,7 +13,6 @@ const moduleNameMapper: Record<string, string> = {
 
 // remove extensions
 for (const extension of codeFilesExtensions) {
-	// eslint-disable-next-line unicorn/prefer-string-raw
 	moduleNameMapper[`^(\\..+)\\.${extension}$`] = '$1'
 }
 

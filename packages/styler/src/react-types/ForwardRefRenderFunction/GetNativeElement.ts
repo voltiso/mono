@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ComponentPropsWithRef, ComponentType, LegacyRef } from 'react'
 import type React from 'react'
+import type { ComponentPropsWithRef, ComponentType, LegacyRef } from 'react'
 
 import type { IntrinsicElement } from '~/Stylable'
 import type { NativeElement } from '~/StyledComponent'
@@ -18,8 +18,7 @@ export type GetNativeElement<
 	? T
 	: T extends IntrinsicElement | ComponentType<any>
 		? 'ref' extends keyof ComponentPropsWithRef<T>
-			? // eslint-disable-next-line @typescript-eslint/no-deprecated
-				ComponentPropsWithRef<T>['ref'] extends LegacyRef<infer R> | undefined
+			? ComponentPropsWithRef<T>['ref'] extends LegacyRef<infer R> | undefined
 				? R
 				: never
 			: never

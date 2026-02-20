@@ -9,8 +9,8 @@ import type {
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type {
-	GetStyledLikeTypeInfo as GL,
 	GetStyledTypeInfo as G,
+	GetStyledLikeTypeInfo as GL,
 } from '../GetStyledTypeInfo'
 
 export type $GetStyledProps<$ extends Partial<StyledTypeInfo>> =

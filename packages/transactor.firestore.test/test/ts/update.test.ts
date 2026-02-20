@@ -15,8 +15,8 @@ const db = new Transactor(firestore, firestoreModule, {
 
 const doctors = db('doctor')
 
-describe('update', function () {
-	it('updates without returning data when no triggers or schemas', async function () {
+describe('update', () => {
+	it('updates without returning data when no triggers or schemas', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').delete()
@@ -42,7 +42,7 @@ describe('update', function () {
 		})
 	})
 
-	it('does not allow updates of deleted document', async function () {
+	it('does not allow updates of deleted document', async () => {
 		expect.hasAssertions()
 		await expect(
 			db.runTransaction(async () => {
@@ -52,7 +52,7 @@ describe('update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('does not allow updates of deleted document #2', async function () {
+	it('does not allow updates of deleted document #2', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').delete()
@@ -64,7 +64,7 @@ describe('update', function () {
 		).rejects.toThrow('NOT_FOUND')
 	})
 
-	it('updates without returning data when no triggers or schemas - when in transaction', async function () {
+	it('updates without returning data when no triggers or schemas - when in transaction', async () => {
 		expect.hasAssertions()
 
 		await doctors('anthony').set({ asd: 1 })

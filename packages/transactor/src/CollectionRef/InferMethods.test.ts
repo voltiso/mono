@@ -5,9 +5,8 @@ import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
-
-import { afterCreateOrUpdate, method } from '~/decorators'
 import { Doc } from '~/Doc'
+import { afterCreateOrUpdate, method } from '~/decorators'
 
 import type { InferMethods } from './InferMethods'
 

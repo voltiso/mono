@@ -34,13 +34,10 @@ function getScripts(): Record<string, string | string[]> {
 			for (const suffix of suffixes) {
 				const requirePath = `${scriptsFilePath}${suffix}`
 
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				try {
-					// eslint-disable-next-line import/no-dynamic-require, n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
 					const moreScripts = require(requirePath) as Record<string, string>
 					scripts = { ...moreScripts, ...scripts }
 				} catch (error) {
-					// eslint-disable-next-line max-depth
 					if (
 						(error as { code: string } | null)?.code !== 'MODULE_NOT_FOUND' ||
 						!(error as { message?: string } | null)?.message?.includes(
@@ -79,7 +76,7 @@ async function getPackageScripts() {
 		const packageJson = JSON.parse(packageStr) as {
 			scripts: Record<string, string>
 		}
-		// eslint-disable-next-line require-atomic-updates
+
 		gPackageScripts = Object.fromEntries(
 			Object.entries(packageJson.scripts).map(([k, v]) => [
 				k,
@@ -95,29 +92,24 @@ async function getPackageScripts() {
 
 const icon = '🐚'
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export async function runScript(
 	script: Script | Promise<Script>,
 	args: string[],
 	{ signal }: { signal?: AbortSignal | undefined } = {},
 ): Promise<void> {
-	// eslint-disable-next-line no-param-reassign
 	if (!signal) signal = context.signal
 
 	// if (!signal)
 	// 	throw new Error('`runScript`: Internal error: `signal` is required')
 
-	// eslint-disable-next-line require-atomic-updates, no-param-reassign
 	script = await script
 
 	if (!script) return
 
 	if (Array.isArray(script)) {
-		// eslint-disable-next-line @typescript-eslint/await-thenable
 		const subScripts = await Promise.all(script)
 
 		for (const s of subScripts) {
-			// eslint-disable-next-line no-await-in-loop
 			await runScript(s, args, { signal })
 		}
 		return
@@ -130,7 +122,6 @@ export async function runScript(
 		try {
 			await Promise.all(promises)
 		} catch (error) {
-			// eslint-disable-next-line no-console
 			console.error(
 				icon,
 				'parallel(...) script failed - aborting other scripts...',
@@ -164,7 +155,6 @@ export async function runScript(
 		try {
 			await Promise.race(promises)
 		} finally {
-			// // eslint-disable-next-line no-console
 			// console.log(icon, 'race(...) script finished - aborting other scripts...')
 
 			raceController.abort()
@@ -185,15 +175,12 @@ export async function runScript(
 	}
 
 	let tokens = [script, ...args].join(' ').split(' ')
-	if (tokens[0] === 'v')
-		tokens = tokens.slice(1)
+	if (tokens[0] === 'v') tokens = tokens.slice(1)
 
-		// eslint-disable-next-line no-param-reassign, sonarjs/no-unenclosed-multiline-block
 	;[script, ...args] = tokens as [string, ...string[]]
 
 	// console.log('script', script, script.length)
 
-	// eslint-disable-next-line no-console
 	console.log(icon, pc.blueBright(script), pc.gray(args.join(' ')))
 
 	const packageScripts = await getPackageScripts()
@@ -213,11 +200,9 @@ export async function runScript(
 		return
 	}
 
-	// eslint-disable-next-line promise/avoid-new
 	const cpPromise = new Promise<void>((resolve, reject) => {
 		const command = [script, ...args].join(' ')
 
-		// eslint-disable-next-line sonarjs/os-command
 		const childProcess = spawn(command, {
 			shell: true,
 			stdio: 'inherit',

@@ -2,19 +2,24 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
-  - '@types/node'
-  - '@voltiso/config.eslint.lib'
-  - '@voltiso/config.jest'
-  - '@voltiso/config.jest.lib'
-  - '@voltiso/config.prettier'
-  - '@voltiso/config.ts'
-  - eslint-import-resolver-typescript
+  - "@arethetypeswrong/cli"
+  - "@biomejs/biome"
+  - "@types/node"
+  - "@typescript/analyze-trace" # for TS trace
+  - "@voltiso/config.jest"
+  - "@voltiso/config.jest.lib"
+  - "@voltiso/config.ts"
+  - "@voltiso/config.tsdoc"
+  - depcheck
+  - gnomon # for TS trace
   - jest
   - rimraf
   - ts-node
+  - ts-patch
+  - tsx # for running tests etc.
   - ttypescript
   - type-coverage
   - typescript
   - typescript-transform-paths
   - zone.js
+  - cross-env

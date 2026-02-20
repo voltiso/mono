@@ -42,13 +42,11 @@ export namespace VoltisoError {
 // 	let prefix = ''
 
 // 	if (options?.package) {
-// 		// eslint-disable-next-line etc/no-internal
 // 		const packageStr = _stringFromPackageInfo(options.package)
 // 		prefix = `[${packageStr}]`
 // 	}
 
 // 	if (options?.function) {
-// 		// eslint-disable-next-line etc/no-internal
 // 		const functionStr = _stringFromFunctionInfo(options.function)
 // 		prefix += ` ${functionStr}`
 // 	}
@@ -104,13 +102,12 @@ export class VoltisoError extends Error {
 			arg1,
 		)
 
-		// // eslint-disable-next-line etc/no-internal
 		// const prefix = _getErrorMessagePrefix(options)
 
 		// const prefixedMessage = `${prefix}${message || ''}`
 
 		super(message, options)
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
+
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoError'
 

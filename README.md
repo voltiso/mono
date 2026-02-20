@@ -6,15 +6,15 @@
 
 🚀 [Turborepo](https://turborepo.org/) _monorepo_
 
-| 📁                                                                                          | ℹ️                                                                                                                                                                                                                                             |
-| :------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@voltiso/styler`](https://github.com/voltiso/voltiso/tree/master/packages/styler)         | 🦋 _The easiest_ **css-in-js** for React                                                                                                                                                                                                       |
-| [`@voltiso/schemar`](https://github.com/voltiso/voltiso/tree/master/packages/schemar)       | 👮 _The cleanest_ **schema validation**<br>🚗 Live **auto-inferred TS** typings                                                                                                                                                                |
-| [`@voltiso/rpc`](https://github.com/voltiso/voltiso/tree/master/packages/rpc)               | 🌐 TypeScript **RPC** lib<br>🚗 Live **auto-inferred full-stack TS** typings<br>👮 Full-stack validation                                                                                                                                       |
+| 📁                                                                                          | ℹ️                                                                                                                                                                                                                                              |
+| :------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@voltiso/styler`](https://github.com/voltiso/voltiso/tree/master/packages/styler)         | 🦋 _The easiest_ **css-in-js** for React                                                                                                                                                                                                        |
+| [`@voltiso/schemar`](https://github.com/voltiso/voltiso/tree/master/packages/schemar)       | 👮 _The cleanest_ **schema validation**<br>🚗 Live **auto-inferred TS** typings                                                                                                                                                                 |
+| [`@voltiso/rpc`](https://github.com/voltiso/voltiso/tree/master/packages/rpc)               | 🌐 TypeScript **RPC** lib<br>🚗 Live **auto-inferred full-stack TS** typings<br>👮 Full-stack validation                                                                                                                                        |
 | [`@voltiso/transactor`](https://github.com/voltiso/voltiso/tree/master/packages/transactor) | 🗄️ NoSQL **Document Database** API<br>🟰 **ORM-free**: Document _is_ Object<br>👮 **Schema** validation<br>⚛️ Atomic **triggers**<br>🚗 Live **auto-inferred TS** typings<br>🔥 Currently **FireStore** backend<br>🌐 Currently **server-side** |
-| [`@voltiso/util`](https://github.com/voltiso/voltiso/tree/master/packages/util)             | 👌 TypeScript toolbox                                                                                                                                                                                                                          |
-| [`@voltiso/script[.lib]`](https://github.com/voltiso/voltiso/tree/master/packages/script)   | 🔨 CLI build tools                                                                                                                                                                                                                             |
-| [`@voltiso/config.**.*`](https://github.com/voltiso/voltiso/tree/master/packages/config)    | ⚙️ Our configs<br> `prettier`, `eslint`, `tsconfig`, `babel`, `jest`, ...                                                                                                                                                                      |
+| [`@voltiso/util`](https://github.com/voltiso/voltiso/tree/master/packages/util)             | 👌 TypeScript toolbox                                                                                                                                                                                                                           |
+| [`@voltiso/script[.lib]`](https://github.com/voltiso/voltiso/tree/master/packages/script)   | 🔨 CLI build tools                                                                                                                                                                                                                              |
+| [`@voltiso/config.**.*`](https://github.com/voltiso/voltiso/tree/master/packages/config)    | ⚙️ Our configs<br> `tsconfig`, `jest`, `tsdoc`, ...                                                                                                                                                                                             |
 
 > 💡 **Windows** users ❤️ WSL
 >
@@ -36,8 +36,6 @@ pnpm add @voltiso/util
 pnpm add @voltiso/config.ts
 pnpm add @voltiso/config.ts.build.esm
 
-pnpm add @voltiso/config.eslint
-pnpm add @voltiso/config.prettier
 pnpm add @voltiso/config.jest
 
 # ...
@@ -82,17 +80,6 @@ pnpm lint
 ```sh
 pnpm test
 ```
-
-## Dependency version issues
-
-- `@eslint/eslintrc`
-  - `1.3.2` works, `1.3.3` breaks
-    `@rushstack/eslint-patch/modern-module-resolution`
-- `typescript`:
-  - `4.9.4` -
-  - `< 4.8.0` problem linting `styler/test/native`
-  - `>= 4.8.0` (no eslint support yet, `eslint-plugin-unused-imports` bugged for
-    decorators - see `createBoundCallableObject.test.ts`)
 
 ### Using `Orta.vscode-jest` extension
 

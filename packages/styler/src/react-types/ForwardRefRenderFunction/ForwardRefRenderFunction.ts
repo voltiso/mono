@@ -16,8 +16,7 @@ export type ForwardRefRenderFunction<
 		| NativeElement,
 	P = {},
 	// T extends NativeElement
-	// 	? // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-	// 		{}
+	// 	? {}
 	// 	: T extends IntrinsicElement
 	// 		? JSX.IntrinsicElements[T]
 	// 		: T extends React.ComponentType<any> ? React.ComponentProps<T> : never,

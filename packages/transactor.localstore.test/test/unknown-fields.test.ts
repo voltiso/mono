@@ -14,7 +14,6 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-// eslint-disable-next-line jest/require-hook
 let issues = [] as ValidationIssue[]
 
 class User extends Doc('usersUnknownFields').with({

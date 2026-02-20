@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-implicit-globals */
-
 'use strict'
 
 const { describe, expect, it } = require('@jest/globals')
@@ -11,13 +9,12 @@ const { firestore, srcFirestore } = require('./common/index.cjs')
 const { createFirestoreTransactor } = srcFirestore
 
 function promiseConstructorName() {
-	// eslint-disable-next-line promise/spec-only
 	return Promise.name
 }
 
 function checkPromiseConstructorName() {
 	const name = promiseConstructorName()
-	// eslint-disable-next-line no-console
+
 	console.log(`Promise.name === ${name}`)
 
 	if (name !== 'ZoneAwarePromise') {
@@ -32,7 +29,6 @@ function implicitPromiseConstructorName() {
 function checkImplicitPromiseConstructorName() {
 	const name = implicitPromiseConstructorName()
 
-	// eslint-disable-next-line no-console
 	console.log(`implicit Promise constructor name: ${name}`)
 
 	if (name !== 'ZoneAwarePromise') {
@@ -42,10 +38,8 @@ function checkImplicitPromiseConstructorName() {
 	}
 }
 
-// eslint-disable-next-line jest/require-hook
 checkPromiseConstructorName()
 
-// eslint-disable-next-line jest/require-hook
 checkImplicitPromiseConstructorName()
 
 const db = createFirestoreTransactor(firestore, {
@@ -53,7 +47,7 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('transaction', function () {
+describe('transaction', () => {
 	it('should use async storage (get)', async () => {
 		expect.hasAssertions()
 
@@ -73,7 +67,7 @@ describe('transaction', function () {
 		})
 	})
 
-	it('should use async storage (update)', async function () {
+	it('should use async storage (update)', async () => {
 		expect.hasAssertions()
 
 		await db('visitor/artur').set({ age: 12 })
@@ -88,7 +82,7 @@ describe('transaction', function () {
 		await expect(db('visitor/artur').data['age']).resolves.toBe(12)
 	})
 
-	it('should detect access after transaction is committed', async function () {
+	it('should detect access after transaction is committed', async () => {
 		expect.hasAssertions()
 
 		// @ts-expect-error ...
@@ -98,11 +92,11 @@ describe('transaction', function () {
 		})
 
 		// @ts-expect-error ...
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+
 		expect(() => t('visitor/artur').set({ age: 994 })).toThrow('missing await')
 	})
 
-	it('should commit local object changes', async function () {
+	it('should commit local object changes', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async db => {
@@ -119,7 +113,7 @@ describe('transaction', function () {
 		expect(adam.age).toBe(234)
 	})
 
-	it('should commit local object changes recursively', async function () {
+	it('should commit local object changes recursively', async () => {
 		expect.hasAssertions()
 
 		await db.runTransaction(async db => {

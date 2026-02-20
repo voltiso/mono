@@ -1,13 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable testing-library/prefer-screen-queries */
-
 import { describe, expect, it } from '@jest/globals'
 import type {
-	IsReactNative,
 	IStylable,
 	IStylableJsxCall,
+	IsReactNative,
 } from '@voltiso/styler'
 import { style } from '@voltiso/styler'
 import { $Assert } from '@voltiso/util'
@@ -41,7 +39,6 @@ describe('cssProps', () => {
 			<MyView testID='a' flex={1} backgroundColor='red' />,
 		)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -57,7 +54,6 @@ describe('cssProps', () => {
 		;<Button /> // check if optional
 		const { getByTestId } = renderApp(<Button red testID='a' />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({

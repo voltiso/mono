@@ -1,18 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable no-plusplus */
-/* eslint-disable unicorn/prefer-code-point */
-/* eslint-disable no-bitwise */
-
 export function getHash32(str: string): number {
 	let hash = 5_381
 
 	let i = str.length
 
 	while (i) {
-		// eslint-disable-next-line sonarjs/no-nested-incdec
 		hash = (hash * 33) ^ str.charCodeAt(--i)
 	}
 
@@ -23,20 +17,18 @@ export function getHash32(str: string): number {
 }
 
 export function base64UrlFromUInt32Be(num: number): string {
-	return (
-		btoa(
-			String.fromCharCode(
-				(num >> 24) & 0xff,
-				(num >> 16) & 0xff,
-				(num >> 8) & 0xff,
-				num & 0xff,
-			),
-		)
-			.replace(/\+/gu, '-')
-			.replace(/\//gu, '_')
-			// eslint-disable-next-line sonarjs/single-char-in-character-classes
-			.replace(/[=]/gu, '')
+	return btoa(
+		String.fromCharCode(
+			(num >> 24) & 0xff,
+			(num >> 16) & 0xff,
+			(num >> 8) & 0xff,
+			num & 0xff,
+		),
 	)
+		.replace(/\+/gu, '-')
+		.replace(/\//gu, '_')
+
+		.replace(/[=]/gu, '')
 
 	// console.log('base64UrlFromUInt32Be', { num: num / 1e9 })
 
@@ -71,13 +63,10 @@ export function getHash(str: string): string {
 // 	 * ignore the import when bundling
 // 	 */
 // 	const crypto =
-// 		// eslint-disable-next-line @typescript-eslint/no-unsafe-call, no-eval
 // 		eval('require')(
 // 			/* webpackIgnore: true*/ 'node:crypto',
-// 			// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 // 		) as typeof import('crypto')
 
 // 	const digest = crypto.createHash('sha1').update(styleStr).digest('base64url')
-// 	// eslint-disable-next-line regexp/prefer-regexp-exec, @typescript-eslint/no-non-null-assertion
 // 	return digest.match(/[^\d-].{5}/u)![0]!
 // }

@@ -6,14 +6,10 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "v lintTsc",
-    "fix": "eslint . --fix"
+    "__________TURBO": "__________",
+    "check": "v check",
+    "__________HOOKS": "__________",
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "devDependencies": {
@@ -26,8 +22,6 @@
     "@voltiso/config.ts": "^5.1.0",
     "@voltiso/styler": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "@~/workspace": "workspace:^",
-    "eslint": "^9.39.2",
     "react": "^19.1.0",
     "react-native": "~0.84.0",
     "react-test-renderer": "^19.1.0"

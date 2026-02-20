@@ -1,14 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { _setDecoratorDetection, method } from './decorators'
 import { Doc } from './Doc/Doc'
 import { _inferMetadata } from './DocConstructor/_/inferMetadata'
+import { _setDecoratorDetection, method } from './decorators'
 import { TransactorError } from './error'
 
 function checkStrictMode() {
 	if (
-		// eslint-disable-next-line no-useless-call
 		function (this: unknown) {
 			return this
 		}.call(null) !== null
@@ -19,9 +18,7 @@ function checkStrictMode() {
 }
 
 function checkDecorators() {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!Symbol.metadata) {
-		// eslint-disable-next-line no-console
 		console.warn(
 			'⚠️ @voltiso/transactor: checkDecorators: `Symbol(Symbol.metadata)` not defined, adding a polyfill',
 		)
@@ -33,7 +30,6 @@ function checkDecorators() {
 
 	class C extends Doc {
 		@method
-		// eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/class-methods-use-this
 		fun() {}
 	}
 
@@ -41,7 +37,6 @@ function checkDecorators() {
 
 	_inferMetadata(C)
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	if (!(C._.methods as any).fun) {
 		throw new TransactorError('checkDecorators: decorators not working!')
 	}

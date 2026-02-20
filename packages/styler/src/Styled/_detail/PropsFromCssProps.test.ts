@@ -10,15 +10,15 @@ import type { Props } from '~/react-types'
 import type { PropsFromCssProps } from './PropsFromCssProps'
 
 describe('PropsFromCssProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
-	it('generic', <CP extends IndexedCssPropsSingle<CssProps>, CssProps extends
-		object>() => {
+	it('generic', <
+		CP extends IndexedCssPropsSingle<CssProps>,
+		CssProps extends object,
+	>() => {
 		expect.assertions(0)
 
 		$Assert.is<PropsFromCssProps<CP, CssProps>, Props>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', <CssProps extends object>() => {
 		expect.assertions(0)
 

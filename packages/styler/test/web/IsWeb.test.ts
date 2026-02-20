@@ -7,7 +7,6 @@ import { $Assert } from '@voltiso/util'
 import type { IsReactNative } from '~'
 
 describe('isWeb', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.assertions(0)
 

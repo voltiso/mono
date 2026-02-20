@@ -31,8 +31,8 @@ class Doctor extends Doc.with({
 
 const doctors = db('doctorB').register(Doctor)
 
-describe('afterCreate - private update', function () {
-	it('triggers on creation', async function () {
+describe('afterCreate - private update', () => {
+	it('triggers on creation', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('doctorB/anthony').delete()
@@ -51,7 +51,7 @@ describe('afterCreate - private update', function () {
 		await expect(doctors('anthony').data.ofWhat).resolves.toBe('universe')
 	})
 
-	it('does not trigger on update', async function () {
+	it('does not trigger on update', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('doctorB/anthony').delete()

@@ -14,7 +14,6 @@ const db = createTransactor({
 	checkDecorators: false,
 })
 
-// eslint-disable-next-line jest/require-hook
 db('cosmos/*')
 	.private({
 		specialty: s.string.optional,
@@ -26,7 +25,7 @@ db('cosmos/*')
 	.afterCreateOrUpdate(function () {
 		if (this.data['specialty'] === 'master') this.data['ofWhat'] = 'universe'
 	})
-	.method('fail', async function (path: string) {
+	.method('fail', async (path: string) => {
 		// const { db } = this
 
 		await db(new CustomDocPath(path)).update({ specialty: 'fireman' })
@@ -37,8 +36,8 @@ db('cosmos/*')
 		await db(path).update({ specialty: 'fireman' })
 	})
 
-describe('raw-private', function () {
-	it('should not allow setting private fields', async function () {
+describe('raw-private', () => {
+	it('should not allow setting private fields', async () => {
 		expect.hasAssertions()
 
 		await database.doc('cosmos/anthony').delete()
@@ -49,7 +48,7 @@ describe('raw-private', function () {
 		await expect(db('cosmos/anthony')).resolves.toBeNull()
 	})
 
-	it('should assume empty schema if privateSchema is provided', async function () {
+	it('should assume empty schema if privateSchema is provided', async () => {
 		expect.hasAssertions()
 		await expect(
 			db('cosmos', 'anthony').set({ illegalField: 123 }),
@@ -57,7 +56,7 @@ describe('raw-private', function () {
 		await expect(db('cosmos/anthony')).resolves.toBeNull()
 	})
 
-	it('should allow any data for tables without schemas', async function () {
+	it('should allow any data for tables without schemas', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = false
@@ -74,7 +73,7 @@ describe('raw-private', function () {
 		})
 	})
 
-	it('should not allow any data for tables without schemas if requireSchemas === true', async function () {
+	it('should not allow any data for tables without schemas if requireSchemas === true', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = true
@@ -85,7 +84,7 @@ describe('raw-private', function () {
 		)
 	})
 
-	it('should allow private fields access via method', async function () {
+	it('should allow private fields access via method', async () => {
 		expect.hasAssertions()
 
 		await db('cosmos/a').set({})
@@ -98,7 +97,7 @@ describe('raw-private', function () {
 		})
 	})
 
-	it('should allow private fields access via triggers', async function () {
+	it('should allow private fields access via triggers', async () => {
 		expect.hasAssertions()
 
 		await db('cosmos/a').set({})
@@ -112,7 +111,7 @@ describe('raw-private', function () {
 		})
 	})
 
-	it('should allow modifying private fields from the same doc', async function () {
+	it('should allow modifying private fields from the same doc', async () => {
 		expect.hasAssertions()
 
 		await db('cosmos/a').set({})
@@ -123,7 +122,7 @@ describe('raw-private', function () {
 		expect(result).toBeUndefined()
 	})
 
-	it('should not allow modifying private fields from other documents', async function () {
+	it('should not allow modifying private fields from other documents', async () => {
 		expect.hasAssertions()
 
 		await db('cosmos/a').set({})

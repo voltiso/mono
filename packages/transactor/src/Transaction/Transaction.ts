@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type * as Database from '@voltiso/firestore-like'
 import { lazyConstructor, omit, staticImplements } from '@voltiso/util'
 
@@ -14,15 +12,16 @@ import type { Cache } from './Cache'
 import type { ParentContext, TransactionContext } from './Context'
 import type { TransactionConstructor } from './TransactionConstructor'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Transaction {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	<Tokens extends readonly string[]>(
 		...pathTokens: Tokens
 	): DbPathFromString<CanonicalPath<Tokens>>
 }
 
 @staticImplements<TransactionConstructor<Transaction>>()
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class Transaction extends lazyConstructor(() => Db) {
 	declare _context: TransactionContext
 	_databaseTransaction: Database.Transaction

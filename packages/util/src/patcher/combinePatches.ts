@@ -8,10 +8,9 @@ import { arraySetUpdateIt, isArraySetUpdateIt } from './arraySetUpdateIt'
 import { isDeleteIt } from './deleteIt'
 import { incrementIt, isIncrementIt } from './incrementIt'
 import { isKeepIt } from './keepIt'
-import { patch } from './patch'
 import type { PatchFor } from './PatchFor'
+import { patch } from './patch'
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 	if (isDeleteIt(b)) return b
 
@@ -55,7 +54,7 @@ export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 		const result = { ...a }
 
 		for (const [key, value] of Object.entries(b)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
 			;(result as any)[key] = combinePatches(
 				result[key as never],
 				value,

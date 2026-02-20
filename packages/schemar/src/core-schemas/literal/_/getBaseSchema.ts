@@ -35,7 +35,6 @@ export function getBaseSchema(inferableLiteral: InferableLiteral): Schema {
 			return symbol as never
 
 		case 'object':
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			$fastAssert(inferableLiteral === null)
 			return literal as never
 

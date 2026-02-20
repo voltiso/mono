@@ -16,7 +16,6 @@ import { $Assert } from '@voltiso/util'
 import type { StyleProp } from 'react-native'
 
 describe('Styled (react-native)', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends {}, C extends Stylable>() => {
 		expect.assertions(0)
 
@@ -29,7 +28,6 @@ describe('Styled (react-native)', () => {
 		$Assert.is<StyledComponentWithProps<C, P>, IStyled>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not allow components without InnerProps', () => {
 		expect.assertions(0)
 

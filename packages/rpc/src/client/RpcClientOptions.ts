@@ -4,9 +4,8 @@
 import type { Handlers, RpcOptions } from '../_shared'
 import { defaultRpcOptions } from '../_shared'
 
-export interface RpcClientOptions<
-	THandlers extends Handlers,
-> extends RpcOptions {
+export interface RpcClientOptions<THandlers extends Handlers>
+	extends RpcOptions {
 	//
 	localHandlers?: THandlers | undefined
 }

@@ -1,10 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-/* eslint-disable sonarjs/cyclomatic-complexity */
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
 	BoundCallable,
@@ -27,7 +23,7 @@ function callLocal(
 ): MaybePromise<unknown> | undefined {
 	// | void ???
 	const options = clientPath._client._options
-	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+
 	const localHandler = tryGet(
 		options.localHandlers,
 		clientPath._path as never,
@@ -69,7 +65,6 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 		.map(x => stringFrom(x))
 		.join(', ')})`
 
-	// eslint-disable-next-line no-console
 	if (clientPath._client._options.log) console.log(`${message}...`) // should not be too long
 
 	const detail: string[] = []
@@ -86,7 +81,6 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 		detail.push(`HTTP ${response.status}`)
 
 		if (response.status === 200) {
-			// eslint-disable-next-line destructuring/no-rename
 			const { result: serializedResult } = (await response.json()) as {
 				result: unknown
 			}
@@ -113,7 +107,6 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 			}
 		} catch {}
 	} catch (error) {
-		// // eslint-disable-next-line no-console
 		// console.error(error) // ! SHOULD PRINT TO CONSOLE ?
 
 		const message =
@@ -127,7 +120,6 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 	const finalMessage = [message, ...detail].join(': ')
 
 	if (clientPath._client.options.log)
-		// eslint-disable-next-line no-console
 		console.error(
 			shorten(finalMessage, clientPath._client.options.logMaxLength),
 		)
@@ -146,7 +138,7 @@ export class RpcClientPath {
 
 		const callableThis = BoundCallable(this)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(callableThis, {
 			get(target, p, receiver) {
 				if (typeof p !== 'string' || p in target)

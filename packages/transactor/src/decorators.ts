@@ -42,7 +42,6 @@ let _didAnyDecoratorFire = false
  * @internal
  */
 export function _checkDecorators(ctx: WithTransactor): void {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (ctx.transactor._options.checkDecorators === undefined) {
 		throw new TransactorError(
 			'Unable to read Transactor options (`checkDecorators`)',
@@ -90,7 +89,7 @@ function createMethodDecorator<
 		if (_decoratorDetection) _didAnyDecoratorFire = true
 		if (typeof args[1] === 'string') {
 			// assume [class, methodName]
-			// eslint-disable-next-line sonarjs/destructuring-assignment-syntax
+
 			const name = args[1]
 			const cls = args[0]
 			$AssumeType<{ constructor: { _: DocDerivedData } }>(cls)
@@ -100,7 +99,6 @@ function createMethodDecorator<
 			] as unknown as () => Promise<TriggerReturn<$$Doc>>
 			decoratorImplementation(mutableMetadata, name, implementation as never)
 		} else if (
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			args[1] &&
 			typeof args[1] === 'object' &&
 			typeof args[1].name === 'string'

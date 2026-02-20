@@ -13,7 +13,6 @@ import type {
 } from './OuterProps'
 
 describe('OuterProps', <CustomCss extends object>() => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

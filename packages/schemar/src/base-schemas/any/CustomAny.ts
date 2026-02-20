@@ -5,9 +5,8 @@ import type { AnyOptions, CustomSchema, CustomSchema$ } from '~'
 
 //
 
-export interface CustomAny<
-	O extends Partial<AnyOptions>,
-> extends CustomSchema<O> {
+export interface CustomAny<O extends Partial<AnyOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Any'
 
@@ -17,9 +16,8 @@ export interface CustomAny<
 
 //
 
-export interface CustomAny$<
-	O extends Partial<AnyOptions>,
-> extends CustomSchema$<O> {
+export interface CustomAny$<O extends Partial<AnyOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Any'
 

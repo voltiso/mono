@@ -5,8 +5,8 @@ import { describe, expect, it } from '@jest/globals'
 
 import { getGetPathMatches } from './PathMatches'
 
-describe('getGetPathMatches', function () {
-	it('should work with 2 captures', function () {
+describe('getGetPathMatches', () => {
+	it('should work with 2 captures', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/{user}/projects/{project}')
@@ -21,7 +21,7 @@ describe('getGetPathMatches', function () {
 		})
 	})
 
-	it('should work with 1 capture', function () {
+	it('should work with 1 capture', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/{user}/data')
@@ -32,7 +32,7 @@ describe('getGetPathMatches', function () {
 		})
 	})
 
-	it('should work with 0 captures', function () {
+	it('should work with 0 captures', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/user/data')
@@ -43,7 +43,7 @@ describe('getGetPathMatches', function () {
 		})
 	})
 
-	it('should return null when no match', function () {
+	it('should return null when no match', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/{user}')
@@ -52,7 +52,7 @@ describe('getGetPathMatches', function () {
 		expect(pathParams).toBeNull()
 	})
 
-	it('should work with wildcards', function () {
+	it('should work with wildcards', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/*/projects/**')
@@ -64,12 +64,11 @@ describe('getGetPathMatches', function () {
 		expect(getPathParams('/users/artur/x/projects/wrs/on24')).toBeNull()
 	})
 
-	it('should work with pathArgs and pathParams at the same time', function () {
+	it('should work with pathArgs and pathParams at the same time', () => {
 		expect.hasAssertions()
 
 		const getPathParams = getGetPathMatches('/users/*/projects/{project}')
 
-		// eslint-disable-next-line jest/prefer-strict-equal
 		expect(getPathParams('/users/artur/projects/wrs')).toEqual({
 			pathParams: { project: 'wrs' },
 			pathArgs: ['artur', 'wrs'],

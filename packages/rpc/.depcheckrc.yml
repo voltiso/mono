@@ -2,10 +2,8 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@~/workspace'
   - '~'
   - '@voltiso/config.ts'
   - '@voltiso/config.jest'
-  - '@voltiso/config.eslint.lib'
   - '@voltiso/script'
   - cross-env

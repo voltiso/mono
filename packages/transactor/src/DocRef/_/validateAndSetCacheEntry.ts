@@ -39,7 +39,6 @@ export function validateAndSetCacheEntry(
 		throw error
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (data) data = withVoltisoEntry(context, data)
 
 	setCacheEntry(context, cacheEntry, data, hadUpdates)

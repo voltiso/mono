@@ -16,7 +16,6 @@ export type GetPathMatches = (path: string) => PathMatches | null
 export const getGetPathMatches = (pattern: string): GetPathMatches => {
 	let currentPattern = pattern
 
-	// eslint-disable-next-line sonarjs/regular-expr
 	currentPattern = currentPattern.replace(/\*\*/gu, '⚡')
 	currentPattern = currentPattern.replace(/\*/gu, '🚀')
 
@@ -31,11 +30,9 @@ export const getGetPathMatches = (pattern: string): GetPathMatches => {
 		)
 	}
 
-	// eslint-disable-next-line security/detect-non-literal-regexp, require-unicode-regexp
 	const regex = new RegExp(`^${currentPattern}$`)
 
 	return (path: string): PathMatches | null => {
-		// eslint-disable-next-line regexp/prefer-regexp-exec, sonarjs/prefer-regexp-exec
 		const matches = path.match(regex)
 
 		if (matches)

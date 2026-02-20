@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BASE_OPTIONS,
@@ -12,6 +11,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { Literal } from '~/core-schemas/literal/Literal'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
@@ -55,11 +55,11 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		super(o)
 		const newThis = BoundCallable(this)
 		Object.freeze(newThis)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return newThis
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends string>(...args: readonly L[] | [Set<L>]): Literal<L> {
 		return literal(...(args as never[])) as never
 	}
@@ -79,7 +79,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
-							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 							description: `be of length at least ${this.getMinLength}`,
 						},
 
@@ -94,7 +93,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
-							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 							description: `be of length at most ${this.getMaxLength}`,
 						},
 
@@ -133,7 +131,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'string'
 	}
@@ -158,7 +155,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		maxLength?: Max,
 	): never {
 		if (maxLength === undefined) {
-			// eslint-disable-next-line no-param-reassign
 			maxLength = minLength as unknown as Max
 		}
 

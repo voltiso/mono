@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 export class LocalStorage<T> {
 	key: string
 	defaultValue: T | undefined
@@ -11,16 +9,15 @@ export class LocalStorage<T> {
 	constructor(key: string, defaultValue?: T) {
 		this.key = key
 
+		// biome-ignore lint/complexity/noArguments: .
 		this.hasDefaultValue = arguments.length >= 2
 		this.defaultValue = defaultValue
 	}
 
 	get data(): T {
 		const stringData =
-			// eslint-disable-next-line unicorn/no-negated-condition
 			typeof window !== 'undefined'
-				? // eslint-disable-next-line n/no-unsupported-features/node-builtins
-					window.localStorage.getItem(this.key)
+				? window.localStorage.getItem(this.key)
 				: null
 
 		if (stringData !== null) return JSON.parse(stringData) as T
@@ -34,12 +31,10 @@ export class LocalStorage<T> {
 
 	set data(x: T) {
 		if (typeof window !== 'undefined')
-			// eslint-disable-next-line n/no-unsupported-features/node-builtins
 			window.localStorage.setItem(this.key, JSON.stringify(x))
 	}
 
 	clear(): void {
-		// eslint-disable-next-line n/no-unsupported-features/node-builtins
 		if (typeof window !== 'undefined') window.localStorage.removeItem(this.key)
 	}
 }

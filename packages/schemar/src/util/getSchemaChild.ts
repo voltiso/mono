@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { SCHEMA_NAME } from '_'
 import { assertNotPolluting, isPlainObject } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
 
 import type { Output_, Schema, Schemable } from '~'
 import {
@@ -14,7 +14,6 @@ import {
 } from '~'
 import * as s from '~/base-schemas'
 
-// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 	schema: S,
 	child: Key,
@@ -72,7 +71,6 @@ export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 	// }
 }
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function getSchemableChild<
 	S extends Schemable,
 	Key extends keyof Output_<S>,

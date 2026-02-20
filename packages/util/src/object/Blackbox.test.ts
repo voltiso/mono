@@ -13,7 +13,6 @@ type JSONValue = never // well... `superjson` in its super-ness does not export 
 // const isCjs = typeof require === 'function'
 // console.log('Blackbox.test.ts', { isCjs })
 
-// eslint-disable-next-line jest/require-hook
 registerCustom<object, PropertyDescriptorMap & JSONValue>(
 	{
 		isApplicable(v): v is object {

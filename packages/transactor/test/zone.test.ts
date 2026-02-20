@@ -17,7 +17,6 @@ function sleep(ms: number) {
 		try {
 			setTimeout(resolve, ms)
 		} catch (error) {
-			// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
 			reject(error)
 		}
 	})
@@ -26,7 +25,7 @@ function sleep(ms: number) {
 describe('zone', () => {
 	it('patches Promise', () => {
 		expect.hasAssertions()
-		// eslint-disable-next-line promise/spec-only
+
 		expect(Promise.name).toBe('ZoneAwarePromise')
 	})
 

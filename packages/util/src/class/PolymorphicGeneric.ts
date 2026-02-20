@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
 import type { Generics } from '~/Generics-augmentation'
 import type { Get_ } from '~/object/get-set/get/get/Get'
 import type { AlsoAccept, Override, Override_ } from '~/type'
@@ -140,12 +138,12 @@ export interface PolymorphicGeneric<O extends {}> {
 //
 
 /** Utility for building polymorphic builder-like interfaces */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class PolymorphicGeneric<O extends {}> {
 	readonly options: this[Voltiso.OPTIONS] & this[HIDDEN_OPTIONS]
 
 	/** Static */
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+
 	get defaultOptions(): this[DEFAULT_OPTIONS] &
 		Rebind<this, this[DEFAULT_OPTIONS]>[HIDDEN_OPTIONS] {
 		return {} as never

@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-type-conversion */
-
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BASE_OPTIONS,
@@ -15,6 +12,7 @@ import {
 	OPTIONS,
 	zip,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type {
 	$$Schemable,
@@ -65,7 +63,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this) as never
 	}
 
@@ -83,7 +81,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		return this._cloneWithOptions({ isReadonlyArray: false }) as never
 	}
 
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isArraySchema(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
@@ -106,7 +103,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				if (thisMaxLength < other.getLength) return false
 
 				for (const t of other.getShape) {
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (!(this.getElementSchema as unknown as Schema).extends(t))
 						return false
 				}
@@ -147,7 +143,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			let haveChange = false
 			for (const [a, b] of zip(x, result)) if (a !== b) haveChange = true
 
-			// eslint-disable-next-line no-param-reassign
 			if (haveChange) x = result
 		}
 
@@ -197,7 +192,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				const c = (this.getElementSchema as unknown as Schema).exec(e, options)
 
 				if (!c.isValid) {
-					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const issue of c.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...c.issues]
@@ -217,9 +211,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override _toString(): string {
-		const elementTypeStr =
-			// eslint-disable-next-line @typescript-eslint/no-base-to-string
-			(this.getElementSchema as unknown as Schema).toString()
+		const elementTypeStr = (
+			this.getElementSchema as unknown as Schema
+		).toString()
 
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`
 		else return `${elementTypeStr}[]`

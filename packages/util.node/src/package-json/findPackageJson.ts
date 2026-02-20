@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-
 import fs from 'node:fs'
 import * as path from 'node:path'
 
@@ -35,6 +33,7 @@ export function* findPackageJsonSyncer(
 
 	let currentDir = startingDir
 
+	// biome-ignore lint/suspicious/noImplicitAnyLet: .
 	let packageJsonPath
 
 	for (;;) {

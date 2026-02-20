@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import { assertNotPolluting, isDefined } from '@voltiso/util'
 
 import type { DocBuilderPlugin } from '~/Doc'
@@ -14,9 +12,9 @@ import { getAggregatorTrigger } from './_/getAggregatorTrigger'
 
 export const aggregatePluginName = 'aggregate' as const
 
-export class AggregatePlugin<
-	R extends $$DocRelated,
-> implements DocBuilderPlugin<R> {
+export class AggregatePlugin<R extends $$DocRelated>
+	implements DocBuilderPlugin<R>
+{
 	declare readonly DocTag: DocBuilderPlugin<R>['DocTag']
 
 	readonly name = aggregatePluginName

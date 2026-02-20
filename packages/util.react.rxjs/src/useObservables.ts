@@ -34,7 +34,6 @@ export function useObservables<Observables extends readonly unknown[]>(
 
 //
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function useObservables<Observables extends readonly unknown[]>(
 	...observables$: Observables
 ): GetObservedValues<Observables> | StaticError {
@@ -44,7 +43,6 @@ export function useObservables<Observables extends readonly unknown[]>(
 	const current = useCurrent({ values })
 
 	const results = observables$.map((x, index) =>
-		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		isObservableLike(x) ? getObservableValue(x, values[index]) : x,
 	) as GetObservedValues<Observables>
 
@@ -53,9 +51,7 @@ export function useObservables<Observables extends readonly unknown[]>(
 			.map((observable$, index) => {
 				if (!isObservableLike(observable$)) return null
 
-				// eslint-disable-next-line rxjs/no-ignored-error
 				return observable$.subscribe(value => {
-					// eslint-disable-next-line es-x/no-object-is
 					if (Object.is(value, current.values[index])) return
 
 					const newValues = [

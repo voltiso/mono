@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable testing-library/prefer-screen-queries */
-
 import { describe, expect, it } from '@jest/globals'
 import { style } from '@voltiso/styler'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -18,7 +16,6 @@ describe('curried', () => {
 		const MyText2 = MyText.css({ margin: 8 })
 		const { getByTestId } = renderApp(<MyText2 testID='a' />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -50,7 +47,7 @@ describe('curried', () => {
 		;<MyView2 red />
 
 		const { getByTestId } = renderApp(<MyView2 testID='a' red bgRed />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -70,7 +67,7 @@ describe('curried', () => {
 
 		const MyTouchableOpacity = myStyle(TouchableOpacity)
 		const { getByTestId } = renderApp(<MyTouchableOpacity testID='a' red />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -90,7 +87,7 @@ describe('curried', () => {
 
 		const MyScrollView = myStyle(ScrollView)
 		const { getByTestId } = renderApp(<MyScrollView testID='a' />)
-		// eslint-disable-next-line testing-library/no-test-id-queries
+
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({

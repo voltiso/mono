@@ -10,7 +10,6 @@ describe('equals', () => {
 		expect(equals(Number.NaN, Number.NaN)).toBeTruthy()
 		expect(equals(0, Number.NaN)).toBeFalsy()
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
 		expect(equals(+0, -0)).toBeTruthy()
 		expect(equals(1, 2)).toBeFalsy()
 	})
@@ -47,11 +46,10 @@ describe('equals', () => {
 
 	describe('regex', () => {
 		it('simple', () => {
-			// eslint-disable-next-line regexp/require-unicode-regexp
 			expect(equals(/test/g, /test/g)).toBeTruthy()
-			// eslint-disable-next-line regexp/require-unicode-regexp
+
 			expect(equals(/test/g, /test/gu)).toBeFalsy()
-			// eslint-disable-next-line regexp/require-unicode-regexp
+
 			expect(equals(/test/g, '/test/g')).toBeFalsy()
 		})
 	})

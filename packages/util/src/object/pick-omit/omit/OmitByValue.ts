@@ -52,11 +52,9 @@ export function omitByValue(
 			continue
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 		result[key] = value
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return haveChange ? result : obj
 }
 

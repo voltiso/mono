@@ -4,7 +4,7 @@
 export * from './_'
 export type * from './CustomUnknownLiteral'
 export * from './defaultUnknownLiteralOptions'
-export * from './isUnknownLiteral'
 export type * from './IUnknownLiteral'
+export * from './isUnknownLiteral'
 export * from './UnknownLiteral'
 export type * from './UnknownLiteralOptions'

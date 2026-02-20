@@ -3,10 +3,10 @@
 
 export * from './capitalize'
 export type * from './Includes'
-export * from './isString'
 export type * from './IsStringLiteral'
+export * from './isString'
 export * from './Join'
-export * from './pad'
 export type * from './Printable'
+export * from './pad'
 export type * from './Split'
 export * from './stringFrom'

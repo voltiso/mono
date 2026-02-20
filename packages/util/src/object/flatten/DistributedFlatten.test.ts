@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -152,9 +152,8 @@ describe('$_ (DistributedFlatten)', () => {
 		type OO = $_<{}>
 		$Assert<IsIdentical<OO, {}>>()
 
-		// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
 		type OOO = $_<Object>
-		// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
+
 		$Assert<IsIdentical<OOO, Object>>()
 
 		type OOOO = $_<Record<string, unknown>>

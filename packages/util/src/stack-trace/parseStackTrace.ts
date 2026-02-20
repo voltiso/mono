@@ -6,21 +6,21 @@ import { define } from '~/type'
 
 import { tryParseCodeLocation } from './parseCodeLocation'
 
-export interface StackTraceEntry extends UndefinedFromOptional<{
-	functionName: string
+export interface StackTraceEntry
+	extends UndefinedFromOptional<{
+		functionName: string
 
-	path?: string
-	fileName?: string
-	line?: number
-	column?: number
-}> {}
+		path?: string
+		fileName?: string
+		line?: number
+		column?: number
+	}> {}
 
 export function parseStackTrace(stackStr: string): StackTraceEntry[] {
 	const entries = stackStr
 		.split('\n')
 		.map(
 			line =>
-				// eslint-disable-next-line sonarjs/regular-expr
 				/at (?<functionName>(?:new )?[^ ]*) [^(]*\((?<location>[^)]*)\)/u.exec(
 					line,
 				)?.groups as

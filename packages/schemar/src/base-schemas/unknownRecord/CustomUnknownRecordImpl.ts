@@ -1,13 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
 	CALL,
 	lazyConstructor,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { Record as RecordSchema } from '~/base-schemas/record/record'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -22,24 +22,23 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnknownRecordImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnknownRecordOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownRecordOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownRecord<O>
 {
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownRecord'
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getIndexSignatures(): [] {
 		return [] as []
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getShape(): {} {
 		return {}
 	}
@@ -48,11 +47,11 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 		super(o)
 		const newThis = BoundCallable(this)
 		Object.freeze(newThis)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return newThis
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<
 		TKeySchema extends $$Schema & {
 			Output: keyof any
@@ -65,13 +64,11 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 		return new RecordImpl(...(args as [any, any])) as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 		// if (isObject(other)) {
 		// 	return getKeys(other.getShape).length === 0
 		// } else if (isUnknownObject(other)) return true
-		// // eslint-disable-next-line security/detect-object-injection
 		// else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 }

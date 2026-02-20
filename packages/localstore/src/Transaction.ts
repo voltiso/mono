@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import * as Database from '@voltiso/firestore-like'
 import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
@@ -52,7 +50,6 @@ function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
 	if (lockedByOther) fail(store)
 
 	if (lock) $fastAssert(lock.transaction === transaction)
-	// eslint-disable-next-line no-multi-assign
 	else lock = store._locks[path] = new Lock(transaction, undefined)
 
 	return lock
@@ -124,14 +121,12 @@ export class Transaction implements Database.Transaction {
 			if (lock.data === null) docRef._delete()
 			else if (lock.data) docRef._set(lock.data)
 
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete this._store._locks[path]
 		}
 	}
 
 	_cleanup(): void {
 		for (const [path, lock] of Object.entries(this._store._locks)) {
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			if (lock.transaction === this) delete this._store._locks[path]
 		}
 	}

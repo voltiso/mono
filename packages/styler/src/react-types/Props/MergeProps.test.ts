@@ -9,7 +9,6 @@ import type { MergeProps_ } from './MergeProps'
 import type { Props } from './Props'
 
 describe('MergeProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('simple', () => {
 		expect.assertions(0)
 
@@ -29,7 +28,6 @@ describe('MergeProps', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P0 extends Props, P1 extends Props>() => {
 		expect.assertions(0)
 
@@ -37,7 +35,6 @@ describe('MergeProps', () => {
 		$Assert.is<A, Props>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('converts optionals to also undefined', () => {
 	// 	expect.assertions(0)
 
@@ -53,7 +50,6 @@ describe('MergeProps', () => {
 	// 	>()
 	// })
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('vscode jump to definition (manual test...)', () => {
 		expect.assertions(0)
 

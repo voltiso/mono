@@ -8,7 +8,6 @@ import type { DefaultStyledData } from './defaultStyledData'
 import type { IStyledData } from './IStyledData'
 
 describe('defaultStyledData', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

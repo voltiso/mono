@@ -3,7 +3,6 @@
 
 import type { Destructor } from './Destructor'
 
-// eslint-disable-next-line jsdoc/require-throws
 /**
  * Utility for implementing hooks that have to call destructors safely in a
  * reverse order.
@@ -30,11 +29,10 @@ export function callHookDestructors(
 			if (haveError) {
 				let message = 'Multiple errors in destructors. Next error ignored:'
 
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (hookName) {
 					message = `${hookName}(): ${message}`
 				}
-				// eslint-disable-next-line no-console
+
 				console.error(message, error)
 			} else {
 				firstError = error

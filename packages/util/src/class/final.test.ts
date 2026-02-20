@@ -19,7 +19,7 @@ class Base {
 	}
 
 	// @ts-expect-error unused
-	// eslint-disable-next-line @typescript-eslint/no-unused-private-class-members
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: .
 	private g() {
 		return 'g'
 	}

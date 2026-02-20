@@ -10,7 +10,8 @@ export function useSsrFix(): { isFirstRender: boolean } {
 	const update = useUpdate()
 
 	if (typeof window !== 'undefined')
-		// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// biome-ignore lint/correctness/useExhaustiveDependencies: .
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useLayoutEffect(update, [])
 
 	const result = useMemo(

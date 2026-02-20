@@ -52,7 +52,8 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		super(o)
 		const newThis = BoundCallable(this)
 		Object.freeze(newThis)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return newThis
 	}
 
@@ -111,7 +112,6 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return ' [...]'
 	}

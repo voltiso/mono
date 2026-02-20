@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import { $assert } from '@voltiso/assertor'
 import type { $$Schemable, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
@@ -11,7 +9,7 @@ import {
 	assertNotPolluting,
 	defaultPatchOptions,
 	deleteIt,
-	// eslint-disable-next-line sonarjs/no-built-in-override
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: TODO rename?
 	hasOwnProperty,
 	isPolluting,
 	patch,
@@ -29,8 +27,6 @@ import {
 	defaultSubjectTreeOptions,
 	isSubjectTreeChildOptions,
 } from './SubjectTreeOptions'
-
-//
 
 //
 
@@ -81,17 +77,18 @@ export class _CustomSubjectTree<
 
 			this._exists =
 				typeof options.parent._value === 'object' &&
-				Object.prototype.hasOwnProperty.call(options.parent._value, options.key)
+				// biome-ignore lint/style/noNonNullAssertion: good?
+				Object.hasOwn(options.parent._value!, options.key)
 
 			const self = new Proxy(this, proxyHandlers)
 
 			$assert(!hasOwnProperty(options.parent._children, options.key))
 			$assert(this._parent)
 			this._parent._children[options.key as never] = self as never
-			// eslint-disable-next-line no-constructor-return
+
+			// biome-ignore lint/correctness/noConstructorReturn: .
 			return self as never
 		} else {
-			// eslint-disable-next-line no-param-reassign
 			options = { ...defaultSubjectTreeOptions, ...options }
 
 			this._dependencies = options.dependencies
@@ -112,7 +109,8 @@ export class _CustomSubjectTree<
 			this._exists = true
 
 			const self = new Proxy(this, proxyHandlers)
-			// eslint-disable-next-line no-constructor-return
+
+			// biome-ignore lint/correctness/noConstructorReturn: hacky
 			return self as never
 		}
 	}
@@ -126,7 +124,6 @@ export class _CustomSubjectTree<
 		| (s.Schema & { Output: TO['Output']; Input: TO['Input'] })
 		| undefined = undefined
 
-	// eslint-disable-next-line rxjs/no-exposed-subjects
 	readonly _subject$: Subject<TO['Output']>
 
 	_value: TO['Output'] | undefined
@@ -136,7 +133,7 @@ export class _CustomSubjectTree<
 		if (!this._exists)
 			throw new Error('.value called on SubjectTree without value')
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		// biome-ignore lint/style/noNonNullAssertion: .
 		return this._value!
 	}
 
@@ -244,7 +241,6 @@ export class _CustomSubjectTree<
 	}
 
 	set(newValue: TO['Input']): void {
-		// eslint-disable-next-line es-x/no-object-is
 		if (Object.is(newValue, this._value)) return // no change
 
 		// console.log('this._schema', this._schema)
@@ -260,7 +256,7 @@ export class _CustomSubjectTree<
 
 	setUnchecked(newValue: TO['Output']): void {
 		// this._exists = true
-		// eslint-disable-next-line es-x/no-object-is
+
 		if (Object.is(newValue, this._value)) return // no change
 
 		this._set(newValue, true)
@@ -284,7 +280,6 @@ export class _CustomSubjectTree<
 
 	/** @internal */
 	_set(newValue: TO['Output'], exists: boolean): void {
-		// eslint-disable-next-line es-x/no-object-is
 		if (Object.is(newValue, this._value) && this._exists === exists) return // no change (prune)
 
 		this._exists = exists
@@ -295,7 +290,7 @@ export class _CustomSubjectTree<
 		][]) {
 			child._set(
 				newValue?.[key] as never,
-				exists && Object.prototype.hasOwnProperty.call(newValue || {}, key),
+				exists && Object.hasOwn(newValue || {}, key),
 			)
 		}
 

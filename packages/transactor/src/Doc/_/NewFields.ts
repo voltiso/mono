@@ -6,9 +6,9 @@ import type { $$Schemable, $$SchemableObject } from '@voltiso/schemar'
 import { sAutoId, sRef } from '~/schemas'
 
 // ! jsdoc link hack
-// eslint-disable-next-line sonarjs/void-use
+
 void sAutoId
-// eslint-disable-next-line sonarjs/void-use
+
 void sRef
 
 export interface $$PartialDocOptions {

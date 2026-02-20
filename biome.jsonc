@@ -1,0 +1,103 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+
+	"formatter": {
+		"useEditorconfig": true
+	},
+
+	"linter": {
+		"rules": {
+			"complexity": {
+				// we want computed access a['b'] for index signatures:
+				"useLiteralKeys": "off",
+
+				// we often want to use `{}` in generic contexts, etc.
+				"noBannedTypes": "off",
+
+				"noThisInStatic": {
+					"level": "warn",
+					"fix": "unsafe"
+				}
+			},
+
+			"suspicious": {
+				// void is not the same as undefined in TS
+				"noConfusingVoidType": "off",
+
+				"noEmptyInterface": {
+					"level": "warn",
+					"fix": "unsafe"
+				},
+
+				// too many places where we actually want `any`
+				// (generic function args, internal stuff for performance, etc.)
+				"noExplicitAny": "off",
+
+				"noPrototypeBuiltins": {
+					"level": "warn",
+					"fix": "unsafe"
+				}
+			},
+
+			"style": {
+				"useShorthandFunctionType": {
+					"level": "warn",
+					"fix": "unsafe"
+				}
+			}
+		}
+	},
+
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded",
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "single",
+			"trailingCommas": "all",
+			"bracketSpacing": true,
+			"arrowParentheses": "asNeeded"
+		}
+	},
+
+	"overrides": [
+		{
+			"includes": ["**/*.test.*", "**/test/**/*"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noBannedTypes": "off", // don't ban e.g. `{}` in tests
+						"useArrowFunction": {
+							"level": "warn",
+							"fix": "unsafe"
+						}
+					},
+
+					"suspicious": {
+						"noExplicitAny": "off",
+						"noImplicitAnyLet": "off"
+					},
+
+					"style": {
+						"noNonNullAssertion": "off"
+					},
+
+					"a11y": "off"
+				}
+			}
+		},
+		{
+			"includes": ["**/tsdoc.json", "**/tsconfig.json", "**/tsconfig.*.json"],
+			"json": {
+				"parser": {
+					"allowComments": true,
+					"allowTrailingCommas": true
+				}
+			}
+		}
+	]
+}

@@ -1,9 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
 
 import { $fastAssert, isPlainObject } from '@voltiso/util'
 
@@ -20,19 +18,18 @@ function isWith0(x: unknown): x is { [0]: unknown } {
 	return (
 		Boolean(x) &&
 		typeof x === 'object' &&
+		// biome-ignore lint/suspicious/noPrototypeBuiltins: .
 		Object.prototype.hasOwnProperty.call(x, 0)
 	)
 }
 
 function readPath(obj: object | null, path: string[]): unknown {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	let result = obj as any
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+
 	for (const key of path) result = result[key]
 	return isWith0(result) ? result[0] : result
 }
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function prepare<X>(
 	x: X,
 	params: {
@@ -55,7 +52,6 @@ export function prepare<X>(
 
 		// let foundNested = false
 
-		// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 		for (const [k, v] of Object.entries(x)) {
 			/** Unsafe - do not do when preparing props */
 			if (!params.isPreparingProps && k === '_') {
@@ -80,17 +76,15 @@ export function prepare<X>(
 					k as keyof typeof params.customCss
 				] as CssProp<unknown, object>
 
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (typeof customCssEntry === 'function' || Boolean(v)) {
 					let cssValues =
 						typeof customCssEntry === 'function'
-							? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-								(customCssEntry(v) as object)
+							? (customCssEntry(v) as object)
 							: customCssEntry
 
 					cssValues = { ...cssValues }
 					$fastAssert(typeof cssValues === 'object')
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-dynamic-delete
+
 					delete (cssValues as any)[k]
 
 					const preparedCustomCss = prepare(cssValues, params)
@@ -116,7 +110,6 @@ export function prepare<X>(
 		else {
 			// replace all
 			return x.replace(
-				// eslint-disable-next-line sonarjs/regular-expr
 				/\$\{([^}]*)\}/gu,
 				// /\$__STYLER__\{([^}]*)\}/gu,
 

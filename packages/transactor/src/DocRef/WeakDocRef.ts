@@ -15,11 +15,10 @@ import type { CustomDocRef } from './CustomDocRef'
  *
  * - 😱 no ref-counting❗
  */
-export interface WeakDocRef<
-	R extends $$DocRelated = ANY_DOC,
-> extends CustomDocRef<{
-	doc: GetDocRepresentative<R>
-}> {}
+export interface WeakDocRef<R extends $$DocRelated = ANY_DOC>
+	extends CustomDocRef<{
+		doc: GetDocRepresentative<R>
+	}> {}
 
 export type WeakDocRef_<R> = R extends $$DocRelatedLike
 	? CustomDocRef<{

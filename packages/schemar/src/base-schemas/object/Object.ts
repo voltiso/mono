@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
+
 import type { IsAlmostSame } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
@@ -11,17 +13,19 @@ import type { CustomObject, CustomObject$ } from './CustomObject'
 
 //
 
-interface Object_<T> extends CustomObject<{
-	Output: IsAlmostSame<T, {}> extends true ? object : T
-	Input: IsAlmostSame<T, {}> extends true ? object : T
-}> {}
+interface Object_<T>
+	extends CustomObject<{
+		Output: IsAlmostSame<T, {}> extends true ? object : T
+		Input: IsAlmostSame<T, {}> extends true ? object : T
+	}> {}
 
 export type { Object_ as Object }
 
-export interface Object$<T> extends CustomObject$<{
-	Output: IsAlmostSame<T, {}> extends true ? object : T
-	Input: IsAlmostSame<T, {}> extends true ? object : T
-}> {
+export interface Object$<T>
+	extends CustomObject$<{
+		Output: IsAlmostSame<T, {}> extends true ? object : T
+		Input: IsAlmostSame<T, {}> extends true ? object : T
+	}> {
 	//
 	get Final(): Object_<T>
 }

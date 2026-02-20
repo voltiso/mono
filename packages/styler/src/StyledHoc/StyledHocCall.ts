@@ -46,7 +46,6 @@ export interface StyledHocCall<
 	//
 
 	// /** All overloads combined (for usage in generic contexts) */
-	// // eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	// <C extends FunctionComponentLike | ComponentClassLike | StylableIntrinsic>(
 	// 	stylable: C,
 	// ): GetStyledComponentImpl<_<{ Component: C } & $>>

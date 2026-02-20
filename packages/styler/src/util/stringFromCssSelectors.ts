@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import { hyphenateProperty, isUnitlessProperty } from 'css-in-js-utils'
 
 import type { Css } from '~/Css/Css'
@@ -29,24 +27,19 @@ function escapeValue(str: string) {
 }
 
 export function stringFromCss(css: Css): string {
-	return (
-		Object.entries(css)
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-			.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
-			.map(([k, v]) =>
-				// eslint-disable-next-line no-nested-ternary
-				typeof v === 'string'
-					? `${k}:${escapeValue(v)};`
-					: // eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
-						typeof v === 'object'
-						? `${k}{${stringFromCss(v)}}`
-						: // eslint-disable-next-line sonarjs/no-nested-conditional
-							isUnitlessProperty(k)
-							? `${k}:${v};`
-							: `${k}:${v}px;`,
-			)
-			.join('')
-	)
+	return Object.entries(css)
+
+		.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
+		.map(([k, v]) =>
+			typeof v === 'string'
+				? `${k}:${escapeValue(v)};`
+				: typeof v === 'object'
+					? `${k}{${stringFromCss(v)}}`
+					: isUnitlessProperty(k)
+						? `${k}:${v};`
+						: `${k}:${v}px;`,
+		)
+		.join('')
 }
 
 export function stringFromCssSelectors(cssSelectors: CssSelectors): string {

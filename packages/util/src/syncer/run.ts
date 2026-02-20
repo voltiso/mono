@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-/* eslint-disable no-await-in-loop */
-
 import { isIterable } from '~/array/isIterable'
 import { lazyPromise } from '~/lazy/lazyPromise'
 
@@ -30,12 +27,12 @@ export async function runAsync<Return, Intermediate>(
 		const generated = currentResult.value
 
 		try {
+			// biome-ignore lint/suspicious/noImplicitAnyLet: .
 			let next
 
 			if (isIterable(generated)) {
 				next = await runAsync(generated)
 			} else if (isSyncerNested(generated)) {
-				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (generated.onAsyncStart) {
 					const promise = lazyPromise(() => runAsync(generated.syncerIterator))
 					await generated.onAsyncStart(promise)
@@ -67,6 +64,7 @@ export function runSync<Return, Intermediate>(
 		const generated = currentResult.value
 
 		try {
+			// biome-ignore lint/suspicious/noImplicitAnyLet: .
 			let next
 
 			if (isIterable(generated)) {

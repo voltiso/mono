@@ -19,6 +19,7 @@ export interface IStyledHoc extends IStyled, IStyledHocCall {}
 //
 
 export interface IStyledHocCall {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	<E extends StylableLike>(
 		Element: E,
 	): E extends StyledHocLike ? E : IStyledComponent | ThrowWrongInnerProps

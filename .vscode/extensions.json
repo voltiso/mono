@@ -6,11 +6,15 @@
 		/** support `.editorconfig` file */
 		"EditorConfig.EditorConfig",
 
-		/** Recommended user setting: `editor.formatOnSave` */
-		"esbenp.prettier-vscode",
+		"biomejs.biome", // replaces prettier/eslint
 
-		/** Eslint errors underlined in VSCode editor */
-		"dbaeumer.vscode-eslint",
+		// ⚠️ Use `biome`, `dprint`, `shfmt` instead
+		// /** Recommended user setting: `editor.formatOnSave` */
+		// "esbenp.prettier-vscode",
+
+		// ⚠️ Use `biome` instead
+		// /** Eslint errors underlined in VSCode editor */
+		// "dbaeumer.vscode-eslint",
 
 		/** Stylelint (CSS) errors underlined in VSCode editor */
 		// "stylelint.vscode-stylelint", ⚠️

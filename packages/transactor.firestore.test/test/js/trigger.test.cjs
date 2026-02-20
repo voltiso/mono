@@ -14,10 +14,9 @@ const db = createFirestoreTransactor(firestore, {
 })
 
 if (
-	// eslint-disable-next-line no-useless-call, sonarjs/no-useless-call
 	function () {
 		// @ts-expect-error ...
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
 		return this
 	}.call(null) !== null
 )
@@ -25,13 +24,12 @@ if (
 		'[@voltiso/transactor] unable to call function with `this === null`',
 	)
 
-// eslint-disable-next-line jest/require-hook
 db('frog/{user}')
 	.beforeCommit(function () {
 		if (!this) return
 
 		// @ts-expect-error ...
-		// eslint-disable-next-line sonarjs/values-not-convertible-to-numbers
+
 		if ((this.data['age'] || 0) < 18) throw new Error('frog too young')
 	})
 
@@ -52,8 +50,8 @@ db('frog/{user}')
 		pathArgs,
 	}))
 
-describe('trigger', function () {
-	it('should process triggers', async function () {
+describe('trigger', () => {
+	it('should process triggers', async () => {
 		expect.hasAssertions()
 
 		await db('frog', 'artur').delete()

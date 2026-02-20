@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
@@ -9,6 +8,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { Literal } from '~/core-schemas/literal/Literal'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
@@ -26,12 +26,13 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnknownSymbolImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnknownSymbolOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownSymbol<O>
@@ -40,11 +41,11 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends symbol>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal(literals) as never
@@ -55,7 +56,6 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'symbol'
 	}

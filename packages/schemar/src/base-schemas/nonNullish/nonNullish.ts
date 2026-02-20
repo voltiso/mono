@@ -1,7 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
+
 import {
 	$fastAssert,
 	BASE_OPTIONS,
@@ -10,6 +11,7 @@ import {
 	lazyObject,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -48,18 +50,16 @@ export const defaultNonNullishOptions: NonNullishOptions.Default =
 
 //
 
-export interface CustomNonNullish<
-	O extends Partial<NonNullishOptions>,
-> extends CustomSchema<O> {
+export interface CustomNonNullish<O extends Partial<NonNullishOptions>>
+	extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'NonNullish'
 
 	readonly [Voltiso.BASE_OPTIONS]: NonNullishOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: NonNullishOptions.Default
 }
 
-export interface CustomNonNullish$<
-	O extends Partial<NonNullishOptions>,
-> extends CustomSchema$<O> {
+export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
+	extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'NonNullish'
 
 	readonly [Voltiso.BASE_OPTIONS]: NonNullishOptions
@@ -94,12 +94,10 @@ export class CustomNonNullishImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return '{}'
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.')
 	}
@@ -113,9 +111,11 @@ export class NonNullishImpl extends lazyConstructor(
 	}
 }
 
-export interface NonNullish extends CustomNonNullish<NonNullishOptions.Default> {}
+export interface NonNullish
+	extends CustomNonNullish<NonNullishOptions.Default> {}
 
-export interface NonNullish$ extends CustomNonNullish$<NonNullishOptions.Default> {}
+export interface NonNullish$
+	extends CustomNonNullish$<NonNullishOptions.Default> {}
 
 //
 

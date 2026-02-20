@@ -31,11 +31,10 @@ function getCandidatePaths(segments: string[]): string[][] {
 
 	paths.push(segments)
 
-	// eslint-disable-next-line unicorn/prefer-single-call
 	paths.push([
 		'__voltiso',
 		'aggregateTarget',
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		// biome-ignore lint/style/noNonNullAssertion: .
 		segments[0]!,
 		'value',
 		...segments.slice(1),
@@ -46,17 +45,15 @@ function getCandidatePaths(segments: string[]): string[][] {
 
 /** @internal */
 // @staticImplements<DocFieldPathConstructor>()
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+
 export class _DocFieldPath {
 	constructor(ctx: DocFieldPath.Context, fields: string[]) {
 		// this._context = ctx
 		// this._fields = fields
 
-		// eslint-disable-next-line sonarjs/cyclomatic-complexity
 		const getPromise = async () => {
 			const ctxOverride = ctx.transactor._getTransactionContext()
 
-			// eslint-disable-next-line no-param-reassign
 			if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 			const doc = await ctx.docRef.get()
@@ -109,9 +106,7 @@ export class _DocFieldPath {
 					// if (!isNestedDataRecord(data) || data[field] === undefined)
 					const isBadNow =
 						typeof data !== 'object' ||
-						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 						data === null ||
-						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 						data === undefined ||
 						!(field in data)
 
@@ -122,7 +117,6 @@ export class _DocFieldPath {
 
 					const nextData: NestedData | undefined = data[field as never]
 
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					assert(nextData !== undefined)
 					data = nextData
 				}
@@ -135,7 +129,7 @@ export class _DocFieldPath {
 			)
 		}
 
-		// eslint-disable-next-line no-constructor-return, sonarjs/no-async-constructor
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(protoLink(lazyPromise(getPromise), this), {
 			get: (target, p) => {
 				if (typeof p === 'symbol' || p in target)

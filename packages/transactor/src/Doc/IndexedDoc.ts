@@ -49,14 +49,12 @@ export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
 //
 
 /** Does not validate doc schema, or `id` schema. */
-export interface IndexedDoc<
-	C extends ExecutionContext = ExecutionContext,
-> extends CustomDoc<IndexedDocTI, C> {}
+export interface IndexedDoc<C extends ExecutionContext = ExecutionContext>
+	extends CustomDoc<IndexedDocTI, C> {}
 
 export const IndexedDoc = lazyConstructor(
 	() =>
 		class extends Doc {
-			// eslint-disable-next-line es-x/no-class-static-fields
 			static override readonly _: DocDerivedData = {
 				...Doc._,
 

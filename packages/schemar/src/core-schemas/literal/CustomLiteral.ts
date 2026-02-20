@@ -7,9 +7,8 @@ import type { LiteralOptions } from './LiteralOptions'
 
 //
 
-export interface CustomLiteral<
-	O extends Partial<LiteralOptions>,
-> extends CustomSchema<O> {
+export interface CustomLiteral<O extends Partial<LiteralOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Literal'
 
@@ -21,9 +20,8 @@ export interface CustomLiteral<
 
 //
 
-export interface CustomLiteral$<
-	O extends Partial<LiteralOptions>,
-> extends CustomSchema$<O> {
+export interface CustomLiteral$<O extends Partial<LiteralOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Literal'
 

@@ -5,7 +5,6 @@
 
 import type { nullish } from '@voltiso/util'
 import { overrideDefined } from '@voltiso/util'
-/* eslint-disable react/forbid-component-props */
 import type { ComponentProps, ForwardRefRenderFunction } from 'react'
 import {
 	createContext,
@@ -68,15 +67,14 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	const scrollContextValue = useMemo<ScrollContextValue>(() => ({}), [])
 
 	if (typeof window !== 'undefined') {
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		const scrollTargetElement = useMemo(
 			() => (scrollTarget ? document.querySelector(scrollTarget) : null),
 			[scrollTarget],
 		)
 
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// biome-ignore lint/correctness/useExhaustiveDependencies: .
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useLayoutEffect(() => {
 			if (!isNavigationBackForward({ pathname })) return undefined
 			if (!current.scrollRestoration) return undefined
@@ -114,7 +112,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		//
 
 		/** Save scroll position periodically */
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// biome-ignore lint/correctness/useHookAtTopLevel: .
 		useEffect(() => {
 			if (scrollRestorationKey === undefined) return undefined
 

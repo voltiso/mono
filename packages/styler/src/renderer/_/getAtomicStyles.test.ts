@@ -8,7 +8,6 @@ import { getAtomicStyles } from './getAtomicStyles'
 
 const options = { unit: 'px' } as const
 
-// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('getAtomicStyles', () => {
 	it('simple', () => {
 		expect(

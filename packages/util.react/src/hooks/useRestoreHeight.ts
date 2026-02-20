@@ -16,11 +16,9 @@ interface UseRestoreHeight {
 
 export function useRestoreHeight(localStorageKey: string): UseRestoreHeight
 
-// eslint-disable-next-line @typescript-eslint/unified-signatures
 export function useRestoreHeight(localStorageKey: undefined): UseRestoreHeight
 
 export function useRestoreHeight(
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	localStorageKey: string | undefined,
 ): UseRestoreHeight
 
@@ -55,7 +53,6 @@ export function useRestoreHeight(
 
 			const height = mutable.instance.clientHeight
 			localStorage.data = height
-			// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 		}, 1_000)
 
 		return () => {

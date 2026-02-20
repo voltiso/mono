@@ -9,7 +9,6 @@ import type { IStylableJsxCall, Props, StylableJsxCall } from '~'
 import type { FC } from './common'
 
 describe('StylableJsxCall', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
@@ -17,7 +16,6 @@ describe('StylableJsxCall', () => {
 		$Assert.is<StylableJsxCall<P>, StylableJsxCall>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -44,7 +42,6 @@ describe('StylableJsxCall', () => {
 		$Assert.is<FC<{ className: string; a?: 'aa' }>, StylableJsxCall>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type #3', () => {
 		expect.assertions(0)
 
@@ -56,7 +53,6 @@ describe('StylableJsxCall', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type #4 - does not accept', () => {
 		expect.assertions(0)
 

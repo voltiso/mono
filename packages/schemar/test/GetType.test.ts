@@ -13,6 +13,7 @@ import type {
 	InferableLiteral,
 	InferableObject,
 	Input,
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 	Number,
 	Output,
 	Schema,
@@ -30,10 +31,12 @@ describe('GetType', () => {
 		$Assert<IsIdentical<B, unknown>>()
 	})
 
-	it('variance', <S extends $$Schema & {
-		Output: string
-		Input: string
-	}>() => {
+	it('variance', <
+		S extends $$Schema & {
+			Output: string
+			Input: string
+		},
+	>() => {
 		expect.assertions(0)
 
 		type A = Output<S>
@@ -71,7 +74,6 @@ describe('GetType', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('object', () => {
 	// 	expect.assertions(0)
 

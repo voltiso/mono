@@ -6,7 +6,6 @@ import { run } from '@voltiso/script'
 
 import { exists } from './_/exists'
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function downloadVcpkg(version: string): Script {
 	return [
 		'mkdir vcpkg -p',

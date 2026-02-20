@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/informative-docs */
-
 import { isCallable } from '@voltiso/util'
 import { useMemo } from 'react'
 
@@ -32,7 +30,7 @@ export function useInitial<X>(getInitialValue: () => X): X
  * @param initialValue - Initial value
  * @returns The initial value
  */
-// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 export function useInitial<X>(initialValue: X): X
 
 /**
@@ -40,20 +38,18 @@ export function useInitial<X>(initialValue: X): X
  *
  * @returns The initial value
  */
-// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 export function useInitial<X>(x: X | (() => X)): X
 
 //
 
 export function useInitial<X>(x: X | (() => X)): X {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	return useMemo(() => (isCallable(x) ? x() : x), [])
 
 	// if (isCallable(x)) {
-	// 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	// 	return useMemo<X>(x, [])
 	// }
-	// // eslint-disable-next-line react-hooks/rules-of-hooks
 	// return useRef(x).current
 
 	//

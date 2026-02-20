@@ -56,11 +56,13 @@ export type ImplicitSchema$InferrerConstructor =
 	new () => ImplicitSchemaInferrer$
 
 export interface ImplicitSchemaInferrer$
-	extends CustomSchemaInferrer$<{}>, ImplicitInferSchema$Function {}
+	extends CustomSchemaInferrer$<{}>,
+		ImplicitInferSchema$Function {}
 
 /** Non-generic version for faster type-check */
 export interface ImplicitSchemaInferrer$_
-	extends CustomSchemaInferrer$<{}>, ImplicitInferSchema$Function_ {}
+	extends CustomSchemaInferrer$<{}>,
+		ImplicitInferSchema$Function_ {}
 
 //
 
@@ -72,7 +74,7 @@ export const ImplicitSchemaInferrer$ = lazyConstructor(
 export const schema = lazyFunction(() => new ImplicitSchemaInferrer$())
 
 /** Non-generic version for faster type-check */
-// eslint-disable-next-line sonarjs/variable-name
+
 export const schema_ = lazyFunction(
 	() => new ImplicitSchemaInferrer$() as ImplicitSchemaInferrer$_,
 )

@@ -35,8 +35,8 @@ class Patient extends Doc.with({
 
 const patients = db('patient').register(Patient)
 
-describe('docSchema', function () {
-	it('should validate schema', async function () {
+describe('docSchema', () => {
+	it('should validate schema', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('patient/a').delete()

@@ -20,7 +20,6 @@ export async function cleanCompatDirs(): Promise<void> {
 		compatDirNames.map(async dirName => {
 			const resolvedPath = path.resolve(dirName)
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (dryRun) {
 				printInfo('DRY RUN: would delete:', resolvedPath)
 			} else {

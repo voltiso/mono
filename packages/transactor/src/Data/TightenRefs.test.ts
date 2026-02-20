@@ -10,7 +10,6 @@ import type { DocIdString } from '~/brand'
 import type { TightenRefs } from './TightenRefs'
 
 describe('TightenRefs', () => {
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('simple', () => {
 	// 	type X = TightenRefs<
 	// 		Schema<{

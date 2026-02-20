@@ -7,9 +7,8 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
-export interface CustomUnknownTuple<
-	O extends Partial<UnknownTupleOptions>,
-> extends CustomSchema<O> {
+export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
+	extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions
@@ -20,9 +19,8 @@ export interface CustomUnknownTuple<
 	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 }
 
-export interface CustomUnknownTuple$<
-	O extends Partial<UnknownTupleOptions>,
-> extends CustomSchema$<O> {
+export interface CustomUnknownTuple$<O extends Partial<UnknownTupleOptions>>
+	extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions

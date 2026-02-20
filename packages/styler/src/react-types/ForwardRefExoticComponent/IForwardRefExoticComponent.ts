@@ -14,9 +14,8 @@ export interface INamedExoticComponent extends IExoticComponent {
 	displayName?: string | undefined
 }
 
-export interface IForwardRefExoticComponent<
-	P extends Props = Props,
-> extends INamedExoticComponent {
+export interface IForwardRefExoticComponent<P extends Props = Props>
+	extends INamedExoticComponent {
 	defaultProps?: Partial<P> | undefined
 
 	// propTypes?: WeakValidationMap</* P*/ any> | undefined

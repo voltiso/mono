@@ -3,8 +3,6 @@
 
 import * as v from '@voltiso/util'
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
 declare global {
 	namespace Voltiso {
 		namespace Schemar {

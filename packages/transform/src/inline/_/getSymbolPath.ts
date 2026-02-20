@@ -9,7 +9,6 @@ export function getSymbolPath(symbol: SymbolObject | undefined): string[] {
 	if (!symbol) return []
 
 	if (
-		// eslint-disable-next-line no-bitwise
 		(symbol.parent?.flags ?? ts.SymbolFlags.ValueModule) &
 		ts.SymbolFlags.ValueModule
 	) {

@@ -29,7 +29,7 @@ export function _updateToRoot(node: _CustomSubjectTree<any>): void {
 
 		node._parent._value = parentValue
 		node._parent._subject$.next(parentValue)
-		// eslint-disable-next-line no-param-reassign
+
 		node = node._parent as never
 	}
 }

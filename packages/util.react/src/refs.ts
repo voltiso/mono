@@ -31,14 +31,12 @@ export function refs<T>(
 ): RefCallback<T>
 
 export function refs<
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	Refs extends readonly (MutableRef<unknown | null> | undefined)[],
 >(...refs: Refs): RefsResult<Refs>
 
 //
 
 export function refs<
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	Refs extends readonly (MutableRef<unknown | null> | undefined)[],
 >(...refs: Refs): RefsResult<Refs> {
 	return (instance: GetRefsType<Refs>) => {

@@ -19,13 +19,13 @@ import type { CssProperties } from './CssProperties'
  * - To add custom CSS properties, use TS declaration merging
  */
 export interface CssWeb<CustomCss extends object>
-	extends
-		CssOverridesWeb<CustomCss>,
+	extends CssOverridesWeb<CustomCss>,
 		_Css_WithExtensionWeb<CustomCss>,
 		_Css_OriginalWeb<CustomCss> {}
 
 export interface CssPropertiesWeb
-	extends csstype.Properties<number | string>, CssProperties {}
+	extends csstype.Properties<number | string>,
+		CssProperties {}
 
 /**
  * CSS properties and pseudos
@@ -33,4 +33,5 @@ export interface CssPropertiesWeb
  * - To add custom CSS properties, use TS declaration merging
  */
 export interface CssPropertiesAndPseudosWeb<CustomCss extends object>
-	extends CssPropertiesWithArraysWeb, CssPseudosWeb<CustomCss> {}
+	extends CssPropertiesWithArraysWeb,
+		CssPseudosWeb<CustomCss> {}

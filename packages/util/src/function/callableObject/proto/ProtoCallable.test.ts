@@ -27,7 +27,6 @@ describe('callable', () => {
 			prototype: new Proxy(
 				{},
 				{
-					// eslint-disable-next-line sonarjs/function-return-type
 					get(_t, p) {
 						return p
 					},

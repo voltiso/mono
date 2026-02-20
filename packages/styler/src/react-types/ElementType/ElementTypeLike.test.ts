@@ -8,7 +8,6 @@ import type { ReactNode } from 'react'
 import type { ReactNodeLike } from './ElementTypeLike'
 
 describe('ElementTypeLike', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

@@ -86,7 +86,6 @@ describe('emu-ts', () => {
 			assert(b.data.friend)
 			$Assert<IsIdentical<typeof b.data.friend, DocRef<'doctorLorcan'>>>()
 
-			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')
@@ -125,7 +124,7 @@ describe('emu-ts', () => {
 
 			await expect(
 				// @ts-expect-error DocType mismatch
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 				doctors('adam' as DocIdString<ClientXyz>).setFriend(
 					doctors('artur') as DocRef<'doctorLorcan'>,
 				),

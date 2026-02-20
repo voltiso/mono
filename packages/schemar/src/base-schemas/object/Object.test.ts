@@ -16,7 +16,6 @@ import type {
 } from '~'
 import * as s from '~'
 
-// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
 		$Assert.is<CustomObject<O>, Schema>()

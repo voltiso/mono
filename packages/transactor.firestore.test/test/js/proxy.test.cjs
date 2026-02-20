@@ -13,8 +13,8 @@ const db = createFirestoreTransactor(firestore, {
 	checkDecorators: false,
 })
 
-describe('proxy', function () {
-	it('should throw on immutable result change', async function () {
+describe('proxy', () => {
+	it('should throw on immutable result change', async () => {
 		expect.hasAssertions()
 
 		const user = await db('user/adam').set({ age: 123 })
@@ -25,7 +25,7 @@ describe('proxy', function () {
 		}).toThrow(`trap returned falsish for property 'age'`)
 	})
 
-	it('should throw on immutable result change (nested)', async function () {
+	it('should throw on immutable result change (nested)', async () => {
 		expect.hasAssertions()
 
 		const adam = await db('user/adam').set({ address: { street: 'a' } })

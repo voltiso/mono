@@ -1,0 +1,18 @@
+{
+	"extends": "//",
+
+	"linter": {
+		"rules": {
+			"complexity": {
+				"noBannedTypes": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"style": {
+				// would be nice, but has autofix that is not safe but marked safe! see `Rest.ts`
+				"useShorthandFunctionType": "off"
+			}
+		}
+	}
+}

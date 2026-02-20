@@ -1,13 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-/* eslint-disable @typescript-eslint/no-extraneous-class */
-
 import type * as Database from '@voltiso/firestore-like'
 import { staticImplements } from '@voltiso/util'
 
 @staticImplements<Database.TypeofFieldValue>()
+// biome-ignore lint/complexity/noStaticOnlyClass: .
 export class FieldValue implements Database.FieldValue {
 	static delete(): DeleteIt {
 		return new DeleteIt()

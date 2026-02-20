@@ -30,14 +30,13 @@ export class NodeContext<T> implements Context<T> {
 		if (isPromiseLike(result)) {
 			// if it was `Promise`, not only `PromiseLike`, we would simply use `.finally()`
 
-			// eslint-disable-next-line promise/prefer-await-to-then
 			result = result.then(
 				value => {
 					// console.log('got', value, 'exit', oldValue)
 					// this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
 					return value
 				},
-				// eslint-disable-next-line promise/prefer-await-to-callbacks
+
 				(error: unknown) => {
 					// console.log('err', error, 'exit', oldValue)
 					// this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined

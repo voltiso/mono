@@ -1,7 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type {
 	$Merge,
 	$Override_,
@@ -13,10 +14,11 @@ import {
 	$final,
 	clone,
 	frozen,
-	omitUndefined,
 	OPTIONS,
+	omitUndefined,
 	stringFrom,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { isAnySchema } from '~/base-schemas/any/IAny'
 import { and } from '~/base-schemas/intersection/Intersection'
@@ -43,9 +45,9 @@ import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 $fastAssert(SCHEMA_NAME)
 $fastAssert(EXTENDS)
 
-export abstract class CustomSchemaImpl<
-	O extends Partial<SchemaOptions>,
-> implements CustomSchema<O> {
+export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
+	implements CustomSchema<O>
+{
 	readonly [Voltiso.OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
 	declare readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
@@ -54,19 +56,19 @@ export abstract class CustomSchemaImpl<
 	declare readonly [Voltiso.DEFAULT_OPTIONS]: SchemaOptions.Default
 
 	/** Type-only property (no value at runtime) */
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+
 	get Type(): this[Voltiso.OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+
 	get Output(): this[Voltiso.OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+
 	get Input(): this[Voltiso.OPTIONS]['Input'] {
 		return throwTypeOnlyFieldError()
 	}
@@ -152,7 +154,6 @@ export abstract class CustomSchemaImpl<
 		return result as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _getIssues(
 		_value: unknown,
 		_options?: Partial<ValidationOptions> | undefined,
@@ -160,7 +161,6 @@ export abstract class CustomSchemaImpl<
 		return []
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _fix(
 		x: unknown,
 		_options?: Partial<ValidationOptions> | undefined,
@@ -300,21 +300,17 @@ export abstract class CustomSchemaImpl<
 		return this[EXTENDS](otherType as never)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _toString(): string {
 		return 'unknown'
 	}
 
 	toString(): string {
 		const prefix =
-			// eslint-disable-next-line no-nested-ternary, sonarjs/expression-complexity
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: // eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
-					this.isReadonly
+				: this.isReadonly
 					? 'readonly:'
-					: // eslint-disable-next-line sonarjs/no-nested-conditional
-						this.isOptional
+					: this.isOptional
 						? '?'
 						: ''
 
@@ -378,13 +374,10 @@ export abstract class CustomSchemaImpl<
 	}
 
 	narrowIf(...args: unknown[]): unknown {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		return (this.mapIf as any)(...args)
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	narrow(...args: any): any {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this.map(...args)
 	}
 
@@ -401,7 +394,6 @@ export abstract class CustomSchemaImpl<
 
 	/** Same as `.fix` - different typings */
 	implicitFix(...args: any[]): any {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		return (this.fix as any)(...args)
 	}
 
@@ -417,7 +409,6 @@ export abstract class CustomSchemaImpl<
 	//
 
 	get deleted(): any {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		return this.map(() => undefined).optional as never
 	}
 
@@ -432,10 +423,9 @@ export abstract class CustomSchemaImpl<
 			isOptional: true as const,
 			isStrictOptional: false as const,
 
-			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			default: undefined,
 			hasDefault: false,
-			// eslint-disable-next-line sonarjs/no-undefined-assignment
+
 			getDefault: undefined,
 		}) as never
 	}
@@ -445,10 +435,9 @@ export abstract class CustomSchemaImpl<
 			isOptional: true as const,
 			isStrictOptional: true as const,
 
-			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			default: undefined,
 			hasDefault: false,
-			// eslint-disable-next-line sonarjs/no-undefined-assignment
+
 			getDefault: undefined,
 		}) as never
 	}

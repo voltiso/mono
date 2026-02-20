@@ -19,7 +19,7 @@
  * - `disableBranding: true` - disables nominal type branding for document IDs and
  *   some other strings
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// biome-ignore lint/suspicious/noEmptyInterface: declaration merging
 export interface TransactorConfig {
 	// disableBranding: true
 }

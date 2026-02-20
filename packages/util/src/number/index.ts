@@ -4,5 +4,5 @@
 export * from './add'
 export * from './IsInteger'
 export type * from './IsNegative'
-export * from './isNumber'
 export type * from './IsNumberLiteral'
+export * from './isNumber'

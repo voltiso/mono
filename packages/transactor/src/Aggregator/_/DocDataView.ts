@@ -36,7 +36,6 @@ export function getAggregatesView<R extends $$DocRelatedLike>(
 	data: GetDataWithId<R>,
 ): AggregatesView<GetData<R>> {
 	return Object.fromEntries(
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
 		Object.entries((data as any).__voltiso.aggregateTarget).map(
 			([key, value]) => [key, getAggregateView(value as never)],
 		),
@@ -45,9 +44,8 @@ export function getAggregatesView<R extends $$DocRelatedLike>(
 
 //
 
-export interface AggregatorHandlerThis<
-	R extends $$DocRelatedLike,
-> extends PathMatches {
+export interface AggregatorHandlerThis<R extends $$DocRelatedLike>
+	extends PathMatches {
 	id: GetId<R>
 	path: string
 	data: GetData<R>
@@ -67,7 +65,7 @@ export function getDocDataView<R extends $$DocRelatedLike>(
 		data: omit(dataWithId, 'id') as never,
 		dataWithId,
 		aggregates: getAggregatesView(dataWithId) as never,
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
 		numRefs: (dataWithId as any).__voltiso.numRefs as never,
 	} as never
 }

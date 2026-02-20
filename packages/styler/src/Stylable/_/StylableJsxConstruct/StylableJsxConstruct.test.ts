@@ -12,7 +12,6 @@ import type {
 } from './StylableJsxConstruct'
 
 describe('StylableJsxConstruct', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

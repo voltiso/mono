@@ -13,6 +13,5 @@ export interface IGetStyleNode {
 }
 
 export function isGetStyleNode(x: unknown): x is IGetStyleNode {
-	// eslint-disable-next-line @typescript-eslint/unbound-method
 	return Boolean((x as IGetStyleNode | undefined)?.getStyle)
 }

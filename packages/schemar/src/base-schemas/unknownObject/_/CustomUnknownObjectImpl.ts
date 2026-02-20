@@ -1,7 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import {
 	$fastAssert,
 	BoundCallable,
@@ -11,6 +13,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { $$Schema, InferableObject, Schema, UnknownObjectOptions } from '~'
 import {
@@ -27,6 +30,7 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnknownObjectImpl<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 
@@ -34,18 +38,16 @@ export interface CustomUnknownObjectImpl<O> {
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownObject' as const
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getIndexSignatures(): [] {
 		return [] as []
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getShape(): {} {
 		return {}
 	}
@@ -58,7 +60,6 @@ export class CustomUnknownObjectImpl<
 		}) as never
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	index(...args: any): never {
 		const r = new CustomObjectImpl({
 			...defaultObjectOptions,
@@ -72,7 +73,8 @@ export class CustomUnknownObjectImpl<
 		super(o)
 		const newThis = BoundCallable(this)
 		Object.freeze(newThis)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return newThis
 	}
 

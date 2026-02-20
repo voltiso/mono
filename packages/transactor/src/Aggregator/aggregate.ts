@@ -9,6 +9,7 @@ import type { AggregatorHandlers } from './_/AggregatorHandlers'
 import { AggregatePlugin } from './AggregatorPlugin'
 
 export interface AggregateFunction {
+	// biome-ignore lint/style/useShorthandFunctionType: .
 	<Source extends $$DocRelatedLike>(
 		/** Unused - type inference only */
 		_source?: Source,

@@ -9,17 +9,15 @@ import { createTransactor } from '../common'
 
 const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
-// eslint-disable-next-line jest/require-hook
 db('counter/*')
 	.public({ value: s.number.default(0) })
 	.method('increment', function (this: Doc & { value: number }, x: number) {
 		this.value += x
 	})
 	.method('incrementObj', function (params: any) {
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		this.data['value'] += params.incrementBy
 	})
-	.method('floatSomePromises', async function () {
+	.method('floatSomePromises', async () => {
 		// console.log('floatSomePromises')
 		void db('user/a').set({ age: 1 })
 
@@ -29,8 +27,8 @@ db('counter/*')
 		void db('user/a').set({ age: 1 })
 	})
 
-describe('raw-method', function () {
-	it('should process method', async function () {
+describe('raw-method', () => {
+	it('should process method', async () => {
 		expect.hasAssertions()
 
 		const counter = await db('counter').add({})
@@ -46,7 +44,7 @@ describe('raw-method', function () {
 		expect((await db('counter', counter.id))!.data['value']).toBe(1100)
 	})
 
-	it('should detect floating promises', async function () {
+	it('should detect floating promises', async () => {
 		expect.hasAssertions()
 
 		await db('counter/asd').set({})

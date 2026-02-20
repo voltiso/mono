@@ -26,13 +26,10 @@ export interface ContextConstructor {
 //
 
 function log(..._messages: unknown[]) {
-	// eslint-disable-next-line no-useless-return
 	return // ! logging disabled
 
-	// // eslint-disable-next-line es-x/no-global-this
 	// if (typeof globalThis !== 'undefined') return
 
-	// // eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	// const nodeEnv = process.env['NODE_ENV'] as
 	// 	| 'production'
 	// 	| 'development'
@@ -40,7 +37,6 @@ function log(..._messages: unknown[]) {
 
 	// if (nodeEnv == 'test') return
 
-	// // eslint-disable-next-line no-console
 	// console.warn(...messages)
 }
 

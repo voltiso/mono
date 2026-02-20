@@ -28,23 +28,23 @@ const _fixableWeakRefSchema = lazyObject(() =>
 //
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
-export interface FixableWeakDocRefSchema<
-	X extends $$DocRelated = ANY_DOC,
-> extends s.Schema<WeakDocRef<X>> {}
+export interface FixableWeakDocRefSchema<X extends $$DocRelated = ANY_DOC>
+	extends s.Schema<WeakDocRef<X>> {}
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
-export interface FixableWeakDocRefSchema$<
-	X extends $$DocRelated = ANY_DOC,
-> extends s.Schema$<WeakDocRef<X>> {
+export interface FixableWeakDocRefSchema$<X extends $$DocRelated = ANY_DOC>
+	extends s.Schema$<WeakDocRef<X>> {
 	//
 	get Final(): FixableWeakDocRefSchema<X>
 }
 
 //
 
-export interface UnknownFixableWeakDocRefSchema extends FixableWeakDocRefSchema {}
+export interface UnknownFixableWeakDocRefSchema
+	extends FixableWeakDocRefSchema {}
 
-export interface UnknownFixableWeakDocRefSchema$ extends FixableWeakDocRefSchema$ {
+export interface UnknownFixableWeakDocRefSchema$
+	extends FixableWeakDocRefSchema$ {
 	<X extends DocTag>(): FixableWeakDocRefSchema$<X>
 
 	get Final(): UnknownFixableWeakDocRefSchema

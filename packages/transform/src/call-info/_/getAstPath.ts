@@ -6,7 +6,6 @@ import type * as ts from 'typescript'
 function isWithName(node: ts.Node): node is ts.Node & {
 	name: unknown
 } {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	return !!(node as any)?.name
 }
 

@@ -22,7 +22,6 @@ class User extends Doc.with({
 	async createUser(this: User | null, p: TriggerParams.OnGet<User>) {
 		if (p.doc) return
 
-		// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 		return {
 			displayName: 'default',
 		}
@@ -31,8 +30,8 @@ class User extends Doc.with({
 
 const users = db('userOnGet').register(User)
 
-describe('onGet', function () {
-	it('triggers on non-existing docs', async function () {
+describe('onGet', () => {
+	it('triggers on non-existing docs', async () => {
 		expect.hasAssertions()
 
 		await database.doc('userOnGet/a').delete()

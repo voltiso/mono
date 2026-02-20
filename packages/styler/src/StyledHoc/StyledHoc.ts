@@ -15,8 +15,7 @@ import type { StyledHocCall } from './StyledHocCall'
  * - I.e. Element not provided yet
  */
 export interface StyledHoc
-	extends
-		Styled<{ Component: null; Props: {}; CustomCss: {} }>,
+	extends Styled<{ Component: null; Props: {}; CustomCss: {} }>,
 		StyledHocCall<{ Props: {}; CustomCss: {} }> {}
 
 /**
@@ -25,8 +24,7 @@ export interface StyledHoc
  * - I.e. Element not provided yet
  */
 export interface StyledHocWithProps<P extends Props>
-	extends
-		Styled<{ Props: P; Component: null; CustomCss: {} }>,
+	extends Styled<{ Props: P; Component: null; CustomCss: {} }>,
 		StyledHocCall<{ Props: P; CustomCss: {} }> {}
 
 /**
@@ -45,5 +43,5 @@ export interface CustomStyledHoc<
  */
 export interface CustomStyledHocImpl<
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
->
-	extends Styled<_<{ Component: null } & $>>, StyledHocCall<$> {}
+> extends Styled<_<{ Component: null } & $>>,
+		StyledHocCall<$> {}

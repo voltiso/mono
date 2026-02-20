@@ -13,8 +13,8 @@ import type {
 	Output,
 	Schema,
 } from '~'
-import { isBooleanSchema } from '~'
 import * as s from '~'
+import { isBooleanSchema } from '~'
 
 describe('boolean', () => {
 	it('generic', <O extends Partial<BooleanOptions>>() => {

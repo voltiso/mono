@@ -54,9 +54,8 @@ export interface IUnknownRecord$ extends Schema$ {
 
 //
 
-export interface CustomUnknownRecord<
-	O extends Partial<UnknownRecordOptions>,
-> extends CustomSchema<O> {
+export interface CustomUnknownRecord<O extends Partial<UnknownRecordOptions>>
+	extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownRecord'
 
@@ -69,9 +68,8 @@ export interface CustomUnknownRecord<
 
 //
 
-export interface CustomUnknownRecord$<
-	O extends Partial<UnknownRecordOptions>,
-> extends CustomSchema$<O> {
+export interface CustomUnknownRecord$<O extends Partial<UnknownRecordOptions>>
+	extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownRecord'
 

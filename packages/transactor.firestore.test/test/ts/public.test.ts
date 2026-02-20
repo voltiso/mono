@@ -22,7 +22,7 @@ class Doctor extends Doc.with({
 const doctors = db('tractorXyz').register(Doctor)
 
 describe('public', () => {
-	it('should validate schema', async function () {
+	it('should validate schema', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('tractor/anthony').delete()

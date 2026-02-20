@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { WithSelfBoundCALL } from '../CALL'
 import { CALL } from '../CALL'
@@ -56,7 +56,6 @@ describe('BoundCallable', () => {
 
 		expect(callable('hello')).toBe(15)
 
-		// eslint-disable-next-line no-useless-call
 		expect(callable.call(null, 'hello')).toBe(15) // bound anyway
 	})
 })

@@ -29,6 +29,5 @@ export namespace Script {
 
 	export type Sequence = MaybePromise<Script>[]
 
-	// eslint-disable-next-line sonarjs/redundant-type-aliases
 	export type Literal = string
 }

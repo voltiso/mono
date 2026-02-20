@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
+import { $Assert } from '_'
 
 import type { IsIdentical } from '~/type'
 
@@ -21,7 +21,6 @@ describe('AllowedValue', () => {
 		$Assert<IsIdentical<AllowedValue<O, 'a'>, 1>>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('generic', <O extends object>() => {
 	// 	expect.assertions(0)
 

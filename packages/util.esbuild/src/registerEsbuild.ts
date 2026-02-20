@@ -13,7 +13,6 @@ export function registerEsbuild(esbuildOptions?: RegisterOptions): {
 	patchRequireForEsbuild()
 
 	const { register } =
-		// eslint-disable-next-line @typescript-eslint/consistent-type-imports, n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
 		require('esbuild-register/dist/node') as typeof import('esbuild-register/dist/node')
 	return register(esbuildOptions)
 }

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/nested-control-flow */
-
 import { assert } from '@voltiso/assertor'
 import type { DocumentSnapshot } from '@voltiso/firestore-like'
 import type { Schema } from '@voltiso/schemar'
@@ -18,9 +16,9 @@ import { deepCloneData } from '@voltiso/util.firestore'
 import { fromDatabase } from '~/common'
 import { withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import { _checkDecorators } from '~/decorators'
 import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
+import { _checkDecorators } from '~/decorators'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 import {
@@ -176,7 +174,6 @@ async function directDocPathGet<D extends $$Doc>(
 					const doc = data ? new Doc(ctx, data as never) : null
 					// assert(cacheEntry.__voltiso)
 
-					// eslint-disable-next-line no-await-in-loop
 					const r = await trigger.call(doc, {
 						doc,
 
@@ -192,9 +189,8 @@ async function directDocPathGet<D extends $$Doc>(
 
 					{
 						const newData = collectTriggerResult(ctx, r)
-						// eslint-disable-next-line require-atomic-updates
+
 						if (newData !== undefined) data = newData as never
-						// eslint-disable-next-line require-atomic-updates
 						else data = doc?.data ?? null
 					}
 
@@ -241,7 +237,6 @@ async function directDocPathGet<D extends $$Doc>(
 	}
 }
 
-// eslint-disable-next-line sonarjs/cyclomatic-complexity
 async function transactionDocPathGetImpl<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
@@ -271,7 +266,6 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date) // ! triggers may not see mutations done here
 
 		cacheEntry.originalData = deepCloneData(cacheEntry.data) // ! ground truth for after-triggers (the first `before` value)
@@ -358,14 +352,13 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		cacheEntry.data = cacheEntry.proxy._raw
 
 		// $assert(cacheEntry.data.__voltiso)
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 		cacheEntry.data.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 		// if (cacheEntry.data.__voltiso)
 		cacheEntry.__voltiso = cacheEntry.data.__voltiso
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 	const onGetTriggers = getOnGetTriggers(ctx.docRef)
@@ -373,7 +366,6 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 	for (const { trigger, pathMatches } of onGetTriggers) {
 		// assert(cacheEntry.__voltiso)
 
-		// eslint-disable-next-line no-await-in-loop
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
 			__voltiso: cacheEntry.__voltiso as never,
@@ -423,11 +415,10 @@ export function transactionDocPathGet<D extends $$Doc>(
 	// check if there's `await` outside this function
 	transaction._numFloatingPromises += 1
 	return {
-		// eslint-disable-next-line unicorn/no-thenable
+		// biome-ignore lint/suspicious/noThenProperty: .
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
 		},
 	}
@@ -438,7 +429,6 @@ export function get<TI extends DocTI>(
 ): PromiseLike<Doc<TI> | null> {
 	const ctxOverride = ctx.transactor._getTransactionContext()
 
-	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 	if (isWithTransaction(ctx)) {

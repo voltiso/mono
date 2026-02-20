@@ -18,8 +18,8 @@ const dbWithSchema = new Transactor(firestore, firestoreModule, {
 const tigers = db('foo')
 const tigersWithSchema = dbWithSchema('foo')
 
-describe('requireSchemas', function () {
-	it('should respect constructor argument (false)', async function () {
+describe('requireSchemas', () => {
+	it('should respect constructor argument (false)', async () => {
 		expect.hasAssertions()
 
 		const foo = await tigers.add({ claw: 123 })
@@ -32,7 +32,7 @@ describe('requireSchemas', function () {
 		})
 	})
 
-	it('should respect constructor argument (true)', async function () {
+	it('should respect constructor argument (true)', async () => {
 		expect.hasAssertions()
 		await expect(tigersWithSchema.add({ claw: 123 })).rejects.toThrow(
 			'missing schema',
@@ -42,7 +42,7 @@ describe('requireSchemas', function () {
 		)
 	})
 
-	it('should respect dynamically changed requireSchema (to false)', async function () {
+	it('should respect dynamically changed requireSchema (to false)', async () => {
 		expect.hasAssertions()
 
 		dbWithSchema.requireSchemas = false
@@ -60,7 +60,7 @@ describe('requireSchemas', function () {
 		dbWithSchema.requireSchemas = true
 	})
 
-	it('should respect dynamically changed requireSchema (to true)', async function () {
+	it('should respect dynamically changed requireSchema (to true)', async () => {
 		expect.hasAssertions()
 
 		db.requireSchemas = true

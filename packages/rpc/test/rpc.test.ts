@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-/* eslint-disable jest/prefer-hooks-on-top */
-
 import type { Server } from 'node:http'
 
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
@@ -24,7 +21,7 @@ class MyError extends Error {
 	constructor(message: string) {
 		super(message)
 		this.name = 'MyError'
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
+
 		if (Error.captureStackTrace) Error.captureStackTrace(this, MyError)
 	}
 }
@@ -67,14 +64,11 @@ const handlers = {
 
 const myServer = new RpcServer({ context, handlers })
 
-// eslint-disable-next-line jest/require-hook
 let port = 0
 
 let httpServer: Server
 
-// eslint-disable-next-line jest/require-top-level-describe, jest/no-hooks
 beforeAll(async () => {
-	// eslint-disable-next-line import/dynamic-import-chunkname
 	const getPort = (await import('get-port')).default
 	port = await getPort()
 	// port = 12_345
@@ -85,9 +79,7 @@ beforeAll(async () => {
 // CLIENT
 
 describe('client', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
-		// eslint-disable-next-line no-new, sonarjs/constructor-for-side-effects
 		new RpcClient<typeof myServer.handlers>(`http://localhost:${port}/rpc`)
 
 		$Assert()
@@ -183,7 +175,7 @@ describe('client', () => {
 		)
 	})
 
-	// eslint-disable-next-line jest/no-hooks
+	// biome-ignore lint/complexity/useArrowFunction: todo?
 	afterAll(function () {
 		httpServer.close()
 	})

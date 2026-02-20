@@ -9,14 +9,12 @@ import type { ComponentProps } from 'react'
 import { style } from '../../../../src'
 
 describe('defineProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('compiler options is set', () => {
 		expect.assertions(0)
 
 		$Assert.is<strictNullChecks, false>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('allows undefined default', () => {
 		expect.assertions(0)
 

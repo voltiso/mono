@@ -7,7 +7,7 @@ export function updateCollectionSubject(collection: Collection): void {
 	const docs = Object.fromEntries(
 		Object.entries(collection._docs)
 			.filter(([_id, doc]) => Boolean(doc.data$.value))
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			// biome-ignore lint/style/noNonNullAssertion: .
 			.map(([id, doc]) => [id, doc.data$.value!]),
 	)
 

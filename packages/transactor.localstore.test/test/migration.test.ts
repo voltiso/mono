@@ -34,8 +34,8 @@ class User extends Doc.with({
 
 const users = db('userMigration').register(User)
 
-describe('migration onGet', function () {
-	it('triggers on non-existing docs', async function () {
+describe('migration onGet', () => {
+	it('triggers on non-existing docs', async () => {
 		expect.hasAssertions()
 
 		await database.doc('userMigration/a').set({ date: '2022-11-25' })

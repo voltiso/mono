@@ -283,7 +283,7 @@ export class CustomComplexHandler<
 		this._name = options.name
 		this.signatures = getSignatures(options) as never
 		this.implementation = options.implementation as never
-		// eslint-disable-next-line no-constructor-return
+
 		return BoundCallable(this as unknown as ComplexHandler<Options>) as never
 	}
 
@@ -307,7 +307,6 @@ export class CustomComplexHandler<
 
 	// 		signatures: [
 	// 			{
-	// 				// eslint-disable-next-line security/detect-object-injection
 	// 				...signature[PARTIAL_OPTIONS],
 	// 				parameters: [...parameters.getShape, parameterSchema],
 	// 			},
@@ -337,7 +336,6 @@ export class CustomComplexHandler<
 
 	// 		signatures: [
 	// 			{
-	// 				// eslint-disable-next-line security/detect-object-injection
 	// 				...signature[PARTIAL_OPTIONS],
 	// 				return: returnSchema,
 	// 			},
@@ -394,8 +392,7 @@ export class CustomComplexHandler<
 
 	[CALL](...inputArgs: unknown[]): never {
 		const [thisArg, ...args] = isThisArgObject(inputArgs[0])
-			? // eslint-disable-next-line security/detect-object-injection
-			  [inputArgs[0][THIS_ARG], ...inputArgs.slice(1)]
+			? [inputArgs[0][THIS_ARG], ...inputArgs.slice(1)]
 			: [global, ...inputArgs]
 
 		if (!this.implementation) {
@@ -456,7 +453,7 @@ export class CustomComplexHandler<
 		}
 
 		if (isPromiseLike(rawReturnOrPromise))
-			// eslint-disable-next-line promise/prefer-await-to-then
+
 			return rawReturnOrPromise.then(finalize) as never
 		else return finalize(rawReturnOrPromise) as never
 	}
@@ -464,16 +461,16 @@ export class CustomComplexHandler<
 	// TODO: `BoundCallable` should have this functionality embedded maybe? And detect if called via Function.prototype.call or Function.prototype.apply?
 
 	call(thisArg: unknown, ...args: unknown[]): unknown {
-		// eslint-disable-next-line security/detect-object-injection
+
 		return this[CALL]({ [THIS_ARG]: thisArg }, ...args)
 	}
 
 	bind(thisArg: unknown, ...args: unknown[]): unknown {
-		// eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+
 		const self = this
 		return Function.prototype.bind.call(
 			function (this: unknown, ...moreArgs: unknown[]) {
-				// eslint-disable-next-line security/detect-object-injection
+
 				return self[CALL]({ [THIS_ARG]: this }, ...moreArgs)
 			},
 			thisArg,
@@ -482,7 +479,7 @@ export class CustomComplexHandler<
 	}
 
 	apply(thisArg: unknown, args: unknown[]): unknown {
-		// eslint-disable-next-line security/detect-object-injection
+
 		return this[CALL]({ [THIS_ARG]: thisArg }, ...args)
 	}
 }

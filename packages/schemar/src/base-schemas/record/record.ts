@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import { lazyConstructor } from '@voltiso/util'
 
 import type {
@@ -22,13 +24,13 @@ interface Record_<
 	},
 	TValueSchema extends $$Schemable,
 > extends CustomRecord<{
-	Output: Record<Output<TKeySchema>, Output<TValueSchema>>
+		Output: Record<Output<TKeySchema>, Output<TValueSchema>>
 
-	Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
+		Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
 
-	// keySchema: TKeySchema
-	// valueSchema: TValueSchema
-}> {}
+		// keySchema: TKeySchema
+		// valueSchema: TValueSchema
+	}> {}
 
 export { Record_ as Record }
 
@@ -39,14 +41,14 @@ export interface Record$<
 	},
 	TValueSchema extends $$Schemable,
 > extends CustomRecord$<{
-	Output: Record<Output<TKeySchema>, Output<TValueSchema>>
+		Output: Record<Output<TKeySchema>, Output<TValueSchema>>
 
-	Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
+		Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
 
-	/** Hide for editor performance */
-	// keySchema: TKeySchema
-	// valueSchema: TValueSchema
-}> {}
+		/** Hide for editor performance */
+		// keySchema: TKeySchema
+		// valueSchema: TValueSchema
+	}> {}
 
 //
 
@@ -79,7 +81,6 @@ export interface RecordConstructor {
 
 //
 
-// eslint-disable-next-line sonarjs/variable-name
 const Record_ = lazyConstructor(
 	() => RecordImpl,
 ) as unknown as RecordConstructor

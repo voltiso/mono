@@ -3,5 +3,4 @@
 
 import { getJestConfig } from './getJestConfig'
 
-// eslint-disable-next-line import/no-default-export
 export default getJestConfig()

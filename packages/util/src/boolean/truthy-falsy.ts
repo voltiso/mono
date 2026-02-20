@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 export type Falsy = null | undefined | 0 | 0n | false | void | ''
 
 // export type IsFalsy<A, T = true, F = false> = A extends Falsy

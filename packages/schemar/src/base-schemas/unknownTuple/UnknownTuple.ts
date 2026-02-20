@@ -17,13 +17,15 @@ import { ReadonlyUnknownTupleImpl } from './ReadonlyUnknownTupleImpl'
 
 //
 
-export interface MutableUnknownTuple extends CustomUnknownTuple<{
-	isReadonlyTuple: false
-}> {}
+export interface MutableUnknownTuple
+	extends CustomUnknownTuple<{
+		isReadonlyTuple: false
+	}> {}
 
-export interface MutableUnknownTuple$ extends CustomUnknownTuple$<{
-	isReadonlyTuple: false
-}> {
+export interface MutableUnknownTuple$
+	extends CustomUnknownTuple$<{
+		isReadonlyTuple: false
+	}> {
 	<T extends readonly $$Schemable[]>(
 		...elementTypes: T
 	): GetTuple$_<this, $Mutable<T>>
@@ -44,17 +46,19 @@ export interface MutableUnknownTuple$ extends CustomUnknownTuple$<{
 
 //
 
-export interface ReadonlyUnknownTuple extends CustomUnknownTuple<{
-	isReadonlyTuple: true
-	Output: readonly unknown[]
-	Input: readonly unknown[]
-}> {}
+export interface ReadonlyUnknownTuple
+	extends CustomUnknownTuple<{
+		isReadonlyTuple: true
+		Output: readonly unknown[]
+		Input: readonly unknown[]
+	}> {}
 
-export interface ReadonlyUnknownTuple$ extends CustomUnknownTuple$<{
-	isReadonlyTuple: true
-	Output: readonly unknown[]
-	Input: readonly unknown[]
-}> {
+export interface ReadonlyUnknownTuple$
+	extends CustomUnknownTuple$<{
+		isReadonlyTuple: true
+		Output: readonly unknown[]
+		Input: readonly unknown[]
+	}> {
 	<T extends readonly $$Schemable[]>(
 		...elementTypes: T
 	): GetTuple$_<this, [...T]>

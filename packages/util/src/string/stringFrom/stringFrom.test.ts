@@ -26,7 +26,7 @@ describe('stringFrom', () => {
 			'2022-05-26T21:42:45.344Z',
 		)
 		expect(stringFrom(() => 123)).toBe('() => 123')
-		// eslint-disable-next-line @typescript-eslint/unbound-method
+
 		expect(stringFrom(Date.prototype.toISOString, { maxLength: 40 })).toBe(
 			'function toISOString() { [native code] }',
 		)
@@ -48,7 +48,8 @@ describe('stringFrom', () => {
 			stringFrom((x: string) => stringFrom(x || `(${x})`) || stringFrom(x), {
 				maxLength: 80,
 			}),
-			// eslint-disable-next-line no-template-curly-in-string
+
+			// biome-ignore lint/suspicious/noTemplateCurlyInString: .
 		).toBe('x => stringFrom(x || `(${x})`) || stringFrom(x)')
 
 		expect(stringFrom(stringFrom, { maxLength: 40 })).toBe(

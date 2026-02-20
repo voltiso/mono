@@ -1,7 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-static-fields */
+/** biome-ignore-all lint/complexity/noThisInStatic: . */
 
 import { $assert } from '@voltiso/assertor'
 import type { IObject, SchemaLike } from '@voltiso/schemar'
@@ -70,10 +70,9 @@ export class DocConstructorImpl implements $$Doc {
 	declare static readonly [DTI]: DocTI
 
 	static readonly [Voltiso.Transactor.IS_DOC_CONSTRUCTOR] = true as const
-	// eslint-disable-next-line es-x/no-class-instance-fields
+
 	readonly [Voltiso.Transactor.IS_DOC] = true as const
 
-	// eslint-disable-next-line sonarjs/public-static-readonly
 	static _: DocDerivedData = defaultDocDerivedData
 
 	static tag<Tag extends DocTag | ANY_DOC>(tag: Tag): any {
@@ -223,7 +222,6 @@ export class DocConstructorImpl implements $$Doc {
 	// }
 
 	static get idSchema(): SchemaLike<string> {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		return (this._.id as never) || s.string
 	}
 

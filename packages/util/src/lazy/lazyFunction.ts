@@ -1,9 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable unicorn/consistent-function-scoping */
-
 import { $fastAssert } from '_'
 
 import { getProxyHandlers } from './_/getProxyHandlers'
@@ -25,7 +22,7 @@ export function lazyFunction<T extends (...args: any) => any>(
 	}
 
 	// Has to be an arrow function, since it doesn't define prototype
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
+
 	const target = () => {}
 
 	function load() {

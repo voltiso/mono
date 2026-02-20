@@ -1,12 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-
 import type { SyncerPromise } from '@voltiso/util'
 import { runAsync, runSync } from '@voltiso/util'
-import type { PackageJson } from '@voltiso/util.package-json'
-
+import type { PackageJson } from 'type-fest'
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'
 
 const cache = new Map<string, PackageJson>()
@@ -27,7 +24,6 @@ export function* getPackageJsonCachedSyncer(
 		}) as never // ! TODO - this cast wasn't needed before TS update?
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (result) return result
 
 	/**
@@ -43,7 +39,6 @@ export function* getPackageJsonCachedSyncer(
 		},
 	}) as never // ! TODO - this cast wasn't needed before TS update?
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!result) throw new Error('[@voltiso/util] getPackageJson() failed')
 
 	promises.delete(dir)

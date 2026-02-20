@@ -8,7 +8,8 @@
  * - Applied before allowing arrays, so properties defined here can also be part
  *   of array
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CssProperties {
+
+export // biome-ignore lint/suspicious/noEmptyInterface: declaration merging
+interface CssProperties {
 	//
 }

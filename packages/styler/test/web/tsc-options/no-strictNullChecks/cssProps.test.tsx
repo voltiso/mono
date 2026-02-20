@@ -8,7 +8,6 @@ import { $Assert } from '@voltiso/util'
 import { style } from '~'
 
 describe('cssProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.assertions(0)
 
@@ -18,7 +17,6 @@ describe('cssProps', () => {
 		;<Button /> // check if optional
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not allow overwriting props', () => {
 		expect.assertions(0)
 

@@ -8,6 +8,6 @@ export function useOnUnmount(
 	handleUnmount: () => void,
 	deps?: DependencyList,
 ): void {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	useEffect(() => handleUnmount, deps || [])
 }

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/complexity/noBannedTypes: . */
+
 import { lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomUnknown, CustomUnknown$ } from '~'

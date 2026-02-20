@@ -35,7 +35,6 @@ export interface DocFieldPathConstructor {
 	new <data>(ctx: DocFieldPath.Context, path: string[]): DocFieldPath<data>
 }
 
-// eslint-disable-next-line import/export
 export const DocFieldPath = lazyConstructor(
 	() => _DocFieldPath,
 ) as unknown as DocFieldPathConstructor
@@ -44,7 +43,6 @@ export const DocFieldPath = lazyConstructor(
 
 //
 
-// eslint-disable-next-line import/export
 export namespace DocFieldPath {
 	export type Context = WithTransactor & WithDocRef & Partial<WithTransaction>
 }

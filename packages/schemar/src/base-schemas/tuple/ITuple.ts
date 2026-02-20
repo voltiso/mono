@@ -12,7 +12,8 @@ export interface $$Tuple extends $$Schema {
 }
 
 export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
-	extends $$Tuple, SchemaLike<T> {
+	extends $$Tuple,
+		SchemaLike<T> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 }
@@ -20,7 +21,9 @@ export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
 //
 
 export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
-	extends $$Tuple, TupleLike<T>, Schema<T> {
+	extends $$Tuple,
+		TupleLike<T>,
+		Schema<T> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 
@@ -35,7 +38,9 @@ export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 }
 
 export interface ITuple$<T extends readonly unknown[] = readonly unknown[]>
-	extends $$Tuple, TupleLike<T>, Schema$<T> {
+	extends $$Tuple,
+		TupleLike<T>,
+		Schema$<T> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 

@@ -12,8 +12,8 @@ import type {
 	IntersectionOptions,
 	Output,
 } from '~'
-import { isObjectSchema, SCHEMA_NAME } from '~'
 import * as s from '~'
+import { isObjectSchema, SCHEMA_NAME } from '~'
 
 describe('intersection', () => {
 	it('generic', <O extends Partial<IntersectionOptions>>() => {

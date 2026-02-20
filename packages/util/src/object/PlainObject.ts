@@ -18,7 +18,7 @@ export type PlainObject<S extends {} = {}> = S & object & Brand<'plain'>
 export function isPlainObject<CastToType extends {} = {}>(
 	x: unknown,
 ): x is PlainObject<CastToType> {
-	// eslint-disable-next-line sonarjs/no-built-in-override
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: .
 	const constructor = (x as object | null)?.constructor
 	return constructor?.name === 'Object'
 }

@@ -1,12 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 import type { UNSET } from '_/symbols/unset'
 
 import type { Throw } from './_/error'
-import type { IsCompatible } from './type'
 import type {
 	TypeAliases0,
 	TypeAliases1,
@@ -19,6 +16,7 @@ import type {
 	TypeAliases8,
 	TypeAliases9,
 } from './TypeAliases-augmentation'
+import type { IsCompatible } from './type'
 
 //
 

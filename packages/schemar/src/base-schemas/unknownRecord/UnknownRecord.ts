@@ -7,9 +7,8 @@ import { lazyConstructor, lazyFunction } from '@voltiso/util'
 import type { GetFinalSchema } from '~/types/GetFinalSchema'
 import type { $$Schema } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
-
-import type { Record as RecordSchema, Record$ } from '../record/record'
 import type { RecordOptions } from '../record/RecordOptions'
+import type { Record$, Record as RecordSchema } from '../record/record'
 import type {
 	CustomUnknownRecord,
 	CustomUnknownRecord$,

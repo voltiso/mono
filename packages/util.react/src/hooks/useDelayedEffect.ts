@@ -7,11 +7,12 @@ import { useCurrent } from '~/hooks'
 
 export function useDelayedEffect(
 	milliseconds: number,
-	// eslint-disable-next-line promise/prefer-await-to-callbacks
+
 	callback: () => void,
 ): void {
 	const current = useCurrent({ callback })
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			current.callback()
@@ -20,7 +21,5 @@ export function useDelayedEffect(
 		return () => {
 			clearTimeout(timeout)
 		}
-		// eslint-disable-next-line react-hooks/rule-suppression
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 }

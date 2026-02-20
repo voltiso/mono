@@ -10,7 +10,9 @@ import type { ForwardRefAndCssRenderFunction } from '../ForwardRefRenderFunction
 
 export type JSXElementConstructorLike<P> =
 	| ((props: P) => ReactNodeLike) // ReactElementLike | null
-	| (new (props: P) => ComponentLike)
+	| (new (
+			props: P,
+	  ) => ComponentLike)
 
 export type $ComponentProps<T> =
 	T extends JSXElementConstructorLike<infer P>

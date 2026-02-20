@@ -1,8 +1,5 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -10,8 +7,8 @@ import { $Assert } from '@voltiso/util'
 import type {
 	$$Number,
 	CustomNumber,
-	Input,
 	INumber,
+	Input,
 	NumberOptions,
 	Output,
 	Schema,

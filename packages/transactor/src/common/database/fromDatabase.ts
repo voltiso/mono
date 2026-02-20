@@ -21,11 +21,10 @@ export function fromDatabaseData(
 
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	nestedData: Database.DocumentDataNested,
 ): NestedDataNoArray
 
-// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
 	nestedData: Database.DocumentDataNested,
@@ -37,7 +36,6 @@ export function fromDatabaseData(
 	} else if (isDocRef(nestedData)) {
 		return nestedData as never
 	} else if (Database.isDocumentReference(nestedData)) {
-		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', nestedData.path)
 		return new CustomDocRef(ctx, nestedData.path, { isStrong: true })
 	} else if (isDocRefJson(nestedData)) {
@@ -82,14 +80,12 @@ export function fromDatabase(
 		const { allowIdField, allowValidIdField } = ctx.transactor._options
 
 		if (!allowIdField && !allowValidIdField) throw new TransactorError(message)
-		// eslint-disable-next-line no-console
 		else if (allowIdField === 'warn') console.warn(message)
 
 		const isValid = data.id === (ctx.docRef?.id as never)
 		if (!isValid) {
 			const invalidMessage = `invalid ${message}`
 			if (!allowValidIdField) throw new TransactorError(invalidMessage)
-			// eslint-disable-next-line no-console
 			else if (allowValidIdField === 'warn') console.warn(invalidMessage)
 		}
 	}

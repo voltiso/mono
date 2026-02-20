@@ -10,7 +10,6 @@ import { forwardRef } from 'react'
 import { style } from '~'
 
 describe('children', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('implicit children for intrinsic elements', () => {
 		const Button = style('button')
 
@@ -22,7 +21,6 @@ describe('children', () => {
 		$Assert<IsIdentical<Children, ReactNode>>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('no implicit children for React.forwardRef', () => {
 		const Button = style('button')
 

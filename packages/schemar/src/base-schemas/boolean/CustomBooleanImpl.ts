@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
@@ -9,6 +8,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { BooleanOptions, CustomBoolean, Literal, Schema } from '~'
 import {
@@ -28,12 +28,13 @@ $fastAssert(SCHEMA_NAME)
 $fastAssert(OPTIONS)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomBooleanImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: BooleanOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: BooleanOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBoolean<O>
@@ -42,7 +43,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable(this) as never
 	}
 
@@ -50,7 +51,6 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	[CALL]<L extends boolean>(literals: Set<L>): Literal<L>
 	[CALL]<L extends boolean>(...args: L[] | [Set<L>]): Literal<L>
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends boolean>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal(literals) as never
@@ -80,7 +80,6 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'boolean'
 	}

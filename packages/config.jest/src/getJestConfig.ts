@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// // eslint-disable-next-line import/no-unassigned-import, sonarjs/no-implicit-dependencies
 // import 'tsx'
 
 import * as path from 'node:path'
@@ -11,11 +10,11 @@ import {
 	defineJestConfig,
 	moduleNameMapper,
 } from '@voltiso/config.jest.lib'
+
 // import { register as registerEsbuild } from 'esbuild-register/dist/node'
 
 // let registerEsbuildOnce = () => {
 // 	registerEsbuild()
-// 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 // 	registerEsbuildOnce = () => {}
 // }
 
@@ -38,7 +37,6 @@ import {
 // 	dirname = new URL('.', import.meta.url).pathname.slice(0, -1)
 // }
 
-// eslint-disable-next-line unicorn/prefer-module
 const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat
 
 const librariesToTransform = [
@@ -53,7 +51,6 @@ const librariesToTransform = [
 // console.log('config.jest', isCjs ? 'cjs' : 'esm')
 // console.log({dirname})
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getJestConfig(options?: {
 	format?: 'cjs' | 'esm' | undefined
 }) {
@@ -70,7 +67,6 @@ export function getJestConfig(options?: {
 	)
 
 	for (const extension of codeFilesExtensions) {
-		// eslint-disable-next-line unicorn/prefer-string-raw
 		transform[`\\.${extension}$`] = transformValue
 		// require.resolve('../transform.js')
 		// '@voltiso/config.jest/transform'
@@ -88,7 +84,6 @@ export function getJestConfig(options?: {
 		modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
 		transformIgnorePatterns: [
-			// eslint-disable-next-line unicorn/prefer-string-raw
 			`node_modules/\\.pnpm/(?!${librariesToTransform.join('|')}).*`,
 		],
 

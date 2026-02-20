@@ -20,7 +20,6 @@ export class SetError<
 	path: P
 	value: V
 
-	// eslint-disable-next-line @typescript-eslint/max-params
 	constructor(obj: Obj, path: P, value: V, options?: ErrorOptions | undefined) {
 		const message = `property not present @ set(${stringFrom(
 			obj,
@@ -31,7 +30,6 @@ export class SetError<
 		this.path = path
 		this.value = value
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 
 		this.name = 'SetError'

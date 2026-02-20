@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { $fastAssert, isDefined } from '@voltiso/util'
@@ -116,10 +114,10 @@ export class DocumentReference implements Database.DocumentReference {
 		const collections = this._store._collections
 		const collectionPath = this._collectionRef._path
 
-		// eslint-disable-next-line no-multi-assign, @typescript-eslint/no-unnecessary-condition
+		// biome-ignore lint/suspicious/noAssignInExpressions: .
 		const collection = (collections[collectionPath] ||= new Collection())
 
-		// eslint-disable-next-line no-multi-assign, @typescript-eslint/no-unnecessary-condition
+		// biome-ignore lint/suspicious/noAssignInExpressions: .
 		const doc = (collection._docs[this.id] ||= new Doc(null))
 
 		return doc.data$

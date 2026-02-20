@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 
 import { style } from '~'
@@ -10,7 +10,6 @@ import { style } from '~'
 import { renderApp } from './common'
 
 describe('curried', () => {
-	// eslint-disable-next-line jest/no-hooks
 	afterEach(() => {
 		cleanup() // required after upgrading testing library
 	})

@@ -25,7 +25,7 @@ class Counter extends Doc.with({
 		this.data.value += incrementBy
 	})
 
-	.method('floatSomePromises', async function () {
+	.method('floatSomePromises', async () => {
 		// const db = this.db
 		void db('user/a').set({ age: 1 })
 
@@ -37,8 +37,8 @@ class Counter extends Doc.with({
 
 const counters = db('counter').register(Counter)
 
-describe('method', function () {
-	it('should process method', async function () {
+describe('method', () => {
+	it('should process method', async () => {
 		expect.hasAssertions()
 
 		const counter = await counters.add({})
@@ -57,7 +57,7 @@ describe('method', function () {
 		expect(doc!.data['value']).toBe(1101)
 	})
 
-	it('should detect floating promises', async function () {
+	it('should detect floating promises', async () => {
 		expect.hasAssertions()
 
 		await counters('asd').set({})

@@ -25,7 +25,7 @@ export function useLazyLoad(
 	})
 
 	// const [element, setElement] = useState<HTMLElement>()
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
+
 	const current = useCurrent<{ element: unknown | null }>({ element: null })
 
 	const myRef = useMemo(

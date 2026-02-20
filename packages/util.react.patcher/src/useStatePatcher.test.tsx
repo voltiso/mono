@@ -18,7 +18,6 @@ describe('useStatePatcher', () => {
 		let renderId = 0
 
 		const C: FC = () => {
-			// eslint-disable-next-line react-hooks/todo
 			++renderId
 			prevState = state
 			state = useStatePatcher({ a: 'aa' })
@@ -49,10 +48,10 @@ describe('useStatePatcher', () => {
 		expect(prevState.a).toBe('bb') // no stale values
 
 		// #3 no re-render (same value)
-		// eslint-disable-next-line no-useless-assignment
+
 		prevState = state
 		let prevRaw = state.raw
-		// eslint-disable-next-line testing-library/render-result-naming-convention
+
 		let prevRenderId = renderId
 		act(() => {
 			state.update({ a: 'bb' })
@@ -64,7 +63,7 @@ describe('useStatePatcher', () => {
 		//
 
 		// #3-b no re-render (same value)
-		// eslint-disable-next-line no-useless-assignment
+
 		prevState = state
 		prevRaw = state.raw
 		prevRenderId = renderId
@@ -90,6 +89,7 @@ describe('useStatePatcher', () => {
 
 		class C {
 			constructor() {
+				// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 				return BoundCallable(this)
 			}
 
@@ -100,7 +100,6 @@ describe('useStatePatcher', () => {
 
 		const c = new C()
 
-		// eslint-disable-next-line @typescript-eslint/no-misused-spread
 		expect({ ...c }).toStrictEqual({})
 
 		/**
@@ -116,9 +115,8 @@ describe('useStatePatcher', () => {
 		let state = undefined as unknown as StatePatcher<{ a: string }>
 
 		const C: FC = () => {
-			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: 'aa' })
-			// eslint-disable-next-line @typescript-eslint/no-misused-spread
+
 			return <>{`Num keys: ${Object.keys({ ...state }).length.toString()}`}</>
 		}
 
@@ -137,14 +135,12 @@ describe('useStatePatcher', () => {
 		let state: any
 
 		const C: FC = () => {
-			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: true })
 			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
 		}
 
 		render(<C />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const c = screen.getByTestId('a')
 
 		expect(c).toHaveTextContent('T')
@@ -162,14 +158,12 @@ describe('useStatePatcher', () => {
 		let state: StatePatcher<{ a: boolean }>
 
 		const C: FC = () => {
-			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: true })
 			return <div data-testid='aa'>{state.a ? 'T' : 'F'}</div>
 		}
 
 		render(<C />)
 
-		// eslint-disable-next-line testing-library/no-test-id-queries
 		const c = screen.getByTestId('aa')
 
 		expect(c).toHaveTextContent('T')

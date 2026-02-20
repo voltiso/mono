@@ -18,7 +18,6 @@ export async function writeCompatDirs(): Promise<void> {
 
 	for (const name of compatDirsNames) {
 		try {
-			// eslint-disable-next-line no-await-in-loop, security/detect-non-literal-fs-filename
 			await fs.mkdir(name)
 			printInfo('created dir:', name)
 		} catch {}
@@ -30,7 +29,6 @@ export async function writeCompatDirs(): Promise<void> {
 			sideEffects: false,
 		}
 
-		// eslint-disable-next-line no-await-in-loop
 		const gitignore = await fs.readFile('.gitignore')
 		const lines = gitignore.toString()
 		const wantLine = `/${name}/`
@@ -48,7 +46,6 @@ export async function writeCompatDirs(): Promise<void> {
 		}
 
 		try {
-			// eslint-disable-next-line no-await-in-loop, security/detect-non-literal-fs-filename
 			await fs.writeFile(
 				path.join(name, 'package.json'),
 				`${JSON.stringify(data, null, 2)}\n`,

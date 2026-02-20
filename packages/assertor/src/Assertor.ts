@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-class-instance-fields */
-
 import type * as s from '@voltiso/schemar'
 import { isValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
@@ -29,7 +27,7 @@ export class _Assertor {
 
 		const target = BoundCallable(this)
 
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return new Proxy(target, {
 			get: (target, property, receiver) => {
 				if (property in target)
@@ -63,11 +61,9 @@ export class _Assertor {
 		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]
 	): any {
 		const [message, callInfo] =
-			// eslint-disable-next-line no-nested-ternary
 			rest.length >= 2
 				? rest
-				: // eslint-disable-next-line sonarjs/no-nested-conditional
-					typeof rest[0] === 'string'
+				: typeof rest[0] === 'string'
 					? [rest[0], undefined]
 					: [undefined, rest[0]]
 

@@ -48,7 +48,6 @@ export function defineFunctionComponent<
 
 	return component
 	// assertNotPolluting(name)
-	// // eslint-disable-next-line security/detect-object-injection
 	// const result = { [name]: Component }[name] as ExtendsFC
 	// result.displayName = name
 	// return result

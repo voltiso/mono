@@ -10,7 +10,6 @@ import type { ChildElement } from './ChildElement'
 import type { IChildElement } from './IChildElement'
 
 describe('ChildElement', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 

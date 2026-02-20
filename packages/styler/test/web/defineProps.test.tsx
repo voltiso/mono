@@ -37,7 +37,6 @@ describe('defineProps', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('requires providing defaults for optional props', () => {
 		expect.assertions(0)
 
@@ -61,7 +60,6 @@ describe('defineProps', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('allows undefined default', () => {
 		expect.assertions(0)
 
@@ -73,7 +71,6 @@ describe('defineProps', () => {
 		;() => style('button').defineProps<MyProps>({ magic: undefined })
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require defaults for mandatory props', () => {
 		expect.assertions(0)
 
@@ -89,14 +86,12 @@ describe('defineProps', () => {
 		$Assert.is<A, IStyledComponent>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require default for children', () => {
 		expect.assertions(0)
 
 		interface MyProps {
 			children?: ReactNode
 		}
-
 		//
 		;() => style('div').defineProps<MyProps>({})
 
@@ -105,7 +100,6 @@ describe('defineProps', () => {
 		$Assert.is<A, IStyledComponent>()
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require defaults for already present props', () => {
 		expect.assertions(0)
 

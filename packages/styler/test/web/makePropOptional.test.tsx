@@ -9,7 +9,6 @@ import type { ComponentProps } from 'react'
 import { style } from '~'
 
 describe('makePropOptional', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works (type-only)', () => {
 		expect.assertions(0)
 

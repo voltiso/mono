@@ -10,7 +10,6 @@ import type { IMapProps, MapProps } from './MapProps'
 import type { IMapPropsNode, MapPropsNode } from './MapPropsNode'
 
 describe('MapPropsNode', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <OP extends Props, IP extends Props>() => {
 		expect.assertions(0)
 

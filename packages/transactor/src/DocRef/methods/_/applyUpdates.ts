@@ -19,13 +19,13 @@ export function applyUpdates<
 		throw new TransactorError('NOT_FOUND')
 
 	const result = patch(data, updates as never)
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 	if (result === data || !result || !data) return result
 
 	if ('__voltiso' in data)
 		return {
 			...(result as object),
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+
 			__voltiso: (data as any).__voltiso,
 		} as never
 

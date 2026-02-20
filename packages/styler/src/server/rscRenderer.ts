@@ -3,6 +3,7 @@
 
 import { WebRenderer } from '../renderer/WebRenderer'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-export const rscRenderer: WebRenderer = // eslint-disable-next-line no-multi-assign, @typescript-eslint/no-unsafe-member-access
-	((globalThis as any)._voltisoRscRenderer ||= new WebRenderer())
+// biome-ignore lint/suspicious/noAssignInExpressions: .
+export const rscRenderer: WebRenderer = ((
+	globalThis as any
+)._voltisoRscRenderer ||= new WebRenderer())

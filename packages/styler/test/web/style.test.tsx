@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { afterEach, describe, expect, it } from '@jest/globals'
-// eslint-disable-next-line testing-library/no-manual-cleanup
+
 import { cleanup, screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -12,7 +12,6 @@ import { style } from '~'
 
 import { renderApp } from './common'
 
-// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
 afterEach(() => {
 	cleanup() // required after upgrading testing library
 })
@@ -61,7 +60,6 @@ const OnClickMapped = AnotherButton.mapProp(
 )
 ;<OnClickMapped big />
 
-// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('style', () => {
 	it('simple', () => {
 		expect.hasAssertions()
@@ -146,7 +144,7 @@ describe('style', () => {
 	})
 
 	// TODO: resolve `unit` by pushing node to the stack, instead of global override
-	// eslint-disable-next-line jest/no-commented-out-tests
+
 	// it('unit HOC already styled', () => {
 	// 	expect.hasAssertions()
 
@@ -424,7 +422,6 @@ describe('style', () => {
 
 	// TODO - do we need such optimization?
 
-	// eslint-disable-next-line jest/no-commented-out-tests
 	// it(`doesn't apply double style`, () => {
 	// 	expect.hasAssertions()
 
@@ -479,7 +476,6 @@ describe('style', () => {
 		expect(outerCalls).toBe(1)
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('requires className prop (type-only assert)', () => {
 		expect.assertions(0)
 
@@ -506,7 +502,6 @@ describe('style', () => {
 		})
 	})
 
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('relaxedCss typing', () => {
 		;() =>
 			// @ts-expect-error `colorA`

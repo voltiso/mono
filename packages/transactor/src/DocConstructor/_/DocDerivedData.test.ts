@@ -6,7 +6,7 @@ import { $Assert } from '@voltiso/util'
 
 import type { $$DocTI } from '~/Doc'
 
-import type { defaultDocDerivedData, DocDerivedData } from './DocDerivedData'
+import type { DocDerivedData, defaultDocDerivedData } from './DocDerivedData'
 
 describe('DocDerivedData', () => {
 	it('works (static)', () => {

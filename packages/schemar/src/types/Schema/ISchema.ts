@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS } from '_'
 import type { AlsoAccept, StaticError, UNSET } from '@voltiso/util'
+import { EXTENDS } from '_'
 
 import type {
 	$$Schemable,

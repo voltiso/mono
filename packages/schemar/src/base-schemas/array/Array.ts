@@ -14,41 +14,45 @@ import { ReadonlyArrayImpl } from './ReadonlyArrayImpl'
 
 //
 
-interface MutableArray_<S extends $$Schemable> extends CustomArray<{
-	/** Element: InferSchema$_<S> */
-	Output: Type_<S, { kind: 'out' }>[]
-	Input: Type_<S, { kind: 'in' }>[]
-}> {}
+interface MutableArray_<S extends $$Schemable>
+	extends CustomArray<{
+		/** Element: InferSchema$_<S> */
+		Output: Type_<S, { kind: 'out' }>[]
+		Input: Type_<S, { kind: 'in' }>[]
+	}> {}
 
 export type { MutableArray_ as MutableArray }
 
-export interface MutableArray$<S extends $$Schemable> extends CustomArray$<{
-	/** Element: InferSchema$_<S> */
-	Output: Type_<S, { kind: 'out' }>[]
-	Input: Type_<S, { kind: 'in' }>[]
-}> {}
+export interface MutableArray$<S extends $$Schemable>
+	extends CustomArray$<{
+		/** Element: InferSchema$_<S> */
+		Output: Type_<S, { kind: 'out' }>[]
+		Input: Type_<S, { kind: 'in' }>[]
+	}> {}
 
 //
 
-interface ReadonlyArray_<S extends $$Schemable> extends CustomArray<{
-	// element: InferSchema$_<S>
+interface ReadonlyArray_<S extends $$Schemable>
+	extends CustomArray<{
+		// element: InferSchema$_<S>
 
-	Output: readonly Type_<S, { kind: 'out' }>[]
-	Input: readonly Type_<S, { kind: 'in' }>[]
+		Output: readonly Type_<S, { kind: 'out' }>[]
+		Input: readonly Type_<S, { kind: 'in' }>[]
 
-	isReadonlyArray: true
-}> {}
+		isReadonlyArray: true
+	}> {}
 
 export type { ReadonlyArray_ as ReadonlyArray }
 
-export interface ReadonlyArray$<S extends $$Schemable> extends CustomArray$<{
-	// element: InferSchema$_<S>
+export interface ReadonlyArray$<S extends $$Schemable>
+	extends CustomArray$<{
+		// element: InferSchema$_<S>
 
-	Output: readonly Type_<S, { kind: 'out' }>[]
-	Input: readonly Type_<S, { kind: 'in' }>[]
+		Output: readonly Type_<S, { kind: 'out' }>[]
+		Input: readonly Type_<S, { kind: 'in' }>[]
 
-	isReadonlyArray: true
-}> {}
+		isReadonlyArray: true
+	}> {}
 
 //
 
@@ -72,18 +76,20 @@ export type MutableArray$Constructor = new <T extends $$Schemable>(
 
 //
 
-export interface UnknownMutableArray$ extends CustomArray$<{
-	isReadonlyArray: false
+export interface UnknownMutableArray$
+	extends CustomArray$<{
+		isReadonlyArray: false
 
-	Output: unknown[]
-	Input: unknown[]
-}> {
+		Output: unknown[]
+		Input: unknown[]
+	}> {
 	<S extends $$Schemable>(elementSchema: S): MutableArray$<RelaxSchema_<S>>
 }
 
-export interface UnknownReadonlyArray$ extends CustomArray$<{
-	isReadonlyArray: true
-}> {
+export interface UnknownReadonlyArray$
+	extends CustomArray$<{
+		isReadonlyArray: true
+	}> {
 	<S extends $$Schemable>(elementSchema: S): ReadonlyArray$<S>
 }
 

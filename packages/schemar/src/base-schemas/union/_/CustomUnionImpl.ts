@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import { $fastAssert, lazyConstructor, OPTIONS } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
@@ -21,12 +21,13 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnionImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnionOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnionOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnion<O>, IUnion

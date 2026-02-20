@@ -11,9 +11,9 @@ import { DataHook } from './DataHook'
 
 export interface DataHookConstructor {
 	new <D extends object>(p: { isLoading: boolean }): DataHook<D>
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	new <D extends object>(p: { data: D | null }): DataHook<D>
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
+
 	new <D extends object>(p: { error: Error }): DataHook<D>
 }
 
@@ -47,7 +47,6 @@ export function dataHook<D extends object>(input: {
 
 //
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function dataHook<D extends object>(input: unknown): DataHook<D> {
 	return new DataHook(input as never)
 }

@@ -24,7 +24,6 @@ export function useImmediateEffect(
 		try {
 			mutable.destructor()
 		} finally {
-			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			mutable.destructor = undefined
 		}
 	}
@@ -33,7 +32,9 @@ export function useImmediateEffect(
 		cleanup()
 		mutable.destructor = effect({ isFirstRender: mutable.isFirstRender })
 		mutable.isFirstRender = false
-		// eslint-disable-next-line react-hooks/exhaustive-deps, @typescript-eslint/no-non-null-assertion
+
+		// biome-ignore lint/style/noNonNullAssertion: .
+		// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	}, deps!)
 
 	useOnUnmount(cleanup)

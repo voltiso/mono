@@ -1,15 +1,13 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/class-methods-use-this */
-
-import { SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable_,
 	CALL,
 	lazyConstructor,
 } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
 
 import { infer } from '~/infer/infer'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -24,12 +22,13 @@ export type __CustomSchemaInferrerImpl = InferSchema$NoReadonlyTuple_<[]>
 
 $fastAssert(SCHEMA_NAME)
 
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomSchemaInferrerImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnknownSchemaOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownSchemaOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements ISchemaInferrer
@@ -38,7 +37,8 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+
+		// biome-ignore lint/correctness/noConstructorReturn: .
 		return BoundCallable_(this) as never
 	}
 

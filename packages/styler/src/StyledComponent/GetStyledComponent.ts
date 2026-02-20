@@ -1,6 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/** biome-ignore-all lint/suspicious/noExplicitAny: . */
+
 import type { $Override_, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'

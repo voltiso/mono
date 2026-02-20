@@ -14,7 +14,6 @@ let helloPrinted = false
 function _helloOnce() {
 	if (helloPrinted) return
 
-	// eslint-disable-next-line no-console
 	console.log(moduleIcon, pc.gray('@voltiso/transform/inline'))
 	helloPrinted = true
 }
@@ -28,7 +27,6 @@ export function logInlinedNode(
 
 	_helloOnce()
 
-	// eslint-disable-next-line no-console
 	console.log(
 		moduleIcon,
 		'inline type',

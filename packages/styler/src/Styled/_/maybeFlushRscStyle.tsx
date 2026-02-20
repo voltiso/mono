@@ -12,12 +12,10 @@ import { isServerComponent } from '~/util'
 // import { rscRenderers } from '~/server/rscRenderers'
 // import { isServerComponent } from '~/util/isServerComponent'
 
-// eslint-disable-next-line sonarjs/function-return-type
 export function maybeFlushRscStyle(
 	// ctx: { renderer?: WebRenderer | NativeRenderer },
 	reactNode: React.ReactNode,
 ): React.ReactNode {
-	// // eslint-disable-next-line react-hooks/rules-of-hooks
 	// const rscId = useContext(RscIdContext)
 	// assert(rscId)
 	// const rscRenderer = rscRenderers.get(rscId)
@@ -28,6 +26,7 @@ export function maybeFlushRscStyle(
 	if (!isServerComponent) return reactNode
 
 	// ! key??? TODO
-	// eslint-disable-next-line react/jsx-key
+
+	// biome-ignore lint/correctness/useJsxKeyInIterable: .
 	return [reactNode, <FlushRscStyle />]
 }

@@ -8,7 +8,6 @@ import { $Assert } from '@voltiso/util'
 import type { OmitProps_ } from './OmitProps'
 
 describe('OmitProps', () => {
-	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

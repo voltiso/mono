@@ -5,7 +5,6 @@ export type ExternalButGood = {
 	a: 1
 } & { b: 2 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ExternalInterface {}
 
 /** @inline */

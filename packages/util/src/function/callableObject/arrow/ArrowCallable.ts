@@ -54,7 +54,6 @@ export type __unused_ArrowCallable = ProtoCallable
 export function CustomArrowCallable<Options extends ArrowCallableOptions>(
 	options: Options,
 ): ArrowCallable<Options> {
-	// eslint-disable-next-line @typescript-eslint/strict-void-return
 	const callableObject = EmptyArrowCallable(options.call)
 
 	if (options.shape) {

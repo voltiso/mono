@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
 	BoundCallable,
@@ -9,6 +8,7 @@ import {
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '_'
 
 import type { CustomFunction, FunctionOptions } from '~/base-schemas/function'
 import { FunctionImpl } from '~/base-schemas/function'
@@ -28,15 +28,16 @@ $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// biome-ignore lint/correctness/noUnusedVariables: .
 export interface CustomUnknownFunctionImpl<O> {
 	readonly [Voltiso.BASE_OPTIONS]: UnknownFunctionOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: .
 export class CustomUnknownFunctionImpl<
-	O extends Partial<UnknownFunctionOptions>,
->
+		O extends Partial<UnknownFunctionOptions>,
+	>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownFunction<O>
 {
@@ -44,7 +45,7 @@ export class CustomUnknownFunctionImpl<
 
 	constructor(o: O) {
 		super(o)
-		// eslint-disable-next-line no-constructor-return
+		// biome-ignore lint/correctness/noConstructorReturn: hacky hacky
 		return BoundCallable(this) as never
 	}
 
@@ -69,7 +70,6 @@ export class CustomUnknownFunctionImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'function'
 	}
@@ -80,7 +80,7 @@ export class CustomUnknownFunctionImpl<
 		Return extends $$Schemable,
 	>(
 		parameters: Parameters,
-		// eslint-disable-next-line sonarjs/variable-name
+
 		return_: Return,
 	): CustomFunction<{ parameters: Parameters; return: Return }>
 
@@ -92,11 +92,10 @@ export class CustomUnknownFunctionImpl<
 	>(
 		thisArg: This,
 		parameters: Parameters,
-		// eslint-disable-next-line sonarjs/variable-name
+
 		return_: Return,
 	): CustomFunction<{ parameters: Parameters; return: Return }>
 
-	// eslint-disable-next-line jsdoc/informative-docs
 	/** Custom */
 	[CALL]<Options extends FunctionOptions>(
 		options: Partial<Options>,
@@ -104,11 +103,9 @@ export class CustomUnknownFunctionImpl<
 
 	//
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL](...args: unknown[]): never {
 		let options: Partial<FunctionOptions> = {}
 
-		// eslint-disable-next-line unicorn/prefer-switch
 		if (args.length === 1) {
 			options = args[0] as Partial<FunctionOptions>
 		} else if (args.length === 2) {
