@@ -1,10 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { act, render, screen } from '@testing-library/react'
 import { BoundCallable, CALL } from '@voltiso/util'
 import type { FC } from 'react'
+import { describe, expect, it } from 'vitest'
 
 import type { StatePatcher } from './useStatePatcher'
 import { useStatePatcher } from './useStatePatcher'

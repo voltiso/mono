@@ -19,7 +19,6 @@ export function stringFromFunction_(
 
 	if (r.length > parameters.maxLength) {
 		r = r.replace(/\s*\{.*\}\s*/u, '')
-
 		r = r.replace(/\s*=>.*/u, ' => ...')
 	}
 

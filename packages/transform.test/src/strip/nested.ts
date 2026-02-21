@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyFunction } from '@voltiso/util'
-import { $expect } from '@voltiso/util.jest'
+import { $expect } from './_common'
 
 void lazyFunction
 

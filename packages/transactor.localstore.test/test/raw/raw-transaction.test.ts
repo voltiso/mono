@@ -1,9 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { $assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
+import { describe, expect, it } from 'vitest'
 
 import { createTransactor } from '../common'
 
@@ -41,9 +41,9 @@ describe('raw-transaction', () => {
 		db.allowConcurrentTransactions = true // random check, unrelated to the rest of this test
 
 		await db.runTransaction(async t => {
-			await t('user/artur').set({ age: 934 })
+			await t('user/arturTest9').set({ age: 934 })
 
-			const ref = db('user/artur')
+			const ref = db('user/arturTest9')
 
 			await expect(ref.data['age']).resolves.toBe(934)
 		})

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { screen } from '@testing-library/react'
 import type { IsIdentical, StaticError } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
+import { describe, expect, it } from 'vitest'
 
 import type { IStyledComponent } from '~'
 import { style } from '~'

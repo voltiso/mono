@@ -4,9 +4,9 @@
 // const isCjs = typeof require === 'function'
 // console.log('isCjs', isCjs)
 
-import { describe, expect, it } from '@jest/globals'
 import type { StaticError } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'

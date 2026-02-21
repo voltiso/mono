@@ -3,12 +3,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { registerEsbuild } from '@voltiso/util.esbuild'
 import { register as registerEsbuild } from 'esbuild-register/dist/node'
-
+import { registerCleanup } from '~/_/cleanup'
 import { context } from '~/_/context'
 import { runScript } from '~/runScript'
-
 // import type { EventListener } from 'node'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
@@ -57,20 +55,20 @@ async function main(): Promise<void> {
 
 	const controller = new AbortController()
 	const signal = controller.signal
-
 	context.signal = signal
 
-	process.on('exit', () => {
-		controller.abort()
+	registerCleanup(async () => {
+		try {
+			// console.log('cleanup: controller.abort()')
+			controller.abort()
+		} catch {
+			// console.log('cleanup: controller.abort() throwed')
+		}
 	})
 
 	await runScript(commandName, commandArgs, { signal })
 
-	// let messages = ['Supported commands:', commandNamesStr]
-
-	// if (commandName) messages = [...messages, 'got', commandName]
-
-	// throw new VoltisoScriptError(messages.join(' '))
+	// console.log('main END')
 }
 
 void main()

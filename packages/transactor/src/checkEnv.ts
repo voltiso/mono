@@ -19,9 +19,9 @@ function checkStrictMode() {
 
 function checkDecorators() {
 	if (!Symbol.metadata) {
-		console.warn(
-			'⚠️ @voltiso/transactor: checkDecorators: `Symbol(Symbol.metadata)` not defined, adding a polyfill',
-		)
+		// console.warn(
+		// 	'⚠️ @voltiso/transactor: checkDecorators: `Symbol(Symbol.metadata)` not defined, adding a polyfill',
+		// )
 		// @ts-expect-error hack
 		Symbol.metadata ??= Symbol.for('Symbol.metadata') // consistent with other polyfills
 	}

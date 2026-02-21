@@ -21,18 +21,14 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
     "@biomejs/biome": "^2.4.3",
-    "@jest/globals": "^30.2.0",
     "@types/node": "^25.3.0",
     "@typescript/analyze-trace": "^0.10.1",
-    "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "cross-env": "^10.1.0",
     "gnomon": "^1.5.0",
-    "jest": "^30.2.0",
     "knip": "^5.84.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
@@ -42,7 +38,9 @@
     "turbo": "^2.8.10",
     "type-coverage": "^2.29.7",
     "typescript": "^5.8.3",
-    "typescript-transform-paths": "^3.5.5"
+    "typescript-transform-paths": "^3.5.5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
   },
   "__________MISC": "__________",
   "packageManager": "pnpm@10.30.0",
@@ -55,22 +53,6 @@
       "firebase-tools": {
         "peerDependencies": {
           "js-yaml": "*"
-        }
-      },
-      "@testing-library/jest-dom": {
-        "peerDependencies": {
-          "@jest/globals": "*",
-          "@jest/expect": "*"
-        }
-      },
-      "react-native": {
-        "peerDependencies": {
-          "@types/react": "*"
-        }
-      },
-      "@react-native/virtualized-lists": {
-        "peerDependencies": {
-          "react": "*"
         }
       },
       "@radix-ui/react-checkbox": {

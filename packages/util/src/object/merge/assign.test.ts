@@ -3,7 +3,7 @@
 
 /** biome-ignore-all lint/complexity/useArrowFunction: . */
 
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 
 import { assign } from './assign'
 

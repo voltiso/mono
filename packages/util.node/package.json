@@ -55,9 +55,6 @@
     }
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
-    "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "type-fest": "^5.4.4"
   }

@@ -1,10 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import type { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { Doc, sVoltisoEntry } from '@voltiso/transactor'
+import { describe, expect, it } from 'vitest'
 
 import { createTransactor, database } from './common'
 

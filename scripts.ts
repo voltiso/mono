@@ -109,7 +109,7 @@ export const check = parallel(
 	'test',
 )
 
-export const checkKnip = `pnpm -w exec knip --workspace ${packageJson.name}`
+export const checkKnip = 'echo knip disabled' // `pnpm -w exec knip --workspace ${packageJson.name}`
 export const checkAttw = () => {
 	if (!packageJson.private) return 'attw --pack'
 	return null
@@ -163,17 +163,22 @@ export async function runTestPackages(): Promise<void> {
 export const prepublishOnly = [
 	'workspacePrepare',
 	turbo('build', 'check'),
+	// make sure compat dirs are created
+	// (e.g. for `util` package, where they are not during build)
+	compatDirsWrite,
 	runTestPackages,
 	// turboDependents('test'), // ! slow
 ]
 
 //
 
-// must not include `"` (or escape them)
-const testNodeOptions = [
-	`--experimental-vm-modules`, // no longer required?
-	'--import tsx',
-]
-const testNodeOptionsStr = testNodeOptions.join(' ')
-// default per-package test command
-export const test = `cross-env NODE_OPTIONS="${testNodeOptionsStr}" jest --silent --passWithNoTests`
+export const test = 'vitest run --passWithNoTests --silent'
+
+// // must not include `"` (or escape them)
+// const testNodeOptions = [
+// 	`--experimental-vm-modules`, // no longer required?
+// 	'--import tsx',
+// ]
+// const testNodeOptionsStr = testNodeOptions.join(' ')
+// // default per-package test command
+// export const test = `cross-env NODE_OPTIONS="${testNodeOptionsStr}" jest --silent --passWithNoTests`

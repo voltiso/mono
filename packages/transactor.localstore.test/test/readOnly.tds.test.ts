@@ -1,9 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
+import { describe, it } from 'vitest'
 
 import { createTransactor, database } from './common'
 

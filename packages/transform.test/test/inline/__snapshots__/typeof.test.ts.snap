@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`typeof works 1`] = `
+exports[`typeof > works 1`] = `
 "import type { AnyDoc } from './_/external-stuff.js';
 import { BothTypeAndValue, importedValue } from './_/external-stuff.js';
 export type A = AnyDoc;

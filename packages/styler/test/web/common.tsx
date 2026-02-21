@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import '@testing-library/jest-dom/jest-globals'
-
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import type { ReactNode } from 'react'

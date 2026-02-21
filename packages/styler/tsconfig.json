@@ -4,23 +4,14 @@
 {
 	"extends": "@voltiso/config.ts",
 
+	"exclude": ["node_modules/", "dist/", "test/"],
+
 	"compilerOptions": {
 		"lib": ["DOM"],
 
-		// "types": ["react/canary"],
-
 		"paths": {
-			// "~": ["./src"],
+			"~": ["./src"],
 			"~/*": ["./src/*"]
 		}
-	},
-
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/",
-		".turbo/",
-		//
-		"test"
-	]
+	}
 }

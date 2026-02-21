@@ -1,11 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { afterEach, describe, expect, it } from '@jest/globals'
-
 import { cleanup, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import { style } from '~'
 
@@ -48,6 +47,8 @@ describe('wrap', () => {
 
 	it('complex', () => {
 		expect.hasAssertions()
+
+		const unsetColor = getComputedStyle(document.documentElement).color
 
 		const H1 = style('h1')
 		const MyFooter = style('footer').newCssProps({
@@ -112,7 +113,7 @@ describe('wrap', () => {
 
 		const myFooter1 = screen.getByTestId('MyFooter1')
 
-		expect(myFooter1).toHaveStyle({ color: 'canvastext' })
+		expect(myFooter1).toHaveStyle({ color: unsetColor })
 
 		// expect(myDiv).toContainHTML('aaaaa')
 		expect(myDiv).toMatchSnapshot()

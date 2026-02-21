@@ -2,14 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Server } from 'node:http'
-
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 import { checked } from '@voltiso/handler'
 import * as s from '@voltiso/schemar'
 import { $Assert } from '@voltiso/util'
 import type * as Express from 'express'
 import express from 'express'
-
+import getPort from 'get-port'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { RpcClient } from '~/client'
 import { RpcServer, RpcServerContext } from '~/server'
 
@@ -139,7 +138,8 @@ describe('client', () => {
 	it('network error', async () => {
 		expect.hasAssertions()
 
-		const invalidPort = 31851
+		const invalidPort = await getPort()
+
 		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${invalidPort}/rpc`,
 		)

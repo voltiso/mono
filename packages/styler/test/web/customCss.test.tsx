@@ -1,12 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { afterEach, describe, expect, it } from '@jest/globals'
-
 import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import type { Css, CustomStyledHoc, StyledLike } from '~'
 import { style } from '~'

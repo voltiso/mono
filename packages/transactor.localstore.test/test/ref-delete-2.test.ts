@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
@@ -12,6 +11,7 @@ import {
 	sRef,
 	sStrongRef,
 } from '@voltiso/transactor'
+import { describe, expect, it } from 'vitest'
 
 import { createTransactor } from './common'
 

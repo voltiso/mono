@@ -4,7 +4,7 @@
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 

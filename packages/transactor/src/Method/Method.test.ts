@@ -1,8 +1,8 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
+import { describe, it } from 'vitest'
 
 import { Doc } from '~/Doc'
 

@@ -1,10 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
+import { describe, it } from 'vitest'
 
 import type { DocBuilderPlugin } from '~/Doc'
 import { Doc } from '~/Doc'

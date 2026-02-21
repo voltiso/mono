@@ -1,9 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 
-import { stringFrom } from './stringFrom'
+import { stringFrom as _stringFrom } from './stringFrom'
+
+// hack for vitest (print function name correctly)
+const stringFrom = _stringFrom
 
 describe('stringFrom', () => {
 	it('works', () => {

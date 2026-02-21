@@ -3,11 +3,11 @@
 
 import 'zone.js'
 
-import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
 import { CustomDocPath, Transactor } from '@voltiso/transactor'
+import { describe, expect, it } from 'vitest'
 
 import { firestore, firestoreModule } from '../common/firestore'
 

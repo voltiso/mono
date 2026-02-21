@@ -1,10 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { createLocalstore } from '@voltiso/localstore'
 import { Doc } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
+import { describe, expect, it } from 'vitest'
 
 const database = createLocalstore()
 const db = createLocalstoreTransactor(database, {

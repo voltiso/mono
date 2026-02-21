@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { afterEach, describe, expect, it } from '@jest/globals'
-
 import { cleanup, screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
@@ -16,6 +14,7 @@ import type {
 	Ref,
 } from 'react'
 import { forwardRef } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import type {
 	ComponentPropsWithRef_,

@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { DocIdString, DocRef } from '@voltiso/transactor'
@@ -14,6 +13,7 @@ import {
 } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import { firestore, firestoreModule } from './common/firestore'
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-'use strict'
+require('zone.js')
 
 // /** @type {typeof import('jest-mock-console').default} */
 // // @ts-expect-error bad typings

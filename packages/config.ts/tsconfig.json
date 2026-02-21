@@ -4,22 +4,11 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 
-	// "files": [],
-	"include": [
-		"/**/*",
-		"/**/.*"
-		// "/**/.*/**/*"
-		// "/**/.*/**/*.md"
-		//
-	],
-
+	"include": ["${configDir}/**/*"],
 	"exclude": [
-		"/**/node_modules/**/*",
-		"/**/dist/**/*",
-		"/**/.turbo/**/*",
-		"/**/.tsc-out/**/*",
-		"/**/.*/**/*" // Hidden dirs (works?)
-		//
+		"${configDir}/**/node_modules",
+		"${configDir}/**/dist"
+		// hidden dirs excluded by default
 	],
 
 	"compilerOptions": {

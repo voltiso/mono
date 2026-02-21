@@ -1,11 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { ANY_DOC, DocRef, WeakDocRef } from '@voltiso/transactor'
 import { Doc, method, sStrongRef, Transactor } from '@voltiso/transactor'
 import { $Assert } from '@voltiso/util'
+import { describe, it } from 'vitest'
 
 import { firestore, firestoreModule } from './common/firestore'
 

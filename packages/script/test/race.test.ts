@@ -1,7 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
+import { describe, expect, it } from 'vitest'
 
 import { run } from '~'
 
@@ -35,7 +35,7 @@ describe('Script Runner: Race Mode', () => {
 			race: [
 				'node -e "setTimeout(() => process.exit(0), 100)"', // Winner
 				// Loser tries to write to a file after 500ms
-				`node -e "setTimeout(() => require('fs').writeFileSync('${heartbeatFile}', 'alive'), 1000)"`,
+				`node -e "setTimeout(() => require('fs').writeFileSync('${heartbeatFile}', 'alive'), 500)"`,
 			],
 		}
 
@@ -48,11 +48,15 @@ describe('Script Runner: Race Mode', () => {
 		// console.log('run finished')
 
 		// Wait a bit to ensure the loser HAD time to write if it wasn't killed
-		await new Promise(resolve => void setTimeout(resolve, 1000))
+		await new Promise(resolve => void setTimeout(resolve, 700))
 
 		// console.log('final check')
 
 		expect(fs.existsSync(heartbeatFile)).toBe(false)
+
+		try {
+			fs.unlinkSync(heartbeatFile) // cleanup
+		} catch {}
 	})
 
 	it('should handle non-zero exit codes in race members', async () => {

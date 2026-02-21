@@ -1,11 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
 import { forwardRef } from 'react'
+import { describe, it } from 'vitest'
 
 import { style } from '~'
 

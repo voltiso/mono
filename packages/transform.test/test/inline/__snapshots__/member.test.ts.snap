@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`member works 1`] = `
+exports[`member > works 1`] = `
 "import type { _ } from '@voltiso/util';
 export interface Schema {
     get NonInlined(): /* _<{ a: 1 } & { b: 2 }> */ { a: 1; b: 2; };

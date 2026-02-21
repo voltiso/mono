@@ -1,9 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
 import { omit } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import { firestore, firestoreModule } from '../common/firestore'
 

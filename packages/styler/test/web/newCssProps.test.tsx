@@ -1,13 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { afterEach, describe, expect, it } from '@jest/globals'
-
 import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
 import type { ComponentProps } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import { style } from '~'
 
@@ -66,6 +65,8 @@ describe('newCssProps', () => {
 	it('single boolean prop - function (false)', () => {
 		expect.hasAssertions()
 
+		const unsetColor = getComputedStyle(document.documentElement).color
+
 		const Button = style('button').newCssProp('red', () => ({ color: 'red' }))
 		;<Button /> // check if optional
 		renderApp(<Button red={false} />)
@@ -76,7 +77,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'ButtonText',
+			color: unsetColor,
 		})
 	})
 
@@ -150,6 +151,8 @@ describe('newCssProps', () => {
 	it('multiple boolean props (false)', () => {
 		expect.hasAssertions()
 
+		const unsetColor = getComputedStyle(document.documentElement).color
+
 		const Button = style('button').newCssProps({
 			red: { color: 'red' },
 
@@ -169,7 +172,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'ButtonText',
+			color: unsetColor,
 			display: 'inline-block',
 		})
 	})

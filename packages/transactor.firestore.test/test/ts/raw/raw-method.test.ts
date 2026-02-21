@@ -3,10 +3,10 @@
 
 /** biome-ignore-all lint/style/noNonNullAssertion: . */
 
-import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { Doc } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
+import { describe, expect, it } from 'vitest'
 
 import { firestore } from '../common/firestore'
 

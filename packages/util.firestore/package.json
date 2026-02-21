@@ -39,10 +39,7 @@
     "randombytes": "^2.1.0"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
     "@types/randombytes": "^2.0.3",
-    "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",

@@ -3,9 +3,9 @@
 
 /** biome-ignore-all lint/complexity/useArrowFunction: . */
 
-import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import { Doc, Transactor } from '@voltiso/transactor'
+import { describe, expect, it } from 'vitest'
 
 import { firestore, firestoreModule } from './common/firestore'
 

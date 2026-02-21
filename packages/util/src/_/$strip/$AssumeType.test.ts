@@ -1,7 +1,7 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
+import { describe, it } from 'vitest'
 
 import type { IsIdentical } from '~/type'
 

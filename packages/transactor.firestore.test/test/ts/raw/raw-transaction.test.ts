@@ -1,11 +1,11 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 import { sleep } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import { firestore } from '../common/firestore'
 

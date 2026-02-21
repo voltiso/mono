@@ -1,12 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { DocBuilderPlugin, DocIdString } from '@voltiso/transactor'
 import { aggregate, Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert, $Is, fastAssert } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import { createTransactor } from './common'
 

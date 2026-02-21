@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`compat dirname 1`] = `
+exports[`compat > dirname 1`] = `
 "const __dirname = new URL(".", import.meta.url).pathname.slice(0, -1);
 export const a = __dirname + '/test';
 //# sourceMappingURL=dirname.js.map"

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`chain works 1`] = `
+exports[`chain > works 1`] = `
 "/** @inline */
 export type DeepReadonly_<T> = {
     readonly [k in keyof T]: DeepReadonly_<T[k]>;

@@ -1,9 +1,9 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
+import { describe, it } from 'vitest'
 
 import type { Inferable } from './Inferable'
 

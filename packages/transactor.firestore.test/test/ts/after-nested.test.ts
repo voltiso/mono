@@ -1,12 +1,12 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc, Transactor } from '@voltiso/transactor'
 import { deleteIt, incrementIt } from '@voltiso/util'
 import randomSeed from 'random-seed'
+import { describe, expect, it } from 'vitest'
 
 import { firestore, firestoreModule } from './common'
 

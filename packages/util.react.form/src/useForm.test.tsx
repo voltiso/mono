@@ -1,7 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { act, render } from '@testing-library/react'
 import * as s from '@voltiso/schemar'
 import { ValidationIssue } from '@voltiso/schemar'
@@ -9,6 +8,7 @@ import { $fastAssert, sleep } from '@voltiso/util'
 import { useObservable } from '@voltiso/util.react.rxjs'
 import { CustomSubjectTree } from '@voltiso/util.rxjs'
 import { ReplaySubject } from 'rxjs'
+import { describe, expect, it } from 'vitest'
 import type { UseForm } from './UseForm-types'
 import { useForm } from './useForm'
 

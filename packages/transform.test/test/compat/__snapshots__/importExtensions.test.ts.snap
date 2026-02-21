@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`compat importExtensions - d.ts 1`] = `
+exports[`compat > importExtensions - d.ts 1`] = `
 "export * from './numericSeparators.js';
 export * as default from './numericSeparators.js';
 export * as x from './test/index.js';
@@ -20,7 +20,7 @@ export { default as jsonTest } from '../../package.json';
 //# sourceMappingURL=importExtensions.d.ts.map"
 `;
 
-exports[`compat importExtensions 1`] = `
+exports[`compat > importExtensions 1`] = `
 "// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 import * as test from './numericSeparators.js';

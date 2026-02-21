@@ -81,7 +81,6 @@
     }
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
     "@types/express": "^5.0.1",
     "@types/node": "^25.3.0",
     "@voltiso/handler": "workspace:^",

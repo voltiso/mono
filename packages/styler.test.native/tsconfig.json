@@ -2,14 +2,5 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts",
-
-	"compilerOptions": {
-		"lib": ["DOM"],
-
-		"paths": {
-			"~": ["../../src"],
-			"~/*": ["../../src/*"]
-		}
-	}
+	"extends": "@voltiso/config.ts"
 }

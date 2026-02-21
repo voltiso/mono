@@ -52,13 +52,10 @@
     "@voltiso/util.node": "workspace:^",
     "esbuild": "^0.27.3",
     "esbuild-register": "^3.5.0",
-    "picocolors": "^1.1.1",
-    "tree-kill": "^1.2.2"
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",
-    "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/transform": "workspace:^"
   },
   "__________MISC": "__________",

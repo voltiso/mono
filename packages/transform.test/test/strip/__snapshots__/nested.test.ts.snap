@@ -1,10 +1,10 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`nested works 1`] = `
+exports[`nested > works 1`] = `
 "// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 import { lazyFunction } from '@voltiso/util';
-/*import { $expect } from '@voltiso/util.jest'*/ 
+/*import { $expect } from './_common'*/ 
 void lazyFunction;
 void (() => {
     // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$expect\`

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`namespace works 1`] = `
+exports[`namespace > works 1`] = `
 "import type { Test } from './_/external-stuff.js';
 export type Flatten<T> = [{
     [k in keyof T]: T[k];

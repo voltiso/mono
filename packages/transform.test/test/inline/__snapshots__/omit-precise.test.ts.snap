@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`omit-precise works 1`] = `
+exports[`omit-precise > works 1`] = `
 "export type OmitPrecise_<O> = symbol extends keyof O ? O[symbol] : never;
 //# sourceMappingURL=omit-precise.d.ts.map"
 `;

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { createTransactor } from './common'
-import { describe, expect, it } from '@jest/globals'
 import { createLocalstore } from '@voltiso/localstore'
 import * as s from '@voltiso/schemar'
 import type { DocIdString, TriggerParams } from '@voltiso/transactor'
@@ -15,6 +13,8 @@ import {
 } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 import { deleteIt, fastAssert } from '@voltiso/util'
+// import { createTransactor } from './common'
+import { describe, expect, it } from 'vitest'
 
 const database = createLocalstore()
 const db = createLocalstoreTransactor(database)

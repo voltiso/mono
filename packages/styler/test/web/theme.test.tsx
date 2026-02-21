@@ -1,11 +1,10 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { afterEach, describe, expect, it } from '@jest/globals'
-
 import { cleanup, render, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import { createTheme, style } from '~'
 import { ThemeContext } from '~/client'

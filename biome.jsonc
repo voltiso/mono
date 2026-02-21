@@ -49,6 +49,10 @@
 					"level": "warn",
 					"fix": "unsafe"
 				}
+			},
+
+			"nursery": {
+				"noFloatingPromises": "warn"
 			}
 		}
 	},

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`external works 1`] = `
+exports[`external > works 1`] = `
 "import type { ExternalButGood, SneakyExternal } from './_/external-stuff.js';
 export type A = ExternalButGood;
 export type A_ = /* ExternalButGood */ { a: 1; } & { b: 2; };

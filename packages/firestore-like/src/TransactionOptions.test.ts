@@ -3,8 +3,8 @@
 
 import 'firebase-admin/firestore'
 
-import { describe, expect, it } from '@jest/globals'
 import { $Assert } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import type { TransactionOptions } from './TransactionOptions'
 

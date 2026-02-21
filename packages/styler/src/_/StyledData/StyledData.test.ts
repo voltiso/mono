@@ -1,12 +1,19 @@
 // ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
 import { $Assert } from '@voltiso/util'
+import { describe, expect, it } from 'vitest'
 
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
-
+import type {
+	GetStyledCss,
+	GetStyledTypeInfo,
+} from '~/Styled/GetStyledTypeInfo'
+import type {
+	StyledSubject,
+	StyledTypeInfo,
+} from '~/StyledTypeInfo/StyledTypeInfo'
 import type { IStyledData } from './IStyledData'
 import type { StyledData } from './StyledData'
 
@@ -22,5 +29,10 @@ describe('StyledData', () => {
 			StyledData<{ Props: P; Component: C; CustomCss: CC }>,
 			IStyledData<object>
 		>()
+	})
+
+	it('generic 2', <$ extends Partial<StyledTypeInfo>>() => {
+		type A = StyledData<GetStyledTypeInfo<$>, GetStyledCss<$>>['component']
+		$Assert.is<A, StyledSubject | null>()
 	})
 })
