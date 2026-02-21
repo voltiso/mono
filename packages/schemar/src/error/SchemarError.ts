@@ -6,7 +6,7 @@ import { VoltisoError } from '@voltiso/util'
 export class SchemarError extends VoltisoError {
 	constructor(
 		message?: string | undefined,
-		options?: ErrorOptions | undefined,
+		options?: VoltisoError.Options | undefined,
 	) {
 		super(message, { ...options, package: { name: '@voltiso/schemar' } })
 

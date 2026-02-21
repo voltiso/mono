@@ -7,4 +7,4 @@ declare module '~' {
 	}
 }
 
-export {}
+export type {}

@@ -109,7 +109,7 @@ export const check = parallel(
 	'test',
 )
 
-export const checkKnip = 'echo knip disabled' // `pnpm -w exec knip --workspace ${packageJson.name}`
+export const checkKnip = `pnpm -w exec knip --workspace ${packageJson.name}`
 export const checkAttw = () => {
 	if (!packageJson.private) return 'attw --pack'
 	return null

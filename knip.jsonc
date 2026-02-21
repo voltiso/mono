@@ -3,16 +3,24 @@
 
 	"ignoreBinaries": ["__________"], // just package.json prettification
 
-	// we keep these installed in the root workspace
-	// "ignoreDependencies": ["@jest/globals"],
-
 	"ignoreUnresolved": [
 		// for jest moduleNameMapper
 		".*/src$",
 		".*/src/_$"
 	],
 
+	"ignoreFiles": ["**/scripts.ts", "**/*.d.ts"],
+
 	"workspaces": {
+		"packages/config.ts": {
+			"ignoreFiles": ["empty-hack-no-input-files.ts"]
+		},
+		"packages/script": {
+			"entry": ["src/_bin/v.ts"]
+		},
+		"packages/transactor": {
+			"entry": ["src/client/index.ts"]
+		},
 		"packages/transform": {
 			"ignoreDependencies": ["typescript-transform-paths"]
 		}
