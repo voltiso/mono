@@ -141,6 +141,7 @@ export const method: MethodDecorator<$$Doc, Method> = createMethodDecorator<
 
 //
 
+/** @public */
 export const afterCreateOrUpdate: MethodDecorator<
 	$$Doc,
 	AfterTrigger<$$Doc, boolean, true>
@@ -148,6 +149,7 @@ export const afterCreateOrUpdate: MethodDecorator<
 	h.createAfterCreateOrUpdateTrigger as never,
 )
 
+/** @public */
 export const afterCreate: MethodDecorator<
 	$$Doc,
 	AfterTrigger<$$Doc, false, true>
@@ -155,6 +157,7 @@ export const afterCreate: MethodDecorator<
 	h.createAfterCreateTrigger as never,
 )
 
+/** @public */
 export const afterDelete: MethodDecorator<
 	$$Doc,
 	AfterTrigger<$$Doc, true, false>
@@ -162,6 +165,7 @@ export const afterDelete: MethodDecorator<
 	h.createAfterDeleteTrigger as never,
 )
 
+/** @public */
 export const afterUpdate: MethodDecorator<
 	$$Doc,
 	AfterTrigger<$$Doc, true, true>
@@ -169,6 +173,7 @@ export const afterUpdate: MethodDecorator<
 	h.createAfterUpdateTrigger as never,
 )
 
+/** @public */
 export const after: MethodDecorator<
 	$$Doc,
 	AfterTrigger<$$Doc>
@@ -176,6 +181,7 @@ export const after: MethodDecorator<
 	h.createAfterTrigger as never,
 )
 
+/** @public */
 export const beforeCommit: MethodDecorator<
 	$$Doc,
 	Trigger.BeforeCommit<$$Doc>
@@ -183,6 +189,7 @@ export const beforeCommit: MethodDecorator<
 	h.createBeforeCommitTrigger as never,
 )
 
+/** @public */
 export const onGet: MethodDecorator<
 	$$Doc,
 	OnGetTrigger<$$Doc>

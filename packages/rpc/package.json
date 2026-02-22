@@ -86,8 +86,6 @@
     "@voltiso/handler": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "cross-env": "^10.1.0",
     "express": "^5.1.0",
     "get-port": "^7.0.0"
   }

@@ -227,7 +227,13 @@ export async function runScript(
 		// ! so for now we use `detached: true` and process.kill(-pid) to kill whole tree.
 		const childProcess = spawn(command, {
 			shell: true,
-			stdio: 'pipe', // pipe so that orphan processes do not print to console
+
+			// ! `pipe` is nice - so that orphan processes don't print to console
+			// ! BUT with `pipe` console is not dynamic and does not have colors by default
+			// (node-pty may fix this)
+			// also see `Listr2` and `ink` to see how to merge animated output streams
+			// stdio: 'pipe', //
+			stdio: 'inherit',
 
 			detached: true, // Create a new process group (can then kill whole tree)
 			// signal, // node does not kill firestore emulator
@@ -239,8 +245,8 @@ export async function runScript(
 		})
 		pid = childProcess.pid
 
-		childProcess.stdout.pipe(process.stdout)
-		childProcess.stderr.pipe(process.stderr)
+		// childProcess.stdout.pipe(process.stdout)
+		// childProcess.stderr.pipe(process.stderr)
 
 		// only called when `signal` not passed to `spawn`
 		const onAbort = async () => {

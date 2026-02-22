@@ -26,6 +26,7 @@ export type JsonFromDocData<Data> = Data extends $$DocRef & {
 					}
 				: Data
 
+/** @public */
 export function jsonFromDocData<Data>(data: Data): JsonFromDocData<Data> {
 	if (isDocRef(data)) return data.toJSON() as never
 

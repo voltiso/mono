@@ -278,12 +278,14 @@ export function createOnGetTrigger<TI extends DocDerivedData>(
 	})
 }
 
-export function withOnGet<TI extends DocDerivedData>(
-	oldData: TI,
-	name: string,
-	trigger: Trigger,
-): TI {
-	const newData = { ...oldData, onGets: [...oldData.onGets] }
-	createOnGetTrigger(newData, name, trigger)
-	return newData
-}
+// ! TODO why is this not used?
+
+// export function withOnGet<TI extends DocDerivedData>(
+// 	oldData: TI,
+// 	name: string,
+// 	trigger: Trigger,
+// ): TI {
+// 	const newData = { ...oldData, onGets: [...oldData.onGets] }
+// 	createOnGetTrigger(newData, name, trigger)
+// 	return newData
+// }

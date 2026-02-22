@@ -46,6 +46,7 @@ export interface UnknownAutoIdSchema$ extends AutoIdSchema$ {
 
 //
 
+/** @internal */
 export type __hack_sAutoId = DocIdBrand
 
 /** 🧙‍♂️ Validate default auto-generated document ID */

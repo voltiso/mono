@@ -22,19 +22,15 @@
     "@arethetypeswrong/cli": "^0.18.1",
     "@biomejs/biome": "^2.4.3",
     "@types/node": "^25.3.0",
-    "@typescript/analyze-trace": "^0.10.1",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "cross-env": "^10.1.0",
-    "gnomon": "^1.5.0",
     "knip": "^5.84.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
-    "tsx": "^4.21.0",
     "turbo": "^2.8.10",
     "type-coverage": "^2.29.7",
     "typescript": "^5.8.3",
@@ -50,11 +46,6 @@
   },
   "pnpm": {
     "packageExtensions": {
-      "firebase-tools": {
-        "peerDependencies": {
-          "js-yaml": "*"
-        }
-      },
       "@radix-ui/react-checkbox": {
         "peerDependencies": {
           "@types/react": "*"

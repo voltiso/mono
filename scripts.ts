@@ -136,6 +136,8 @@ export const devEsm =
 
 //
 
+// ! reinstall `@typescript/analyze-trace` and `gnomon` when needed
+
 // export const traceRun = [
 // 	'rimraf traceDir',
 // 	'tsc --generateTrace traceDir | gnomon',

@@ -3,23 +3,58 @@
 
 	"ignoreBinaries": ["__________"], // just package.json prettification
 
-	"ignoreUnresolved": [
-		// for jest moduleNameMapper
-		".*/src$",
-		".*/src/_$"
-	],
+	// "ignoreUnresolved": [
+	// 	// for jest moduleNameMapper
+	// 	".*/src$",
+	// 	".*/src/_$"
+	// ],
+
+	"rules": {
+		// this is nice, but unable to ignore (unless using too strong `ignoreDependencies`)
+		"optionalPeerDependencies": "off",
+
+		// this is nice, but gives false positives for `jsdom` referenced from `vitest.config.ts`
+		// also, testing and linting surely will catch unlisted dependencies (unless they're in root...)
+		"unlisted": "off",
+
+		// we have habit of exporting everything if consumer needs to hack together something
+		// instead of forking or using patch-package, etc.
+		// this may be problematic for versioning in the future, we don't clearly state what's public and what's internal for now
+		// Maybe best way would be to use `@internal` decorator for internal stuff, but the rules below also force us to use `@public`
+		// Sooo... `@public @internal` is bad, JSDoc would generate garbage
+		"exports": "off",
+		"types": "off"
+	},
 
 	"ignoreFiles": ["**/scripts.ts", "**/*.d.ts"],
 
 	"workspaces": {
+		".": {
+			"ignoreDependencies": [
+				"@arethetypeswrong/cli",
+				"@biomejs/biome",
+				"@voltiso/config.tsdoc",
+				"type-coverage"
+			]
+		},
 		"packages/config.ts": {
 			"ignoreFiles": ["empty-hack-no-input-files.ts"]
 		},
+		"packages/cpp": {
+			"ignoreDependencies": ["@voltiso/script.cmake"]
+		},
 		"packages/script": {
-			"entry": ["src/_bin/v.ts"]
+			"entry": ["src/_bin/v.ts"],
+			"ignoreDependencies": ["@voltiso/transform"]
+		},
+		"packages/styler.test.native": {
+			"ignoreDependencies": ["@babel/runtime"]
 		},
 		"packages/transactor": {
 			"entry": ["src/client/index.ts"]
+		},
+		"packages/transactor.firestore.test": {
+			"ignoreDependencies": ["firebase-tools"]
 		},
 		"packages/transform": {
 			"ignoreDependencies": ["typescript-transform-paths"]

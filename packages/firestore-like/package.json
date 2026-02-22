@@ -38,7 +38,6 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
-    "@firebase/app-types": "^0.9.0",
     "@voltiso/script": "workspace:^",
     "firebase": "^12.9.0",
     "firebase-admin": "^13.4.0"
