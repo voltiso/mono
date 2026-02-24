@@ -7,6 +7,7 @@
 #include "v/_/tensor.hpp"
 #include "v/is/trivially-relocatable"
 #include "v/object"
+#include "v/option/constexpr"
 #include "v/options"
 
 // #include "glog/logging.h"
@@ -24,33 +25,121 @@
 // };
 // } // namespace VOLTISO_NAMESPACE::storage
 
-namespace VOLTISO_NAMESPACE {
-// To replace `std::aligned_storage`
-// https://stackoverflow.com/a/71828512/1123898
-// ⚠️ Remember to call `.destroy()` if you constructed something
-template <class TObject> class Storage : public Object<Options<>> {
+namespace VOLTISO_NAMESPACE::storage::_ {
+template <class Options>
+  requires concepts::Options<Options>
+class DataMembersUnion {
+	using Item = Options::template Get<option::Item>;
+
 public:
-	alignas(TObject) Tensor<std::byte, sizeof(TObject)> bytes;
+	union {
+		Tensor<std::byte, sizeof(Item)> bytes;
+		// ⚠️ This may not be constructed
+		Item storedItem;
+	};
 
-	// union {
-	// 	Array<std::byte, sizeof(TObject)> bytes;
-	// 	TObject object;
-	// };
+protected:
+	constexpr DataMembersUnion() noexcept
+	  requires(std::is_trivially_constructible_v<Item>)
+	= default;
 
-	[[nodiscard]] constexpr auto &object() noexcept {
-		return reinterpret_cast<TObject &>(bytes);
+	constexpr DataMembersUnion() noexcept
+	  requires(!std::is_trivially_constructible_v<Item>)
+	{}
+
+	constexpr ~DataMembersUnion() noexcept
+	  requires(std::is_trivially_destructible_v<Item>)
+	= default;
+
+	constexpr ~DataMembersUnion() noexcept
+	  requires(!std::is_trivially_destructible_v<Item>)
+	{}
+
+protected:
+	Item &_item() noexcept { return this->storedItem; }
+	const Item &_item() const noexcept { return this->storedItem; }
+};
+
+template <class Options>
+  requires concepts::Options<Options>
+class DataMembersBytes {
+	using Item = Options::template Get<option::Item>;
+
+public:
+	alignas(Item) Tensor<std::byte, sizeof(Item)> bytes;
+
+public:
+	// ⚠️ This may not be constructed
+	Item &storedItem() noexcept { return reinterpret_cast<Item &>(this->bytes); }
+
+	// ⚠️ This may not be constructed
+	const Item &storedItem() const noexcept {
+		return reinterpret_cast<const Item &>(this->bytes);
 	}
 
-	[[nodiscard]] constexpr const auto &object() const noexcept {
-		return reinterpret_cast<const TObject &>(bytes);
+protected:
+	Item &_item() noexcept { return this->storedItem(); }
+	const Item &_item() const noexcept { return this->storedItem(); }
+};
+
+template <class Options>
+  requires concepts::Options<Options>
+using DataMembers = std::conditional_t<
+  Options::template GET<option::CONSTEXPR>, DataMembersUnion<Options>,
+  DataMembersBytes<Options>>;
+} // namespace VOLTISO_NAMESPACE::storage::_
+
+//
+
+namespace VOLTISO_NAMESPACE::storage {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : public Object<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<is::TriviallyRelocatable<
+          typename Options::template Get<option::Item>>>,
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>>,
+      public _::DataMembers<Options> {
+	using Base = Object<typename Options::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<
+	    is::TriviallyRelocatable<typename Options::template Get<option::Item>>>,
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
+
+public:
+	using Item = Options::template Get<option::Item>;
+
+private:
+	static constexpr bool _DEFAULT_CONSTRUCTIBLE =
+	  !Options::template GET<option::CONSTEXPR> ||
+	  std::is_trivially_constructible_v<Item>;
+
+	static constexpr bool _DEFAULT_DESTRUCTIBLE =
+	  !Options::template GET<option::CONSTEXPR> ||
+	  std::is_trivially_destructible_v<Item>;
+
+public:
+	constexpr Custom() noexcept
+	  requires(_DEFAULT_CONSTRUCTIBLE)
+	= default;
+
+	constexpr Custom() noexcept
+	  requires(!_DEFAULT_CONSTRUCTIBLE)
+	{}
+
+	~Custom() noexcept
+	  requires(_DEFAULT_DESTRUCTIBLE)
+	= default;
+
+	~Custom() noexcept
+	  requires(!_DEFAULT_DESTRUCTIBLE)
+	{
+		// destruction handled manually
 	}
 
-	Storage() = default;
+	constexpr Custom(std::initializer_list<std::byte> bytes) noexcept
+	    : _::DataMembers<Options>(bytes) {}
 
-	constexpr Storage(std::initializer_list<std::byte> bytes) noexcept
-	    : bytes(bytes) {}
-
-	Storage(const Storage &) = delete;
+	Custom(const Custom &) = delete;
 
 	// // we do not know if object is constructed
 	// consteval Storage(const Storage &other) { // = delete;
@@ -59,58 +148,58 @@ public:
 	// 	// static_assert(false, "Cannot implicitly copy Storage<T>");
 	// 	throw "Cannot implicitly copy Storage<T>";
 	// }
-	Storage &operator=(const Storage &other) = delete;
+	Custom &operator=(const Custom &other) = delete;
 
 	// ! (1) if there is TObject::relocateFrom(Storage) - use it
 	// pre-condition: this object constructed
 	// post-condition: this object NOT constructed
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject
-	relocate() noexcept(noexcept(TObject::relocateFrom(*this)))
-	  requires requires { TObject::relocateFrom(*this); }
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Item
+	relocate() noexcept(noexcept(Item::relocateFrom(*this)))
+	  requires requires { Item::relocateFrom(*this); }
 	{
-		return TObject::relocateFrom(*this);
+		return Item::relocateFrom(*this);
 	}
 
 	// ! (2) if std::bit_cast would work, use it
 	// pre-condition: this object constructed
 	// post-condition: this object NOT constructed
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject relocate() noexcept
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Item relocate() noexcept
 	  requires(
-	    !requires { TObject::relocateFrom(*this); } &&
-	    is::TriviallyRelocatable<TObject> &&
+	    !requires { Item::relocateFrom(*this); } &&
+	    is::TriviallyRelocatable<Item> &&
 	    // ! unfortunately, even the `__builtin_bit_cast` forces this:
-	    std::is_trivially_copyable_v<TObject>)
+	    std::is_trivially_copyable_v<Item>)
 	{
 		// simply bit-copy this
 		// #if VOLTISO_HAS_BUILTIN_BIT_CAST
 		// 		return __builtin_bit_cast(TObject, bytes);
 		// #else
 		// std::bit_cast requires TObject to be trivially copyable
-		return std::bit_cast<TObject>(bytes);
+		return std::bit_cast<Item>(this->bytes);
 		// #endif
 	}
 
 	// ! (3) if `std::bit_cast` would NOT work, try `memcpy`
 	// (this other approach unfortunately requires
 	// `std::is_trivially_default_constructible`)
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject relocate() noexcept
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Item relocate() noexcept
 	  requires(
-	    !requires { TObject::relocateFrom(*this); } &&
-	    is::TriviallyRelocatable<TObject> &&
-	    !std::is_trivially_copyable_v<TObject> &&
-	    std::is_trivially_default_constructible_v<TObject>)
+	    !requires { Item::relocateFrom(*this); } &&
+	    is::TriviallyRelocatable<Item> && !std::is_trivially_copyable_v<Item> &&
+	    std::is_trivially_default_constructible_v<Item>)
 	{
-		TObject result; // we want trivial default constructor here
-		std::memcpy((void *)&result, &bytes, sizeof(TObject));
+		Item result; // we want trivial default constructor here
+		std::memcpy((void *)&result, &this->bytes, sizeof(Item));
 		return result; // ! hoping for RVO
 	}
 
 	// pre-condition: other object constructed
 	// post-condition: other object NOT constructed
-	VOLTISO_FORCE_INLINE constexpr auto &relocateFrom(Storage &other) noexcept
-	  requires(is::TriviallyRelocatable<TObject>)
+	VOLTISO_FORCE_INLINE constexpr auto &relocateFrom(Custom &other) noexcept
+	  requires(is::TriviallyRelocatable<Item>)
 	{
-		std::memcpy(this, &other, sizeof(Storage));
+		static_assert(sizeof(Custom) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(Custom));
 		return *this;
 	}
 
@@ -144,20 +233,32 @@ public:
 	// something
 	template <class... Args>
 	void construct(Args &&...args) noexcept(
-	  std::is_nothrow_constructible_v<TObject, Args...>) {
-		new (&bytes) TObject{std::forward<Args>(args)...};
+	  std::is_nothrow_constructible_v<Item, Args...>) {
+		// note: not using `std::construct_at` because TObject constructor may be
+		// private and friend Storage<TObject>
+		new (&this->bytes) Item{std::forward<Args>(args)...};
 	}
 
 	// ⚠️ Remember to call `.destroy()` if you constructed something
-	void destroy() noexcept(std::is_nothrow_destructible_v<TObject>) {
-		object().~TObject();
+	void destroy() noexcept(std::is_nothrow_destructible_v<Item>) {
+		this->_item().~Item();
 	}
-}; // class Storage
-} // namespace VOLTISO_NAMESPACE
 
-//
+public:
+	template <class... OptionsList>
+	using With = Base::template With<OptionsList...>;
+
+	using Constexpr = With<option::CONSTEXPR<true>>;
+}; // class Storage
+} // namespace VOLTISO_NAMESPACE::storage
+
 namespace VOLTISO_NAMESPACE {
-template <class T>
-constexpr bool is::TriviallyRelocatable<Storage<T>> =
-  is::TriviallyRelocatable<T>;
+// To replace `std::aligned_storage`
+// https://stackoverflow.com/a/71828512/1123898
+// ⚠️ Remember to call `.destroy()` if you constructed something
+template <class Item>
+class Storage : public storage::Custom<Options<option::Item<Item>>> {
+	using Base = storage::Custom<Options<option::Item<Item>>>;
+	// using Base::Base; // default constructible!
+};
 } // namespace VOLTISO_NAMESPACE

@@ -50,7 +50,7 @@ public:
 		Base::pushUnchecked(); // do not emplace item yet!
 		auto index = Base::_numItems;
 		Storage<Item> *array = &Base::first() - 1;
-		while (index != 1 && array[index >> 1].object() < item) [[likely]] {
+		while (index != 1 && array[index >> 1].storedItem() < item) [[likely]] {
 			auto nextIndex = index >> 1;
 			static_assert(is::TriviallyRelocatable<Item>);
 			// memcpy(array + index, array + nextIndex, sizeof(Item));

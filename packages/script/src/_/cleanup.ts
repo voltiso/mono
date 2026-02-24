@@ -12,7 +12,7 @@ function getExitCodeForSignal(signalName: string): number {
 let _isShuttingDown = false
 
 type Cleanup = () => void | Promise<unknown>
-const _cleanups: Cleanup[] = []
+let _cleanups: Cleanup[] = []
 
 /** @internal */
 async function _cleanupAndExit(exitCode: number) {
@@ -22,13 +22,19 @@ async function _cleanupAndExit(exitCode: number) {
 	// console.log('CLEANUP START', exitCode)
 
 	while (_cleanups.length > 0) {
-		const cleanup = _cleanups.pop()
-		try {
-			await cleanup?.()
-		} catch (error) {
-			console.error('[Cleanup] Failed during cleanup:', error)
-			exitCode = 1
-		}
+		const cleanups = _cleanups
+		_cleanups = []
+
+		await Promise.all(
+			cleanups.map(async cleanup => {
+				try {
+					await cleanup()
+				} catch (error) {
+					console.error('[Cleanup] Failed during cleanup:', error)
+					exitCode = 1
+				}
+			}),
+		)
 	}
 
 	process.exit(exitCode)
@@ -65,6 +71,9 @@ function _hookCleanup() {
 export function registerCleanup(cleanup: Cleanup) {
 	_hookCleanup()
 	_cleanups.push(cleanup)
+	if (_isShuttingDown) {
+		void cleanup()
+	}
 }
 
 export function unregisterCleanup(cleanup: Cleanup) {

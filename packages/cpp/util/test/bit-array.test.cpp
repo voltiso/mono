@@ -12,9 +12,9 @@ TEST(BitArray, uninitialized) {
 	*(std::uintmax_t *)&array = std::numeric_limits<std::uintmax_t>::max();
 
 	new (&array) BitArray<30>;
-	EXPECT_EQ(array.object()[0], 1);
-	EXPECT_EQ(array.object()[29], 1);
-	EXPECT_EQ(array.object()[63], 1);
+	EXPECT_EQ(array.storedItem()[0], 1);
+	EXPECT_EQ(array.storedItem()[29], 1);
+	EXPECT_EQ(array.storedItem()[63], 1);
 }
 
 TEST(BitArray, defaultInitialized) {
@@ -22,8 +22,8 @@ TEST(BitArray, defaultInitialized) {
 	*(std::uintmax_t *)&array = std::numeric_limits<std::uintmax_t>::max();
 
 	new (&array) BitArray<30>{};
-	EXPECT_EQ(array.object()[0], 0);
-	EXPECT_EQ(array.object()[29], 0);
+	EXPECT_EQ(array.storedItem()[0], 0);
+	EXPECT_EQ(array.storedItem()[29], 0);
 }
 
 TEST(BitArray, initializerList) {

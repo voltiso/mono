@@ -223,7 +223,7 @@ public:
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		new (&_storage) RawPointer{std::forward<TCallable>(f)};
 		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
-			return storage.object()(std::forward<ParametersList>(args)...);
+			return storage.storedItem()(std::forward<ParametersList>(args)...);
 		};
 		static_assert(std::is_trivially_destructible_v<RawPointer>);
 	}

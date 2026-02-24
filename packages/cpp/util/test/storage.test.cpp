@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <v/storage>
 
@@ -13,7 +13,7 @@ TEST(Storage, doesNotInitialize) {
 	};
 	new (&memory) Storage<S>;
 	auto &storage = *reinterpret_cast<Storage<S> *>(&memory);
-	EXPECT_EQ(storage.object().myValue, 333);
+	EXPECT_EQ(storage.storedItem().myValue, 333);
 	EXPECT_EQ(storage.bytes.NUM_ITEMS, sizeof(S));
 
 	//
@@ -83,5 +83,5 @@ TEST(Storage, zeroInitialize) {
 		int value = 123'456'789;
 	};
 	Storage<S> storage = {};
-	EXPECT_EQ(storage.object().value, 0);
+	EXPECT_EQ(storage.storedItem().value, 0);
 }

@@ -22,15 +22,18 @@ template <class T> class ThreadSingleton {
 
 private:
 	struct Data {
-		Storage<T> storage;
+		Storage<T>::Constexpr storage = {};
 		Size numReferences = 1;
-		Data() {
+		constexpr Data() {
 #if VOLTISO_DEBUG_SINGLETON
 			// std::cout << "ThreadSingleton<" << demangle(typeid(T)) << "> CREATE"
 			//           << std::endl;
 #endif
-			new (&storage.object()) T();
-			// storage.construct(); // not possible, T constructor may be private
+			new (&storage.storedItem) T();
+			// new (&storage.object()) T(); // .object() is not constexpr, better not
+			// use std::construct_at(&storage.object()); // T constructor may be
+			// private storage.construct(); // not possible, T constructor may be
+			// private
 		}
 		void decrement() {
 			--numReferences;
@@ -59,7 +62,7 @@ public:
 		//           0"));
 		//     }
 		// #endif
-		return data().storage.object();
+		return data().storage.storedItem;
 	}
 
 	// ! if your singletons depend on each other, derive the user-singleton class

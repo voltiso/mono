@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/script",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -52,7 +52,8 @@
     "@voltiso/util.node": "workspace:^",
     "esbuild": "^0.27.3",
     "esbuild-register": "^3.5.0",
-    "picocolors": "^1.1.1"
+    "picocolors": "^1.1.1",
+    "pidtree": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",

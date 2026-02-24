@@ -4,9 +4,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { register as registerEsbuild } from 'esbuild-register/dist/node'
-import { registerCleanup } from '~/_/cleanup'
-import { context } from '~/_/context'
-import { runScript } from '~/runScript'
+import { registerCleanup } from '../_/cleanup'
+import { context } from '../_/context'
+import { runScript } from '../runScript'
 // import type { EventListener } from 'node'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'

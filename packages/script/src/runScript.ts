@@ -6,6 +6,7 @@ import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import pc from 'picocolors'
 
+import pidtree from 'pidtree'
 import { registerCleanup, unregisterCleanup } from './_/cleanup'
 import { context } from './_/context'
 import { getAugmentedPath } from './_/getAugmentedPath'
@@ -203,28 +204,56 @@ export async function runScript(
 	let pid: number | undefined
 
 	// ! `pidtree`
-	// const pids = new Set<number>()
-	// const collectPids = async () => {
-	// 	if (!pid) return
-	// 	pids.add(pid)
+	const pids = new Set<number>()
+	const killedPids = new Set<number>()
+	let terminateHandled = false
+
+	const killPidOnce = (targetPid: number | undefined) => {
+		if (!targetPid) return
+		if (killedPids.has(targetPid)) return
+		killedPids.add(targetPid)
+		try {
+			process.kill(targetPid, 'SIGTERM')
+		} catch {}
+	}
+	// const getStartedCommand = (pid: number): string | undefined => {
 	// 	try {
-	// 		const newPids = await pidtree(pid)
-	// 		for (const newPid of newPids) {
-	// 			pids.add(newPid)
-	// 		}
-	// 	} catch {}
+	// 		const result = spawnSync('ps', ['-p', String(pid), '-o', 'command='], {
+	// 			encoding: 'utf8',
+	// 		})
+	// 		return result.stdout.trim()
+	// 	} catch {
+	// 		return undefined
+	// 	}
 	// }
+	const collectPids = async () => {
+		if (!pid) return
+		try {
+			const newPids = await pidtree(pid)
+			// console.log('!!!', { newPids })
+			for (const newPid of newPids) {
+				pids.add(newPid)
+				// console.log('!!!', newPid, getStartedCommand(newPid))
+			}
+		} catch {
+			// console.log('collectPids error')
+		}
+	}
+
+	const terminateOnce = async () => {
+		if (terminateHandled) return
+		terminateHandled = true
+
+		await collectPids()
+		killPidOnce(pid)
+		for (const childPid of pids) {
+			killPidOnce(childPid)
+		}
+	}
 
 	const command = [script, ...args].join(' ')
 
 	const cpPromise = new Promise<void>((resolve, reject) => {
-		// ! The only 2 ways it works are:
-		// * Either `detached: true` to create a new process group
-		//   (can then kill whole tree)
-		// * Or `detached: false` but scan process tree with `pidtree` and kill all manually
-		//
-		// ! Scanning process tree may be unreliable, and requires external library,
-		// ! so for now we use `detached: true` and process.kill(-pid) to kill whole tree.
 		const childProcess = spawn(command, {
 			shell: true,
 
@@ -235,8 +264,22 @@ export async function runScript(
 			// stdio: 'pipe', //
 			stdio: 'inherit',
 
-			detached: true, // Create a new process group (can then kill whole tree)
-			// signal, // node does not kill firestore emulator
+			// ! goal: kill as many descendant processes as possible (can be detached)
+			// * impossible to do perfectly when descendants can detach their children
+
+			// ! `detached: true` cons:
+			// * complex process tree instead of one process group
+			// * can kill process group using `process.kill(-pid)`,
+			//   but it does not help much when child manually spawns new process group,
+			//   so we have to use `pidtree` library anyway
+			// ! `pidtree` library cons
+			// * it only works well when we interrupt this script,
+			//   so that child process is still alive and can be scanned
+			// * requires polling to catch new process groups while their parents are still alive
+			//   (which we do not do, and it's not reliable anyway)
+			// detached: true, // Create a new process group (can then kill whole tree)
+
+			// signal, // we handle onAbort manually, seems better this way with our complex process tree cleanup
 
 			env: {
 				...process.env,
@@ -250,29 +293,22 @@ export async function runScript(
 
 		// only called when `signal` not passed to `spawn`
 		const onAbort = async () => {
-			// ! `pidtree`
-			// await collectPids()
-			if (pid) {
-				try {
-					process.kill(-pid, 'SIGTERM')
-					// treeKill(pid, 'SIGTERM')
-				} catch {}
-			}
-			childProcess.kill('SIGTERM') // just in case
+			// console.log('onAbort')
+			await terminateOnce()
 			reject(new Error(`${icon} ${command} Aborted`))
 		}
 
 		signal?.addEventListener('abort', onAbort)
 
 		childProcess.on('error', async err => {
-			// ! `pidtree`
+			// console.log('onError')
 			// await collectPids()
 			signal?.removeEventListener('abort', onAbort)
 			reject(err)
 		})
 
 		childProcess.on('close', async code => {
-			// ! `pidtree`
+			// console.log('onClose')
 			// await collectPids() // ! pid no longer valid
 			signal?.removeEventListener('abort', onAbort)
 			if (code && !signal?.aborted) {
@@ -284,32 +320,31 @@ export async function runScript(
 	})
 
 	const kill = async () => {
+		if (signal?.aborted) {
+			// console.log('kill: await terminateOnce()')
+			await terminateOnce()
+		}
+
 		try {
 			await cpPromise
 		} catch {}
 
 		// ! `pidtree`
-		// if (pids.size > 0) {
-		// 	await Promise.all(
-		// 		pids.keys().map(async pid => {
-		// 			try {
-		// 				process.kill(pid, 'SIGTERM')
-		// 				// console.log('v: manually sent SIGTERM to process', pid)
-		// 			} catch {
-		// 				return
-		// 			}
-		// 			for (;;) {
-		// 				await new Promise(resolve => setTimeout(resolve, 1000))
-		// 				try {
-		// 					process.kill(pid, 0)
-		// 					// console.log('v: waiting: process still alive', pid)
-		// 				} catch {
-		// 					break
-		// 				}
-		// 			}
-		// 		}),
-		// 	)
-		// }
+		if (pids.size > 0) {
+			await Promise.all(
+				pids.keys().map(async pid => {
+					for (;;) {
+						await new Promise(resolve => setTimeout(resolve, 100))
+						try {
+							process.kill(pid, 0)
+							// console.log('v: waiting: process still alive', pid)
+						} catch {
+							break
+						}
+					}
+				}),
+			)
+		}
 		unregisterCleanup(kill)
 	}
 

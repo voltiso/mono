@@ -39,7 +39,7 @@
     "vitest": "^4.0.18"
   },
   "__________MISC": "__________",
-  "packageManager": "pnpm@10.30.0",
+  "packageManager": "pnpm@10.30.2",
   "engines": {
     "node": ">= 24",
     "pnpm": ">= 10"
@@ -56,6 +56,14 @@
           "@types/react": "*"
         }
       }
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@firebase/util",
+      "esbuild",
+      "protobufjs",
+      "re2",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }

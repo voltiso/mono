@@ -150,7 +150,7 @@ public:
 	const Item &item() const {
 		GE(this->handle.value, 0);
 		LT(this->handle.value, this->dynamicArray._numItems);
-		return dynamicArray.slots()[this->handle.value].object();
+		return dynamicArray.slots()[this->handle.value].storedItem();
 	}
 	const Item &operator*() const { return item(); }
 	const Item *operator->() const { return &item(); }
@@ -264,7 +264,7 @@ public:
 				auto memory =
 				  static_cast<Storage<Item> *>(_allocator()(this->allocation));
 				for (Size i = 0; i < _numItems; ++i) [[likely]] {
-					memory[i].object().~Item();
+					memory[i].storedItem().~Item();
 				}
 				_allocator().freeBytes(this->allocation, _numBytes(this->_numSlots));
 			}
@@ -272,19 +272,19 @@ public:
 			// speed-up 'in-place' path (e.g. for `HashTable`)
 			if (this->_numSlots > Options::template GET<option::IN_PLACE>)
 			  [[unlikely]] {
-				auto memory =
-				  static_cast<Storage<Item> *>(_allocator()(this->allocation.object()));
+				auto memory = static_cast<Storage<Item> *>(
+				  _allocator()(this->allocation.storedItem()));
 				// speed-up empty path
 				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
-					memory[i].object().~Item();
+					memory[i].storedItem().~Item();
 				}
 				_allocator().freeBytes(
-				  this->allocation.object(), _numBytes(this->_numSlots));
+				  this->allocation.storedItem(), _numBytes(this->_numSlots));
 			} else [[likely]] {
 				// speed-up inplace path
 				// speed-up empty path
 				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
-					this->inPlaceItems[i].object().~Item();
+					this->inPlaceItems[i].storedItem().~Item();
 				}
 			}
 		} else {
@@ -293,7 +293,7 @@ public:
 			// Parameters>);
 			auto memory = static_cast<Storage<Item> *>(this->inPlaceItems.items);
 			for (Size i = 0; i < _numItems; ++i) {
-				memory[i].object().~Item();
+				memory[i].storedItem().~Item();
 			}
 		}
 	}
@@ -450,7 +450,7 @@ public:
 		NE(&self, &other); // forbid (for performance)
 		auto memory = self.slots();
 		for (Size i = 0; i < self._numItems; ++i) {
-			memory[i].object().~Item();
+			memory[i].storedItem().~Item();
 		}
 		if (self._numSlots < other._numItems) [[unlikely]] {
 			self.setNumSlotsAtLeast(other._numItems);
@@ -607,19 +607,19 @@ public:
 					  _allocator().allocateBytes(newNumSlots * sizeof(Item));
 					auto memory = _allocator()(allocation);
 					::memcpy(memory, &this->inPlaceItems[0], sizeof(Item) * _numItems);
-					this->allocation.object() = allocation;
+					this->allocation.storedItem() = allocation;
 				}
 			} else [[unlikely]] {
 				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
-					auto oldData = this->allocation.object();
+					auto oldData = this->allocation.storedItem();
 					LT(newNumSlots, this->_numSlots);
 					::memcpy(
 					  static_cast<void *>(&this->inPlaceItems), oldData,
 					  sizeof(Item) * _numItems);
 					_allocator().freeBytes(oldData, this->_numSlots * sizeof(Item));
 				} else [[unlikely]] {
-					this->allocation.object() = _allocator().reallocateBytes(
-					  this->allocation.object(), this->_numSlots * sizeof(Item),
+					this->allocation.storedItem() = _allocator().reallocateBytes(
+					  this->allocation.storedItem(), this->_numSlots * sizeof(Item),
 					  newNumSlots * sizeof(Item));
 				}
 			}
@@ -646,7 +646,7 @@ public:
 			  [[likely]] {
 				return this->inPlaceItems.items;
 			} else [[unlikely]] {
-				return std::bit_cast<Storage<Item> *>(this->allocation.object());
+				return std::bit_cast<Storage<Item> *>(this->allocation.storedItem());
 				// return static_cast<Storage<Item> *>(
 				//     _allocator()(this->allocation));
 			}
@@ -687,13 +687,13 @@ public:
 	VOLTISO_FORCE_INLINE Item &operator[](const Handle &handle) {
 		GE(handle.value, 0);
 		LT(handle.value, _numItems);
-		return slots()[handle.value].object();
+		return slots()[handle.value].storedItem();
 	}
 
 	VOLTISO_FORCE_INLINE const Item &operator[](const Handle &handle) const {
 		GE(handle.value, 0);
 		LT(handle.value, _numItems);
-		return slots()[handle.value].object();
+		return slots()[handle.value].storedItem();
 	}
 
 	//
@@ -810,7 +810,7 @@ public:
 		if (newNumItems < _numItems) {
 			auto memory = slots();
 			for (Size i = _numItems; i < newNumItems; ++i) {
-				memory[i].object().~Item();
+				memory[i].storedItem().~Item();
 			}
 		} else if (newNumItems > _numItems) [[likely]] {
 			if constexpr (IN_PLACE_ONLY == 0) {
@@ -845,21 +845,21 @@ public:
 				if (_numItems != 0) {
 					auto memory = slots();
 					for (Size i = 0; i < _numItems; ++i) {
-						memory[i].object().~Item();
+						memory[i].storedItem().~Item();
 					}
 				}
 			} else if constexpr (LIKELIHOOD == Likelihood::LIKELY) {
 				if (_numItems != 0) {
 					auto memory = slots();
 					for (Size i = 0; i < _numItems; ++i) [[likely]] {
-						memory[i].object().~Item();
+						memory[i].storedItem().~Item();
 					}
 				}
 			} else if constexpr (LIKELIHOOD == Likelihood::UNLIKELY) {
 				if (_numItems != 0) [[unlikely]] {
 					auto memory = slots();
 					for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
-						memory[i].object().~Item();
+						memory[i].storedItem().~Item();
 					}
 				}
 			} else {
@@ -922,38 +922,39 @@ public:
 
 	constexpr ConstIterator begin() const noexcept {
 		// DCHECK_GT(numItems, 0);
-		return ConstIterator{std::addressof(slots()->object())};
+		return ConstIterator{std::addressof(slots()->storedItem())};
 	}
 	constexpr ConstIterator end() const noexcept {
 		// DCHECK_GT(numItems, 0);
-		return ConstIterator{std::addressof(slots()->object()) + this->_numItems};
+		return ConstIterator{
+		  std::addressof(slots()->storedItem()) + this->_numItems};
 	}
 
 public:
 	// string_view is constant-time, so can be implicit
-	constexpr operator ::std::string_view() const noexcept(
-	  noexcept(::std::string_view(std::addressof(slots()->object()), _numItems)))
+	constexpr operator ::std::string_view() const noexcept(noexcept(
+	  ::std::string_view(std::addressof(slots()->storedItem()), _numItems)))
 	  requires std::is_same_v<std::remove_const_t<Item>, char>
 	{
-		return ::std::string_view(std::addressof(slots()->object()), _numItems);
+		return ::std::string_view(std::addressof(slots()->storedItem()), _numItems);
 	}
 
 	explicit constexpr operator ::std::string() const noexcept(
-	  noexcept(::std::string(std::addressof(slots()->object()), _numItems)))
+	  noexcept(::std::string(std::addressof(slots()->storedItem()), _numItems)))
 	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
 	{
-		return std::string(std::addressof(slots()->object()), _numItems);
+		return std::string(std::addressof(slots()->storedItem()), _numItems);
 	}
 
 	// ! note: these are bug-prone when used with strings - we may have no
 	// ! null-terminator
 	// public:
 	// 	explicit operator Item *() noexcept {
-	// 		return std::addressof(this->self().slots()->object());
+	// 		return std::addressof(this->self().slots()->storedItem());
 	// 	}
 
 	// 	explicit operator const Item *() const noexcept {
-	// 		return std::addressof(this->self().slots()->object());
+	// 		return std::addressof(this->self().slots()->storedItem());
 	// 	}
 
 	// raw array conversion should be explicit (can loose size information)
