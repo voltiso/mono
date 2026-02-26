@@ -11,7 +11,7 @@ export function downloadVcpkg(version: string): Script {
 		'mkdir vcpkg -p',
 		[
 			'cd vcpkg',
-			'git init',
+			'git init -b master',
 			'(git remote add origin https://github.com/microsoft/vcpkg.git || true)',
 			`git fetch --depth 1 origin ${version}`,
 			'git checkout FETCH_HEAD',

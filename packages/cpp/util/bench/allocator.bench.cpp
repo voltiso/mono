@@ -1,20 +1,9 @@
-#include "v/thread-singleton"
 #include <benchmark/benchmark.h>
 
 // ! we're not properly freeing memory
 #define VOLTISO_DEBUG_POOL false
 
 #include <v/pool>
-#include <v/singleton>
-
-#include <cstddef>
-#include <iostream>
-
-//
-
-// order may be important
-// auto g_malloc = v::allocator::Malloc();
-// auto g_mallocGuard = v::context::Guard(g_malloc);
 
 //
 
@@ -116,26 +105,6 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
 	}
 }
 BENCHMARK(BM_allocator_simple_Pool);
-
-static void BM_allocator_simple_Pool_ThreadSingleton(benchmark::State &state) {
-	using namespace VOLTISO_NAMESPACE;
-	for (int i = 0; i < num; i++) {
-		auto &pool = ThreadSingleton<Pool<T>>::instance();
-		auto handle = pool.insert().handle;
-		benchmark::DoNotOptimize(handle);
-	}
-	auto prev = ThreadSingleton<Pool<T>>::instance().insert().handle;
-	for (auto _ : state) {
-		auto &pool = ThreadSingleton<Pool<T>>::instance();
-		benchmark::DoNotOptimize(&pool);
-		auto handle = pool.insert().handle;
-		benchmark::DoNotOptimize(handle);
-		pool(prev).erase();
-		prev = handle;
-		benchmark::ClobberMemory();
-	}
-}
-BENCHMARK(BM_allocator_simple_Pool_ThreadSingleton);
 
 // static void BM_allocator_simple_Splay(benchmark::State &state) {
 //   using namespace VOLTISO_NAMESPACE;

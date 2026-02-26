@@ -33,6 +33,9 @@
 #pragma push_macro("INLINE")
 #define INLINE VOLTISO_FORCE_INLINE
 
+#pragma push_macro("NO_INLINE")
+#define NO_INLINE VOLTISO_NO_INLINE
+
 // !
 
 #pragma push_macro("V")

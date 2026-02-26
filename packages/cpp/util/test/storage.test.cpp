@@ -21,6 +21,7 @@ TEST(Storage, doesNotInitialize) {
 	static_assert(std::is_trivially_constructible_v<Storage<S>>);
 	static_assert(std::is_trivially_default_constructible_v<Storage<S>>);
 	static_assert(std::is_trivially_destructible_v<Storage<S>>);
+	static_assert(concepts::ConstexprConstructible<S>);
 
 	// ! no implicit linear-time copy
 	static_assert(!std::is_copy_constructible_v<Storage<S>>);

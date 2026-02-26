@@ -1,0 +1,35 @@
+#pragma once
+#include <v/_/_>
+
+#include <atomic>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+/** A trivial mutex implementation that is trivially destructible. */
+class Mutex {
+	std::atomic_flag _locked = ATOMIC_FLAG_INIT;
+
+public:
+	constexpr Mutex() noexcept = default;
+
+private:
+	Mutex(const Mutex &) = delete;
+	Mutex(Mutex &&) = delete;
+	Mutex &operator=(const Mutex &) = delete;
+	Mutex &operator=(Mutex &&); // = delete; // ⚠️ Poison for is_trivially_copyable
+
+public:
+	INLINE void lock() noexcept {
+		while (_locked.test_and_set(std::memory_order_acquire)) {
+			_locked.wait(true, std::memory_order_relaxed);
+		}
+	}
+	INLINE void unlock() noexcept {
+		_locked.clear(std::memory_order_release);
+		_locked.notify_one();
+	}
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

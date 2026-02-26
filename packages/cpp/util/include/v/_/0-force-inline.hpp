@@ -9,3 +9,12 @@
 #else                                 // Other compilers
 	#define VOLTISO_FORCE_INLINE inline // Fallback to standard inline hint
 #endif
+
+// Define NO_INLINE macro based on compiler
+#if defined(_MSC_VER) // Microsoft Visual C++
+	#define VOLTISO_NO_INLINE __declspec(noinline)
+#elif defined(__GNUC__) || defined(__clang__) // GCC or Clang
+	#define VOLTISO_NO_INLINE __attribute__((noinline))
+#else                       // Other compilers
+	#define VOLTISO_NO_INLINE // No standard fallback exists, leave empty
+#endif

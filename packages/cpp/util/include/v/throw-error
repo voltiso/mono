@@ -1,21 +1,4 @@
 #pragma once
 #include <v/_/_>
 
-#ifndef __cpp_exceptions
-	#include <glog/logging.h>
-#endif
-
-#include <v/ON>
-
-namespace VOLTISO_NAMESPACE {
-template <class T> [[noreturn]] INLINE void throwError(const T &error) {
-#ifdef __cpp_exceptions
-	throw error;
-#else
-	LOG(FATAL) << error.what();
-	std::abort();
-#endif
-}
-} // namespace VOLTISO_NAMESPACE
-
-#include <v/OFF>
+#include "v/_/0-throw-error.hpp" // IWYU pragma: export

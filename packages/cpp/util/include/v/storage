@@ -34,9 +34,15 @@ class DataMembersUnion {
 public:
 	union {
 		Tensor<std::byte, sizeof(Item)> bytes;
-		// ⚠️ This may not be constructed
-		Item storedItem;
+		// ⚠️ This may not be constructed yet
+		Item item; // note: better use .storedItem() for compat
 	};
+
+public:
+	// ⚠️ This may not be constructed yet
+	constexpr Item &storedItem() noexcept { return this->item; }
+	// ⚠️ This may not be constructed yet
+	constexpr const Item &storedItem() const noexcept { return this->item; }
 
 protected:
 	constexpr DataMembersUnion() noexcept
@@ -56,8 +62,8 @@ protected:
 	{}
 
 protected:
-	Item &_item() noexcept { return this->storedItem; }
-	const Item &_item() const noexcept { return this->storedItem; }
+	Item &_item() noexcept { return this->item; }
+	const Item &_item() const noexcept { return this->item; }
 };
 
 template <class Options>
@@ -69,10 +75,10 @@ public:
 	alignas(Item) Tensor<std::byte, sizeof(Item)> bytes;
 
 public:
-	// ⚠️ This may not be constructed
+	// ⚠️ This may not be constructed yet
 	Item &storedItem() noexcept { return reinterpret_cast<Item &>(this->bytes); }
 
-	// ⚠️ This may not be constructed
+	// ⚠️ This may not be constructed yet
 	const Item &storedItem() const noexcept {
 		return reinterpret_cast<const Item &>(this->bytes);
 	}

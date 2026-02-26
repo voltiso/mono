@@ -7,6 +7,27 @@ set(CMAKE_TOOLCHAIN_FILE
 
 project(voltiso)
 
+# Optimize all configurations
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto") # LTO (can also use -flto=thin to speed up compilation)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-fat-lto-objects") # force LTO
+
+# SIMD - better enable only in `bench` (can be slow with exceptions)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native") # enable SSE/AVX/...
+
+# add_link_options(-fuse-ld=lld-20)
+
+# Optimize RelWithDebInfo
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O3 -g -DNDEBUG")
+
+# Optimize Release
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+
+# ⚡ Disable features for optimization (`bench` overrides these)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+
+#
+
 set(VOLTISO_NAMESPACE "v" CACHE STRING "Change from `v` to `voltiso` if you have have namespace conflicts")
 add_compile_definitions(VOLTISO_NAMESPACE=${VOLTISO_NAMESPACE})
 
@@ -34,8 +55,6 @@ find_package(cpptrace REQUIRED)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # set(CMAKE_BUILD_PARALLEL_LEVEL 1)
-
-# add_link_options("-fuse-ld=gold") # default crashes? OOM?
 
 # cpptrace find_package(cpptrace REQUIRED)
 add_subdirectory(util)
@@ -79,8 +98,8 @@ add_executable(
   # util/test/path.test.cpp
   # util/test/view.test.cpp
   # util/test/string.test.cpp
-  util/test/storage.test.cpp
-  util/test/storage.constexpr.test.cpp
+  # util/test/storage.test.cpp
+  # util/test/storage.constexpr.test.cpp
   # util/test/runner.test.cpp
   # util/test/pool.test.cpp
   # util/test/subject.test.cpp
@@ -89,6 +108,8 @@ add_executable(
   # util/test/quaternion.test.cpp
   # util/test/ref.test.cpp
   # util/test/const-string-view.test.cpp
+  # util/test/mutex.test.cpp
+	util/test/singleton.test.cpp
 
   # util/test/state.test.cpp # TODO
 

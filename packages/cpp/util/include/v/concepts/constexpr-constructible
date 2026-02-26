@@ -1,0 +1,18 @@
+#pragma once
+#include <v/_/_>
+
+namespace VOLTISO_NAMESPACE::concepts {
+/** Note: destructor must be `constexpr` too... not possible to create concept
+ * otherwise. (corrected concept could be named `ConstinitConstructible`) */
+template <class T>
+concept ConstexprConstructible =
+  requires { typename std::bool_constant<((void)T{}, true)>; };
+
+} // namespace VOLTISO_NAMESPACE::concepts
+
+// struct A {
+// 	int x = 123;
+// 	constexpr ~A() {}
+// };
+// constinit A a;
+// static_assert(ConstexprConstructible<A>);

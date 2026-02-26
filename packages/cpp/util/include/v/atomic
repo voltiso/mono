@@ -1,0 +1,75 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+#include <atomic>
+
+namespace VOLTISO_NAMESPACE {
+/** Hides operators from `std::atomic`, lock-free only */
+template <class T> class Atomic {
+private:
+	std::atomic<T> _value;
+	static_assert(decltype(_value)::is_always_lock_free);
+
+	// Guarantee no random padding bytes will break compare_exchange
+	static_assert(std::has_unique_object_representations_v<T>);
+
+	// Guarantee it's raw bytes
+	static_assert(std::is_trivially_copyable_v<T>);
+
+public:
+	INLINE constexpr Atomic() noexcept = default;
+
+	INLINE constexpr Atomic(const T &value) noexcept(
+	  std::is_nothrow_copy_constructible_v<T>)
+	    : _value(value) {}
+
+	INLINE constexpr Atomic(T &&value) noexcept(
+	  std::is_nothrow_move_constructible_v<T>)
+	    : _value(std::move(value)) {}
+
+	//
+
+	INLINE T load(std::memory_order order) const noexcept {
+		return _value.load(order);
+	}
+
+	INLINE void store(T desired, std::memory_order order) noexcept {
+		_value.store(desired, order);
+	}
+
+	//
+
+	INLINE T fetchAdd(T arg, std::memory_order order) noexcept {
+		return _value.fetch_add(arg, order);
+	}
+	INLINE T fetchSub(T arg, std::memory_order order) noexcept {
+		return _value.fetch_sub(arg, order);
+	}
+
+	//
+
+	INLINE T fetchOr(T arg, std::memory_order order) noexcept {
+		return _value.fetch_or(arg, order);
+	}
+
+	INLINE T fetchAnd(T arg, std::memory_order order) noexcept {
+		return _value.fetch_and(arg, order);
+	}
+
+	INLINE T fetchXor(T arg, std::memory_order order) noexcept {
+		return _value.fetch_xor(arg, order);
+	}
+
+	//
+
+	INLINE void wait(const T &expected, std::memory_order order) noexcept {
+		_value.wait(expected, order);
+	}
+	INLINE void notifyOne() noexcept { _value.notify_one(); }
+	INLINE void notifyAll() noexcept { _value.notify_all(); }
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

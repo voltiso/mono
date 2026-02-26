@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <v/concepts/constexpr-constructible>
 #include <v/storage>
 
 #include <type_traits>
@@ -14,7 +15,7 @@ TEST(Storage, doesNotInitialize) {
 	using G = Storage<S>::Constexpr;
 	new (&memory) G;
 	auto &storage = *reinterpret_cast<G *>(&memory);
-	EXPECT_EQ(storage.storedItem.myValue, 333);
+	EXPECT_EQ(storage.storedItem().myValue, 333);
 	EXPECT_EQ(storage.bytes.NUM_ITEMS, sizeof(S));
 
 	//
@@ -66,6 +67,7 @@ TEST(Storage, preventMemcpy) {
 	// static_assert(std::is_trivially_constructible_v<G>);
 	// static_assert(std::is_trivially_default_constructible_v<G>);
 	// static_assert(std::is_trivially_destructible_v<G>);
+	// static_assert(concepts::ConstexprConstructible<G>);
 
 	// ! no implicit linear-time copy
 	static_assert(!std::is_trivially_copyable_v<S>);
@@ -89,7 +91,7 @@ TEST(Storage, zeroInitialize) {
 		int value = 123'456'789;
 	};
 	Storage<S>::Constexpr storage = {};
-	EXPECT_EQ(storage.storedItem.value, 0);
+	EXPECT_EQ(storage.storedItem().value, 0);
 }
 
 TEST(Storage, preservesTriviality) {

@@ -76,5 +76,12 @@ export const bench = [
 	() => 'prepublishOnly', // ! fast enough?
 	() => configure(benchOptions),
 	`cmake --build --preset ${preset(benchOptions)} --target voltiso-util-bench`,
-	`${dir(benchOptions)}/util/bench/voltiso-util-bench --benchmark_min_time=0.1s --benchmark_min_warmup_time=0.05`,
+	[
+		`setarch $(uname -m) -R`,
+		// 'taskset -c 2', // hardcode single code
+		`${dir(benchOptions)}/util/bench/voltiso-util-bench`,
+		'--benchmark_min_time=0.1s',
+		// '--benchmark_min_warmup_time=0.05s',
+		// '--benchmark_repetitions=10 --benchmark_enable_random_interleaving=true --benchmark_report_aggregates_only=true',
+	].join(' '),
 ]

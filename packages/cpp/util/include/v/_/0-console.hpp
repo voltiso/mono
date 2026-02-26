@@ -1,5 +1,6 @@
 #pragma once
 #include "v/_/0-namespace.hpp" // IWYU pragma: keep
+#include "v/_/0-throw-error.hpp"
 
 #include <format> // Required for std::format (C++20)
 #include <string> // Required for std::string
@@ -97,8 +98,8 @@ inline std::string BG_INDEX(uint8_t index) {
  * @throws std::out_of_range if level is not between 1 and 24.
  */
 inline std::string FG_GRAY(int level) {
-	if (level < 1 || level > 24) {
-		throw std::out_of_range("Grayscale level must be between 1 and 24.");
+	if (level < 1 || level > 24) [[unlikely]] {
+		throwError(std::out_of_range("Grayscale level must be between 1 and 24."));
 	}
 	// ANSI grayscale indices are 232 to 255
 	return FG_INDEX(static_cast<uint8_t>(231 + level));
@@ -113,7 +114,7 @@ inline std::string FG_GRAY(int level) {
  */
 inline std::string BG_GRAY(int level) {
 	if (level < 1 || level > 24) {
-		throw std::out_of_range("Grayscale level must be between 1 and 24.");
+		throwError(std::out_of_range("Grayscale level must be between 1 and 24."));
 	}
 	// ANSI grayscale indices are 232 to 255
 	return BG_INDEX(static_cast<uint8_t>(231 + level));

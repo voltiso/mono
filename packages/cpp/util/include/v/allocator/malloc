@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/malloc.hpp" // IWYU pragma: export
+#include "v/_/allocator/malloc.hpp" // IWYU pragma: export
 
 #include "v/throw-error"
 
@@ -36,10 +36,9 @@ inline Custom<Options>::Custom() : _debug(new _::Debug()) {}
 template <class Options> inline Custom<Options>::~Custom() {
 	auto &debug = *this->_debug;
 	for (auto [handle, numBytes] : debug.allocations) {
-		throwError(
-		  std::runtime_error(
-		    "Memory leak " + std::to_string(numBytes) + " bytes at " +
-		    std::to_string((Size)handle)));
+		throwError(std::runtime_error(
+		  "Memory leak " + std::to_string(numBytes) + " bytes at " +
+		  std::to_string((Size)handle)));
 	}
 	delete this->_debug;
 }
@@ -53,9 +52,8 @@ Custom<Options>::allocateBytes(Size numBytes) {
 #endif
 	auto handle = static_cast<Handle>(::malloc(numBytes));
 	if (!handle) [[unlikely]] {
-		throwError(
-		  std::runtime_error(
-		    "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+		throwError(std::runtime_error(
+		  "Failed to allocate " + std::to_string(numBytes) + " bytes"));
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
@@ -81,9 +79,8 @@ Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 #else
 	auto err = ::posix_memalign(&handle, alignment, numBytes);
 	if (err) [[unlikely]] {
-		throwError(
-		  std::runtime_error(
-		    "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+		throwError(std::runtime_error(
+		  "Failed to allocate " + std::to_string(numBytes) + " bytes"));
 	}
 #endif
 
@@ -121,9 +118,8 @@ inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
 	}
 	auto newHandle = static_cast<Handle>(::realloc(oldHandle, newNumBytes));
 	if (!newHandle) [[unlikely]] {
-		throwError(
-		  std::runtime_error(
-		    "Failed to reallocate " + std::to_string(newNumBytes) + " bytes"));
+		throwError(std::runtime_error(
+		  "Failed to reallocate " + std::to_string(newNumBytes) + " bytes"));
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;

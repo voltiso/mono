@@ -140,7 +140,7 @@ class Custom
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<Custom>, option::InputOptions<Options>>>,
       public Singleton<
-        typename Options::template Get<option::Allocator>>::Guard {
+        typename Options::template Get<option::Allocator>>::Lazy::Guard {
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 	using Self = Base::Self;

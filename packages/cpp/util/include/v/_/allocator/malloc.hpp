@@ -34,11 +34,7 @@ private:
 
 protected:
 	using Self = Base::Self;
-	using Singleton = V::Singleton<Self>;
-
-protected:
-	// friend ThreadSingleton<Self>;
-	// friend ThreadSingleton<Final>;
+	using Singleton = V::Singleton<Self>::Lazy;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
