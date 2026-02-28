@@ -290,11 +290,11 @@ private:
 		using Pool = Pool<Callable>;
 		using Singleton = Singleton<Pool>::ThreadLocal;
 		using Handle = typename Pool::Handle;
-		auto &pool = Singleton::instance();
+		auto &pool = Singleton::maybeInitialize();
 		auto handle = pool.insert(std::forward<TCallable>(f)).handle;
 		new (&_storage) Handle(handle);
 		_deleter = [](Storage &storage) {
-			auto &pool = Singleton::instance();
+			auto &pool = Singleton::maybeInitialize();
 			pool.erase(storage.template as<Handle>());
 		};
 		_invoker = [](const Storage &storage, ParametersList... args) -> Return {

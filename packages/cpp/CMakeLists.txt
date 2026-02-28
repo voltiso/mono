@@ -66,49 +66,50 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
+
 # add_subdirectory(util)
 add_executable(
   voltiso-util-test
   test.cpp
 
-  # util/test/retainer.test.cpp
-  # util/test/hash.test.cpp
-  # util/test/entry.test.cpp
-  # util/test/singleton.test.cpp
-  # util/test/options.test.cpp
-  # util/test/object.test.cpp
-  # util/test/context.test.cpp
-  # util/test/is-trivially-relocatable.test.cpp
-  # util/test/is-instantiated-from-same.test.cpp
-  # util/test/is-derived-from-template.test.cpp
-  # util/test/options.test.cpp
-  # util/test/handle.test.cpp
-  # util/test/owned.test.cpp
-  # util/test/shared.test.cpp
-  # util/test/any.test.cpp
-  # util/test/any-function.test.cpp
-  # util/test/bit-array.test.cpp
-  # util/test/hash-map.test.cpp
-  # util/test/hash-set.test.cpp
-  # util/test/splay-map.test.cpp
-  # util/test/splay-set.test.cpp
-  # util/test/heap.test.cpp
-  # util/test/dynamic-array.test.cpp
-  # util/test/raw-array.test.cpp
-  # util/test/path.test.cpp
-  # util/test/view.test.cpp
-  # util/test/string.test.cpp
-  # util/test/storage.test.cpp
-  # util/test/storage.constexpr.test.cpp
-  # util/test/runner.test.cpp
-  # util/test/pool.test.cpp
-  # util/test/subject.test.cpp
-  # util/test/executable-path.test.cpp
-  # util/test/tensor.test.cpp
-  # util/test/quaternion.test.cpp
-  # util/test/ref.test.cpp
-  # util/test/const-string-view.test.cpp
-  # util/test/mutex.test.cpp
+  util/test/retainer.test.cpp
+  util/test/hash.test.cpp
+  util/test/entry.test.cpp
+  util/test/singleton.test.cpp
+  util/test/options.test.cpp
+  util/test/object.test.cpp
+  util/test/context.test.cpp
+  util/test/is-trivially-relocatable.test.cpp
+  util/test/is-instantiated-from-same.test.cpp
+  util/test/is-derived-from-template.test.cpp
+  util/test/options.test.cpp
+  util/test/handle.test.cpp
+  util/test/owned.test.cpp
+  util/test/shared.test.cpp
+  util/test/any.test.cpp
+  util/test/any-function.test.cpp
+  util/test/bit-array.test.cpp
+  util/test/hash-map.test.cpp
+  util/test/hash-set.test.cpp
+  util/test/splay-map.test.cpp
+  util/test/splay-set.test.cpp
+  util/test/heap.test.cpp
+  util/test/dynamic-array.test.cpp
+  util/test/raw-array.test.cpp
+  util/test/path.test.cpp
+  util/test/view.test.cpp
+  util/test/string.test.cpp
+  util/test/storage.test.cpp
+  util/test/storage.constexpr.test.cpp
+  util/test/runner.test.cpp
+  util/test/pool.test.cpp
+  util/test/subject.test.cpp
+  util/test/executable-path.test.cpp
+  util/test/tensor.test.cpp
+  util/test/quaternion.test.cpp
+  util/test/ref.test.cpp
+  util/test/const-string-view.test.cpp
+  util/test/mutex.test.cpp
 	util/test/singleton.test.cpp
 
   # util/test/state.test.cpp # TODO

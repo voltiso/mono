@@ -90,7 +90,7 @@ public:
 
 	const Item &peek() const {
 		NE(Base::_numItems, 0);
-		return Base::first().object();
+		return Base::first().storedItem();
 	}
 
 public:
@@ -112,7 +112,7 @@ public:
 	  } && std::is_move_constructible_v<Item>)
 	{
 		NE(Base::_numItems, 0);
-		auto item = std::move(Base::first().object());
+		auto item = std::move(Base::first().storedItem());
 		_pop();
 		return item; // hoping for RVO
 	}
@@ -141,14 +141,16 @@ private:
 		Base::pop();
 		Size index = 1;
 		// decltype(Base::_numItems) index = 1;
-		Storage<Item> *array = &Base::slots()->object() - 1;
+		Storage<Item> *array = &Base::slots()->storedItem() - 1;
 		while ((index << 1) <= Base::_numItems) [[likely]] {
 			auto indexLeft = (index << 1);
 			auto indexRight = indexLeft + 1;
 			if (
 			  indexRight <= Base::_numItems &&
-			  array[indexLeft].object() < array[indexRight].object()) [[unlikely]] {
-				if (array[index].object() < array[indexRight].object()) [[likely]] {
+			  array[indexLeft].storedItem() < array[indexRight].storedItem())
+			  [[unlikely]] {
+				if (array[index].storedItem() < array[indexRight].storedItem())
+				  [[likely]] {
 					static_assert(is::TriviallyRelocatable<Item>);
 					array[index].relocateFrom(array[indexRight]);
 					index = indexRight;
@@ -156,7 +158,8 @@ private:
 					break;
 				}
 			} else [[likely]] {
-				if (array[index].object() < array[indexLeft].object()) [[likely]] {
+				if (array[index].storedItem() < array[indexLeft].storedItem())
+				  [[likely]] {
 					static_assert(is::TriviallyRelocatable<Item>);
 					array[index].relocateFrom(array[indexLeft]);
 					index = indexLeft;
@@ -181,12 +184,14 @@ public:
 	// ! make iterators always const
 	ConstIterator begin() const {
 		GT(this->_numItems, 0);
-		return ConstIterator{std::addressof(Base::slots()->object().object())};
+		return ConstIterator{
+		  std::addressof(Base::slots()->storedItem().storedItem())};
 	}
 	ConstIterator end() const {
 		GT(this->_numItems, 0);
 		return ConstIterator{
-		  std::addressof(Base::slots()->object().object()) + this->_numItems};
+		  std::addressof(Base::slots()->storedItem().storedItem()) +
+		  this->_numItems};
 	}
 };
 } // namespace VOLTISO_NAMESPACE::heap

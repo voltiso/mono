@@ -1,7 +1,7 @@
 #pragma once
 
 #include "v/pool"
-#include "v/thread-singleton"
+#include "v/singleton"
 
 namespace VOLTISO_NAMESPACE::shared::_ {
 template <class Item> struct ControlBlock {
@@ -15,7 +15,7 @@ template <class Item> struct ControlBlock {
 		if (--numReferences == 0) [[unlikely]] {
 			using Pool = Pool<ControlBlock>;
 			using Handle = Pool::Handle;
-			ThreadSingleton<Pool>::instance().erase(Handle(this));
+			Singleton<Pool>::ThreadLocal::maybeInitialize().erase(Handle(this));
 		}
 	}
 };
@@ -156,7 +156,7 @@ private:
 
 	static auto &pool() {
 		// return context::get<Pool>();
-		return ThreadSingleton<Pool>::instance();
+		return Singleton<Pool>::ThreadLocal::maybeInitialize();
 		// return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
 	}
 }; // class Owned

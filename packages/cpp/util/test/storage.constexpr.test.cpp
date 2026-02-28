@@ -7,7 +7,7 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-TEST(Storage, doesNotInitialize) {
+TEST(StorageConstexpr, doesNotInitialize) {
 	int memory = 333;
 	struct S {
 		int myValue = 123'456'789;
@@ -55,7 +55,7 @@ TEST(Storage, doesNotInitialize) {
 	static_assert(alignof(Storage<Test>::Constexpr) == alignof(Test));
 }
 
-TEST(Storage, preventMemcpy) {
+TEST(StorageConstexpr, preventMemcpy) {
 	struct S {
 		~S() {}
 	};
@@ -86,15 +86,16 @@ TEST(Storage, preventMemcpy) {
 	static_assert(!std::is_trivially_copy_assignable_v<G>);
 }
 
-TEST(Storage, zeroInitialize) {
-	struct S {
-		int value = 123'456'789;
-	};
-	Storage<S>::Constexpr storage = {};
-	EXPECT_EQ(storage.storedItem().value, 0);
-}
+// ⚠️ This cannot work unfortunately for union-based storage
+// TEST(StorageConstexpr, zeroInitialize) {
+// 	struct S {
+// 		int value = 123'456'789;
+// 	};
+// 	Storage<S>::Constexpr storage = {};
+// 	EXPECT_EQ(storage.storedItem().value, 0);
+// }
 
-TEST(Storage, preservesTriviality) {
+TEST(StorageConstexpr, preservesTriviality) {
 	struct S {
 		int value;
 	};

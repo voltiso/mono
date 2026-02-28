@@ -544,7 +544,7 @@ private:
 	//
 
 private:
-	static auto &_allocator() { return Self::Allocator::instance(); }
+	static auto &_allocator() { return Self::Allocator::maybeInitialize(); }
 
 public:
 	static const auto &allocator() { return _allocator(); }
@@ -871,13 +871,75 @@ public:
 
 	bool hasItems() const { return this->_numItems != 0; }
 
-	VOLTISO_FORCE_INLINE constexpr auto pop() noexcept {
+	INLINE constexpr void pop() noexcept {
 		static_assert(is::TriviallyRelocatable<Item>);
 		GT(this->_numItems, 0);
 		auto lastIndex = this->_numItems - 1;
 		this->_numItems = lastIndex;
-		return slots()[lastIndex].relocate(); // hoping for RVO
+		(*this)[lastIndex].~Item();
+	}
+
+	INLINE constexpr auto pop() noexcept
+	  requires requires { slots()[0].relocate(); }
+	{
+		static_assert(is::TriviallyRelocatable<Item>);
+		GT(this->_numItems, 0);
+		auto lastIndex = this->_numItems - 1;
+		this->_numItems = lastIndex;
+		return slots()[lastIndex].relocate(); // RVO
 		// (*this)[lastIndex].~Item(); // ! do not call after relocate
+	}
+
+	/** Erase element by moving last item to this slot. (swap-and-pop) */
+	INLINE constexpr auto swapErase(const Index &idx) noexcept {
+		static_assert(is::TriviallyRelocatable<Item>);
+		// note: this should not trigger any move/copy constructors if RVO works.
+		GE(idx, 0);
+		LT(idx, this->_numItems);
+		struct SwapEraseResult {
+			Index movedIdxSrc;
+			Index movedIdxDst;
+		};
+		(*this)[idx].~Item();
+		auto newNumItems = this->_numItems - 1;
+		this->_numItems = newNumItems; // (decrement)
+		slots()[idx].relocateFrom(slots()[newNumItems]);
+		return SwapEraseResult{
+		  .movedIdxSrc = newNumItems,
+		  .movedIdxDst = idx,
+		}; // RVO
+	}
+
+	/** Erase element by moving last item to this slot. (swap-and-pop) */
+	INLINE constexpr auto swapErase(const Index &idx) noexcept
+	  requires requires {
+		  slots()[idx].relocate();
+	  } && std::is_nothrow_move_constructible_v<Item>
+	// note: this should not trigger any move/copy constructors if NRVO works (who
+	// knows).
+	{
+		static_assert(is::TriviallyRelocatable<Item>);
+		// (who knows).
+		GE(idx, 0);
+		LT(idx, this->_numItems);
+		struct SwapEraseResult {
+			Item erasedItem;
+			Index movedIdxSrc;
+			Index movedIdxDst;
+		};
+		auto newNumItems = this->_numItems - 1;
+		SwapEraseResult result{
+		  .erasedItem = slots()[idx].relocate(),
+		  .movedIdxSrc = newNumItems,
+		  .movedIdxDst = idx,
+		};
+		// slots()[idx].~Item(); // ! do not call after relocate
+		this->_numItems = newNumItems; // (decrement)
+		slots()[idx].relocateFrom(slots()[newNumItems]);
+		// Note: named-RVO is not guaranteed, so if you compile in debug mode,
+		// and your move/copy constructors throw, the program will terminate
+		// (noexcept clause).
+		return result; // RVO
 	}
 
 	// !
@@ -913,11 +975,11 @@ public:
 
 	constexpr Iterator begin() noexcept {
 		// DCHECK_GT(numItems, 0);
-		return Iterator{std::addressof(slots()->object())};
+		return Iterator{std::addressof(slots()->storedItem())};
 	}
 	constexpr Iterator end() noexcept {
 		// DCHECK_GT(numItems, 0);
-		return Iterator{std::addressof(slots()->object()) + this->_numItems};
+		return Iterator{std::addressof(slots()->storedItem()) + this->_numItems};
 	}
 
 	constexpr ConstIterator begin() const noexcept {

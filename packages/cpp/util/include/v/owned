@@ -11,7 +11,7 @@
 #include "v/option/weak"
 #include "v/options"
 #include "v/pool"
-#include "v/thread-singleton"
+#include "v/singleton"
 
 #include <type_traits>
 
@@ -185,7 +185,9 @@ public:
 
 private:
 	Pool::Handle _target = handle::INVALID;
-	static constexpr auto &pool() { return ThreadSingleton<Pool>::instance(); }
+	static constexpr auto &pool() {
+		return Singleton<Pool>::ThreadLocal::maybeInitialize();
+	}
 
 public:
 	template <class Item>

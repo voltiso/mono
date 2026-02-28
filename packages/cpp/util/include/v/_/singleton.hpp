@@ -314,8 +314,8 @@ public:
 	}
 
 public:
-	INLINE constexpr void maybeInitialize() noexcept(requires {
-		this->_item;
+	INLINE constexpr void maybeInitialize() noexcept(!requires {
+		this->isInitialized;
 	} || std::is_nothrow_constructible_v<Item>) {
 		if constexpr (requires { this->isInitialized; }) {
 			if (_load(this->isInitialized, std::memory_order_acquire)) [[likely]] {

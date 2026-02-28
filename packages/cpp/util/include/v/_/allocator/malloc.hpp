@@ -47,10 +47,13 @@ protected:
 #endif
 
 public:
-	static constexpr auto &instance() {
+	static constexpr auto &
+	maybeInitialize() noexcept(noexcept(Singleton::maybeInitialize())) {
 		// Note: not `ThreadSingleton`. We just delegate to global malloc/free.
-		return Singleton::instance();
+		return Singleton::maybeInitialize();
 	}
+
+	static constexpr auto &instance() noexcept { return Singleton::instance(); }
 
 public:
 	using Brand = Options::template Get<brand::Custom>;

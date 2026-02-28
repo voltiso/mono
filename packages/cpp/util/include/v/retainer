@@ -4,7 +4,7 @@
 #include "v/dynamic-array"
 #include "v/handle"
 #include "v/pool"
-#include "v/thread-singleton"
+#include "v/singleton"
 
 #include <ranges>
 
@@ -54,13 +54,14 @@ private:
 		// auto prevNumStorageItems = data.numItems();
 		// data.setNumItems(data.numItems() + numNewStorageItems);
 		// new (memory) T(std::forward<Args>(args)...);
-		auto handle = ThreadSingleton<Pool<T>>::instance()
-		                .insert(std::forward<Args>(args)...)
-		                .handle;
-
+		using Singleton = Singleton<Pool<T>>::ThreadLocal;
+		auto &pool = Singleton::maybeInitialize();
+		auto handle = pool.insert(std::forward<Args>(args)...).handle;
 		items.maybeGrowAndPush(Item{.handle = handle, .deleter = [](Handle handle) {
-			                            ThreadSingleton<Pool<T>>::instance().erase(
-			                              handle);
+			                            // note - singleton initialized few lines
+			                            // above!
+			                            auto &pool = Singleton::instance();
+			                            pool.erase(handle);
 		                            }});
 		return *handle.value;
 	}

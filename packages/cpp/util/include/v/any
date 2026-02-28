@@ -79,11 +79,11 @@ public:
 	template <
 	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
 	TT &target() const {
-		CHECK(_storage.object());
-		return *_storage.object();
+		CHECK(_storage.storedItem());
+		return *_storage.storedItem();
 	}
 
-	Item *operator->() const { return _storage.object(); }
+	Item *operator->() const { return _storage.storedItem(); }
 
 	template <
 	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
@@ -91,7 +91,7 @@ public:
 		return target();
 	}
 
-	explicit operator bool() const { return _storage.object(); }
+	explicit operator bool() const { return _storage.storedItem(); }
 
 	template <class TT = Item>
 	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)

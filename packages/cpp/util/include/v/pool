@@ -41,7 +41,7 @@ template <class Options> struct Block {
 
 	Block(Size numItems) {
 		auto numBytes = numItems * sizeof(Slot<Item>);
-		auto handle = Allocator::instance().allocateBytes(numBytes);
+		auto handle = Allocator::maybeInitialize().allocateBytes(numBytes);
 		static_assert(sizeof(Slot<Item> *) == sizeof(handle));
 		this->allocationStart = std::bit_cast<Slot<Item> *>(handle);
 		this->allocationEnd = this->allocationStart + numItems;
@@ -53,6 +53,7 @@ template <class Options> struct Block {
 
 	~Block() {
 		auto numBytes = (std::byte *)allocationEnd - (std::byte *)allocationStart;
+		// note - singleton already initialized few lines above!
 		Allocator::instance().freeBytes(
 		  typename Allocator::Handle(allocationStart), numBytes);
 	}

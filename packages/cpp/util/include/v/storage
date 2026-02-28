@@ -262,6 +262,7 @@ namespace VOLTISO_NAMESPACE {
 // To replace `std::aligned_storage`
 // https://stackoverflow.com/a/71828512/1123898
 // ⚠️ Remember to call `.destroy()` if you constructed something
+// ⚠️ The `::Constexpr` version never zero-initializes, even with `= {}`
 template <class Item>
 class Storage : public storage::Custom<Options<option::Item<Item>>> {
 	using Base = storage::Custom<Options<option::Item<Item>>>;
