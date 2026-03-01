@@ -28,6 +28,7 @@ add_executable(
   heap.bench.cpp
   hash-set.bench.cpp
   map.bench.cpp
+  soa.bench.cpp
 )
 
 target_link_libraries(voltiso-util-bench benchmark::benchmark gflags::gflags glog::glog

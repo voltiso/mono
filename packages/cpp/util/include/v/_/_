@@ -42,6 +42,16 @@
 
 // !
 
+#if defined(__clang__) || defined(__GNUC__)
+	#define VOLTISO_RESTRICT __restrict__
+#elif defined(_MSC_VER)
+	#define VOLTISO_RESTRICT __restrict
+#else
+	#define VOLTISO_RESTRICT
+#endif
+
+// !
+
 // #if __has_include(<glog/logging.h>)
 // #include <glog/logging.h>
 // #else

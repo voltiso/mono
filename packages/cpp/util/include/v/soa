@@ -5,12 +5,14 @@
 #include <tuple>
 #include <utility> // for std::index_sequence
 
+#include <v/ON>
+
 namespace VOLTISO_NAMESPACE::soa {
 
 template <typename T> struct Layout;
 
 template <typename T> struct ViewTrait {
-	using Type = T &;
+	using Type = T &VOLTISO_RESTRICT;
 };
 
 template <typename T> struct Flatten : T {};
@@ -131,7 +133,7 @@ struct StructConsumer<
 	}
 
 	template <typename ViewType, typename Arrays>
-	static ViewType consume(Arrays &arrays, size_t row) {
+	static INLINE ViewType consume(Arrays &arrays, size_t row) {
 		return ViewType{Consumer<Ts, get_offset(Is)>::consume(arrays, row)...};
 	}
 };
@@ -161,10 +163,12 @@ private:
 	StorageTuple _arrays;
 
 public:
-	typename T::View get(size_t index) {
+	INLINE typename T::View get(size_t index) {
 		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
 		  typename T::View>(_arrays, index);
 	}
 };
 
 } // namespace VOLTISO_NAMESPACE::soa
+
+#include <v/OFF>

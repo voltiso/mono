@@ -55,9 +55,14 @@ static_assert(sizeof(Pose) == sizeof(FakePose2));
 static_assert(std::is_same_v<decltype(MyItem::velocity), Velocity>);
 static_assert(std::is_same_v<decltype(MyItem::pose), soa::Flatten<Pose>>);
 
-static_assert(std::is_same_v<decltype(PositionView::x), float &>);
-static_assert(std::is_same_v<decltype(MyItemView::velocity), Velocity &>);
-static_assert(std::is_same_v<decltype(PoseView::orientation), Orientation &>);
+static_assert(
+  std::is_same_v<decltype(PositionView::x), float & VOLTISO_RESTRICT>);
+
+static_assert(
+  std::is_same_v<decltype(MyItemView::velocity), Velocity & VOLTISO_RESTRICT>);
+
+static_assert(std::is_same_v<
+              decltype(PoseView::orientation), Orientation & VOLTISO_RESTRICT>);
 
 static_assert(std::is_same_v<decltype(PoseView::position), PositionView>);
 static_assert(std::is_same_v<decltype(MyItemView::pose), PoseView>);
@@ -158,7 +163,8 @@ VOLTISO_SOA_STRUCT(NotFlattenedItem, NOT_FLATTENED_ITEM_FIELDS)
 TEST(SoaBackend, OmitFlattenKeepsAoS) {
 	// 1. Compile-Time Proof: The View uses a raw reference, NOT a PositionView
 	static_assert(std::is_same_v<
-	              decltype(NotFlattenedItemView::standard_position), Position &>);
+	              decltype(NotFlattenedItemView::standard_position),
+	              Position & VOLTISO_RESTRICT>);
 
 	// 2. Compile-Time Proof: The metaprogramming did NOT break apart Position
 	static_assert(
