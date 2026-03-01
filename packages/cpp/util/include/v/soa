@@ -1,0 +1,170 @@
+#pragma once
+#include <v/_/_>
+
+#include <array>
+#include <tuple>
+#include <utility> // for std::index_sequence
+
+namespace VOLTISO_NAMESPACE::soa {
+
+template <typename T> struct Layout;
+
+template <typename T> struct ViewTrait {
+	using Type = T &;
+};
+
+template <typename T> struct Flatten : T {};
+
+template <typename T> struct ViewTrait<Flatten<T>> {
+	using Type = typename T::View;
+};
+
+template <typename Dummy, typename... Ts> struct TupleFilter {
+	using Type = std::tuple<Ts...>;
+};
+
+} // namespace VOLTISO_NAMESPACE::soa
+
+// ========================================================================
+// GENERATOR MACROS
+// ========================================================================
+
+#define VOLTISO_SOA_MAKE_MEMBER(FieldType, FieldName) FieldType FieldName;
+
+#define VOLTISO_SOA_MAKE_VIEW_MEMBER(FieldType, FieldName)                     \
+	typename ::VOLTISO_NAMESPACE::soa::ViewTrait<FieldType>::Type FieldName;
+
+#define VOLTISO_SOA_MAKE_TUPLE_MEMBER(FieldType, FieldName) , FieldType
+
+#define VOLTISO_SOA_STRUCT(StructName, FIELDS_MACRO)                           \
+	struct StructName##View;                                                     \
+                                                                               \
+	struct StructName {                                                          \
+		FIELDS_MACRO(VOLTISO_SOA_MAKE_MEMBER)                                      \
+		using View = StructName##View;                                             \
+	};                                                                           \
+                                                                               \
+	struct StructName##View {                                                    \
+		FIELDS_MACRO(VOLTISO_SOA_MAKE_VIEW_MEMBER)                                 \
+	};                                                                           \
+                                                                               \
+	/* Safely inject the Layout trait into the correct namespace */              \
+	namespace VOLTISO_NAMESPACE::soa {                                           \
+	template <> struct Layout<StructName> {                                      \
+		using Fields =                                                             \
+		  typename ::VOLTISO_NAMESPACE::soa::TupleFilter<void FIELDS_MACRO(        \
+		    VOLTISO_SOA_MAKE_TUPLE_MEMBER)>::Type;                                 \
+	};                                                                           \
+	}
+
+// ========================================================================
+// INTERNAL METAPROGRAMMING
+// ========================================================================
+
+namespace VOLTISO_NAMESPACE::soa::_ {
+
+template <typename... Tuples> struct TupleCat;
+template <> struct TupleCat<> {
+	using Type = std::tuple<>;
+};
+template <typename... Ts> struct TupleCat<std::tuple<Ts...>> {
+	using Type = std::tuple<Ts...>;
+};
+template <typename... Ts, typename... Us, typename... Rest>
+struct TupleCat<std::tuple<Ts...>, std::tuple<Us...>, Rest...> {
+	using Type = typename TupleCat<std::tuple<Ts..., Us...>, Rest...>::Type;
+};
+
+template <typename Tuple> struct FlattenTuple;
+
+template <typename T> struct FlattenType {
+	using Type = std::tuple<T>;
+};
+template <typename T> struct FlattenType<soa::Flatten<T>> {
+	using Type = typename FlattenTuple<typename soa::Layout<T>::Fields>::Type;
+};
+
+template <typename... Ts> struct FlattenTuple<std::tuple<Ts...>> {
+	using Type = typename TupleCat<typename FlattenType<Ts>::Type...>::Type;
+};
+
+template <typename FlatTuple, size_t N> struct MakeArrays;
+template <typename... Ts, size_t N> struct MakeArrays<std::tuple<Ts...>, N> {
+	using Type = std::tuple<std::array<Ts, N>...>;
+};
+
+template <typename T> struct FlattenCount {
+	static constexpr size_t value = 1;
+};
+template <typename Tuple> struct TupleCount;
+template <typename... Ts> struct TupleCount<std::tuple<Ts...>> {
+	static constexpr size_t value = (0 + ... + FlattenCount<Ts>::value);
+};
+template <typename T> struct FlattenCount<soa::Flatten<T>> {
+	static constexpr size_t value =
+	  TupleCount<typename soa::Layout<T>::Fields>::value;
+};
+
+template <typename FieldType, size_t FlatIndex> struct Consumer {
+	template <typename Arrays>
+	static decltype(auto) consume(Arrays &arrays, size_t row) {
+		return std::get<FlatIndex>(arrays)[row];
+	}
+};
+
+template <
+  typename Tuple, size_t StartIndex,
+  typename Indices = std::make_index_sequence<std::tuple_size_v<Tuple>>>
+struct StructConsumer;
+
+template <typename... Ts, size_t StartIndex, size_t... Is>
+struct StructConsumer<
+  std::tuple<Ts...>, StartIndex, std::index_sequence<Is...>> {
+
+	static constexpr size_t get_offset(size_t target_idx) {
+		constexpr size_t counts[] = {0, FlattenCount<Ts>::value...};
+		size_t off = StartIndex;
+		for (size_t k = 0; k < target_idx; ++k) {
+			off += counts[k + 1];
+		}
+		return off;
+	}
+
+	template <typename ViewType, typename Arrays>
+	static ViewType consume(Arrays &arrays, size_t row) {
+		return ViewType{Consumer<Ts, get_offset(Is)>::consume(arrays, row)...};
+	}
+};
+
+template <typename T, size_t FlatIndex>
+struct Consumer<soa::Flatten<T>, FlatIndex> {
+	template <typename Arrays>
+	static typename T::View consume(Arrays &arrays, size_t row) {
+		return StructConsumer<typename soa::Layout<T>::Fields, FlatIndex>::
+		  template consume<typename T::View>(arrays, row);
+	}
+};
+
+} // namespace VOLTISO_NAMESPACE::soa::_
+
+// ========================================================================
+// PUBLIC API
+// ========================================================================
+
+namespace VOLTISO_NAMESPACE::soa {
+
+template <typename T, size_t NUM_SLOTS> class Array {
+private:
+	using FlatTuple = typename _::FlattenTuple<typename Layout<T>::Fields>::Type;
+	using StorageTuple = typename _::MakeArrays<FlatTuple, NUM_SLOTS>::Type;
+
+	StorageTuple _arrays;
+
+public:
+	typename T::View get(size_t index) {
+		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
+		  typename T::View>(_arrays, index);
+	}
+};
+
+} // namespace VOLTISO_NAMESPACE::soa

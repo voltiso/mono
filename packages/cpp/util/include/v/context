@@ -14,7 +14,7 @@
 namespace VOLTISO_NAMESPACE::context::_ {
 template <class T> inline T *&getPointer() {
 	static_assert(std::is_same_v<T, std::remove_cvref_t<T>>, "not supported");
-	static VOLTISO_CONTEXT_THREAD_LOCAL T *value = nullptr;
+	static VOLTISO_CONTEXT_THREAD_LOCAL constinit T *value = nullptr;
 	return value;
 }
 }; // namespace VOLTISO_NAMESPACE::context::_

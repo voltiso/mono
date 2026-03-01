@@ -1,0 +1,33 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::ecs {
+
+//
+
+template <class... Components> class Entity {
+private:
+	std::tuple<Components...> components;
+
+public:
+	Entity(Components &&...components) noexcept(
+	  std::is_nothrow_constructible_v<std::tuple<Components...>, Components...>)
+	    : components(std::forward<Components>(components)...) {}
+
+	Entity(const Entity &) = delete;
+	Entity(Entity &&) = delete;
+	Entity &operator=(const Entity &) = delete;
+	Entity &operator=(Entity &&) = delete;
+
+public:
+	template <class Component> [[nodiscard]] INLINE auto &component() noexcept {
+		return std::get<Component>(components);
+	}
+};
+
+//
+
+} // namespace VOLTISO_NAMESPACE::ecs
+#include <v/OFF>

@@ -111,6 +111,7 @@ add_executable(
   util/test/const-string-view.test.cpp
   util/test/mutex.test.cpp
 	util/test/singleton.test.cpp
+	util/test/soa.test.cpp
 
   # util/test/state.test.cpp # TODO
 
