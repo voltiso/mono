@@ -138,6 +138,15 @@ static void BM_singleton_access_mt_lazy_slow(benchmark::State &state) {
 	// add guard just to check if code compiles
 	auto _guard = typename Singleton::Guard();
 	run_bench_loop(state, Singleton::maybeInitialize);
+
+	// print separator
+	static bool once = true;
+	if (once) {
+		once = false;
+		std::cout << "-------------------------------------------------------------"
+		             "-----------------------------------"
+		          << std::endl;
+	}
 }
 
 // ---------------------------------------------------------
