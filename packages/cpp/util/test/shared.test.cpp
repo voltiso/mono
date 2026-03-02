@@ -4,17 +4,8 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-// struct Global {
-//   // order is important
-//   allocator::Malloc malloc;
-//   context::Guard<allocator::Malloc> mallocGuard =
-//       context::Guard<allocator::Malloc>(malloc);
-
-//   Pool<int> poolInt;
-//   context::Guard<Pool<int>> poolIntGuard =
-//   context::Guard<Pool<int>>(poolInt);
-// };
-// Global global;
+static_assert(!std::is_default_constructible_v<Shared<int>>);
+static_assert(std::is_copy_constructible_v<Shared<int>>);
 
 TEST(Shared, trivial) {
 	auto shared = Shared<int>::create(123);
@@ -173,6 +164,30 @@ TEST(Shared, worksLikeReference) {
 	EXPECT_EQ((const int &&)shared, 123);
 }
 
+TEST(Shared, copyConstruction) {
+	auto shared = Shared<int>::create(123);
+	EXPECT_EQ(shared.numReferences(), 1);
+
+	Shared<int> copy(shared);
+	EXPECT_EQ(shared, 123);
+	EXPECT_EQ(copy, 123);
+	EXPECT_EQ(shared.numReferences(), 2);
+	EXPECT_EQ(copy.numReferences(), 2);
+}
+
+TEST(Shared, copyAssignment) {
+	auto shared = Shared<int>::create(123);
+	auto other = Shared<int>::create(456);
+	EXPECT_EQ(shared.numReferences(), 1);
+	EXPECT_EQ(other.numReferences(), 1);
+
+	other = shared;
+	EXPECT_EQ(shared, 123);
+	EXPECT_EQ(other, 123);
+	EXPECT_EQ(shared.numReferences(), 2);
+	EXPECT_EQ(other.numReferences(), 2);
+}
+
 TEST(Shared, moveSemantics) {
 	auto shared = Shared<int>::create(123);
 	Shared<int> shared2 = std::move(shared);
@@ -182,19 +197,18 @@ TEST(Shared, moveSemantics) {
 	shared2 = x;
 	shared2 = std::move(x);
 
-	// ! should be illegal (Shared is reference-like, can't assign to it)
-	// ! ...and we want to avoid ambiguity
-	// ! if user wants to move-out pointed value instead, it should be explicit
-	// shared2 = shared; // !!!
-	static_assert(!std::is_assignable_v<Shared<int> &, Shared<int>>);
 	static_assert(std::is_assignable_v<Shared<int> &, int>);
-	// shared2 = std::move(shared); // !!! legal or not?
 }
 
-TEST(Shared, illegal) {
-	// ! should be illegal, Shared is reference-style, always present
-	// !  (unless moved-out)
-	// Shared<int> shared; // !!!
+TEST(Shared, moveAssignment) {
+	auto shared = Shared<int>::create(123);
+	auto other = Shared<int>::create(456);
+	EXPECT_EQ(shared.numReferences(), 1);
+	EXPECT_EQ(other.numReferences(), 1);
+
+	other = std::move(shared);
+	EXPECT_EQ(other, 123);
+	EXPECT_EQ(other.numReferences(), 1);
 }
 
 TEST(Shared, customPool) {
@@ -213,3 +227,10 @@ TEST(Shared, customPool) {
 	auto shared = Shared::create(pool, 123);
 	EXPECT_EQ(shared, 123);
 }
+
+// TEST(Shared, assignmentAmbiguity) {
+// 	auto a = Shared<int>::create(123);
+// 	auto b = Shared<int>::create(456);
+
+// 	a = b;
+// }

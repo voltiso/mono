@@ -104,39 +104,34 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 
 	static_assert(CowPagedArray::NUM_ITEMS_PER_PAGE == 5);
 
-	// Keep suite green while CoW copy is still being finalized.
-	if constexpr (!std::is_copy_constructible_v<CowPagedArray>) {
-		GTEST_SKIP() << "COW copy constructor not available yet";
-	} else {
-		CowPagedArray a;
-		for (int i = 0; i < 5; ++i) {
-			a.maybeGrowAndPush(i); // fills one page exactly
-		}
-		EXPECT_EQ(a.numPages(), 1);
-
-		a.maybeGrowAndPush(5); // crosses into second page
-		EXPECT_EQ(a.numPages(), 2);
-
-		// have to use explicit copy syntax
-		static_assert(!std::is_copy_constructible_v<CowPagedArray>);
-		auto b = a.copy(); // explicit copy syntax
-		static_assert(std::is_same_v<decltype(b), CowPagedArray>);
-
-		// Same visible data after copy
-		EXPECT_EQ(b.numItems(), a.numItems());
-		EXPECT_EQ(b.numPages(), a.numPages());
-		for (int i = 0; i < 6; ++i) {
-			EXPECT_EQ(b[i], a[i]);
-		}
-
-		// Mutate copy tail; original should remain unchanged.
-		EXPECT_EQ(b.pop(), 5);
-		b.maybeGrowAndPush(40);
-
-		EXPECT_EQ(a.numItems(), 6);
-		EXPECT_EQ(a[5], 5);
-
-		EXPECT_EQ(b.numItems(), 6);
-		EXPECT_EQ(b[5], 40);
+	CowPagedArray a;
+	for (int i = 0; i < 5; ++i) {
+		a.maybeGrowAndPush(i); // fills one page exactly
 	}
+	EXPECT_EQ(a.numPages(), 1);
+
+	a.maybeGrowAndPush(5); // crosses into second page
+	EXPECT_EQ(a.numPages(), 2);
+
+	// have to use explicit copy syntax
+	static_assert(!std::is_copy_constructible_v<CowPagedArray>);
+	auto b = a.copy(); // explicit copy syntax
+	static_assert(std::is_same_v<decltype(b), CowPagedArray>);
+
+	// Same visible data after copy
+	EXPECT_EQ(b.numItems(), a.numItems());
+	EXPECT_EQ(b.numPages(), a.numPages());
+	for (int i = 0; i < 6; ++i) {
+		EXPECT_EQ(b[i], a[i]);
+	}
+
+	// Mutate copy tail; original should remain unchanged.
+	EXPECT_EQ(b.pop(), 5);
+	b.maybeGrowAndPush(40);
+
+	EXPECT_EQ(a.numItems(), 6);
+	EXPECT_EQ(a[5], 5);
+
+	EXPECT_EQ(b.numItems(), 6);
+	EXPECT_EQ(b[5], 40);
 }

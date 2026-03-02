@@ -139,8 +139,16 @@ private:
 	VOLTISO_FORCE_INLINE auto &_getPageForWrite(Index pageIdx) {
 		auto &pageRef = _pages[pageIdx];
 		if constexpr (COPY_ON_WRITE) {
-			if (pageRef.numReferences > 1) [[unlikely]] {
-				pageRef = Shared::create(pageRef);
+			if (pageRef.numReferences() > 1) [[unlikely]] {
+				auto newPage = Shared::create();
+				auto numItemsInPage = _numItems - pageIdx * NUM_ITEMS_PER_PAGE;
+				if (numItemsInPage > NUM_ITEMS_PER_PAGE) [[likely]] {
+					numItemsInPage = NUM_ITEMS_PER_PAGE;
+				}
+				for (Index i = 0; i < numItemsInPage; ++i) {
+					newPage->slots[i] = pageRef->slots[i].copy();
+				}
+				pageRef = std::move(newPage);
 			}
 		}
 		return pageRef;
@@ -243,17 +251,18 @@ public:
 		return pushUnchecked<>(std::forward<Args>(args)...);
 	}
 
+	/** Does not shrink automatically. You may want to call `.maybeShrink()`
+	 * afterwards. */
 	Item pop() noexcept {
 		GT(_numItems, 0);
-		--_numItems;
-		auto lastIndex = _numItems;
+		auto lastIndex = _numItems - 1;
 
 		auto pageIdx = lastIndex / NUM_ITEMS_PER_PAGE;
 		auto offset = lastIndex % NUM_ITEMS_PER_PAGE;
 
 		auto &pageRef = _getPageForWrite(pageIdx);
+		--_numItems;
 		return pageRef->slots[offset].relocate();
-
 		// ! Does not free pages
 	}
 

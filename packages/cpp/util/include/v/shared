@@ -3,7 +3,6 @@
 #include "v/empty"
 #include "v/object"
 #include "v/option/custom-pool"
-#include "v/option/input-options"
 #include "v/pool"
 #include "v/singleton"
 
@@ -69,13 +68,16 @@ template <class CanonicalItem, bool CUSTOM_POOL> struct ControlBlock {
 namespace VOLTISO_NAMESPACE::shared {
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public Object<typename Options::template WithDefault<
-                 option::TRIVIALLY_RELOCATABLE<true>,
-                 option::CustomTemplate<GetCustom>>> {
+class Custom
+    : public Object<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+        option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
-	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+	  option::InputOptions<Options>>>;
 
-	using Shared = GetCustom<Options>; // final self
+	// final self - named it `Shared` for better editor support
+	using Shared = GetCustom<Options>;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -165,37 +167,45 @@ public:
 		}
 	}
 
-	// ! no assignment - Shared is reference-like
-	// Shared &operator=(const Self &other) {
-	//   DCHECK_NE(this->_controlBlock,
-	//             other._controlBlock); // self-assignment forbidden
-	//   // if (this->_controlBlock == other._controlBlock) [[unlikely]]
-	//   //   return *this;
+	// ! no assignment? - Shared is reference-like
+	// auto& operator=(const Custom &other) = delete;
+	Shared &operator=(const Custom &other) {
+		NE(
+		  this->_controlBlock,
+		  other._controlBlock); // self-assignment forbidden for now
+		// if (this->_controlBlock == other._controlBlock) [[unlikely]]
+		//   return *this;
 
-	//   if (this->_controlBlock) [[likely]] {
-	//     this->_controlBlock->dereference();
-	//   }
-	//   this->_controlBlock = other._controlBlock;
-	//   if (other._controlBlock) [[likely]]
-	//     ++other._controlBlock->numReferences;
-	//   return *this;
-	// }
+		CHECK(this->_controlBlock); // reference-like, must be valid
+		// if (this->_controlBlock) [[likely]] {
+		this->_controlBlock->dereference();
+		// }
+
+		CHECK(other._controlBlock); // reference-like, must be valid
+		this->_controlBlock = other._controlBlock;
+		// if (other._controlBlock) [[likely]] {
+		++other._controlBlock->numReferences;
+		// }
+		return Base::self();
+	}
 
 	Custom(Custom &&other) noexcept : _controlBlock(other._controlBlock) {
 		other._controlBlock = handle::INVALID;
 	}
 
-	// ! no assignment - Shared is reference-like
-	// Shared &operator=(Self &&other) noexcept {
-	//   this->_controlBlock->dereference();
-	//   this->_controlBlock = other._controlBlock;
-	//   other._controlBlock = Pool::Handle::INVALID;
-	//   return *this;
-	// }
-
-	Custom &operator=(const Custom &other) = delete;
+	// ! no assignment? - Shared is reference-like
+	// Custom &operator=(const Custom &other) = delete;
+	Shared &operator=(Custom &&other) noexcept {
+		this->_controlBlock->dereference();
+		this->_controlBlock = other._controlBlock;
+		other._controlBlock = handle::INVALID;
+		return Base::self();
+	}
 
 public:
+	// ! Hmm... maybe use `.target() = ...` instead? So that it's easy to rebind
+	// shared refs
+
 	// assign to underlying value
 	template <class OtherItem>
 	  requires(
@@ -206,18 +216,16 @@ public:
 	    }) ||
 	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
 	Shared &operator=(OtherItem &&other) {
-		item() = std::forward<OtherItem>(other);
-		return static_cast<Shared &>(*this);
+		target() = std::forward<OtherItem>(other);
+		return Base::self();
 	}
 
 public:
-	Item &item() const { return _controlBlock->item; }
-	Item &operator*() const { return item(); }
+	Item &target() const { return _controlBlock->item; }
+	Item &operator*() const { return target(); }
 	Item *operator->() const { return &**this; }
 	operator Item &() const { return **this; }
-	operator Item &&() const { return (Item &&)**this; }
-
-	//
+	operator Item &&() const { return (Item &&)target(); }
 
 	// non-const -> const
 	operator Custom<
@@ -271,6 +279,11 @@ public:
 		using NewOptions =
 		  typename Options::template With<option::Item<const Item>>;
 		return reinterpret_cast<const GetCustom<NewOptions> &>(*this);
+	}
+
+public:
+	[[nodiscard]] Size numReferences() const noexcept {
+		return _controlBlock->numReferences;
 	}
 
 public:
