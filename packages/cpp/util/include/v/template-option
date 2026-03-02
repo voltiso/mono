@@ -16,13 +16,8 @@ namespace VOLTISO_NAMESPACE {
 template <
   template <class...> class TTemplate, template <class...> class TDefault>
 struct TemplateOption : Option {
-	template <class... Ts>
-	// requires concepts::Options<Options>
-	using Template = TTemplate<Ts...>;
-
-	template <class... Ts>
-	// requires concepts::Options<Options>
-	using Default = TDefault<Ts...>;
+	template <class... Ts> using Template = TTemplate<Ts...>;
+	template <class... Ts> using Default = TDefault<Ts...>;
 };
 
 // template<class T>

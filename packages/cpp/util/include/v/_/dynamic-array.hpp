@@ -471,7 +471,7 @@ public:
 		auto numNewItems = get::extent(other);
 		self.setNumSlotsAtLeast(self._numItems + numNewItems);
 		for (auto &item : other) {
-			self.push(item);
+			self.pushUnchecked(item); // TODO: no test coverage?
 		}
 		return std::forward<decltype(self)>(self);
 	}
@@ -772,6 +772,7 @@ public:
 	  requires(IN_PLACE_ONLY == 0)
 	{
 		if constexpr (requires { this->_numSlots; }) {
+			LE(_numItems, this->_numSlots);
 			if (this->_numItems == this->_numSlots) [[unlikely]] {
 				this->grow();
 			}
@@ -794,22 +795,46 @@ public:
 		this->setNumSlots(newNumSlots);
 	}
 
-	void setNumSlotsAtLeast(Size minNumSlots)
-	  requires(IN_PLACE_ONLY == 0)
-	{
-		static_assert(IN_PLACE_ONLY == 0);
-		// ! SLOW
-		// TODO: don't loop, do it one-shot
-		while (this->_numSlots < minNumSlots) [[unlikely]] {
-			grow();
+	void maybeShrink() {
+		auto maxNumSlots = this->_numItems << 1;
+		if (this->_numSlots > maxNumSlots) [[unlikely]] {
+			auto newNumSlots = (this->_numItems + maxNumSlots) >> 1;
+			this->setNumSlots(newNumSlots);
 		}
 	}
 
+	void setNumSlotsAtLeast(Size minNumSlots)
+	  requires(IN_PLACE_ONLY == 0)
+	{
+		if (this->_numSlots >= minNumSlots) {
+			return;
+		}
+
+		using U = std::make_unsigned_t<Size>;
+
+		if (this->_numSlots == 0) [[unlikely]] {
+			auto newNumSlots = (Size)std::bit_ceil((U)minNumSlots);
+			GT(newNumSlots, this->_numSlots);
+			this->setNumSlots(newNumSlots);
+			return;
+		}
+
+		// ceil(minNumSlots / _numSlots)
+		const auto ratio = (minNumSlots + this->_numSlots - 1) / this->_numSlots;
+
+		const auto mul = (Size)std::bit_ceil(static_cast<U>(ratio));
+		auto newNumSlots = this->_numSlots * mul;
+		GT(newNumSlots, this->_numSlots);
+		this->setNumSlots(newNumSlots);
+	}
+
+private:
 	// cannot perfect-forward
-	template <class... Args> void setNumItems(Size newNumItems, Args &&...args) {
+	template <bool SHRINK_ONLY, class... Args>
+	void _setNumItems(Size newNumItems, Args &&...args) {
 		if (newNumItems < _numItems) {
 			auto memory = slots();
-			for (Size i = _numItems; i < newNumItems; ++i) {
+			for (Size i = newNumItems; i < _numItems; ++i) {
 				memory[i].storedItem().~Item();
 			}
 		} else if (newNumItems > _numItems) [[likely]] {
@@ -822,21 +847,38 @@ public:
 				LE(newNumItems, this->_numSlots);
 			}
 			auto memory = slots();
-			if constexpr (
-			  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
-				// noop ! memory not zeroed!
-			} else if constexpr (std::is_copy_constructible_v<Item>) {
-				auto item = Item{std::forward<Args>(args)...};
-				for (Size i = _numItems; i < newNumItems; ++i) {
-					new (memory + i) Item(item);
-				}
-			} else {
-				for (Size i = _numItems; i < newNumItems; ++i) {
-					new (memory + i) Item(args...); // no std::forward (values reused)
+			if constexpr (!SHRINK_ONLY) {
+				if constexpr (
+				  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
+					// noop ! memory not zeroed!
+				} else if constexpr (std::is_copy_constructible_v<Item>) {
+					auto item = Item{std::forward<Args>(args)...};
+					for (Size i = _numItems; i < newNumItems; ++i) {
+						new (memory + i) Item(item);
+					}
+				} else {
+					for (Size i = _numItems; i < newNumItems; ++i) {
+						new (memory + i) Item(args...); // no std::forward (values reused)
+					}
 				}
 			}
 		}
 		this->_numItems = newNumItems;
+	}
+
+public:
+	/** `args` are passed as lvalue references for multiple constructor calls. If
+	 * constructor is not possible to call with `args`, use `setLessNumItems`
+	 * instead if you only need to always set less number of items. */
+	template <class... Args> void setNumItems(Size newNumItems, Args &&...args) {
+		_setNumItems<false>(newNumItems, std::forward<Args>(args)...);
+	}
+
+	/** Same as `setNumItems`, but shrink-only. (compiles if constructor is not
+	 * available) */
+	void setLessNumItems(Size newNumItems) {
+		LE(newNumItems, this->_numItems);
+		_setNumItems<true>(newNumItems);
 	}
 
 	template <Likelihood LIKELIHOOD = Likelihood::UNKNOWN> void clear() {

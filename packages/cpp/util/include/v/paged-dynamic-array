@@ -1,0 +1,300 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/concepts/options"
+#include "v/dynamic-array"
+#include "v/handle"
+#include "v/index"
+#include "v/object"
+#include "v/option/copy-on-write"
+#include "v/option/item"
+#include "v/option/page-size"
+#include "v/option/pool"
+#include "v/option/tensor"
+#include "v/options"
+#include "v/owned"
+#include "v/shared"
+
+#include <v/ON>
+
+// ========================================================================
+// FORWARD DECLARATIONS
+// ========================================================================
+namespace VOLTISO_NAMESPACE::pagedDynamicArray {
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+} // namespace VOLTISO_NAMESPACE::pagedDynamicArray
+
+namespace VOLTISO_NAMESPACE {
+template <class Item> class PagedDynamicArray;
+} // namespace VOLTISO_NAMESPACE
+
+// ========================================================================
+// INTERNAL
+// ========================================================================
+namespace VOLTISO_NAMESPACE::pagedDynamicArray::_ {
+// !
+} // namespace VOLTISO_NAMESPACE::pagedDynamicArray::_
+
+// ========================================================================
+// SPECIALIZATIONS
+// ========================================================================
+namespace VOLTISO_NAMESPACE::pagedDynamicArray {
+template <class... Args> using GetCustom = Specializations<Args...>::Result;
+
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations {
+	using Result = Custom<Options>;
+};
+
+template <class Item> struct Specializations<Options<option::Item<Item>>> {
+	using Result = PagedDynamicArray<Item>;
+};
+} // namespace VOLTISO_NAMESPACE::pagedDynamicArray
+
+// ========================================================================
+// THE CORE IMPLEMENTATION
+// ========================================================================
+namespace VOLTISO_NAMESPACE::pagedDynamicArray {
+
+template <class Options>
+  requires concepts::Options<Options>
+class Custom : public Object<typename Options::template WithDefault<
+                 option::CustomTemplate<pagedDynamicArray::GetCustom>,
+                 option::InputOptions<Options>>> {
+private:
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<pagedDynamicArray::GetCustom>,
+	  option::InputOptions<Options>>>;
+
+public:
+	using Item = Options::template Get<option::Item>;
+	using Pool = Options::template Get<option::Pool>;
+	static constexpr Size PAGE_SIZE = Options::template GET<option::PAGE_SIZE>;
+	static constexpr bool COPY_ON_WRITE =
+	  Options::template GET<option::COPY_ON_WRITE>;
+
+	// static constexpr Size PAGE_HEADER_SIZE = ;
+
+	static constexpr Size PAGE_HEADER_SIZE =
+	  COPY_ON_WRITE ? sizeof(Shared<int>::ControlBlock) - sizeof(int) : 0;
+
+	static_assert(PAGE_SIZE > 0, "PAGE_SIZE must be greater than 0");
+
+	static_assert(
+	  std::has_single_bit(static_cast<uint64_t>(PAGE_SIZE)),
+	  "PAGE_SIZE must be a power of 2");
+
+	static constexpr Size NUM_ITEMS_PER_PAGE =
+	  (PAGE_SIZE - PAGE_HEADER_SIZE) / sizeof(Item);
+	static_assert(
+	  NUM_ITEMS_PER_PAGE > 0, "NUM_ITEMS_PER_PAGE must be greater than 0");
+
+	using Tensor = Options::template Get<option::Tensor>::template Tensor<
+	  Storage<Item>, NUM_ITEMS_PER_PAGE>;
+
+public:
+	using Handle =
+	  Handle::WithBrand<GetCustom<Options>>::template WithKind<Index>;
+
+private:
+	struct PageBody {
+		Tensor slots;
+
+		PageBody() = default;
+
+		// page does not know which elements are alive
+		PageBody(const PageBody &) = delete;
+		PageBody &operator=(const PageBody &) = delete;
+	};
+	// using Shared = Shared<PageBody>::WithCustomPool;
+	using Shared = Shared<PageBody>;
+	using Owned = Owned<PageBody>;
+
+	using Page =
+	  std::conditional_t<COPY_ON_WRITE, typename Shared::ControlBlock, PageBody>;
+	static_assert(sizeof(Page) == PAGE_SIZE);
+
+	using Reference = std::conditional_t<COPY_ON_WRITE, Shared, Owned>;
+
+	using Pages = DynamicArray<Reference>;
+
+	// All members here
+private:
+	Size _numItems = 0;
+	Pages _pages;
+
+	// ! we're using static shared pool - easier to support snapshotting
+	// ! (copy-on-write)
+	// Pool _pool;
+
+private:
+	// Copy-On-Write helper
+	VOLTISO_FORCE_INLINE auto &_getPageForWrite(Index pageIdx) {
+		auto &pageRef = _pages[pageIdx];
+		if constexpr (COPY_ON_WRITE) {
+			if (pageRef.numReferences > 1) [[unlikely]] {
+				pageRef = Shared::create(pageRef);
+			}
+		}
+		return pageRef;
+	}
+
+public:
+	~Custom() noexcept(std::is_nothrow_destructible_v<Item>) {
+		for (Index i = 0; i < _pages.numItems() - 1; ++i) {
+			for (auto &slot : _pages[i]->slots) {
+				slot.destroy();
+			}
+		}
+		// likely/unlikely? depends. let compiler inline and decide
+		if (_pages.numItems() > 0) {
+			auto &lastPage = _pages.last();
+			auto numItemsInLastPage =
+			  _numItems - (_pages.numItems() - 1) * NUM_ITEMS_PER_PAGE;
+			for (Index i = 0; i < numItemsInLastPage; ++i) {
+				lastPage->slots[i].destroy();
+			}
+		}
+	}
+
+public:
+	Custom() noexcept = default;
+
+	/** Implicit copy disabled. Use `.copy()` instead. */
+	Custom(const Custom &) = delete;
+
+	/** Explicit copy (this is not a move) */
+	Custom(const Custom &&other)
+	  requires(COPY_ON_WRITE)
+	    : Base(other), _numItems(other._numItems), _pages(other._pages.copy()) {}
+
+	/** Explicit copy (this is not a move) */
+	Custom(const Custom &&other)
+	  requires(!COPY_ON_WRITE)
+	    : Base(other), _numItems(other._numItems) {
+		auto numPages = other._pages.numItems();
+		_pages.setNumSlotsAtLeast(numPages);
+		for (Size i = 0; i < numPages; ++i) {
+			_pages.pushUnchecked(Reference::create());
+			_pages.last()->slots = other._pages[i]->slots.copy();
+		}
+	}
+
+	// auto copy() requires (!COPY_ON_WRITE) = delete;
+
+	// ========================================================================
+	// ACCESSORS (The Hot Path)
+	// ========================================================================
+
+	[[nodiscard]] INLINE constexpr Size numItems() const noexcept {
+		return _numItems;
+	}
+
+	[[nodiscard]] INLINE constexpr Size numPages() const noexcept {
+		return _pages.numItems();
+	}
+
+	/** Only const operator[] to avoid CoW. If you need to write, use operator()
+	 * to get an Accessor. */
+	INLINE const Item &operator[](const Index &i) const {
+		GE(i, 0);
+		LT(i, _numItems);
+		Index pageIdx = i / NUM_ITEMS_PER_PAGE;
+		Index offset = i % NUM_ITEMS_PER_PAGE;
+		return _pages[pageIdx]->slots[offset].storedItem();
+	}
+
+	// ========================================================================
+	// MODIFIERS
+	// ========================================================================
+
+	Handle pushUnchecked(Item &&item) { return push<>(std::move(item)); }
+	Handle pushUnchecked(const Item &item) { return push<>(item); }
+
+	/** ⚠️ Unchecked - does not grow the array */
+	template <class... Args> Handle pushUnchecked(Args &&...args) {
+		auto index = _numItems;
+		auto pageIdx = index / NUM_ITEMS_PER_PAGE;
+		auto offset = index % NUM_ITEMS_PER_PAGE;
+
+		LT(pageIdx, _pages.numItems());
+
+		auto &pageRef = _getPageForWrite(pageIdx);
+
+		// Construct item in place
+		new (&pageRef->slots[offset]) Item(std::forward<Args>(args)...);
+
+		++_numItems;
+		return Handle{index};
+	}
+
+	template <class... Args> Handle maybeGrowAndPush(Args &&...args) {
+		LE(_numItems, _pages.numItems() * NUM_ITEMS_PER_PAGE);
+		if (_numItems == _pages.numItems() * NUM_ITEMS_PER_PAGE) [[unlikely]] {
+			_pages.maybeGrowAndPush(Reference::create());
+		}
+		return pushUnchecked<>(std::forward<Args>(args)...);
+	}
+
+	Item pop() noexcept {
+		GT(_numItems, 0);
+		--_numItems;
+		auto lastIndex = _numItems;
+
+		auto pageIdx = lastIndex / NUM_ITEMS_PER_PAGE;
+		auto offset = lastIndex % NUM_ITEMS_PER_PAGE;
+
+		auto &pageRef = _getPageForWrite(pageIdx);
+		return pageRef->slots[offset].relocate();
+
+		// ! Does not free pages
+	}
+
+	void maybeShrink() {
+		auto numUsedPages = _numItems / NUM_ITEMS_PER_PAGE;
+		_pages.setLessNumItems(numUsedPages);
+		_pages.maybeShrink();
+	}
+
+	// Item popAndMaybeShrink() {
+	// 	auto item = pop();
+	// 	maybeShrink();
+	// 	return item; // hoping for NRVO
+	// }
+
+public:
+	template <class... MoreOptions>
+	using With = Base::template With<MoreOptions...>;
+
+	template <Size NEW_PAGE_SIZE>
+	using WithPageSize = With<option::PAGE_SIZE<NEW_PAGE_SIZE>>;
+
+	using WithCopyOnWrite = With<option::COPY_ON_WRITE<true>>;
+}; // class Custom
+
+} // namespace VOLTISO_NAMESPACE::pagedDynamicArray
+
+// ========================================================================
+// PUBLIC API WRAPPER
+// ========================================================================
+namespace VOLTISO_NAMESPACE {
+
+template <class Item>
+class PagedDynamicArray
+    : public pagedDynamicArray::Custom<Options<option::Item<Item>>> {
+	using Base = pagedDynamicArray::Custom<Options<option::Item<Item>>>;
+
+public:
+	using Base::Base;
+}; // class PagedDynamicArray
+
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

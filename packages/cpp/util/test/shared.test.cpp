@@ -22,6 +22,8 @@ TEST(Shared, trivial) {
 	// Owned<int> owned =
 	//     Owned(123); // explicit! (memory allocation), uses deduction guide
 
+	EXPECT_EQ(sizeof(shared), sizeof(void *));
+
 	EXPECT_EQ(
 	  sizeof(shared),
 	  sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
@@ -183,12 +185,31 @@ TEST(Shared, moveSemantics) {
 	// ! should be illegal (Shared is reference-like, can't assign to it)
 	// ! ...and we want to avoid ambiguity
 	// ! if user wants to move-out pointed value instead, it should be explicit
-	// shared2 = shared;            // !!!
-	// shared2 = std::move(shared); // !!!
+	// shared2 = shared; // !!!
+	static_assert(!std::is_assignable_v<Shared<int> &, Shared<int>>);
+	static_assert(std::is_assignable_v<Shared<int> &, int>);
+	// shared2 = std::move(shared); // !!! legal or not?
 }
 
 TEST(Shared, illegal) {
 	// ! should be illegal, Shared is reference-style, always present
 	// !  (unless moved-out)
 	// Shared<int> shared; // !!!
+}
+
+TEST(Shared, customPool) {
+	static_assert(
+	  sizeof(Shared<int>::ControlBlock) ==
+	  sizeof(void *) + sizeof(Pool<int>::Handle));
+
+	// with custom pool, control block is bigger
+	static_assert(
+	  sizeof(Shared<int>::WithCustomPool::ControlBlock) ==
+	  sizeof(void *) + sizeof(Pool<int>::Handle) + sizeof(void *));
+
+	using Shared = Shared<int>::WithCustomPool;
+	Pool<Shared::ControlBlock> pool;
+
+	auto shared = Shared::create(pool, 123);
+	EXPECT_EQ(shared, 123);
 }

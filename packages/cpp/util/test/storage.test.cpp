@@ -29,7 +29,7 @@ TEST(Storage, doesNotInitialize) {
 
 	// !
 	static_assert(std::is_trivially_copyable_v<S>);
-	// static_assert(!std::is_trivially_copyable_v<Storage<S>>); // !!!!!!!
+	static_assert(std::is_trivially_copyable_v<Storage<S>>);
 
 	static_assert(std::is_trivially_move_assignable_v<S>);
 	static_assert(!std::is_trivially_move_assignable_v<Storage<S>>);
@@ -42,6 +42,16 @@ TEST(Storage, doesNotInitialize) {
 
 	static_assert(std::is_trivially_copy_assignable_v<S>);
 	static_assert(!std::is_trivially_copy_assignable_v<Storage<S>>);
+
+	// Item is trivially copyable - copy only via explicit-copy
+	static_assert(!std::is_constructible_v<Storage<S>, Storage<S>>);
+	static_assert(!std::is_constructible_v<Storage<S>, Storage<S> &&>);
+	static_assert(std::is_constructible_v<Storage<S>, const Storage<S> &&>);
+
+	// Item is trivially copyable - assign only via explicit-copy
+	static_assert(!std::is_assignable_v<Storage<S> &, Storage<S>>);
+	static_assert(!std::is_assignable_v<Storage<S> &, Storage<S> &&>);
+	static_assert(std::is_assignable_v<Storage<S> &, const Storage<S> &&>);
 
 	static_assert(sizeof(Storage<int>) == sizeof(int));
 	struct Test {
@@ -77,6 +87,16 @@ TEST(Storage, preventMemcpy) {
 
 	static_assert(std::is_trivially_copy_assignable_v<S>);
 	static_assert(!std::is_trivially_copy_assignable_v<Storage<S>>);
+
+	// Item not trivially copyable - no copy allowed
+	static_assert(!std::is_constructible_v<Storage<S>, Storage<S>>);
+	static_assert(!std::is_constructible_v<Storage<S>, Storage<S> &&>);
+	static_assert(!std::is_constructible_v<Storage<S>, const Storage<S> &&>);
+
+	// Item not trivially copyable - no assign allowed
+	static_assert(!std::is_assignable_v<Storage<S> &, Storage<S>>);
+	static_assert(!std::is_assignable_v<Storage<S> &, Storage<S> &&>);
+	static_assert(!std::is_assignable_v<Storage<S> &, const Storage<S> &&>);
 }
 
 TEST(Storage, zeroInitialize) {

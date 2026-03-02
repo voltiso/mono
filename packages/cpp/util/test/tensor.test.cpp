@@ -179,6 +179,16 @@ TEST(Tensor, noImplicitCopy) {
 	EXPECT_EQ(newTensor[0], tensor[0]);
 	EXPECT_EQ(newTensor[1], tensor[1]);
 	EXPECT_EQ(newTensor[2], tensor[2]);
+
+	// assignment operator
+	Tensor<int, 3> anotherTensor;
+	static_assert(!std::is_assignable_v<Tensor<int, 3> &, Tensor<int, 3>>);
+	// anotherTensor = tensor;
+	anotherTensor = tensor.copy();
+	EXPECT_EQ(anotherTensor, tensor);
+	EXPECT_EQ(anotherTensor[0], tensor[0]);
+	EXPECT_EQ(anotherTensor[1], tensor[1]);
+	EXPECT_EQ(anotherTensor[2], tensor[2]);
 }
 
 TEST(Tensor, md) {

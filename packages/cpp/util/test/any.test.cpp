@@ -52,8 +52,10 @@ TEST(Any, shared_to_void) {
 
 	{
 		std::vector<Any<>> vec;
+		// vec.reserve(2);
 		// std::vector<Owned<>> vec;
 		vec.push_back(Shared<TestObject>::create());
+		EXPECT_EQ(TestObject::numDestructorCalls, 0);
 		vec.emplace_back(Shared<TestObject>::create());
 		EXPECT_EQ(TestObject::numDestructorCalls, 0);
 	}

@@ -1,13 +1,13 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/copy.forward.hpp"
 #include "v/_/object.forward.hpp" // IWYU pragma: keep
 
 #include "v/option/custom-template"
 #include "v/option/input-options"
 #include "v/option/self"
 #include "v/option/trivially-relocatable"
+#include "v/options"
 
 #include <memory>
 #include <type_traits>
@@ -18,7 +18,7 @@ namespace VOLTISO_NAMESPACE {
 //  - We want `Object` default-constructible (can't test in
 //  constructor/destructor)
 //  - Can't test in `Object` body, because `Final` may be incomplete
-template <class TOptions>
+template <class TOptions = Options<>>
 // requires concepts::Options<Options> && std::is_final_v<Final>
 class Object {
 public:
@@ -129,40 +129,80 @@ public:
 	}
 
 public:
-	// Your code must respect constness of the rvalue reference!
+	// * We use our magic explicit copy semantics - constructing from `const
+	// Self&& other` is a copy.
+	// * Your code must respect constness of the rvalue reference!
 	// it's not a temporary just because it's rvalue!
 	template <class Self>
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	copy(this Self &self) noexcept {
-		// requires {
-		// 	Self(std::declval<const Self &&>());
-		// 	std::declval<Self &>() = std::declval<const Self &&>();
-		// }
-		if constexpr (std::is_constructible_v<Self, const Self &&>
-		              // && std::is_assignable_v<std::remove_const_t<Self> &, const
-		              // Self &&>
-		) {
-			using NewSelf = const Self &&;
-			return static_cast<NewSelf>(self);
-		} else {
-			// since trivially copyable types are unable to support the const-rvalue
-			// syntax, we use `Copy` wrapper instead
-			return Copy<Self>{self};
-		}
+	copy(this Self &self) noexcept
+	// requires(std::is_constructible_v<Self, const Self &&>)
+	{
+		return static_cast<const Self &&>(self);
 	}
 
-	// public:
-	// // our explicit copy mechanism (see `.copy()`)
-	// Object(const Self &&) {}
-
-	// VOLTISO_FORCE_INLINE consteval Object(
-	//   tag::ExplicitCopyConsteval, const Object &other) noexcept = default;
-
-	// VOLTISO_FORCE_INLINE constexpr Object(
-	//   tag::ExplicitCopy, const Object &other) noexcept = default;
+	// // If object does not support `const Self &&` construction, maybe it
+	// supports
+	// // `Copy<Self>`.
+	// // since trivially copyable types are unable to support the const-rvalue
+	// // syntax, we use `Copy` wrapper instead
+	// template <class Self>
+	// [[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto
+	// copy(this Self &self) noexcept
+	//   requires(std::is_constructible_v<Self, const Copy<Self> &>)
+	// {
+	// 	return Copy<Self>{self};
+	// }
 
 public:
 	Object() = default;  // must be trivially default constructible
 	~Object() = default; // must be trivially destructible
 };
 } // namespace VOLTISO_NAMESPACE
+
+// ! BELOW: experiments how to make derived class explicit-copy only, while
+// keeping it trivially-copyable
+
+// struct S {
+// 	int a;
+
+// 	S() = default;
+// 	S(const S &) = delete;
+
+// 	S(S &&) = delete;
+// 	// S(S &&) {}
+
+// 	template <class Source>
+// 	  requires std::is_same_v<Source, S>
+// 	S(const Source &&) {}
+
+// 	// template <class Source, std::enable_if_t<std::is_same_v<Source, S>, int>
+// =
+// 	// 0> S(const Source &&) {}
+// };
+
+// struct D : S {
+// 	// using S::S;
+// 	D(const D &) = delete;
+// 	D(D &&) = delete;
+
+// 	template <class Source>
+// 	  requires std::is_same_v<Source, D>
+// 	D(const Source &&other) : S(static_cast<const S &&>(other)) {}
+
+// 	// template <class... Args> D(Args &&...args) :
+// S(std::forward<Args>(args)...)
+// 	// {}
+// };
+
+// static_assert(std::is_trivially_copyable_v<S>);
+// static_assert(std::is_trivially_copyable_v<D>);
+
+// static_assert(!std::is_constructible_v<S, S>);
+// static_assert(!std::is_constructible_v<D, D>);
+
+// static_assert(!std::is_constructible_v<S, S &>);
+// static_assert(!std::is_constructible_v<D, D &>);
+
+// static_assert(std::is_constructible_v<S, const S &&>);
+// static_assert(std::is_constructible_v<D, const D &&>);

@@ -145,16 +145,32 @@ public:
 	constexpr Custom(std::initializer_list<std::byte> bytes) noexcept
 	    : _::DataMembers<Options>(bytes) {}
 
+	// allow explicit-copy for trivially copyable Items
 	Custom(const Custom &) = delete;
+	Custom(Custom &&) = delete;
+	template <class Source>
+	  requires std::is_base_of_v<Custom, Source>
+	Custom(const Source &&other)
+	  requires(std::is_trivially_copyable_v<Item>)
+	{
+		static_assert(sizeof(Custom) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(Custom));
+	}
 
-	// // we do not know if object is constructed
-	// consteval Storage(const Storage &other) { // = delete;
-	// 	// ! Note: we can't just `delete`, because then compiler may use memcpy.
-	// 	// `std::is_trivially_copyable` can be true with deleted copy constructors
-	// 	// static_assert(false, "Cannot implicitly copy Storage<T>");
-	// 	throw "Cannot implicitly copy Storage<T>";
-	// }
-	Custom &operator=(const Custom &other) = delete;
+	// We allow `operator=` for trivially copyable items
+	// template so storage itself stays trivially copyable
+	// But only explicit-copy. (see `Object.copy()`)
+	Custom &operator=(const Custom &) = delete;
+	Custom &operator=(Custom &&) = delete;
+	template <class TOther>
+	  requires(std::is_base_of_v<Custom, TOther>)
+	Custom &operator=(const TOther &&other)
+	  requires(std::is_trivially_copyable_v<Item>)
+	{
+		static_assert(sizeof(Custom) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(Custom));
+		return Base::self();
+	}
 
 	// ! (1) if there is TObject::relocateFrom(Storage) - use it
 	// pre-condition: this object constructed
@@ -266,6 +282,21 @@ namespace VOLTISO_NAMESPACE {
 template <class Item>
 class Storage : public storage::Custom<Options<option::Item<Item>>> {
 	using Base = storage::Custom<Options<option::Item<Item>>>;
-	// using Base::Base; // default constructible!
+	using Base::Base;
+
+public:
+	// forwards for explicit-copy semantics
+	Storage(Storage &&) = delete;
+	template <class Source>
+	Storage(const Source &&other)
+	  requires requires { Base(static_cast<const Source &&>(other)); }
+	    : Base(static_cast<const Source &&>(other)) {}
+	Storage &operator=(Storage &&) = delete;
+	template <class Arg>
+	auto &operator=(const Arg &&arg)
+	  requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }
+	{
+		return Base::operator=(static_cast<const Arg &&>(arg));
+	}
 };
 } // namespace VOLTISO_NAMESPACE

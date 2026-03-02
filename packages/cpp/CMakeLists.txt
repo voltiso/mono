@@ -112,6 +112,7 @@ add_executable(
   util/test/mutex.test.cpp
 	util/test/singleton.test.cpp
 	util/test/soa.test.cpp
+	util/test/paged-dynamic-array.test.cpp
 
   # util/test/state.test.cpp # TODO
 

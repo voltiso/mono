@@ -211,3 +211,43 @@ TEST(DynamicArray, fromStdVector) {
 	EXPECT_EQ(a[1], 2);
 	EXPECT_EQ(a[2], 3);
 }
+
+// Test if destructors are called on `setNumItems`
+
+namespace {
+struct ShrinkProbe {
+	static int numDestructorCalls;
+	int value;
+
+	ShrinkProbe(int value) : value(value) {}
+	~ShrinkProbe() { ++numDestructorCalls; }
+
+	ShrinkProbe(const ShrinkProbe &) = delete;
+	ShrinkProbe &operator=(const ShrinkProbe &) = delete;
+};
+
+int ShrinkProbe::numDestructorCalls = 0;
+} // namespace
+
+template <>
+constexpr auto VOLTISO_NAMESPACE::is::TriviallyRelocatable<ShrinkProbe> = true;
+
+// Test if destructors are called on `setNumItems`
+TEST(DynamicArray, setLessNumItems_destroysShrunkTail) {
+	ShrinkProbe::numDestructorCalls = 0;
+
+	DynamicArray<ShrinkProbe> array;
+	array.maybeGrowAndPush(1);
+	array.maybeGrowAndPush(2);
+
+	EXPECT_EQ(array.numItems(), 2);
+	EXPECT_EQ(ShrinkProbe::numDestructorCalls, 0);
+
+	array.setLessNumItems(1);
+	EXPECT_EQ(array.numItems(), 1);
+	EXPECT_EQ(ShrinkProbe::numDestructorCalls, 1);
+
+	array.setLessNumItems(0);
+	EXPECT_EQ(array.numItems(), 0);
+	EXPECT_EQ(ShrinkProbe::numDestructorCalls, 2);
+}

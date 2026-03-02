@@ -26,6 +26,7 @@
 #include "v/value-pack"
 #include "v/view"
 
+#include <cstring>
 #include <type_traits>
 
 #include <v/ON>
@@ -171,8 +172,24 @@ public:
 	// `other` is the result of `.copy()` - user wants linear-time copy
 	template <class Other>
 	  requires(Other::EXTENTS == EXTENTS)
-	constexpr Custom(const Copy<Other> &other) {
-		std::copy(other->items, other->items + Other::NUM_ITEMS, items);
+	constexpr Custom(const Other &&other) {
+		if constexpr (std::is_trivially_copyable_v<Item>) {
+			std::memcpy(this, &other, sizeof(Custom));
+		} else {
+			std::copy(other.items, other.items + Other::NUM_ITEMS, items);
+		}
+	}
+
+	// `other` is the result of `.copy()` - user wants linear-time copy
+	template <class Other>
+	  requires(Other::EXTENTS == EXTENTS)
+	constexpr Self &operator=(const Other &&other) {
+		if constexpr (std::is_trivially_copyable_v<Item>) {
+			std::memcpy(this, &other, sizeof(Custom));
+		} else {
+			std::copy(other.items, other.items + Other::NUM_ITEMS, items);
+		}
+		return Base::self();
 	}
 
 	INLINE constexpr Custom(std::initializer_list<Item> list) noexcept {
@@ -447,6 +464,18 @@ class Tensor : public tensor::Custom<Options<
 	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
 	  option::Self<Tensor<Item, ES...>>>>;
 	using Base::Base;
+
+public:
+	// ! inherit `const Other&&` constructor
+	// hacky to preserve trivialy-copyability, while forbidding implicit copy/move
+	Tensor(Tensor &&) = delete;
+	template <class Source>
+	  requires std::is_same_v<Source, Tensor>
+	Tensor(const Source &&other) : Base(static_cast<const Source &&>(other)) {}
+	Tensor &operator=(Tensor &&) = delete;
+	template <class Arg> auto &operator=(const Arg &&arg) {
+		return Base::operator=(static_cast<const Arg &&>(arg));
+	}
 };
 
 // Deduction for general lists like {1, 2, 3}
@@ -505,5 +534,10 @@ struct tuple_size<T> : std::integral_constant<V::Size, T::EXTENT> {};
 } // namespace std
 
 // !
+
+// static_assert(std::is_trivially_copyable_v<v::Tensor<int, 3>>);
+
+// static_assert(
+//   std::is_constructible_v<v::Tensor<int, 3>, const v::Tensor<int, 3> &&>);
 
 #include <v/OFF>

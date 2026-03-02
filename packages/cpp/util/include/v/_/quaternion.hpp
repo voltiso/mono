@@ -21,6 +21,19 @@ class Quaternion : public tensor::Custom<Options<
 	using Base::Base;
 
 public:
+	// everything deriving from Tensor must explicitly inherit these for
+	// explicit-copy semantics
+	Quaternion(Quaternion &&) = delete;
+	template <class Source>
+	  requires std::is_same_v<Source, Quaternion>
+	Quaternion(const Source &&other)
+	    : Base(static_cast<const Source &&>(other)) {}
+	Quaternion &operator=(Quaternion &&) = delete;
+	template <class Arg> auto &operator=(const Arg &&arg) {
+		return Base::operator=(static_cast<const Arg &&>(arg));
+	}
+
+public:
 	constexpr auto w() const -> const Item & { return (*this)[0]; }
 	constexpr auto x() const -> const Item & { return (*this)[1]; }
 	constexpr auto y() const -> const Item & { return (*this)[2]; }

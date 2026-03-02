@@ -1,51 +1,150 @@
 #pragma once
 
+#include "v/empty"
+#include "v/object"
+#include "v/option/custom-pool"
+#include "v/option/input-options"
 #include "v/pool"
 #include "v/singleton"
 
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+template <class Item> class Shared;
+} // namespace VOLTISO_NAMESPACE
+
+namespace VOLTISO_NAMESPACE::shared {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations {
+	using Result = shared::Custom<Options>;
+};
+
+template <class Item> struct Specializations<Options<option::Item<Item>>> {
+	using Result = Shared<Item>;
+};
+
+template <class... Args> using GetCustom = Specializations<Args...>::Result;
+} // namespace VOLTISO_NAMESPACE::shared
+
 namespace VOLTISO_NAMESPACE::shared::_ {
-template <class Item> struct ControlBlock {
-	Item item;
+template <class CanonicalItem, bool CUSTOM_POOL> struct ControlBlock {
+	using Pool = Pool<ControlBlock>;
+
+	CanonicalItem item;
 	Size numReferences = 1;
-	// std::atomic<int> refCount = 1;
+
+	[[no_unique_address]] std::conditional_t<CUSTOM_POOL, Pool &, Empty> _pool;
 
 	template <class... Args>
+	  requires(!CUSTOM_POOL)
 	ControlBlock(Args &&...args) : item(std::forward<Args>(args)...) {}
+
+	template <class... Args>
+	  requires CUSTOM_POOL
+	ControlBlock(Pool &pool, Args &&...args)
+	    : item(std::forward<Args>(args)...), _pool(pool) {}
+
+	auto &pool() {
+		if constexpr (CUSTOM_POOL) {
+			return _pool;
+		} else {
+			return Singleton<Pool>::ThreadLocal::maybeInitialize();
+		}
+	}
+
 	void dereference() {
 		if (--numReferences == 0) [[unlikely]] {
-			using Pool = Pool<ControlBlock>;
 			using Handle = Pool::Handle;
-			Singleton<Pool>::ThreadLocal::maybeInitialize().erase(Handle(this));
+			pool().erase(Handle(this));
 		}
 	}
 };
 } // namespace VOLTISO_NAMESPACE::shared::_
 
-namespace VOLTISO_NAMESPACE {
-template <class Item> class Shared {
-	using Self = Shared;
+namespace VOLTISO_NAMESPACE::shared {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom : public Object<typename Options::template WithDefault<
+                 option::TRIVIALLY_RELOCATABLE<true>,
+                 option::CustomTemplate<GetCustom>>> {
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
+
+	using Shared = GetCustom<Options>; // final self
+
+public:
+	using Item = Options::template Get<option::Item>;
 	// static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
+
+	using ControlBlock =
+	  _::ControlBlock<Item, Options::template GET<option::CUSTOM_POOL>>;
 
 	static_assert(
 	  !std::is_reference_v<Item>, "you probably don't want Shared<Item&>");
 
 	using CanonicalItem = std::remove_cv_t<Item>;
-	using Pool = Pool<shared::_::ControlBlock<CanonicalItem>>;
+	using Pool = Pool<ControlBlock>;
+
+private:
+	Pool::Handle _controlBlock = Pool::Handle::INVALID;
+
+	static auto &_pool()
+	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Singleton<Pool>::ThreadLocal::maybeInitialize();
+	}
 
 public:
-	template <class... Args> static Self create(Args &&...args) {
-		return Self(pool().insert(std::forward<Args>(args)...), nullptr);
+	template <class... Args>
+	static Shared create(Args &&...args)
+	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(_pool().insert(std::forward<Args>(args)...), nullptr);
 	}
 
-	static Self create(const Item &item) {
-		return Self(pool().insert(item), nullptr);
+	template <class... Args>
+	static Shared create(Pool &pool, Args &&...args)
+	  requires(Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(pool.insert(pool, std::forward<Args>(args)...), nullptr);
 	}
 
-	static Self create(Item &&item) {
-		return Self(pool().insert(std::move(item)), nullptr);
+	//
+
+	static Shared create(const Item &item)
+	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(_pool().insert(item), nullptr);
 	}
 
-	~Shared() {
+	static Shared create(Pool &pool, const Item &item)
+	  requires(Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(pool.insert(pool, item), nullptr);
+	}
+
+	//
+
+	static Shared create(Item &&item)
+	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(_pool().insert(std::move(item)), nullptr);
+	}
+
+	static Shared create(Pool &pool, Item &&item)
+	  requires(Options::template GET<option::CUSTOM_POOL>)
+	{
+		return Shared(pool.insert(pool, std::move(item)), nullptr);
+	}
+
+	//
+
+	~Custom() {
 		if (this->_controlBlock) [[likely]] {
 			// std::cout << "erase" << std::endl;
 			this->_controlBlock->dereference();
@@ -54,13 +153,13 @@ public:
 
 private:
 	template <class Arg>
-	Shared(Arg &&arg, void *_unusedTag) : _controlBlock{std::forward<Arg>(arg)} {}
+	Custom(Arg &&arg, void *_unusedTag) : _controlBlock{std::forward<Arg>(arg)} {}
 
 public:
-	Shared() = delete;
+	Custom() = delete;
 
 public:
-	Shared(const Self &other) : _controlBlock(other._controlBlock) {
+	Custom(const Custom &other) : _controlBlock(other._controlBlock) {
 		if (other._controlBlock) [[likely]] {
 			++other._controlBlock->numReferences;
 		}
@@ -82,7 +181,7 @@ public:
 	//   return *this;
 	// }
 
-	Shared(Self &&other) noexcept : _controlBlock(other._controlBlock) {
+	Custom(Custom &&other) noexcept : _controlBlock(other._controlBlock) {
 		other._controlBlock = handle::INVALID;
 	}
 
@@ -93,6 +192,8 @@ public:
 	//   other._controlBlock = Pool::Handle::INVALID;
 	//   return *this;
 	// }
+
+	Custom &operator=(const Custom &other) = delete;
 
 public:
 	// assign to underlying value
@@ -106,7 +207,7 @@ public:
 	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
 	Shared &operator=(OtherItem &&other) {
 		item() = std::forward<OtherItem>(other);
-		return *this;
+		return static_cast<Shared &>(*this);
 	}
 
 public:
@@ -118,8 +219,12 @@ public:
 
 	//
 
-	operator Shared<const Item> &() {
-		return reinterpret_cast<Shared<const Item> &>(*this);
+	// non-const -> const
+	operator Custom<
+	  typename Options::template With<option::Item<const Item>>> &() {
+		using NewOptions =
+		  typename Options::template With<option::Item<const Item>>;
+		return reinterpret_cast<Custom<NewOptions> &>(*this);
 	}
 
 	// auto clone() const {
@@ -131,35 +236,49 @@ public:
 	//     return NewSelf::create(item());
 	// }
 
-	[[nodiscard]] Shared<const Item> &&freeze() && {
-		return reinterpret_cast<Shared<const Item> &&>(*this);
+	[[nodiscard]] GetCustom<
+	  typename Options::template With<option::Item<const Item>>> &&
+	freeze() && {
+		using NewOptions =
+		  typename Options::template With<option::Item<const Item>>;
+		return reinterpret_cast<GetCustom<NewOptions> &&>(*this);
 	}
 
-	[[nodiscard]] const Shared<const Item> &&freeze() const && {
-		return reinterpret_cast<const Shared<const Item> &&>(*this);
+	[[nodiscard]] const GetCustom<
+	  typename Options::template With<option::Item<const Item>>> &&
+	freeze() const && {
+		using NewOptions =
+		  typename Options::template With<option::Item<const Item>>;
+		return reinterpret_cast<const GetCustom<NewOptions> &&>(*this);
 	}
 
-	const Shared<const Item> &frozen() const && {
+	const Custom<typename Options::template With<option::Item<const Item>>> &
+	frozen() const && {
 		static_assert(false, "Shared::frozen() works only for lvalue references");
 	}
 
-	[[nodiscard]] Shared<const Item> &frozen() & {
-		return reinterpret_cast<Shared<const Item> &>(*this);
+	[[nodiscard]] GetCustom<
+	  typename Options::template With<option::Item<const Item>>> &
+	frozen() & {
+		using NewOptions =
+		  typename Options::template With<option::Item<const Item>>;
+		return reinterpret_cast<GetCustom<NewOptions> &>(*this);
 	}
 
-	[[nodiscard]] const Shared<const Item> &frozen() const & {
-		return reinterpret_cast<const Shared<const Item> &>(*this);
+	[[nodiscard]] const GetCustom<
+	  typename Options::template With<option::Item<const Item>>> &
+	frozen() const & {
+		using NewOptions =
+		  typename Options::template With<option::Item<const Item>>;
+		return reinterpret_cast<const GetCustom<NewOptions> &>(*this);
 	}
 
-private:
-	Pool::Handle _controlBlock = Pool::Handle::INVALID;
+public:
+	template <class... MoreOptions>
+	using With = Base::template With<MoreOptions...>;
 
-	static auto &pool() {
-		// return context::get<Pool>();
-		return Singleton<Pool>::ThreadLocal::maybeInitialize();
-		// return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
-	}
-}; // class Owned
+	using WithCustomPool = With<option::CUSTOM_POOL<true>>;
+}; // class Custom
 
 //
 
@@ -167,13 +286,13 @@ private:
 
 #define DEFINE_OPERATOR(op)                                                    \
 	template <class T, class Other>                                              \
-	auto operator op(const Shared<T> &lhs, Other &&rhs)                          \
+	auto operator op(const Custom<T> &lhs, Other &&rhs)                          \
 	  ->decltype(*lhs op std::forward<Other>(rhs)) {                             \
 		return *lhs op std::forward<Other>(rhs);                                   \
 	}                                                                            \
                                                                                \
 	template <class T, class Other>                                              \
-	auto operator op(Other &&lhs, const Shared<T> &rhs)                          \
+	auto operator op(Other &&lhs, const Custom<T> &rhs)                          \
 	  ->decltype(std::forward<Other>(lhs) op * rhs) {                            \
 		return std::forward<Other>(lhs) op * rhs;                                  \
 	}
@@ -222,4 +341,17 @@ DEFINE_OPERATOR(||)
 
 #undef DEFINE_OPERATOR
 
+} // namespace VOLTISO_NAMESPACE::shared
+
+namespace VOLTISO_NAMESPACE {
+template <class Item>
+class Shared : public shared::Custom<Options<option::Item<Item>>> {
+	using Base = shared::Custom<Options<option::Item<Item>>>;
+	using Base::Base;
+
+public:
+	using Base::operator=;
+}; // class Shared
 } // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

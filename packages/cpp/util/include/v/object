@@ -2,6 +2,3 @@
 #include <v/_/_>
 
 #include "v/_/object.hpp" // IWYU pragma: export
-
-// possibly required by Object
-#include "v/copy" // IWYU pragma: keep
