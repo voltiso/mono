@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "v/paged-dynamic-array"
+#include "v/soa"
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -102,15 +103,15 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 	using CowPagedArray =
 	  PagedDynamicArray<int>::WithPageSize<32>::WithCopyOnWrite;
 
-	static_assert(CowPagedArray::NUM_ITEMS_PER_PAGE == 5);
+	static_assert(CowPagedArray::NUM_ITEMS_PER_PAGE == 6);
 
 	CowPagedArray a;
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		a.maybeGrowAndPush(i); // fills one page exactly
 	}
 	EXPECT_EQ(a.numPages(), 1);
 
-	a.maybeGrowAndPush(5); // crosses into second page
+	a.maybeGrowAndPush(6); // crosses into second page
 	EXPECT_EQ(a.numPages(), 2);
 
 	// have to use explicit copy syntax
@@ -121,17 +122,123 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 	// Same visible data after copy
 	EXPECT_EQ(b.numItems(), a.numItems());
 	EXPECT_EQ(b.numPages(), a.numPages());
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 7; ++i) {
 		EXPECT_EQ(b[i], a[i]);
 	}
 
 	// Mutate copy tail; original should remain unchanged.
-	EXPECT_EQ(b.pop(), 5);
+	EXPECT_EQ(b.pop(), 6);
 	b.maybeGrowAndPush(40);
 
-	EXPECT_EQ(a.numItems(), 6);
-	EXPECT_EQ(a[5], 5);
+	EXPECT_EQ(a.numItems(), 7);
+	EXPECT_EQ(a[6], 6);
 
-	EXPECT_EQ(b.numItems(), 6);
-	EXPECT_EQ(b[5], 40);
+	EXPECT_EQ(b.numItems(), 7);
+	EXPECT_EQ(b[6], 40);
+}
+
+// ========================================================================
+// SOA TESTS FOR PAGED DYNAMIC ARRAY
+// - Reuses the Position/Pose/MyItem macros from soa.test.cpp style
+// - Verifies mixed initialized / uninitialized fields
+// - Verifies nested struct constructors via default member initializers
+// - Exercises both normal and copy-on-write paged arrays with soa::Array
+// ========================================================================
+
+#define POSITION_FIELDS(X)                                                     \
+	X(float, x)                                                                  \
+	X(float, y, 42.0f)                                                           \
+	X(float, z)
+VOLTISO_SOA_STRUCT(Position, POSITION_FIELDS)
+
+struct Orientation {
+	float w, x, y, z;
+};
+
+struct Velocity {
+	float x, y, z;
+};
+
+// Helper to verify that nested struct default member initializers /
+// constructors are invoked when items are default-constructed through
+// the SoA paged array.
+struct HalfInit {
+	float uninit;
+	float init{77.0f};
+};
+
+#define POSE_FIELDS(X)                                                         \
+	X(soa::Flatten<Position>, position)                                          \
+	X(Orientation, orientation, 1.0f, 0.0f, 0.0f, 0.0f)                           \
+	X(HalfInit, half)
+VOLTISO_SOA_STRUCT(Pose, POSE_FIELDS)
+
+#define MYITEM_FIELDS(X)                                                       \
+	X(Velocity, velocity)                                                        \
+	X(soa::Flatten<Pose>, pose)
+VOLTISO_SOA_STRUCT(MyItem, MYITEM_FIELDS)
+
+TEST(PagedDynamicArray, soa) {
+	using MyArray =
+	  PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<soa::Array>;
+	using MyCowArray = PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<
+	  soa::Array>::WithCopyOnWrite;
+
+	static_assert(MyArray::NUM_ITEMS_PER_PAGE == 2);
+
+	// Normal (non-COW) SoA paged array: mixed initialized / uninitialized fields.
+	{
+		MyArray array;
+		array.maybeGrowAndPush(); // default-constructed MyItem through paged array
+
+		ASSERT_EQ(array.numItems(), 1);
+		const auto &item = array[0];
+
+		// Field with explicit initializer in macro.
+		EXPECT_FLOAT_EQ(item.pose.position.y, 42.0f);
+		// Struct with default member initializer inside a SoA field.
+		EXPECT_FLOAT_EQ(item.pose.half.init, 77.0f);
+
+		// Fields without explicit initializers should not all match the init sentinels.
+		EXPECT_NE(item.pose.position.x, 42.0f);
+		EXPECT_NE(item.pose.position.z, 42.0f);
+		EXPECT_NE(item.pose.half.uninit, 77.0f);
+	}
+
+	// Copy-on-write SoA paged array: same initialization behavior and independence.
+	{
+		MyCowArray a;
+		a.maybeGrowAndPush(); // default-initialized item
+
+		MyItem custom{};
+		custom.pose.position.y = 10.0f;
+		custom.pose.half.uninit = 5.0f;
+		a.maybeGrowAndPush(custom);
+
+		ASSERT_EQ(a.numItems(), 2);
+
+		auto b = a.copy();
+		ASSERT_EQ(b.numItems(), 2);
+
+		// Copy preserves initialized values.
+		EXPECT_FLOAT_EQ(b[0].pose.position.y, 42.0f);
+		EXPECT_FLOAT_EQ(b[0].pose.half.init, 77.0f);
+		EXPECT_FLOAT_EQ(b[1].pose.position.y, custom.pose.position.y);
+		EXPECT_FLOAT_EQ(b[1].pose.half.uninit, custom.pose.half.uninit);
+
+		// Mutate copy tail; original remains unchanged (COW behavior).
+		auto popped = b.pop();
+		EXPECT_FLOAT_EQ(popped.pose.position.y, custom.pose.position.y);
+		EXPECT_EQ(b.numItems(), 1);
+
+		MyItem replacement{};
+		replacement.pose.position.y = 99.0f;
+		b.maybeGrowAndPush(replacement);
+
+		EXPECT_EQ(a.numItems(), 2);
+		EXPECT_FLOAT_EQ(a[1].pose.position.y, custom.pose.position.y);
+
+		EXPECT_EQ(b.numItems(), 2);
+		EXPECT_FLOAT_EQ(b[1].pose.position.y, replacement.pose.position.y);
+	}
 }

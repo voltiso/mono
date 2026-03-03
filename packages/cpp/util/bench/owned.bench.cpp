@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include "v/owned"
 
@@ -40,12 +40,7 @@ struct LargeObject final {
 //
 // Benchmark access performance for Owned
 static void BM_Owned_access(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	std::vector<Owned<SmallObject>> ownedObjects;
 	ownedObjects.reserve(1000);
@@ -87,12 +82,7 @@ BENCHMARK(BM_Owned_access_uniquePtr);
 
 // Benchmark move semantics for Owned
 static void BM_Owned_move(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	while (state.KeepRunningBatch(1000)) {
 		Owned<SmallObject> src = Owned<SmallObject>::create(42);
@@ -126,12 +116,7 @@ BENCHMARK(BM_Owned_move_uniquePtr);
 
 // Benchmark large object method calls with Owned
 static void BM_Owned_largeObjectMethod(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	Owned<LargeObject> owned = Owned<LargeObject>::create(10, "benchmark");
 	int result = 0;
@@ -163,12 +148,7 @@ BENCHMARK(BM_Owned_largeObjectMethod_uniquePtr);
 
 // Benchmark array of objects with Owned
 static void BM_Owned_array(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	const int count = 1000;
 	while (state.KeepRunningBatch(count)) {

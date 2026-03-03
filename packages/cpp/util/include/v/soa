@@ -3,6 +3,7 @@
 
 #include <array>
 #include <tuple>
+#include <type_traits>
 #include <utility> // for std::index_sequence
 
 #include <v/ON>
@@ -12,14 +13,38 @@ namespace VOLTISO_NAMESPACE::soa {
 template <typename T> struct Layout;
 
 template <typename T> struct ViewTrait {
-	using Type = T &VOLTISO_RESTRICT;
+	template <bool IsConst>
+	using Type = std::conditional_t<
+	  IsConst, std::add_const_t<T> & VOLTISO_RESTRICT, T & VOLTISO_RESTRICT>;
 };
 
 template <typename T> struct Flatten : T {};
 
 template <typename T> struct ViewTrait<Flatten<T>> {
-	using Type = typename T::View;
+	template <bool IsConst>
+	using Type =
+	  std::conditional_t<IsConst, typename T::ConstView, typename T::View>;
 };
+
+// Helpers for assigning from the AoS struct into a SoA view.
+namespace _assign_detail {
+
+template <typename FieldType> struct AssignField {
+	template <typename ViewField>
+	static INLINE void assign(ViewField &dst, FieldType const &src) {
+		dst = src;
+	}
+};
+
+template <typename Inner> struct AssignField<Flatten<Inner>> {
+	template <typename ViewField>
+	static INLINE void assign(ViewField &dst, Flatten<Inner> const &src) {
+		// Drop the Flatten wrapper and delegate to the inner struct's view.
+		dst = static_cast<Inner const &>(src);
+	}
+};
+
+} // namespace _assign_detail
 
 template <typename Dummy, typename... Ts> struct TupleFilter {
 	using Type = std::tuple<Ts...>;
@@ -31,24 +56,101 @@ template <typename Dummy, typename... Ts> struct TupleFilter {
 // GENERATOR MACROS
 // ========================================================================
 
-#define VOLTISO_SOA_MAKE_MEMBER(FieldType, FieldName) FieldType FieldName;
+// Support X(Type, Name) -> Type Name; and X(Type, Name, args...) -> Type
+// Name{args...};
+#define VOLTISO_SOA_FIELD_NARGS(_1, _2, _3, _4, _5, _6, _7, _8, N, ...) N
+#define VOLTISO_SOA_FIELD_NARGS_GET(...)                                       \
+	VOLTISO_SOA_FIELD_NARGS(__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+#define VOLTISO_SOA_CAT(A, B) A##B
+#define VOLTISO_SOA_MAKE_MEMBER_DISPATCH(N)                                    \
+	VOLTISO_SOA_CAT(VOLTISO_SOA_MAKE_MEMBER_, N)
+#define VOLTISO_SOA_MAKE_MEMBER_2(FieldType, FieldName) FieldType FieldName;
+#define VOLTISO_SOA_MAKE_MEMBER_3(FieldType, FieldName, ...)                   \
+	FieldType FieldName{__VA_ARGS__};
+#define VOLTISO_SOA_MAKE_MEMBER_4 VOLTISO_SOA_MAKE_MEMBER_3
+#define VOLTISO_SOA_MAKE_MEMBER_5 VOLTISO_SOA_MAKE_MEMBER_3
+#define VOLTISO_SOA_MAKE_MEMBER_6 VOLTISO_SOA_MAKE_MEMBER_3
+#define VOLTISO_SOA_MAKE_MEMBER_7 VOLTISO_SOA_MAKE_MEMBER_3
+#define VOLTISO_SOA_MAKE_MEMBER_8 VOLTISO_SOA_MAKE_MEMBER_3
+#define VOLTISO_SOA_MAKE_MEMBER(FieldType, FieldName, ...)                     \
+	VOLTISO_SOA_MAKE_MEMBER_DISPATCH(VOLTISO_SOA_FIELD_NARGS_GET(                \
+	  FieldType, FieldName, ##__VA_ARGS__))(FieldType, FieldName, ##__VA_ARGS__)
 
-#define VOLTISO_SOA_MAKE_VIEW_MEMBER(FieldType, FieldName)                     \
-	typename ::VOLTISO_NAMESPACE::soa::ViewTrait<FieldType>::Type FieldName;
+// Used inside ViewT<IsConst>; IsConst refers to the enclosing template
+// parameter.
+#define VOLTISO_SOA_MAKE_VIEW_MEMBER_T(FieldType, FieldName, ...)              \
+	typename ::VOLTISO_NAMESPACE::soa::ViewTrait<FieldType>::template Type<      \
+	  IsConst>                                                                   \
+	  FieldName;
 
-#define VOLTISO_SOA_MAKE_TUPLE_MEMBER(FieldType, FieldName) , FieldType
+#define VOLTISO_SOA_MAKE_TUPLE_MEMBER(FieldType, FieldName, ...) , FieldType
+
+#define VOLTISO_SOA_ASSIGN_FROM_STRUCT(FieldType, FieldName, ...)              \
+	::VOLTISO_NAMESPACE::soa::_assign_detail::AssignField<FieldType>::assign(    \
+	  this->FieldName, src.FieldName);
+
+#define VOLTISO_SOA_ASSIGN_FROM_VIEW(FieldType, FieldName, ...)                \
+	this->FieldName = src.FieldName;
+
+#if defined(__GNUC__) && !defined(__clang__)
+	#define VOLTISO_SOA_DIAGNOSTIC_PUSH_DEPRECATED_COPY                          \
+		_Pragma("GCC diagnostic push")                                             \
+		  _Pragma("GCC diagnostic ignored \"-Wdeprecated-copy\"")
+#elif defined(__clang__)
+	#define VOLTISO_SOA_DIAGNOSTIC_PUSH_DEPRECATED_COPY                          \
+		_Pragma("clang diagnostic push")                                           \
+		  _Pragma("clang diagnostic ignored \"-Wdeprecated-copy\"")
+#else
+	#define VOLTISO_SOA_DIAGNOSTIC_PUSH_DEPRECATED_COPY
+#endif
+#if defined(__GNUC__) || defined(__clang__)
+	#define VOLTISO_SOA_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
+#else
+	#define VOLTISO_SOA_DIAGNOSTIC_POP
+#endif
 
 #define VOLTISO_SOA_STRUCT(StructName, FIELDS_MACRO)                           \
-	struct StructName##View;                                                     \
+	template <bool IsConst> struct StructName##ViewT;                            \
                                                                                \
 	struct StructName {                                                          \
 		FIELDS_MACRO(VOLTISO_SOA_MAKE_MEMBER)                                      \
-		using View = StructName##View;                                             \
+		using View = StructName##ViewT<false>;                                     \
+		using ConstView = StructName##ViewT<true>;                                 \
 	};                                                                           \
                                                                                \
-	struct StructName##View {                                                    \
-		FIELDS_MACRO(VOLTISO_SOA_MAKE_VIEW_MEMBER)                                 \
+	VOLTISO_SOA_DIAGNOSTIC_PUSH_DEPRECATED_COPY                                  \
+	template <bool IsConst> struct StructName##ViewT {                           \
+		static constexpr bool IsConstView = IsConst;                               \
+		FIELDS_MACRO(VOLTISO_SOA_MAKE_VIEW_MEMBER_T)                               \
+                                                                               \
+		VOLTISO_FORCE_INLINE StructName##ViewT &operator=(StructName const &src)   \
+		  requires(!IsConst)                                                       \
+		{                                                                          \
+			FIELDS_MACRO(VOLTISO_SOA_ASSIGN_FROM_STRUCT)                             \
+			return *this;                                                            \
+		}                                                                          \
+                                                                               \
+		VOLTISO_FORCE_INLINE StructName##ViewT &                                   \
+		operator=(StructName##ViewT const &src)                                    \
+		  requires(!IsConst)                                                       \
+		{                                                                          \
+			FIELDS_MACRO(VOLTISO_SOA_ASSIGN_FROM_VIEW)                               \
+			return *this;                                                            \
+		}                                                                          \
+                                                                               \
+		template <bool OtherConst>                                                 \
+		VOLTISO_FORCE_INLINE StructName##ViewT &                                   \
+		operator=(StructName##ViewT<OtherConst> const &src)                        \
+		  requires(!IsConst && OtherConst)                                         \
+		{                                                                          \
+			FIELDS_MACRO(VOLTISO_SOA_ASSIGN_FROM_VIEW)                               \
+			return *this;                                                            \
+		}                                                                          \
 	};                                                                           \
+	VOLTISO_SOA_DIAGNOSTIC_POP                                                   \
+                                                                               \
+	using StructName##View = StructName##ViewT<false>;                           \
+	using StructName##ConstView = StructName##ViewT<true>;                       \
                                                                                \
 	/* Safely inject the Layout trait into the correct namespace */              \
 	namespace VOLTISO_NAMESPACE::soa {                                           \
@@ -107,8 +209,63 @@ template <typename T> struct FlattenCount<soa::Flatten<T>> {
 	  TupleCount<typename soa::Layout<T>::Fields>::value;
 };
 
-template <typename FieldType, size_t FlatIndex> struct Consumer {
+// --------------------------------------------------------------------------
+// AoS (value) consumers - used to materialize a T from SoA storage
+// --------------------------------------------------------------------------
+
+template <
+  typename Tuple, size_t StartIndex,
+  typename Indices = std::make_index_sequence<std::tuple_size_v<Tuple>>>
+struct StructConsumerValue;
+
+template <typename FieldType, size_t FlatIndex> struct ValueConsumer {
 	template <typename Arrays>
+	static FieldType consume(Arrays &arrays, size_t row) {
+		return std::get<FlatIndex>(arrays)[row];
+	}
+};
+
+template <typename T, size_t FlatIndex>
+struct ValueConsumer<soa::Flatten<T>, FlatIndex> {
+	template <typename Arrays>
+	static soa::Flatten<T> consume(Arrays &arrays, size_t row) {
+		using Fields = typename soa::Layout<T>::Fields;
+
+		T inner =
+		  StructConsumerValue<Fields, FlatIndex>::template consume<T>(arrays, row);
+
+		soa::Flatten<T> result{};
+		static_cast<T &>(result) = std::move(inner);
+		return result;
+	}
+};
+
+template <typename... Ts, size_t StartIndex, size_t... Is>
+struct StructConsumerValue<
+  std::tuple<Ts...>, StartIndex, std::index_sequence<Is...>> {
+
+	static constexpr size_t get_offset(size_t target_idx) {
+		constexpr size_t counts[] = {0, FlattenCount<Ts>::value...};
+		size_t off = StartIndex;
+		for (size_t k = 0; k < target_idx; ++k) {
+			off += counts[k + 1];
+		}
+		return off;
+	}
+
+	template <typename ResultType, typename Arrays>
+	static INLINE ResultType consume(Arrays &arrays, size_t row) {
+		return ResultType{
+		  ValueConsumer<Ts, get_offset(Is)>::consume(arrays, row)...};
+	}
+};
+
+// --------------------------------------------------------------------------
+// View (reference) consumers - used to create T::View from SoA storage
+// --------------------------------------------------------------------------
+
+template <typename FieldType, size_t FlatIndex> struct Consumer {
+	template <typename ViewType, typename Arrays>
 	static decltype(auto) consume(Arrays &arrays, size_t row) {
 		return std::get<FlatIndex>(arrays)[row];
 	}
@@ -134,16 +291,20 @@ struct StructConsumer<
 
 	template <typename ViewType, typename Arrays>
 	static INLINE ViewType consume(Arrays &arrays, size_t row) {
-		return ViewType{Consumer<Ts, get_offset(Is)>::consume(arrays, row)...};
+		return ViewType{
+		  Consumer<Ts, get_offset(Is)>::template consume<ViewType>(arrays, row)...};
 	}
 };
 
 template <typename T, size_t FlatIndex>
 struct Consumer<soa::Flatten<T>, FlatIndex> {
-	template <typename Arrays>
-	static typename T::View consume(Arrays &arrays, size_t row) {
+	template <typename ViewType, typename Arrays>
+	static
+	  typename ViewTrait<soa::Flatten<T>>::template Type<ViewType::IsConstView>
+	  consume(Arrays &arrays, size_t row) {
 		return StructConsumer<typename soa::Layout<T>::Fields, FlatIndex>::
-		  template consume<typename T::View>(arrays, row);
+		  template consume<typename ViewTrait<soa::Flatten<T>>::template Type<
+		    ViewType::IsConstView>>(arrays, row);
 	}
 };
 
@@ -156,6 +317,8 @@ struct Consumer<soa::Flatten<T>, FlatIndex> {
 namespace VOLTISO_NAMESPACE::soa {
 
 template <typename T, size_t NUM_SLOTS> class Array {
+	static_assert(std::is_trivially_copyable_v<T>);
+
 private:
 	using FlatTuple = typename _::FlattenTuple<typename Layout<T>::Fields>::Type;
 	using StorageTuple = typename _::MakeArrays<FlatTuple, NUM_SLOTS>::Type;
@@ -163,9 +326,24 @@ private:
 	StorageTuple _arrays;
 
 public:
-	INLINE typename T::View get(size_t index) {
+	// Returns a SoA-backed view (`T::View`) that aliases the underlying storage.
+	// Mutations through this view write directly into the Array at `index`.
+	INLINE typename T::View operator()(size_t index) {
 		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
 		  typename T::View>(_arrays, index);
+	}
+
+	// Returns a read-only SoA-backed view (`T::ConstView`) for const Array.
+	INLINE typename T::ConstView operator()(size_t index) const {
+		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
+		  typename T::ConstView>(_arrays, index);
+	}
+
+	// Returns an AoS value snapshot (`const T`) materialized from SoA storage.
+	// The returned object is independent; mutating it does not affect the Array.
+	INLINE const T operator[](size_t index) const {
+		return _::StructConsumerValue<
+		  typename Layout<T>::Fields, 0>::template consume<T>(_arrays, index);
 	}
 };
 

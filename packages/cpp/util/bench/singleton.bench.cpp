@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include <v/singleton>
 
@@ -63,6 +63,7 @@ static void run_bench_loop(benchmark::State &state, AccessFunc func) {
 Trivial _fakeSingleton;
 auto &getFakeSingleton() { return _fakeSingleton; }
 static void BM_singleton_access_fakeSingleton(benchmark::State &state) {
+	NEWLINE
 	run_bench_loop(state, getFakeSingleton);
 }
 BENCHMARK(BM_singleton_access_fakeSingleton);
@@ -134,19 +135,11 @@ static void BM_singleton_access_mt_lazy(benchmark::State &state) {
 
 template <class T>
 static void BM_singleton_access_mt_lazy_slow(benchmark::State &state) {
+	NEWLINE
 	using Singleton = typename Singleton<T>::Lazy;
 	// add guard just to check if code compiles
 	auto _guard = typename Singleton::Guard();
 	run_bench_loop(state, Singleton::maybeInitialize);
-
-	// print separator
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << "-------------------------------------------------------------"
-		             "-----------------------------------"
-		          << std::endl;
-	}
 }
 
 // ---------------------------------------------------------

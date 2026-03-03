@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include <v/is/trivially-relocatable>
 #include <v/min>
@@ -20,12 +20,7 @@ static constexpr auto MEMORY = 4 * 1024 * 1024;
 
 template <int SIZE, int MEMORY, class Count, int STARTING_INDEX = 0>
 static void BM_Array(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	using namespace VOLTISO_NAMESPACE;
 	constexpr auto COUNT =

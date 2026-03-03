@@ -9,13 +9,19 @@
 #include "v/option/copy-on-write"
 #include "v/option/item"
 #include "v/option/page-size"
-#include "v/option/pool"
 #include "v/option/tensor"
 #include "v/options"
 #include "v/owned"
 #include "v/shared"
 
 #include <v/ON>
+
+// struct alignas(0) Test {
+// 	int a;
+// };
+
+// static_assert(sizeof(Test) == 4);
+// static_assert(alignof(Test) == 4);
 
 // ========================================================================
 // FORWARD DECLARATIONS
@@ -75,15 +81,10 @@ private:
 
 public:
 	using Item = Options::template Get<option::Item>;
-	using Pool = Options::template Get<option::Pool>;
+	// using Pool = Options::template Get<option::Pool>;
 	static constexpr Size PAGE_SIZE = Options::template GET<option::PAGE_SIZE>;
 	static constexpr bool COPY_ON_WRITE =
 	  Options::template GET<option::COPY_ON_WRITE>;
-
-	// static constexpr Size PAGE_HEADER_SIZE = ;
-
-	static constexpr Size PAGE_HEADER_SIZE =
-	  COPY_ON_WRITE ? sizeof(Shared<int>::ControlBlock) - sizeof(int) : 0;
 
 	static_assert(PAGE_SIZE > 0, "PAGE_SIZE must be greater than 0");
 
@@ -91,35 +92,83 @@ public:
 	  std::has_single_bit(static_cast<uint64_t>(PAGE_SIZE)),
 	  "PAGE_SIZE must be a power of 2");
 
-	static constexpr Size NUM_ITEMS_PER_PAGE =
-	  (PAGE_SIZE - PAGE_HEADER_SIZE) / sizeof(Item);
+private:
+	// If trivially copyable, we construct items directly. Constructors for
+	// non-existing items are called immediately for performance (possible
+	// vectorization).
+	static constexpr bool WRAP_IN_STORAGE = !std::is_trivially_copyable_v<Item>;
+	using ItemOrStorage =
+	  std::conditional_t<WRAP_IN_STORAGE, Storage<Item>, Item>;
+
+	template <Size NUM_ITEMS_PER_PAGE>
+	using _Slots = Options::template Get<option::Tensor>::template Tensor<
+	  ItemOrStorage, NUM_ITEMS_PER_PAGE>;
+
+	template <Size NUM_ITEMS_PER_PAGE>
+	struct alignas(COPY_ON_WRITE ? 0 : PAGE_SIZE) _PageBody {
+		_Slots<NUM_ITEMS_PER_PAGE> slots;
+
+		_PageBody() = default;
+
+		// page does not know which elements are alive
+		_PageBody(const _PageBody &) = delete;
+		_PageBody &operator=(const _PageBody &) = delete;
+	};
+
+	template <Size NUM_ITEMS_PER_PAGE>
+	using _Shared =
+	  Shared<_PageBody<NUM_ITEMS_PER_PAGE>>::template WithAlign<PAGE_SIZE>;
+
+	template <Size NUM_ITEMS_PER_PAGE>
+	using _Page = std::conditional_t<
+	  COPY_ON_WRITE, typename _Shared<NUM_ITEMS_PER_PAGE>::ControlBlock,
+	  _PageBody<NUM_ITEMS_PER_PAGE>>;
+
+	template <Size CAND = PAGE_SIZE / sizeof(Item)>
+	static constexpr auto _findNumItemsPerPage() {
+		// return CAND;
+
+		// faster to compile
+		struct FakePage {
+			_Slots<CAND> slots;
+			[[no_unique_address]] std::conditional_t<COPY_ON_WRITE, Size, Empty>
+			  numReferences;
+		};
+
+		if constexpr (sizeof(FakePage) <= PAGE_SIZE) {
+			return CAND;
+		} else {
+			return _findNumItemsPerPage<CAND - 1>();
+		}
+
+		// ! slower to compile
+		// using Page = _Page<CAND>;
+		// if constexpr (sizeof(Page) <= PAGE_SIZE) {
+		// 	return CAND;
+		// } else {
+		// 	return _findNumItemsPerPage<CAND - 1>();
+		// }
+	}
+
+public:
+	static constexpr Size NUM_ITEMS_PER_PAGE = _findNumItemsPerPage<>();
+	// static constexpr Size NUM_ITEMS_PER_PAGE = PAGE_SIZE / sizeof(Item);
 	static_assert(
 	  NUM_ITEMS_PER_PAGE > 0, "NUM_ITEMS_PER_PAGE must be greater than 0");
-
-	using Tensor = Options::template Get<option::Tensor>::template Tensor<
-	  Storage<Item>, NUM_ITEMS_PER_PAGE>;
 
 public:
 	using Handle =
 	  Handle::WithBrand<GetCustom<Options>>::template WithKind<Index>;
 
 private:
-	struct PageBody {
-		Tensor slots;
-
-		PageBody() = default;
-
-		// page does not know which elements are alive
-		PageBody(const PageBody &) = delete;
-		PageBody &operator=(const PageBody &) = delete;
-	};
-	// using Shared = Shared<PageBody>::WithCustomPool;
-	using Shared = Shared<PageBody>;
+	using PageBody = _PageBody<NUM_ITEMS_PER_PAGE>;
+	using Page = _Page<NUM_ITEMS_PER_PAGE>;
+	using Shared = _Shared<NUM_ITEMS_PER_PAGE>;
+	using Slots = _Slots<NUM_ITEMS_PER_PAGE>;
 	using Owned = Owned<PageBody>;
 
-	using Page =
-	  std::conditional_t<COPY_ON_WRITE, typename Shared::ControlBlock, PageBody>;
 	static_assert(sizeof(Page) == PAGE_SIZE);
+	static_assert(alignof(Page) == PAGE_SIZE);
 
 	using Reference = std::conditional_t<COPY_ON_WRITE, Shared, Owned>;
 
@@ -135,6 +184,39 @@ private:
 	// Pool _pool;
 
 private:
+	template <class... Args>
+	INLINE void _constructItem(Slots &dst, Index idx, Args &&...args) {
+		if constexpr (requires {
+			              { dst[idx] } -> std::same_as<Item &>;
+		              }) {
+			static_assert(std::is_trivially_copyable_v<Item>);
+			new (&dst[idx]) Item(std::forward<Args>(args)...);
+		} else if constexpr (requires {
+			                     dst[idx]->std::template same_as<Storage<Item> &>;
+		                     }) {
+			// dst[idx].construct(std::forward<Args>(args)...);
+			new (&dst[idx]) Item(std::forward<Args>(args)...);
+		} else if constexpr (requires { dst(idx); }) {
+			static_assert(std::is_trivially_copyable_v<Item>);
+			dst(idx) = Item{std::forward<Args>(args)...};
+		} else {
+			static_assert(false, "how do we construct item here?");
+		}
+	}
+
+	INLINE void _copyItem(Slots &dst, const Slots &src, Index idx) {
+		if constexpr (requires {
+			              { src[idx] } -> std::same_as<const ItemOrStorage &>;
+		              }) {
+			dst[idx] = src[idx];
+		} else if constexpr (requires { src(idx); }) {
+			dst(idx) = src(idx);
+		} else {
+			static_assert(false, "how do we copy item here?");
+		}
+	}
+
+private:
 	// Copy-On-Write helper
 	VOLTISO_FORCE_INLINE auto &_getPageForWrite(Index pageIdx) {
 		auto &pageRef = _pages[pageIdx];
@@ -146,7 +228,7 @@ private:
 					numItemsInPage = NUM_ITEMS_PER_PAGE;
 				}
 				for (Index i = 0; i < numItemsInPage; ++i) {
-					newPage->slots[i] = pageRef->slots[i].copy();
+					_copyItem(newPage->slots, pageRef->slots, i);
 				}
 				pageRef = std::move(newPage);
 			}
@@ -155,7 +237,10 @@ private:
 	}
 
 public:
-	~Custom() noexcept(std::is_nothrow_destructible_v<Item>) {
+	~Custom() noexcept = default;
+	~Custom() noexcept(std::is_nothrow_destructible_v<Item>)
+	  requires(!std::is_trivially_destructible_v<Item>)
+	{
 		for (Index i = 0; i < _pages.numItems() - 1; ++i) {
 			for (auto &slot : _pages[i]->slots) {
 				slot.destroy();
@@ -211,12 +296,18 @@ public:
 
 	/** Only const operator[] to avoid CoW. If you need to write, use operator()
 	 * to get an Accessor. */
-	INLINE const Item &operator[](const Index &i) const {
+	INLINE decltype(auto) operator[](const Index &i) const {
 		GE(i, 0);
 		LT(i, _numItems);
 		Index pageIdx = i / NUM_ITEMS_PER_PAGE;
 		Index offset = i % NUM_ITEMS_PER_PAGE;
-		return _pages[pageIdx]->slots[offset].storedItem();
+		auto &slots = _pages[pageIdx]->slots;
+		if constexpr (WRAP_IN_STORAGE) {
+			return slots[offset].storedItem();
+		} else {
+			// can return accessor (proxy/view)
+			return slots[offset];
+		}
 	}
 
 	// ========================================================================
@@ -236,8 +327,7 @@ public:
 
 		auto &pageRef = _getPageForWrite(pageIdx);
 
-		// Construct item in place
-		new (&pageRef->slots[offset]) Item(std::forward<Args>(args)...);
+		_constructItem(pageRef->slots, offset, std::forward<Args>(args)...);
 
 		++_numItems;
 		return Handle{index};
@@ -262,7 +352,14 @@ public:
 
 		auto &pageRef = _getPageForWrite(pageIdx);
 		--_numItems;
-		return pageRef->slots[offset].relocate();
+		auto &slot = pageRef->slots[offset];
+		if constexpr (WRAP_IN_STORAGE) {
+			static_assert(is::TriviallyRelocatable<Item>);
+			return slot.relocate();
+		} else {
+			static_assert(std::is_trivially_copyable_v<Item>);
+			return slot;
+		}
 		// ! Does not free pages
 	}
 
@@ -286,6 +383,9 @@ public:
 	using WithPageSize = With<option::PAGE_SIZE<NEW_PAGE_SIZE>>;
 
 	using WithCopyOnWrite = With<option::COPY_ON_WRITE<true>>;
+
+	template <template <class, auto... EXTENTS> class TTensor>
+	using WithTensor = With<option::Tensor<option::tensor::Use<TTensor>>>;
 }; // class Custom
 
 } // namespace VOLTISO_NAMESPACE::pagedDynamicArray

@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 // ! we're not properly freeing memory
 #define VOLTISO_DEBUG_POOL false
@@ -12,6 +12,7 @@ using T = std::array<std::byte, SIZE>;
 static_assert(sizeof(T) == SIZE);
 
 static void BM_allocator_trivial_Pool(benchmark::State &state) {
+	SEPARATOR
 	using namespace VOLTISO_NAMESPACE;
 	Pool<T> pool;
 	for (auto _ : state) {
@@ -82,12 +83,7 @@ BENCHMARK(BM_allocator_trivial_new);
 static auto num = 1024 * 100;
 
 static void BM_allocator_simple_Pool(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	using namespace VOLTISO_NAMESPACE;
 	Pool<T> pool;

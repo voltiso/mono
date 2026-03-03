@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include "v/shared"
 
@@ -39,12 +39,7 @@ struct LargeObject final {
 
 // Benchmark access performance for Shared
 static void BM_Shared_access(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	std::vector<Shared<SmallObject>> sharedObjects;
 	sharedObjects.reserve(1000);
@@ -84,12 +79,7 @@ BENCHMARK(BM_Shared_access_sharedPtr);
 
 // Benchmark copy performance for Shared
 static void BM_Shared_copy(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	while (state.KeepRunningBatch(1000)) {
 		std::vector<Shared<SmallObject>> sources;
@@ -125,12 +115,7 @@ BENCHMARK(BM_Shared_copy_sharedPtr);
 
 // Benchmark reference counting performance for Shared
 static void BM_Shared_refCount(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	while (state.KeepRunningBatch(1000)) {
 		std::vector<Shared<SmallObject>> copies;
@@ -168,12 +153,7 @@ BENCHMARK(BM_Shared_refCount_sharedPtr);
 
 // Benchmark large object method calls with Shared
 static void BM_Shared_largeObjectMethod(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	Shared<LargeObject> shared = Shared<LargeObject>::create(10, "benchmark");
 	int result = 0;

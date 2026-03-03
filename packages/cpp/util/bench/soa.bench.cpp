@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include "v/soa" // Your beautiful utility
 
@@ -25,6 +25,7 @@ struct AosItem {
 };
 
 static void BM_soa_AoS(benchmark::State &state) {
+	SEPARATOR
 	std::vector<AosItem> items(NUM_ITEMS);
 
 	for (auto _ : state) {

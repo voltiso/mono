@@ -473,7 +473,10 @@ public:
 	  requires std::is_same_v<Source, Tensor>
 	Tensor(const Source &&other) : Base(static_cast<const Source &&>(other)) {}
 	Tensor &operator=(Tensor &&) = delete;
-	template <class Arg> auto &operator=(const Arg &&arg) {
+	template <class Arg>
+	auto &operator=(const Arg &&arg)
+	  requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }
+	{
 		return Base::operator=(static_cast<const Arg &&>(arg));
 	}
 };

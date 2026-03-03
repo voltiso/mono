@@ -1,10 +1,8 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include <v/dynamic-array>
 #include <v/is/trivially-relocatable>
 #include <v/storage>
-
-#include <iostream>
 
 #include <v/ON>
 
@@ -33,12 +31,7 @@ static_assert(is::TriviallyRelocatable<Trivial<123>>);
 static constexpr auto MEMORY = 4 * 1024 * 1024;
 
 template <int SIZE> void BM_DynamicArray(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	using T = Trivial<SIZE>;
 	int count = MEMORY / sizeof(T);
@@ -74,12 +67,7 @@ template <int SIZE> void BM_DynamicArray_stdVector(benchmark::State &state) {
 //
 
 void BM_DynamicArray_resize(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	using namespace VOLTISO_NAMESPACE;
 	using T = Trivial<1>;
@@ -155,12 +143,7 @@ static_assert(is::TriviallyRelocatable<TriviallyRelocatable<123>>);
 //
 
 void BM_DynamicArray_resize_nonTrivial(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	using T = TriviallyRelocatable<1>;
 	int count = MEMORY / sizeof(T);
@@ -189,12 +172,7 @@ void BM_DynamicArray_resize_nonTrivial_stdVector(benchmark::State &state) {
 
 template <int SIZE>
 static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	using namespace VOLTISO_NAMESPACE;
 	using T = TriviallyRelocatable<SIZE>;

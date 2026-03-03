@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include "v/any-function"
 
@@ -38,12 +38,7 @@ auto makeLargeCaptureLambda(const std::vector<int> &data) {
 //
 
 static void BM_Function(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	std::vector<AnyFunction<int(int, int)>> fns;
 	fns.reserve(1000);
@@ -99,12 +94,7 @@ BENCHMARK(BM_Function_stdFunction);
 //
 
 static void BM_Function_lambdaCapture(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	std::vector<AnyFunction<int(int)>> fns;
 	fns.reserve(1000);
@@ -160,12 +150,7 @@ BENCHMARK(BM_Function_lambdaCapture_stdFunction);
 //
 
 static void BM_Function_lambdaCaptureLarge(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	std::vector<int> data(100, 1); // Vector with 100 elements
 	std::vector<AnyFunction<int(int)>> fns;
@@ -225,12 +210,7 @@ BENCHMARK(BM_Function_lambdaLargeCapture_stdFunction);
 //
 
 static void BM_Function_creationDestruction(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	while (state.KeepRunningBatch(1000)) {
 		for (int i = 0; i < 1000; ++i) {
@@ -268,12 +248,7 @@ struct ComplexObject {
 };
 
 static void BM_Function_complexObjectMethod(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	NEWLINE
 
 	ComplexObject obj(50);
 	AnyFunction<int(int)> fn = [&obj](int x) noexcept { return obj.compute(x); };

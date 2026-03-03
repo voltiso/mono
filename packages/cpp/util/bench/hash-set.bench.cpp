@@ -1,19 +1,13 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include <v/hash-set>
 #include <v/owned>
 #include <v/splay-set>
 
-#include <iostream>
 #include <unordered_set>
 
 static void BM_HashSet(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	using namespace VOLTISO_NAMESPACE;
 	const int numElements = 1000;

@@ -2,6 +2,7 @@
 
 #include "v/empty"
 #include "v/object"
+#include "v/option/align"
 #include "v/option/custom-pool"
 #include "v/pool"
 #include "v/singleton"
@@ -31,7 +32,8 @@ template <class... Args> using GetCustom = Specializations<Args...>::Result;
 } // namespace VOLTISO_NAMESPACE::shared
 
 namespace VOLTISO_NAMESPACE::shared::_ {
-template <class CanonicalItem, bool CUSTOM_POOL> struct ControlBlock {
+template <class CanonicalItem, bool CUSTOM_POOL, Size ALIGN>
+struct alignas(ALIGN) ControlBlock {
 	using Pool = Pool<ControlBlock>;
 
 	CanonicalItem item;
@@ -83,8 +85,12 @@ public:
 	using Item = Options::template Get<option::Item>;
 	// static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
 
+	static constexpr Size ALIGN = Options::template GET<option::ALIGN>
+	                                ? Options::template GET<option::ALIGN>
+	                                : std::max(alignof(void *), alignof(Item));
+
 	using ControlBlock =
-	  _::ControlBlock<Item, Options::template GET<option::CUSTOM_POOL>>;
+	  _::ControlBlock<Item, Options::template GET<option::CUSTOM_POOL>, ALIGN>;
 
 	static_assert(
 	  !std::is_reference_v<Item>, "you probably don't want Shared<Item&>");
@@ -291,6 +297,7 @@ public:
 	using With = Base::template With<MoreOptions...>;
 
 	using WithCustomPool = With<option::CUSTOM_POOL<true>>;
+	template <Size ALIGN> using WithAlign = With<option::ALIGN<ALIGN>>;
 }; // class Custom
 
 //

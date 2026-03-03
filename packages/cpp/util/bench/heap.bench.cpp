@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+#include "_.hpp"
 
 #include <v/heap>
 
@@ -17,12 +17,7 @@ auto rands = []() {
 }();
 
 static void BM_Heap(benchmark::State &state) {
-	// hack
-	static bool once = true;
-	if (once) {
-		once = false;
-		std::cout << std::endl;
-	}
+	SEPARATOR
 
 	using namespace VOLTISO_NAMESPACE;
 	Heap<int> a;

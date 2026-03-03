@@ -66,6 +66,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
+add_compile_options(-ftime-trace)
 
 # add_subdirectory(util)
 add_executable(
