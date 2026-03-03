@@ -1,5 +1,5 @@
 Show disassembly for functions containing `maybeInitialize` in their names:
 
 ```bash
-llvm-objdump-20 -d --demangle build/clang-20_Release/util/bench/voltiso-util-bench | awk -v RS= '/<.*maybeInitialize.*>:/'
+llvm-objdump-22 -d --demangle build/clang-22_Release/util/bench/voltiso-util-bench | awk -v RS= '/<.*maybeInitialize.*>:/'
 ```

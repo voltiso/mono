@@ -12,22 +12,22 @@
 			"args": ["--runInBand", "--watchAll=false", "--testTimeout=100000000"]
 		},
 		{
-			"name": "cpp.util/test_clang-20_Debug",
+			"name": "cpp.util/test_clang-22_Debug",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-20_Debug/voltiso-util-test"
+			"program": "${workspaceFolder}/packages/cpp/build/clang-22_Debug/voltiso-util-test"
 		},
 		{
-			"name": "cpp.util/bench_clang-20_Debug",
+			"name": "cpp.util/bench_clang-22_Debug",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-20_Debug/util/bench/voltiso-util-bench"
+			"program": "${workspaceFolder}/packages/cpp/build/clang-22_Debug/util/bench/voltiso-util-bench"
 		},
 		{
-			"name": "cpp.util/bench_clang-20_RelWithDebInfo",
+			"name": "cpp.util/bench_clang-22_RelWithDebInfo",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-20_RelWithDebInfo/util/bench/voltiso-util-bench"
+			"program": "${workspaceFolder}/packages/cpp/build/clang-22_RelWithDebInfo/util/bench/voltiso-util-bench"
 		}
 	]
 }

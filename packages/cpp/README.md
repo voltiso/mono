@@ -8,6 +8,8 @@ subdirectory.
 
 # Prerequisites
 
+We're using Ubuntu on WSL.
+
 You probably need to install:
 
 ```sh
@@ -16,8 +18,13 @@ sudo snap install cmake --classic
 sudo apt install build-essential
 sudo apt install zip
 sudo apt install pkg-config
-sudo apt install clang-20
+sudo apt install clang-22
+sudo apt install lld-22
 ```
+
+Add LLVM apt repo for `clang-22` (and `lld-22`) if not present.
+
+You probably also want to install `clangd-22` for use with vscode/cursor/windsurf. You probably will need to update-alternatives clangd to point to this version, as the editor plugin is not configurable.
 
 # Testing
 

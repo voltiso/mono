@@ -103,7 +103,7 @@ static void BM_soa(benchmark::State &state) {
 	for (auto _ : state) {
 		for (size_t i = 0; i < NUM_ITEMS; ++i) {
 			// Look at how beautiful this syntax is!
-			auto item = storage->get(i);
+			auto item = (*storage)[i];
 			item.pose.position.x += item.velocity.x * DT;
 			item.pose.position.y += item.velocity.y * DT;
 			item.pose.position.z += item.velocity.z * DT;

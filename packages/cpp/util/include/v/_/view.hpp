@@ -180,7 +180,12 @@ public:
 		//   !std::is_same_v<std::remove_const_t<Item>, char>,
 		//   "allow views of char?");
 		static_assert(std::is_array_v<Items>);
-		static_assert(!requires { this->extent; }); // no need to set?
+
+		// no need to set `extent` data member?
+		using Self = std::remove_cvref_t<decltype(*this)>;
+		static_assert(!(requires {
+			&Self::extent;
+		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from anything - static extent, unbound
@@ -203,7 +208,12 @@ public:
 		  { &source[0] } -> std::convertible_to<Item *>;
 	  }
 	    : items(&source[0]) {
-		static_assert(!requires { this->extent; }); // no need to set?
+
+		// no need to set `extent` data member?
+		using Self = std::remove_cvref_t<decltype(*this)>;
+		static_assert(!(requires {
+			&Self::extent;
+		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from anything indexable - dynamic extent
@@ -237,7 +247,11 @@ public:
 	    std::is_pointer_v<std::remove_reference_t<ItemsPointer>> &&
 	    !std::is_array_v<std::remove_reference_t<ItemsPointer>>)
 	constexpr Custom(ItemsPointer &&pFirstItem) noexcept : items(pFirstItem) {
-		static_assert(!requires { this->extent; }); // no need to set?
+		// no need to set `extent` data member?
+		using Self = std::remove_cvref_t<decltype(*this)>;
+		static_assert(!(requires {
+			&Self::extent;
+		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from pointer - dynamic extent

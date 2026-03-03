@@ -89,7 +89,13 @@ static void BM_Owned_move(benchmark::State &state) {
 
 		for (int i = 0; i < 1000; ++i) {
 			Owned<SmallObject> dst = std::move(src);
+			benchmark::DoNotOptimize(dst);
 			benchmark::DoNotOptimize(dst->value);
+			std::memcpy(
+			  (void *)std::addressof(src), std::addressof(dst),
+			  sizeof(Owned<SmallObject>));
+			std::memset((void *)std::addressof(dst), 0, sizeof(Owned<SmallObject>));
+			benchmark::ClobberMemory();
 		}
 
 		benchmark::DoNotOptimize(src);
@@ -104,7 +110,14 @@ static void BM_Owned_move_uniquePtr(benchmark::State &state) {
 
 		for (int i = 0; i < 1000; ++i) {
 			std::unique_ptr<SmallObject> dst = std::move(src);
+			benchmark::DoNotOptimize(dst);
 			benchmark::DoNotOptimize(dst->value);
+			std::memcpy(
+			  (void *)std::addressof(src), std::addressof(dst),
+			  sizeof(std::unique_ptr<SmallObject>));
+			std::memset(
+			  (void *)std::addressof(dst), 0, sizeof(std::unique_ptr<SmallObject>));
+			benchmark::ClobberMemory();
 		}
 
 		benchmark::DoNotOptimize(src);

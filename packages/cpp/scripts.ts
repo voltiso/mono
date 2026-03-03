@@ -37,7 +37,7 @@ export async function exists(fileName: string): Promise<boolean> {
 
 export const prepublishOnly = [
 	() => installVcpkg(vcpkgVersion),
-	`ln -sf ${dir({ compiler: 'clang-20', buildType: 'Release' })}/compile_commands.json`,
+	`ln -sf ${dir({ compiler: 'clang-22', buildType: 'Release' })}/compile_commands.json`,
 ]
 
 async function configure(options: Options) {
@@ -48,7 +48,7 @@ async function configure(options: Options) {
 //
 
 const testOptions: Options = {
-	compiler: 'clang-20',
+	compiler: 'clang-22',
 	buildType: 'Debug',
 }
 
@@ -64,7 +64,7 @@ export const check = test
 //
 
 const benchOptions: Options = {
-	compiler: 'clang-20',
+	compiler: 'clang-22',
 	// compiler: 'gcc-15',
 
 	// buildType: 'Debug',
