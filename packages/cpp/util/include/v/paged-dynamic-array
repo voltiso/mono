@@ -192,7 +192,7 @@ private:
 			static_assert(std::is_trivially_copyable_v<Item>);
 			new (&dst[idx]) Item(std::forward<Args>(args)...);
 		} else if constexpr (requires {
-			                     dst[idx]->std::template same_as<Storage<Item> &>;
+			                     { dst[idx] } -> std::same_as<Storage<Item> &>;
 		                     }) {
 			// dst[idx].construct(std::forward<Args>(args)...);
 			new (&dst[idx]) Item(std::forward<Args>(args)...);

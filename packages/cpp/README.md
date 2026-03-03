@@ -21,4 +21,8 @@ sudo apt install clang-20
 
 # Testing
 
-Use `pnpm test`.
+Use `pnpm exec v test`.
+
+# Benchmarks
+
+Use `pnpm exec v bench`.

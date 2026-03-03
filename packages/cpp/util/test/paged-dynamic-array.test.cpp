@@ -137,6 +137,48 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 	EXPECT_EQ(b[6], 40);
 }
 
+// Destructor probe for non-SOA (normal) PagedDynamicArray: verifies that
+// item destructors are called on array destruction and when popped items
+// go out of scope. Type must be non-trivially-copyable so WRAP_IN_STORAGE
+// is used and slot.destroy()/relocate() paths are exercised.
+namespace {
+struct PagedDestructorProbe {
+	static int numDestructorCalls;
+	int value = 0;
+	PagedDestructorProbe() = default;
+	explicit PagedDestructorProbe(int v) : value(v) {}
+	~PagedDestructorProbe() { ++numDestructorCalls; }
+	PagedDestructorProbe(const PagedDestructorProbe &) = delete;
+	PagedDestructorProbe(PagedDestructorProbe &&) = delete;
+	PagedDestructorProbe &operator=(const PagedDestructorProbe &) = delete;
+	PagedDestructorProbe &operator=(PagedDestructorProbe &&) = delete;
+};
+int PagedDestructorProbe::numDestructorCalls = 0;
+} // namespace
+template <>
+constexpr auto
+  VOLTISO_NAMESPACE::is::TriviallyRelocatable<PagedDestructorProbe> = true;
+
+TEST(PagedDynamicArray, destructors_called_on_destroy) {
+	using SmallPagedArray =
+	  PagedDynamicArray<PagedDestructorProbe>::WithPageSize<8>;
+	PagedDestructorProbe::numDestructorCalls = 0;
+
+	static_assert(SmallPagedArray::NUM_ITEMS_PER_PAGE == 2);
+
+	{
+		SmallPagedArray array;
+		array.maybeGrowAndPush();
+		array.maybeGrowAndPush(1);
+		array.maybeGrowAndPush(2);
+		EXPECT_EQ(array.numPages(), 2);
+		EXPECT_EQ(array.numItems(), 3);
+		EXPECT_EQ(PagedDestructorProbe::numDestructorCalls, 0);
+	}
+	// Array destruction runs destructors for the 3 stored items
+	EXPECT_EQ(PagedDestructorProbe::numDestructorCalls, 3);
+}
+
 // ========================================================================
 // SOA TESTS FOR PAGED DYNAMIC ARRAY
 // - Reuses the Position/Pose/MyItem macros from soa.test.cpp style
@@ -169,7 +211,7 @@ struct HalfInit {
 
 #define POSE_FIELDS(X)                                                         \
 	X(soa::Flatten<Position>, position)                                          \
-	X(Orientation, orientation, 1.0f, 0.0f, 0.0f, 0.0f)                           \
+	X(Orientation, orientation, 1.0f, 0.0f, 0.0f, 0.0f)                          \
 	X(HalfInit, half)
 VOLTISO_SOA_STRUCT(Pose, POSE_FIELDS)
 
@@ -199,13 +241,15 @@ TEST(PagedDynamicArray, soa) {
 		// Struct with default member initializer inside a SoA field.
 		EXPECT_FLOAT_EQ(item.pose.half.init, 77.0f);
 
-		// Fields without explicit initializers should not all match the init sentinels.
+		// Fields without explicit initializers should not all match the init
+		// sentinels.
 		EXPECT_NE(item.pose.position.x, 42.0f);
 		EXPECT_NE(item.pose.position.z, 42.0f);
 		EXPECT_NE(item.pose.half.uninit, 77.0f);
 	}
 
-	// Copy-on-write SoA paged array: same initialization behavior and independence.
+	// Copy-on-write SoA paged array: same initialization behavior and
+	// independence.
 	{
 		MyCowArray a;
 		a.maybeGrowAndPush(); // default-initialized item
