@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "v/_/tensor.hpp"
+#include "v/is/trivially-relocatable"
 #include "v/storage"
 #include "v/tensor"
 #include "v/view"
@@ -9,20 +10,19 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-// template <class Int = int>
-// struct S {
-// 	Int a;
-// 	S() = delete;
-// 	S(const S &) = delete;
-
-// 	S(S &&) = delete;
-// 	// S(const S &&) = default;
-
-// 	S &operator=(const S &) = delete;
+// struct [[clang::trivial_abi]] Test {
+// 	int a;
+// 	Test(const Test &) {}
 // };
-// static_assert(std::is_trivially_copyable_v<S<>>);
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wdeprecated-builtins"
+// static_assert(__is_trivially_relocatable(Test));
+// #pragma GCC diagnostic pop
+// static_assert(__builtin_is_cpp_trivially_relocatable(Test));
 
 static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
+
+static_assert(is::TriviallyRelocatable<Tensor<int, 1>>);
 
 // ! note: our Tensor is not an aggregate type !
 // there's too many cool stuff in it

@@ -33,9 +33,12 @@ add_compile_definitions(VOLTISO_NAMESPACE=${VOLTISO_NAMESPACE})
 
 # include_directories(include packages/poker/include)
 
-# GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Use libc++ (clang's C++ standard library)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wfatal-errors -Wno-unused-parameter -Winvalid-pch") # -Wshadow
@@ -66,7 +69,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
-add_compile_options(-ftime-trace)
+# add_compile_options(-ftime-trace) # trace compilation time
 
 # add_subdirectory(util)
 add_executable(

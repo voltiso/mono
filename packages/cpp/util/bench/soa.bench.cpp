@@ -98,12 +98,11 @@ using NameString = std::array<char, 32>;
 VOLTISO_SOA_STRUCT(MyItem, MYITEM_FIELDS)
 
 static void BM_soa(benchmark::State &state) {
-	auto storage = std::make_unique<soa::Array<MyItem, NUM_ITEMS>>();
+	auto storage = std::make_unique<SoaArray<MyItem, NUM_ITEMS>>();
 
 	for (auto _ : state) {
 		for (size_t i = 0; i < NUM_ITEMS; ++i) {
-			// Look at how beautiful this syntax is!
-			auto item = (*storage)[i];
+			const auto &item = (*storage)(i);
 			item.pose.position.x += item.velocity.x * DT;
 			item.pose.position.y += item.velocity.y * DT;
 			item.pose.position.z += item.velocity.z * DT;

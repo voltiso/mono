@@ -68,7 +68,7 @@ static_assert(std::is_same_v<decltype(MyItem::velocity), Velocity>);
 static_assert(std::is_same_v<decltype(MyItem::pose), soa::Flatten<Pose>>);
 
 static_assert(
-  std::is_same_v<decltype(PositionView::x), float & VOLTISO_RESTRICT>);
+  std::is_same_v<decltype(PositionView::x), float &VOLTISO_RESTRICT>);
 
 static_assert(
   std::is_same_v<decltype(MyItemView::velocity), Velocity & VOLTISO_RESTRICT>);
@@ -81,7 +81,7 @@ static_assert(std::is_same_v<decltype(MyItemView::pose), PoseView>);
 
 // ConstView: scalar fields are const refs
 static_assert(std::is_same_v<
-              decltype(PositionConstView::x), const float & VOLTISO_RESTRICT>);
+              decltype(PositionConstView::x), const float &VOLTISO_RESTRICT>);
 static_assert(
   std::is_same_v<
     decltype(MyItemConstView::velocity), const Velocity & VOLTISO_RESTRICT>);
@@ -98,7 +98,7 @@ static_assert(std::is_same_v<
               PositionConstView>);
 static_assert(std::is_same_v<
               decltype(std::declval<MyItemConstView>().pose.position.x),
-              const float & VOLTISO_RESTRICT>);
+              const float &VOLTISO_RESTRICT>);
 // ConstView forbids assignment through references
 static_assert(
   !std::is_assignable_v<decltype(std::declval<PositionConstView>().x), float>);
@@ -161,7 +161,7 @@ TEST(SoaBackend, VerifiesFlatStorageMath) {
 }
 
 TEST(SoaBackend, FullIntegration) {
-	soa::Array<MyItem, 100> storage;
+	SoaArray<MyItem, 100> storage;
 
 	auto item = storage(5);
 
@@ -193,7 +193,7 @@ TEST(SoaBackend, FullIntegration) {
 }
 
 TEST(SoaBackend, AssignmentFromStructValue) {
-	soa::Array<SimpleItem, 10> mySoaArray;
+	SoaArray<SimpleItem, 10> mySoaArray;
 
 	mySoaArray(5) = SimpleItem{123};
 
@@ -202,7 +202,7 @@ TEST(SoaBackend, AssignmentFromStructValue) {
 }
 
 TEST(SoaBackend, AssignmentViewToView) {
-	soa::Array<SimpleItem, 10> arr;
+	SoaArray<SimpleItem, 10> arr;
 	arr(2) = SimpleItem{100};
 	arr(7) = SimpleItem{0};
 
@@ -216,10 +216,10 @@ TEST(SoaBackend, AssignmentViewToView) {
 }
 
 TEST(SoaBackend, AssignmentConstViewToView) {
-	soa::Array<SimpleItem, 10> arr;
+	SoaArray<SimpleItem, 10> arr;
 	arr(3) = SimpleItem{42};
 
-	soa::Array<SimpleItem, 10> const &carr = arr;
+	SoaArray<SimpleItem, 10> const &carr = arr;
 	SimpleItemConstView src = carr(3);
 	SimpleItemView dst = arr(0);
 	dst = src;
@@ -227,7 +227,7 @@ TEST(SoaBackend, AssignmentConstViewToView) {
 }
 
 TEST(SoaBackend, AssignmentViewToViewNested) {
-	soa::Array<MyItem, 20> storage;
+	SoaArray<MyItem, 20> storage;
 	storage(0).velocity = {1.0f, 2.0f, 3.0f};
 	storage(0).pose.position.x = 10.0f;
 	storage(0).pose.position.y = 20.0f;
@@ -247,11 +247,11 @@ TEST(SoaBackend, AssignmentViewToViewNested) {
 }
 
 TEST(SoaBackend, ConstViewReturnsCorrectType) {
-	soa::Array<MyItem, 100> storage;
+	SoaArray<MyItem, 100> storage;
 	storage(5).velocity.x = 42.0f;
 	storage(5).pose.position.y = 99.0f;
 
-	soa::Array<MyItem, 100> const &const_storage = storage;
+	SoaArray<MyItem, 100> const &const_storage = storage;
 
 	// operator() on const Array returns ConstView
 	auto const_item = const_storage(5);
@@ -263,11 +263,11 @@ TEST(SoaBackend, ConstViewReturnsCorrectType) {
 }
 
 TEST(SoaBackend, ConstViewNestedConstness) {
-	soa::Array<MyItem, 100> storage;
+	SoaArray<MyItem, 100> storage;
 	storage(3).pose.orientation.w = 0.5f;
 	storage(3).pose.position.z = -1.0f;
 
-	soa::Array<MyItem, 100> const &const_storage = storage;
+	SoaArray<MyItem, 100> const &const_storage = storage;
 	auto const_item = const_storage(3);
 
 	// Nested ConstView: pose is PoseConstView, pose.position is PositionConstView
@@ -303,7 +303,7 @@ TEST(SoaBackend, OmitFlattenKeepsAoS) {
 	    soa::Layout<NotFlattenedItem>::Fields, std::tuple<Position, float>>);
 
 	// 3. Runtime Proof: Memory offsets
-	soa::Array<NotFlattenedItem, 100> storage;
+	SoaArray<NotFlattenedItem, 100> storage;
 	auto item0 = storage(0);
 	auto item1 = storage(1);
 
@@ -357,7 +357,7 @@ TEST(SoaInitArgs, BasicMacroCompilesAndWorks) {
 	EXPECT_FLOAT_EQ(def.center.y, 2.0f);
 
 	// SoA Array works
-	soa::Array<InitArgsBasic, 10> storage;
+	SoaArray<InitArgsBasic, 10> storage;
 	auto item = storage(3);
 	item.b = 1.5f;
 	item.count = 7;
@@ -374,7 +374,7 @@ TEST(SoaInitArgs, UninitializedFieldsNotZeroedAndHalfInitConstructed) {
 	// Uninitialized fields must retain the pattern when the runtime doesn't
 	// zero-init (e.g. without -ftrivial-auto-var-init). Otherwise we at least
 	// verify init is selective (uninit != 77.0f).
-	using ArrayT = soa::Array<UninitTestItem, 10>;
+	using ArrayT = SoaArray<UninitTestItem, 10>;
 	void *ptr = std::malloc(sizeof(ArrayT));
 	ASSERT_NE(ptr, nullptr);
 	std::memset(ptr, 0xCD, sizeof(ArrayT));

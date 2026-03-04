@@ -52,6 +52,15 @@
 
 // !
 
+#if __has_cpp_attribute(clang::trivial_abi)
+  // The attribute goes between 'class' and the Name
+	#define VOLTISO_RELOCATABLE(ClassName) [[clang::trivial_abi]] ClassName
+#else
+	#define VOLTISO_RELOCATABLE(ClassName) ClassName
+#endif
+
+// !
+
 // #if __has_include(<glog/logging.h>)
 // #include <glog/logging.h>
 // #else

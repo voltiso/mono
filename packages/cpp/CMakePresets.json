@@ -2,52 +2,38 @@
 	"version": 8,
 	"configurePresets": [
 		{
-			"name": "clang-22_Debug",
-			"displayName": "clang-22_Debug",
-			"binaryDir": "${sourceDir}/build/${presetName}",
+			"name": "clang-22_Release",
+			"inherits": "clang-22",
 			"cacheVariables": {
-				"CMAKE_C_COMPILER": "/usr/bin/clang-22",
-				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-22",
-				"CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld-22",
-				"CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld-22",
-				"CMAKE_BUILD_TYPE": "Debug",
-				"CMAKE_EXPORT_COMPILE_COMMANDS": true
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "clang-22_Debug",
+			"inherits": "clang-22",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
 			}
 		},
 		{
 			"name": "clang-22_RelWithDebInfo",
-			"displayName": "clang-22_RelWithDebInfo",
+			"inherits": "clang-22",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
+			}
+		},
+		{
+			"name": "clang-22",
+			"hidden": true,
+			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/${presetName}",
 			"cacheVariables": {
+				"VCPKG_TARGET_TRIPLET": "x64-linux-llvm",
+				"VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/vcpkg-triplets",
 				"CMAKE_C_COMPILER": "/usr/bin/clang-22",
 				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-22",
 				"CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld-22",
 				"CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld-22",
-				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
-				"CMAKE_EXPORT_COMPILE_COMMANDS": true
-			}
-		},
-		{
-			"name": "clang-22_Release",
-			"displayName": "clang-22_Release",
-			"binaryDir": "${sourceDir}/build/${presetName}",
-			"cacheVariables": {
-				"CMAKE_C_COMPILER": "clang-22",
-				"CMAKE_CXX_COMPILER": "clang++-22",
-				"CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=lld-22",
-				"CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=lld-22",
-				"CMAKE_BUILD_TYPE": "Release",
-				"CMAKE_EXPORT_COMPILE_COMMANDS": true
-			}
-		},
-		{
-			"name": "gcc-15_Release",
-			"displayName": "gcc-15_Release",
-			"binaryDir": "${sourceDir}/build/${presetName}",
-			"cacheVariables": {
-				"CMAKE_C_COMPILER": "/usr/bin/gcc-15",
-				"CMAKE_CXX_COMPILER": "/usr/bin/g++-15",
-				"CMAKE_BUILD_TYPE": "Release",
 				"CMAKE_EXPORT_COMPILE_COMMANDS": true
 			}
 		}
@@ -55,28 +41,16 @@
 
 	"buildPresets": [
 		{
+			"name": "clang-22_Release",
+			"configurePreset": "clang-22_Release"
+		},
+		{
 			"name": "clang-22_Debug",
-			"displayName": "clang-22_Debug",
-			"configurePreset": "clang-22_Debug",
-			"jobs": 8
+			"configurePreset": "clang-22_Debug"
 		},
 		{
 			"name": "clang-22_RelWithDebInfo",
-			"displayName": "clang-22_RelWithDebInfo",
-			"configurePreset": "clang-22_RelWithDebInfo",
-			"jobs": 8
-		},
-		{
-			"name": "clang-22_Release",
-			"displayName": "clang-22_Release",
-			"configurePreset": "clang-22_Release",
-			"jobs": 8
-		},
-		{
-			"name": "gcc-15_Release",
-			"displayName": "gcc-15_Release",
-			"configurePreset": "gcc-15_Release",
-			"jobs": 8
+			"configurePreset": "clang-22_RelWithDebInfo"
 		}
 	]
 }

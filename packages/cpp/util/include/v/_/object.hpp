@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/object.forward.hpp" // IWYU pragma: keep
+#include "v/_/0-object.forward.hpp" // IWYU pragma: keep
 
 #include "v/option/custom-template"
 #include "v/option/input-options"
@@ -24,7 +24,7 @@ class Object {
 public:
 	using Options = TOptions;
 
-	static constexpr bool IS_VOLTISO_OBJECT = true;
+	// static constexpr bool IS_VOLTISO_OBJECT = true;
 	static constexpr bool IS_TRIVIALLY_RELOCATABLE =
 	  Options::template GET<option::TRIVIALLY_RELOCATABLE>;
 

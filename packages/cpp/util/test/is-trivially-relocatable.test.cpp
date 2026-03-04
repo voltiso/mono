@@ -1,7 +1,6 @@
 #include "v/is/trivially-relocatable"
 
 #include <array>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -30,6 +29,9 @@ static_assert(!is::TriviallyRelocatable<std::vector<int>>);
 
 // Test pointers and references
 static_assert(is::TriviallyRelocatable<int *>);
+
+// ! standard decided references are not trivially relocatable
+// but for now we treat them as trivially relocatable
 static_assert(is::TriviallyRelocatable<int &>);
 static_assert(is::TriviallyRelocatable<int &&>);
 
@@ -37,9 +39,9 @@ static_assert(is::TriviallyRelocatable<int &&>);
 static_assert(is::TriviallyRelocatable<const int>);
 static_assert(is::TriviallyRelocatable<volatile int>);
 
-// Test smart pointers
-static_assert(is::TriviallyRelocatable<std::unique_ptr<int>>);
-static_assert(is::TriviallyRelocatable<std::shared_ptr<int>>);
+// ! currently we don't override their trivial relocatability status
+// static_assert(is::TriviallyRelocatable<std::unique_ptr<int>>);
+// static_assert(is::TriviallyRelocatable<std::shared_ptr<int>>);
 
 // Test function pointers
 static_assert(is::TriviallyRelocatable<void (*)(int)>);

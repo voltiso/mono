@@ -1,5 +1,6 @@
 #pragma once
-#include "v/_/0-is-voltiso-type.hpp"
+// #include "v/_/0-is-voltiso-type.hpp"
+#include "v/_/0-is-object.hpp"
 
 #include <type_traits>
 #include <utility>
@@ -12,7 +13,7 @@ namespace VOLTISO_NAMESPACE {
 // only if A provides member `operator<<=`, and does NOT provide member
 // `operator<<`
 template <class A, class B>
-  requires(is::VoltisoType<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
+  requires(is::Object<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
 INLINE decltype(auto) operator<<(A &&a, B &&b)
   requires(
     requires { a <<= std::forward<B>(b); } &&
@@ -25,7 +26,7 @@ INLINE decltype(auto) operator<<(A &&a, B &&b)
 // copy A and use `A::operator<<=` if possible
 // Only if there's no `A::operator<<`
 template <class A, class B>
-  requires(is::VoltisoType<A> && !std::is_reference_v<A> && std::is_const_v<A>)
+  requires(is::Object<A> && !std::is_reference_v<A> && std::is_const_v<A>)
 INLINE A operator<<(A &&a, B &&b)
   requires(
     requires(std::remove_const_t<A> a) { a <<= std::forward<B>(b); } &&
@@ -45,7 +46,7 @@ INLINE A operator<<(A &&a, B &&b)
 // only if A provides member `operator/=`, and does NOT provide member
 // `operator/`
 template <class A, class B>
-  requires(is::VoltisoType<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
+  requires(is::Object<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
 INLINE decltype(auto) operator/(A &&a, B &&b)
   requires(
     requires { a /= std::forward<B>(b); } &&
@@ -62,7 +63,7 @@ INLINE decltype(auto) operator/(A &&a, B &&b)
 // Only if there's no `A::operator/`
 // only if A is const rvalue reference (result of `.copy()`)
 template <class A, class B>
-  requires(is::VoltisoType<A> && !std::is_reference_v<A> && std::is_const_v<A>)
+  requires(is::Object<A> && !std::is_reference_v<A> && std::is_const_v<A>)
 INLINE A operator/(A &&a, B &&b)
   requires(
     requires(std::remove_const_t<A> a_) { a_ /= std::forward<B>(b); } &&

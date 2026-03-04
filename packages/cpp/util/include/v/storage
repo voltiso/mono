@@ -3,7 +3,7 @@
 
 #include "v/_/storage.forward.hpp"
 
-#include "v/_/object.forward.hpp"
+#include "v/_/0-object.forward.hpp"
 #include "v/_/tensor.hpp"
 #include "v/is/trivially-relocatable"
 #include "v/object"

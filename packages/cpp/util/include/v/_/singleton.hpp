@@ -17,6 +17,7 @@
 #include "v/size"
 
 #include <atomic>
+#include <mutex>
 #include <type_traits>
 
 #ifndef VOLTISO_DEBUG_SINGLETON

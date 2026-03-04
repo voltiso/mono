@@ -1,31 +1,60 @@
 #pragma once
 #include "v/_/0-namespace.hpp" // IWYU pragma: keep
 
-#include <memory>
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE::is {
 
-// ! std::remove_all_extents not working ?????????
+// ! clang-22: these don't work well yet
+// ! `__builtin_is_cpp_trivially_relocatable` fine but impossible to tag types,
+// parser does not work with `trivially_relocatable_if_eligible`
+// ! __is_trivially_relocatable is deprecated, so better not. (it worked in pair
+// with [[clang::trivial_abi]])
+// !
+// namespace _ { template <class T> constexpr bool
+// compilerTriviallyRelocatableAvailable() { #if defined(__has_builtin)
+// 	#if __has_builtin(__builtin_is_cpp_trivially_relocatable) || \
+// 	  __has_builtin(__is_trivially_relocatable)
+// 	return true;
+// 	#else
+// 	return false;
+// 	#endif
+// #else
+// 	return false;
+// #endif
+// }
+// template <class T> constexpr bool compilerTriviallyRelocatable() {
+// #if defined(__has_builtin)
+// 	#if __has_builtin(__builtin_is_cpp_trivially_relocatable)
+// 	return __builtin_is_cpp_trivially_relocatable(T);
+// 	#elif __has_builtin(__is_trivially_relocatable)
+// 	return __is_trivially_relocatable(T);
+// 	#else
+// 	return false;
+// 	#endif
+// #else
+// 	return false;
+// #endif
+// }
+// } // namespace _
 
 template <class T>
 static constexpr auto TriviallyRelocatable = []() constexpr {
-	// Check if type provides IS_TRIVIALLY_RELOCATABLE marker
-	if constexpr (requires { T::IS_TRIVIALLY_RELOCATABLE; }) {
-		return T::IS_TRIVIALLY_RELOCATABLE;
+	constexpr bool hasMarker = requires { bool(T::IS_TRIVIALLY_RELOCATABLE); };
+
+	if constexpr (hasMarker) {
+		return static_cast<bool>(T::IS_TRIVIALLY_RELOCATABLE);
 	} else {
-		// Fall back to default inference
+		// Fallback for compilers without trivial-relocatability support.
 		return std::is_reference_v<T> ||
 		       std::is_trivially_copyable_v<T>; // may be incomplete yet
 	}
 }();
 
-template <class T>
-static constexpr auto TriviallyRelocatable<std::unique_ptr<T>> = true;
-
-template <class T>
-static constexpr auto TriviallyRelocatable<std::shared_ptr<T>> = true;
-
-// static_assert(TriviallyRelocatable<int>);
+// ! currently disabled overrides for std smart pointers. use ours instead
+// template <class T>
+// static constexpr auto TriviallyRelocatable<std::unique_ptr<T>> = true;
+// template <class T>
+// static constexpr auto TriviallyRelocatable<std::shared_ptr<T>> = true;
 
 } // namespace VOLTISO_NAMESPACE::is

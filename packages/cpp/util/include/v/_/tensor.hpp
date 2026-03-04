@@ -457,9 +457,10 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Item, auto... ES>
-class Tensor : public tensor::Custom<Options<
-                 option::Item<Item>, option::Extents<ValuePack<ES...>>,
-                 option::Self<Tensor<Item, ES...>>>> {
+class VOLTISO_RELOCATABLE(Tensor)
+    : public tensor::Custom<Options<
+        option::Item<Item>, option::Extents<ValuePack<ES...>>,
+        option::Self<Tensor<Item, ES...>>>> {
 	using Base = tensor::Custom<Options<
 	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
 	  option::Self<Tensor<Item, ES...>>>>;
@@ -531,9 +532,10 @@ from(const std::initializer_list<Item> &list) {
 } // namespace VOLTISO_NAMESPACE
 
 namespace std {
-template <class T>
-  requires requires(T t) { T::EXTENT; }
-struct tuple_size<T> : std::integral_constant<V::Size, T::EXTENT> {};
+template <V::concepts::Options Options>
+// requires requires { V::tensor::Custom<Options>::EXTENT; }
+struct tuple_size<V::tensor::Custom<Options>>
+    : std::integral_constant<V::Size, V::tensor::Custom<Options>::EXTENT> {};
 } // namespace std
 
 // !

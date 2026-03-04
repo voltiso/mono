@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import fs from 'node:fs/promises'
-
+import path from 'node:path'
 import { run } from '@voltiso/script'
 import type { BuildType } from '@voltiso/script.cmake'
 import { installVcpkg } from '@voltiso/script.cmake'
@@ -41,7 +41,7 @@ export const prepublishOnly = [
 ]
 
 async function configure(options: Options) {
-	if (await exists(dir(options))) return
+	if (await exists(path.join(dir(options), 'build.ninja'))) return
 	await run(`cmake --preset ${preset(options)}`)
 }
 

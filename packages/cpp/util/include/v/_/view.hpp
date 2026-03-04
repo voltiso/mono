@@ -3,7 +3,7 @@
 
 #include "v/_/view.forward.hpp"
 
-#include "v/_/0-is-voltiso-type.hpp"
+#include "v/_/0-is-object.hpp"
 #include "v/_/const-string-view.forward.hpp"
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/_/tensor.forward.hpp"
@@ -395,7 +395,7 @@ View(TArray &array)
 // if both sides are convertible to ConstStringView, compare this way
 template <class A, class B>
 [[nodiscard]] INLINE constexpr bool operator==(const A &a, const B &b)
-  requires(V::is::VoltisoType<A> || V::is::VoltisoType<B>) && requires {
+  requires(V::is::Object<A> || V::is::Object<B>) && requires {
 	  ConstStringView(a);
 	  ConstStringView(b);
   }
@@ -436,7 +436,7 @@ template <class A, class B>
 // different memory. (performance)
 template <class A, class B>
 [[nodiscard]] inline constexpr auto operator==(const A &a, const B &b)
-  requires(V::is::VoltisoType<A> || V::is::VoltisoType<B>) &&
+  requires(V::is::Object<A> || V::is::Object<B>) &&
           requires {
 	          View(a);
 	          View(b);
@@ -488,9 +488,7 @@ template <class A, class B>
 // we can convert LHS to ConstStringView and use its operator<<
 template <class A, class B>
 [[nodiscard]] inline constexpr auto operator<<(const A &a, const B &b)
-  requires(requires {
-	  ConstStringView(a);
-  } && !is::VoltisoType<A> && is::VoltisoType<B>)
+  requires(requires { ConstStringView(a); } && !is::Object<A> && is::Object<B>)
 {
 	// static_assert(std::is_same_v<
 	//               decltype(ConstStringView(a).copy()), ConstStringView<2>
@@ -501,8 +499,9 @@ template <class A, class B>
 // otherwise, try View(a), but only if can't convert lhs to ConstStringView
 template <class A, class B>
 [[nodiscard]] inline constexpr auto operator<<(const A &a, const B &b)
-  requires requires { View(a); } && (!(requires { ConstStringView(a); }) &&
-                                     !is::VoltisoType<A> && is::VoltisoType<B>)
+  requires requires {
+	  View(a);
+  } && (!(requires { ConstStringView(a); }) && !is::Object<A> && is::Object<B>)
 {
 	return View(a) << b;
 }

@@ -18,16 +18,16 @@ add_executable(
   voltiso-util-bench
   bench.cpp
 
-  singleton.bench.cpp
-  allocator.bench.cpp
-  array.bench.cpp
-  dynamic-array.bench.cpp
-  owned.bench.cpp
-  shared.bench.cpp
-  function.bench.cpp
-  heap.bench.cpp
-  hash-set.bench.cpp
-  map.bench.cpp
+  # singleton.bench.cpp
+  # allocator.bench.cpp
+  # array.bench.cpp
+  # dynamic-array.bench.cpp
+  # owned.bench.cpp
+  # shared.bench.cpp
+  # function.bench.cpp
+  # heap.bench.cpp
+  # hash-set.bench.cpp
+  # map.bench.cpp
   soa.bench.cpp
 )
 

@@ -1,0 +1,3 @@
+#pragma once
+
+#include "v/_/0-is-object.hpp" // IWYU pragma: export

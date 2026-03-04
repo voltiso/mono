@@ -314,14 +314,15 @@ struct Consumer<soa::Flatten<T>, FlatIndex> {
 // PUBLIC API
 // ========================================================================
 
-namespace VOLTISO_NAMESPACE::soa {
+namespace VOLTISO_NAMESPACE {
 
-template <typename T, size_t NUM_SLOTS> class Array {
+template <typename T, size_t NUM_SLOTS> class SoaArray {
 	static_assert(std::is_trivially_copyable_v<T>);
 
 private:
-	using FlatTuple = typename _::FlattenTuple<typename Layout<T>::Fields>::Type;
-	using StorageTuple = typename _::MakeArrays<FlatTuple, NUM_SLOTS>::Type;
+	using FlatTuple =
+	  typename soa::_::FlattenTuple<typename soa::Layout<T>::Fields>::Type;
+	using StorageTuple = typename soa::_::MakeArrays<FlatTuple, NUM_SLOTS>::Type;
 
 	StorageTuple _arrays;
 
@@ -329,24 +330,27 @@ public:
 	// Returns a SoA-backed view (`T::View`) that aliases the underlying storage.
 	// Mutations through this view write directly into the Array at `index`.
 	INLINE typename T::View operator()(size_t index) {
-		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
-		  typename T::View>(_arrays, index);
+		return soa::_::StructConsumer<typename soa::Layout<T>::Fields, 0>::
+		  template consume<typename T::View>(_arrays, index);
 	}
 
 	// Returns a read-only SoA-backed view (`T::ConstView`) for const Array.
 	INLINE typename T::ConstView operator()(size_t index) const {
-		return _::StructConsumer<typename Layout<T>::Fields, 0>::template consume<
-		  typename T::ConstView>(_arrays, index);
+		return soa::_::StructConsumer<typename soa::Layout<T>::Fields, 0>::
+		  template consume<typename T::ConstView>(_arrays, index);
 	}
 
-	// Returns an AoS value snapshot (`const T`) materialized from SoA storage.
-	// The returned object is independent; mutating it does not affect the Array.
+	// ! do not use operator[] here - to prevent bugs
+	// ! (returning const T does not work)
+	// Returns an AoS value snapshot (`const T`) materialized from SoA
+	// storage. The returned object is independent; mutating it does not affect
+	// the Array.
 	INLINE const T operator[](size_t index) const {
-		return _::StructConsumerValue<
-		  typename Layout<T>::Fields, 0>::template consume<T>(_arrays, index);
+		return soa::_::StructConsumerValue<
+		  typename soa::Layout<T>::Fields, 0>::template consume<T>(_arrays, index);
 	}
 };
 
-} // namespace VOLTISO_NAMESPACE::soa
+} // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

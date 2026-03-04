@@ -20,6 +20,8 @@ sudo apt install zip
 sudo apt install pkg-config
 sudo apt install clang-22
 sudo apt install lld-22
+sudo apt install libc++-22-dev
+sudo apt install ninja-build
 ```
 
 Add LLVM apt repo for `clang-22` (and `lld-22`) if not present.

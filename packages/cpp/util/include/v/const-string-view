@@ -143,7 +143,7 @@ operator<<(std::ostream &os, const V::ConstStringView<T_EXTENT> &slice) {
 // ! operator<< for std::ostream for arrays and strings
 
 template <class T>
-  requires(V::is::VoltisoType<T>)
+  requires(V::is::Object<T>)
 std::ostream &operator<<(std::ostream &os, const T &t)
   requires requires { V::ConstStringView(t); }
 {
@@ -151,7 +151,7 @@ std::ostream &operator<<(std::ostream &os, const T &t)
 }
 
 template <class T>
-  requires(V::is::VoltisoType<T>)
+  requires(V::is::Object<T>)
 std::ostream &operator<<(std::ostream &os, T &&t)
   requires(
     !requires { V::ConstStringView(t); } && requires { V::View(t); })

@@ -1,0 +1,69 @@
+#pragma once
+#include <v/_/0-namespace.hpp>
+
+#include <type_traits>
+
+// ! Type parameter(s) version
+namespace VOLTISO_NAMESPACE::_ {
+template <template <class...> class Base, class... Args>
+std::true_type test_ptr_conv(const volatile Base<Args...> *);
+
+template <template <class...> class>
+std::false_type test_ptr_conv(const volatile void *);
+
+template <class Derived, template <class...> class BaseTemplate>
+auto test_is_derived_from_template(int)
+  -> decltype(test_ptr_conv<BaseTemplate>((Derived *)nullptr));
+
+template <class, template <class...> class>
+auto test_is_derived_from_template(...)
+  -> std::true_type; // private or ambiguous base
+} // namespace VOLTISO_NAMESPACE::_
+// !
+
+// // ! Non-type parameter version
+// namespace VOLTISO_NAMESPACE::_ {
+// template <template <auto...> class Base, auto... Args>
+// std::true_type test_ptr_conv_value(Base<Args...> const volatile *);
+
+// template <template <auto...> class>
+// std::false_type test_ptr_conv_value(void const volatile *);
+
+// template <class Derived, template <auto...> class BaseTemplate>
+// auto test_is_derived_from_template_value(int)
+//   -> decltype(test_ptr_conv_value<BaseTemplate>(
+//     static_cast<Derived const volatile *>(nullptr)));
+
+// template <class, template <auto...> class>
+// auto test_is_derived_from_template_value(...)
+//   -> std::true_type; // private or ambiguous base
+// } // namespace VOLTISO_NAMESPACE::_
+// // !
+
+//
+
+namespace VOLTISO_NAMESPACE::is {
+/** ⚠️ This only works for type-templates */
+template <class Derived, template <class...> class BaseTemplate>
+inline constexpr bool DerivedFromTemplate =
+  decltype(_::test_is_derived_from_template<
+           std::decay_t<Derived>, BaseTemplate>(0))::value;
+} // namespace VOLTISO_NAMESPACE::is
+
+//
+
+// // ! Type parameter version
+// namespace VOLTISO_NAMESPACE::is {
+// template <class Derived, template <class...> class BaseTemplate>
+//   requires(decltype(_::test_is_derived_from_template<Derived, BaseTemplate>(
+//             0))::value)
+// inline constexpr bool DerivedFromTemplate<Derived, BaseTemplate> = true;
+// } // namespace VOLTISO_NAMESPACE::is
+
+// // ! Non-type parameter version
+// namespace VOLTISO_NAMESPACE::is {
+// template <class Derived, template <auto...> class BaseTemplate>
+// inline constexpr bool DerivedFromTemplate<Derived, BaseTemplate> =
+//   decltype(_::test_is_derived_from_template_value<Derived, BaseTemplate>(
+//     0))::value;
+// } // namespace VOLTISO_NAMESPACE::is

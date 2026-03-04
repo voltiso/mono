@@ -222,9 +222,9 @@ VOLTISO_SOA_STRUCT(MyItem, MYITEM_FIELDS)
 
 TEST(PagedDynamicArray, soa) {
 	using MyArray =
-	  PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<soa::Array>;
+	  PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<SoaArray>;
 	using MyCowArray = PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<
-	  soa::Array>::WithCopyOnWrite;
+	  SoaArray>::WithCopyOnWrite;
 
 	static_assert(MyArray::NUM_ITEMS_PER_PAGE == 2);
 
@@ -234,7 +234,7 @@ TEST(PagedDynamicArray, soa) {
 		array.maybeGrowAndPush(); // default-constructed MyItem through paged array
 
 		ASSERT_EQ(array.numItems(), 1);
-		const auto &item = array[0];
+		auto &item = array[0];
 
 		// Field with explicit initializer in macro.
 		EXPECT_FLOAT_EQ(item.pose.position.y, 42.0f);
