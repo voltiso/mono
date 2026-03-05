@@ -31,7 +31,7 @@ describe('parseStackTrace', () => {
 		expect.hasAssertions()
 
 		const stackStr = `Error:
-        at Object.<anonymous> (/home/atablash/mono/packages/util/src/stack-trace/parseStackTrace.test.ts:22:25)
+        at Object.<anonymous> (/home/atablash/mono/libs/util/src/stack-trace/parseStackTrace.test.ts:22:25)
         at Promise.then.completed (/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/utils.js:289:28)
         at new Promise (<anonymous>)
         at callAsyncCircusFn (/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/utils.js:222:10)

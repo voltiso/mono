@@ -18,7 +18,7 @@ export function simple() {
                 version: void 0
             },
             packagePath: 'src/simple.ts',
-            gitPath: 'packages/assertor.test/src/simple.ts',
+            gitPath: 'libs/assertor.test/src/simple.ts',
             position: 186,
             line: 6,
             column: 26,
@@ -53,7 +53,7 @@ export function simple() {
                 version: void 0
             },
             packagePath: 'src/simple.ts',
-            gitPath: 'packages/assertor.test/src/simple.ts',
+            gitPath: 'libs/assertor.test/src/simple.ts',
             position: 186,
             line: 6,
             column: 26,

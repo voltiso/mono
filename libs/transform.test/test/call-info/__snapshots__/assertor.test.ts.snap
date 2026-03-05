@@ -17,7 +17,7 @@ assert(true, {
             version: void 0
         },
         packagePath: 'src/call-info/assertor.ts',
-        gitPath: 'packages/transform.test/src/call-info/assertor.ts',
+        gitPath: 'libs/transform.test/src/call-info/assertor.ts',
         position: 163,
         line: 4,
         column: 37,
@@ -37,7 +37,7 @@ assert.schema(s.number.or(void 0), 1, {
             version: void 0
         },
         packagePath: 'src/call-info/assertor.ts',
-        gitPath: 'packages/transform.test/src/call-info/assertor.ts',
+        gitPath: 'libs/transform.test/src/call-info/assertor.ts',
         position: 177,
         line: 6,
         column: 12,

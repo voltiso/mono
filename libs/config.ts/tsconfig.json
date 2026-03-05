@@ -21,7 +21,7 @@
 		// },
 
 		// Just in case - avoid polluting any dirs ()
-		//  - Otherwise, pollution happens e.g. when moving files between packages in a monorepo
+		//  - Otherwise, pollution happens e.g. when moving files between libs in a monorepo
 		"outDir": "_outDir_PLEASE_OVERRIDE",
 
 		// ! we may want to remove declaration maps when publishing?

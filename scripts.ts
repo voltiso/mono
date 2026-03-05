@@ -157,7 +157,7 @@ export async function runTestPackages(): Promise<void> {
 
 	for await (const pkg of glob(`../${name}.*test*`)) {
 		await run(
-			`pnpm -w exec turbo run --filter=./packages/${pkg.slice(3)} check --output-logs=new-only`,
+			`pnpm -w exec turbo run --filter=./libs/${pkg.slice(3)} check --output-logs=new-only`,
 		)
 	}
 }

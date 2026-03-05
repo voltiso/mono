@@ -2,8 +2,8 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 packages:
-  - packages/*
-  - packages/cpp/*
+  - libs/*
+  - libs/cpp/*
 
 nodeLinker: isolated
 autoInstallPeers: false

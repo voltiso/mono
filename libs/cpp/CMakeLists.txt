@@ -39,7 +39,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
 set(VOLTISO_NAMESPACE "v" CACHE STRING "Change from `v` to `voltiso` if you have have namespace conflicts")
 add_compile_definitions(VOLTISO_NAMESPACE=${VOLTISO_NAMESPACE})
 
-# include_directories(include packages/poker/include)
+# include_directories(include libs/poker/include)
 
 # Use libc++ (clang's C++ standard library)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")

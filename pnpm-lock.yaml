@@ -21,16 +21,16 @@ importers:
         version: 25.3.0
       '@voltiso/config.ts':
         specifier: workspace:^
-        version: link:packages/config.ts
+        version: link:libs/config.ts
       '@voltiso/config.tsdoc':
         specifier: workspace:^
-        version: link:packages/config.tsdoc
+        version: link:libs/config.tsdoc
       '@voltiso/script':
         specifier: workspace:^
-        version: link:packages/script
+        version: link:libs/script
       '@voltiso/transform':
         specifier: workspace:^
-        version: link:packages/transform
+        version: link:libs/transform
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
@@ -65,7 +65,7 @@ importers:
         specifier: ^4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(jsdom@28.1.0)(terser@5.46.0)(yaml@2.8.2)
 
-  packages/assertor:
+  libs/assertor:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -84,17 +84,17 @@ importers:
         specifier: workspace:^
         version: link:../transform
 
-  packages/assertor.test:
+  libs/assertor.test:
     devDependencies:
       '@voltiso/assertor':
         specifier: workspace:^
         version: link:../assertor
 
-  packages/config.ts: {}
+  libs/config.ts: {}
 
-  packages/config.tsdoc: {}
+  libs/config.tsdoc: {}
 
-  packages/context:
+  libs/context:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -107,7 +107,7 @@ importers:
         specifier: ^0.16.1
         version: 0.16.1
 
-  packages/cpp:
+  libs/cpp:
     devDependencies:
       '@voltiso/script':
         specifier: workspace:^
@@ -116,9 +116,9 @@ importers:
         specifier: workspace:^
         version: link:../script.cmake
 
-  packages/cpp/util: {}
+  libs/cpp/util: {}
 
-  packages/firestore-like:
+  libs/firestore-like:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -134,7 +134,7 @@ importers:
         specifier: ^13.4.0
         version: 13.6.1(encoding@0.1.13)
 
-  packages/handler:
+  libs/handler:
     devDependencies:
       '@voltiso/schemar':
         specifier: workspace:^
@@ -146,7 +146,7 @@ importers:
         specifier: workspace:^
         version: link:../util
 
-  packages/localstore:
+  libs/localstore:
     dependencies:
       '@voltiso/firestore-like':
         specifier: workspace:^
@@ -165,7 +165,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
 
-  packages/rpc:
+  libs/rpc:
     dependencies:
       '@voltiso/context':
         specifier: workspace:^
@@ -199,7 +199,7 @@ importers:
         specifier: ^7.0.0
         version: 7.1.0
 
-  packages/schemar:
+  libs/schemar:
     devDependencies:
       '@voltiso/script':
         specifier: workspace:^
@@ -208,7 +208,7 @@ importers:
         specifier: workspace:^
         version: link:../util
 
-  packages/schemar.no-op:
+  libs/schemar.no-op:
     dependencies:
       '@voltiso/schemar':
         specifier: workspace:^
@@ -221,7 +221,7 @@ importers:
         specifier: workspace:^
         version: link:../util
 
-  packages/script:
+  libs/script:
     dependencies:
       '@voltiso/util.node':
         specifier: workspace:^
@@ -246,13 +246,13 @@ importers:
         specifier: workspace:^
         version: link:../transform
 
-  packages/script.cmake:
+  libs/script.cmake:
     devDependencies:
       '@voltiso/script':
         specifier: workspace:^
         version: link:../script
 
-  packages/styler:
+  libs/styler:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -310,7 +310,7 @@ importers:
         specifier: ~0.84.0
         version: 0.84.0(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.4)
 
-  packages/styler.test.native:
+  libs/styler.test.native:
     dependenciesMeta:
       '@voltiso/styler':
         injected: false
@@ -352,7 +352,7 @@ importers:
         specifier: ^19.2.4
         version: 19.2.4(react@19.2.4)
 
-  packages/transactor:
+  libs/transactor:
     dependencies:
       '@voltiso/context':
         specifier: workspace:^
@@ -407,7 +407,7 @@ importers:
         specifier: ^0.16.1
         version: 0.16.1
 
-  packages/transactor.firestore:
+  libs/transactor.firestore:
     devDependencies:
       '@voltiso/config.ts':
         specifier: workspace:^
@@ -431,7 +431,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/transactor.firestore.test:
+  libs/transactor.firestore.test:
     devDependencies:
       '@types/random-seed':
         specifier: ^0.3.5
@@ -476,7 +476,7 @@ importers:
         specifier: ^0.16.1
         version: 0.16.1
 
-  packages/transactor.localstore:
+  libs/transactor.localstore:
     devDependencies:
       '@voltiso/config.ts':
         specifier: workspace:^
@@ -503,7 +503,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/transactor.localstore.test:
+  libs/transactor.localstore.test:
     devDependencies:
       '@types/random-seed':
         specifier: ^0.3.5
@@ -536,7 +536,7 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
 
-  packages/transform:
+  libs/transform:
     dependencies:
       '@voltiso/transform.lib':
         specifier: workspace:^
@@ -552,9 +552,9 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/transform.lib: {}
+  libs/transform.lib: {}
 
-  packages/transform.test:
+  libs/transform.test:
     devDependencies:
       '@voltiso/assertor':
         specifier: workspace:^
@@ -572,7 +572,7 @@ importers:
         specifier: workspace:^
         version: link:../util
 
-  packages/util:
+  libs/util:
     devDependencies:
       '@types/clone':
         specifier: ^2.1.4
@@ -602,7 +602,7 @@ importers:
         specifier: ^0.16.1
         version: 0.16.1
 
-  packages/util.esbuild:
+  libs/util.esbuild:
     dependencies:
       esbuild-register:
         specifier: ^3.5.0
@@ -630,7 +630,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.firestore:
+  libs/util.firestore:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -658,7 +658,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.node:
+  libs/util.node:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -671,7 +671,7 @@ importers:
         specifier: ^5.4.4
         version: 5.4.4
 
-  packages/util.react:
+  libs/util.react:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -711,7 +711,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.react.dom:
+  libs/util.react.dom:
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -747,7 +747,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.react.form:
+  libs/util.react.form:
     dependencies:
       '@voltiso/util.react':
         specifier: workspace:^
@@ -796,7 +796,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.react.patcher:
+  libs/util.react.patcher:
     dependencies:
       '@voltiso/util':
         specifier: workspace:^
@@ -839,7 +839,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.react.rxjs:
+  libs/util.react.rxjs:
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -872,7 +872,7 @@ importers:
         specifier: ^3.5.5
         version: 3.5.6(typescript@5.9.3)
 
-  packages/util.rxjs:
+  libs/util.rxjs:
     devDependencies:
       '@voltiso/assertor':
         specifier: workspace:^
@@ -3554,6 +3554,7 @@ packages:
   basic-ftp@5.1.0:
     resolution: {integrity: sha512-RkaJzeJKDbaDWTIPiJwubyljaEPwpVWkm9Rt5h9Nd6h7tEXTJ3VB4qxdZBioV7JO5yLUaOKwz7vDOzlncUsegw==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.0, please upgrade
 
   bidi-js@1.0.3:
     resolution: {integrity: sha512-RKshQI1R3YQ+n9YJz2QQ147P66ELpa1FQEg20Dk8oW9t2KgLbpDLLp9aGZ7y8WHSshDknG0bknqGw5/tyCs5tw==}
@@ -9235,8 +9236,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
-      zod: 3.25.76
-      zod-to-json-schema: 3.25.1(zod@3.25.76)
+      zod: 4.3.6
+      zod-to-json-schema: 3.25.1(zod@4.3.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -9877,7 +9878,7 @@ snapshots:
   '@types/jsonwebtoken@9.0.10':
     dependencies:
       '@types/ms': 2.1.0
-      '@types/node': 22.19.11
+      '@types/node': 25.3.0
 
   '@types/long@4.0.2':
     optional: true
@@ -9913,7 +9914,7 @@ snapshots:
   '@types/request@2.48.13':
     dependencies:
       '@types/caseless': 0.12.5
-      '@types/node': 22.19.11
+      '@types/node': 25.3.0
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.5
     optional: true
@@ -11689,7 +11690,7 @@ snapshots:
       foreground-child: 3.3.1
       jackspeak: 3.4.3
       minimatch: 9.0.5
-      minipass: 7.1.2
+      minipass: 7.1.3
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
@@ -13241,8 +13242,7 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  minipass@7.1.3:
-    optional: true
+  minipass@7.1.3: {}
 
   minizlib@3.1.0:
     dependencies:
@@ -13602,7 +13602,7 @@ snapshots:
   path-scurry@1.11.1:
     dependencies:
       lru-cache: 10.4.3
-      minipass: 7.1.2
+      minipass: 7.1.3
 
   path-scurry@2.0.1:
     dependencies:
@@ -13781,7 +13781,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.19.11
+      '@types/node': 25.3.0
       long: 5.3.2
 
   proxy-addr@2.0.7:
@@ -15346,6 +15346,10 @@ snapshots:
   zod-to-json-schema@3.25.1(zod@3.25.76):
     dependencies:
       zod: 3.25.76
+
+  zod-to-json-schema@3.25.1(zod@4.3.6):
+    dependencies:
+      zod: 4.3.6
 
   zod@3.25.76: {}
 
