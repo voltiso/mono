@@ -139,7 +139,7 @@ void testThreadIsolation(int expectedInitVal = 0) {
 // Proves initial values are correctly applied (for types with constructors)
 template <class SingletonType, int Expected> void testInitialValue() {
 	// If lazy, we must explicitly spin it up in the test
-	if constexpr (SingletonType::Options::template GET<option::LAZY>) {
+	if constexpr (SingletonType::Options::template GET<option::lazy>) {
 		SingletonType::maybeInitialize();
 	}
 	auto &s = SingletonType::maybeInitialize();
@@ -421,7 +421,7 @@ struct SlowConstructor {
 };
 
 TEST(SingletonAdvanced, ThreadSafeInitialization) {
-	using S = Singleton<SlowConstructor>::Lazy;
+	using S = Singleton<SlowConstructor>::Lazy::Concurrent;
 	SlowConstructor::initCount = 0;
 
 	std::vector<std::thread> threads;

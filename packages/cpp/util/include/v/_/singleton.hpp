@@ -8,6 +8,7 @@
 #include "v/concepts/options"
 #include "v/mutex"
 #include "v/object"
+#include "v/option/concurrent"
 #include "v/option/custom-template"
 #include "v/option/input-options"
 #include "v/option/item"
@@ -91,7 +92,7 @@ protected:
 
 template <class Options>
   requires(
-    haveNumReferences<Options> && !Options::template GET<option::THREAD_LOCAL>)
+    haveNumReferences<Options> && Options::template GET<option::concurrent>)
 class LazyDataMembersNumReferences<Options> {
 protected:
 	Atomic<Size> numReferences = 0;
@@ -110,7 +111,7 @@ protected:
 
 template <class Options>
   requires(
-    haveIsInitialized<Options> && !Options::template GET<option::THREAD_LOCAL>)
+    haveIsInitialized<Options> && Options::template GET<option::concurrent>)
 class LazyDataMembersIsInitialized<Options> {
 protected:
 	Atomic<bool> isInitialized = false;
@@ -126,7 +127,7 @@ class LazyDataMembersIsInitialized<Options> {
 
 template <class Options>
 static constexpr bool needMutex =
-  !Options::template GET<option::THREAD_LOCAL> &&
+  Options::template GET<option::concurrent> &&
   (haveNumReferences<Options> || haveIsInitialized<Options>);
 
 // Lazy needs mutex if (not THREAD_LOCAL) and (have either numReferences or
@@ -183,6 +184,14 @@ class LazyData : public LazyDataMembersStorage<Options>,
                  public LazyDataMembersIsInitialized<Options>,
                  public LazyDataMembersMutex<Options> {
 	using Item = Options::template Get<option::Item>;
+
+	static_assert(
+	  !(Options::template GET<option::concurrent> &&
+	    Options::template GET<option::threadLocal>));
+
+	static_assert(
+	  !(Options::template GET<option::concurrent> &&
+	    !Options::template GET<option::lazy>));
 
 private:
 	template <class T>
@@ -284,7 +293,7 @@ public:
 	// ⚠️ can't be constexpr
 	INLINE void _registerDestructor() noexcept {
 		if constexpr (!std::is_trivially_destructible_v<Item>) {
-			if constexpr (Options::template GET<option::THREAD_LOCAL>) {
+			if constexpr (Options::template GET<option::threadLocal>) {
 				// std::cout << "registering thread-local destructor" << std::endl;
 				static thread_local Destructor destructor{*this};
 			} else {
@@ -366,12 +375,10 @@ private:
 	INLINE void _maybeDestroy() noexcept(std::is_nothrow_destructible_v<Item>) {
 		// fence is required because we just used `release` instead of `acq_rel` in
 		// `numRefs--`
-		static_assert(
-		  needMutex<Options> == !Options::template GET<option::THREAD_LOCAL>);
 
 		static_assert(requires { this->numReferences; });
 
-		if constexpr (!Options::template GET<option::THREAD_LOCAL>) {
+		if constexpr (Options::template GET<option::concurrent>) {
 			std::atomic_thread_fence(std::memory_order_acquire);
 		}
 
@@ -476,7 +483,7 @@ protected:
 
 template <class Options>
 class ImplLazy : public std::conditional_t<
-                   Options::template GET<option::THREAD_LOCAL>,
+                   Options::template GET<option::threadLocal>,
                    ImplLazyThreadLocal<Options>, ImplLazyGlobal<Options>> {
 	// ⚠️ If your singletons depend on each other, derive the user-singleton class
 	// from `Guard`
@@ -486,9 +493,9 @@ public:
 
 template <class Options>
 using FinalImpl = std::conditional_t<
-  Options::template GET<option::LAZY>, ImplLazy<Options>,
+  Options::template GET<option::lazy>, ImplLazy<Options>,
   std::conditional_t<
-    Options::template GET<option::THREAD_LOCAL>, ImplEagerThreadLocal<Options>,
+    Options::template GET<option::threadLocal>, ImplEagerThreadLocal<Options>,
     ImplEagerGlobal<Options>>>;
 } // namespace VOLTISO_NAMESPACE::singleton::_
 
@@ -546,7 +553,7 @@ private:
 public:
 	static INLINE Item &
 	maybeInitialize() noexcept(std::is_nothrow_constructible_v<Item>)
-	  requires(Options::template GET<option::LAZY>)
+	  requires(Options::template GET<option::lazy>)
 	{
 		_staticChecks();
 		Impl::_data.maybeInitialize();
@@ -555,7 +562,7 @@ public:
 
 	static INLINE Item &
 	maybeInitialize() noexcept(std::is_nothrow_constructible_v<Item>)
-	  requires(!Options::template GET<option::LAZY>)
+	  requires(!Options::template GET<option::lazy>)
 	{
 		// noop - for compat with non-lazy version
 		_staticChecks();
@@ -563,14 +570,14 @@ public:
 	}
 
 	static INLINE Item &instance() noexcept
-	  requires(Options::template GET<option::LAZY>)
+	  requires(Options::template GET<option::lazy>)
 	{
 		_staticChecks();
 		return Impl::_data.item();
 	}
 
 	static INLINE Item &instance() noexcept
-	  requires(!Options::template GET<option::LAZY>)
+	  requires(!Options::template GET<option::lazy>)
 	{
 		_staticChecks();
 		return Impl::_item;
@@ -580,8 +587,9 @@ public:
 	template <class... MoreOptions>
 	using With = Base::template With<MoreOptions...>;
 
-	using Lazy = With<option::LAZY<true>>;
-	using ThreadLocal = With<option::THREAD_LOCAL<true>>;
+	using Lazy = With<option::lazy<true>>;
+	using ThreadLocal = With<option::threadLocal<true>>;
+	using Concurrent = With<option::concurrent<true>>;
 }; // class Singleton
 } // namespace VOLTISO_NAMESPACE::singleton
 

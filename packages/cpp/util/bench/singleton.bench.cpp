@@ -126,7 +126,7 @@ template <class T> static void BM_singleton_access_mt(benchmark::State &state) {
 
 template <class T>
 static void BM_singleton_access_mt_lazy(benchmark::State &state) {
-	using Singleton = typename Singleton<T>::Lazy;
+	using Singleton = typename Singleton<T>::Lazy::Concurrent;
 	// add guard just to check if code compiles
 	auto _guard = typename Singleton::Guard();
 	Singleton::maybeInitialize(); // Pre-init setup
@@ -136,7 +136,7 @@ static void BM_singleton_access_mt_lazy(benchmark::State &state) {
 template <class T>
 static void BM_singleton_access_mt_lazy_slow(benchmark::State &state) {
 	NEWLINE
-	using Singleton = typename Singleton<T>::Lazy;
+	using Singleton = typename Singleton<T>::Concurrent::Lazy;
 	// add guard just to check if code compiles
 	auto _guard = typename Singleton::Guard();
 	run_bench_loop(state, Singleton::maybeInitialize);

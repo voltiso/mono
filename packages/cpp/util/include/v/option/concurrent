@@ -6,7 +6,7 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::option {
-template <bool B> struct threadLocal : ValueOption<B, false> {};
+template <bool B> struct concurrent : ValueOption<B, false> {};
 } // namespace VOLTISO_NAMESPACE::option
 
 #include <v/OFF>

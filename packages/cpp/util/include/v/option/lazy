@@ -4,5 +4,5 @@
 #include "v/value-option"
 
 namespace VOLTISO_NAMESPACE::option {
-template <bool B> struct LAZY : ValueOption<B, false> {};
+template <bool B> struct lazy : ValueOption<B, false> {};
 } // namespace VOLTISO_NAMESPACE::option
