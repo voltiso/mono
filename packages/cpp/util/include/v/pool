@@ -36,8 +36,8 @@ template <class Options> struct Block {
 	Slot<Item> *allocationStart;
 	Slot<Item> *allocationEnd;
 
-	//   static_assert(is::TriviallyRelocatable<decltype(numBytes)>);
-	//   static_assert(is::TriviallyRelocatable<decltype(allocation)>);
+	//   static_assert(is::relocatable<decltype(numBytes)>);
+	//   static_assert(is::relocatable<decltype(allocation)>);
 
 	Block(Size numItems) {
 		auto numBytes = numItems * sizeof(Slot<Item>);
@@ -62,7 +62,7 @@ template <class Options> struct Block {
 
 namespace VOLTISO_NAMESPACE {
 template <class Options>
-static constexpr auto is::TriviallyRelocatable<pool::_::Block<Options>> = true;
+static constexpr auto is::relocatable<pool::_::Block<Options>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 //

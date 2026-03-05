@@ -3,11 +3,12 @@
 
 #include "v/_/dynamic-string.forward.hpp"
 #include "v/_/string.forward.hpp"
-#include "v/_/tensor.forward.hpp"
+#include "v/_/tensor/forward.hpp"
 #include "v/const-string-view"
 #include "v/option/custom-template"
 #include "v/option/extents"
 #include "v/option/item"
+#include "v/tag/copy-consteval"
 #include "v/tensor"
 
 #include <v/ON>
@@ -155,7 +156,7 @@ public:
 		  std::forward<Other>(other)) // Forward 'other' to ConstStringView
 		);
 	}
-};
+}; // class String
 // deduction guide
 template <Size N> String(const char (&)[N]) -> String<N - 1>;
 

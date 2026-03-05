@@ -142,22 +142,25 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 // go out of scope. Type must be non-trivially-copyable so WRAP_IN_STORAGE
 // is used and slot.destroy()/relocate() paths are exercised.
 namespace {
-struct PagedDestructorProbe {
+struct VOLTISO_RELOCATABLE(PagedDestructorProbe) {
+	VOLTISO_RELOCATABLE_BODY(PagedDestructorProbe);
 	static int numDestructorCalls;
 	int value = 0;
 	PagedDestructorProbe() = default;
 	explicit PagedDestructorProbe(int v) : value(v) {}
 	~PagedDestructorProbe() { ++numDestructorCalls; }
-	PagedDestructorProbe(const PagedDestructorProbe &) = delete;
 	PagedDestructorProbe(PagedDestructorProbe &&) = delete;
 	PagedDestructorProbe &operator=(const PagedDestructorProbe &) = delete;
 	PagedDestructorProbe &operator=(PagedDestructorProbe &&) = delete;
+
+private:
+	// for VOLTISO_RELOCATABLE / [[clang::trivial_abi]]
+	PagedDestructorProbe(const PagedDestructorProbe &) = default;
 };
+static_assert(is::relocatable<PagedDestructorProbe>);
+static_assert(is::relocatable<Storage<PagedDestructorProbe>>);
 int PagedDestructorProbe::numDestructorCalls = 0;
 } // namespace
-template <>
-constexpr auto
-  VOLTISO_NAMESPACE::is::TriviallyRelocatable<PagedDestructorProbe> = true;
 
 TEST(PagedDynamicArray, destructors_called_on_destroy) {
 	using SmallPagedArray =

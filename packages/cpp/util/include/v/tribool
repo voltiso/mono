@@ -1,0 +1,83 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+
+// enum class Tribool : uint8_t { False = 0, True = 1, Unknown = 2 };
+
+// Trivially constructible. Brace initialization initializes to False for
+// performance reasons.
+class Tribool {
+public:
+	enum class Value : uint8_t { False = 0, True = 1, Unknown = 2 };
+
+	static constinit const Tribool False;
+	static constinit const Tribool True;
+	static constinit const Tribool Unknown;
+
+	Value value;
+
+public:
+	constexpr Tribool() noexcept = default;
+	// constexpr Tribool() noexcept : _value(Unknown) {}
+
+	// constexpr Tribool(Value value) noexcept : _value(value) {}
+
+	constexpr Tribool(Value value) noexcept : value(value) {}
+
+	template <class Bool>
+	  requires std::is_same_v<Bool, bool>
+	constexpr Tribool(Bool value) noexcept : value(static_cast<Value>(value)) {
+		EQ(static_cast<int>(Value::False), 0);
+		EQ(static_cast<int>(Value::True), 1);
+	}
+
+	explicit constexpr operator bool() const noexcept {
+		NE(this->value, Value::Unknown);
+		return this->value == Value::True;
+	}
+
+	constexpr bool isTrue() const noexcept { return this->value == Value::True; }
+
+	constexpr bool isFalse() const noexcept {
+		return this->value == Value::False;
+	}
+
+	constexpr bool isUnknown() const noexcept {
+		return this->value == Value::Unknown;
+	}
+};
+
+inline constexpr Tribool Tribool::False = Tribool::Value::False;
+inline constexpr Tribool Tribool::True = Tribool::Value::True;
+inline constexpr Tribool Tribool::Unknown = Tribool::Value::Unknown;
+
+} // namespace VOLTISO_NAMESPACE
+
+namespace std {
+template <typename CharT, typename Traits>
+inline auto &operator<<(
+  std::basic_ostream<CharT, Traits> &os,
+  const ::VOLTISO_NAMESPACE::Tribool &value) {
+	using Tribool = ::VOLTISO_NAMESPACE::Tribool;
+	switch (value.value) {
+	case Tribool::Value::False:
+		os << "False";
+		break;
+	case Tribool::Value::True:
+		os << "True";
+		break;
+	case Tribool::Value::Unknown:
+		os << "Unknown";
+		break;
+	default:
+		os << "InvalidTribool";
+		break;
+	}
+	return os;
+}
+} // namespace std
+
+#include <v/OFF>

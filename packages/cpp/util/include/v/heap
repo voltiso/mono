@@ -1,7 +1,7 @@
 #pragma once
 
 #include "v/dynamic-array"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/likelihood"
 #include "v/option/item"
 #include "v/options"
@@ -23,7 +23,7 @@ class Custom
 
 public:
 	using Item = Options::template Get<option::Item>;
-	static_assert(is::TriviallyRelocatable<Item>);
+	static_assert(is::relocatable<Item>);
 
 	using Base::hasItems;
 	using Base::numItems;
@@ -52,7 +52,7 @@ public:
 		Storage<Item> *array = &Base::first() - 1;
 		while (index != 1 && array[index >> 1].storedItem() < item) [[likely]] {
 			auto nextIndex = index >> 1;
-			static_assert(is::TriviallyRelocatable<Item>);
+			static_assert(is::relocatable<Item>);
 			// memcpy(array + index, array + nextIndex, sizeof(Item));
 			array[index].relocateFrom(array[nextIndex]);
 			// std::swap(array[index], array[nextIndex]);
@@ -151,7 +151,7 @@ private:
 			  [[unlikely]] {
 				if (array[index].storedItem() < array[indexRight].storedItem())
 				  [[likely]] {
-					static_assert(is::TriviallyRelocatable<Item>);
+					static_assert(is::relocatable<Item>);
 					array[index].relocateFrom(array[indexRight]);
 					index = indexRight;
 				} else {
@@ -160,7 +160,7 @@ private:
 			} else [[likely]] {
 				if (array[index].storedItem() < array[indexLeft].storedItem())
 				  [[likely]] {
-					static_assert(is::TriviallyRelocatable<Item>);
+					static_assert(is::relocatable<Item>);
 					array[index].relocateFrom(array[indexLeft]);
 					index = indexLeft;
 				} else {
@@ -168,7 +168,7 @@ private:
 				}
 			}
 		}
-		static_assert(is::TriviallyRelocatable<Item>);
+		static_assert(is::relocatable<Item>);
 		array[index].relocateFrom(lastItem);
 	}
 

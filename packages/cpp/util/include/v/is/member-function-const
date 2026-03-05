@@ -52,7 +52,7 @@ static constexpr auto is_const_member_function_v =
 namespace VOLTISO_NAMESPACE::is {
 template <class Member>
 static constexpr auto MemberFunctionConst =
-  _::is_const_member_function_v<Member>;
+  VOLTISO_NAMESPACE::_::is_const_member_function_v<Member>;
 } // namespace VOLTISO_NAMESPACE::is
 
 // auto a = [] {};

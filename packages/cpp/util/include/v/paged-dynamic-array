@@ -13,6 +13,7 @@
 #include "v/options"
 #include "v/owned"
 #include "v/shared"
+#include "v/storage"
 
 #include <v/ON>
 
@@ -71,11 +72,14 @@ namespace VOLTISO_NAMESPACE::pagedDynamicArray {
 
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public Object<typename Options::template WithDefault<
-                 option::CustomTemplate<pagedDynamicArray::GetCustom>,
-                 option::InputOptions<Options>>> {
+class RELOCATABLE(Custom)
+    : public Object<typename Options::template WithDefault<
+        option::relocatable<true>,
+        option::CustomTemplate<pagedDynamicArray::GetCustom>,
+        option::InputOptions<Options>>> {
 private:
 	using Base = Object<typename Options::template WithDefault<
+	  option::relocatable<true>,
 	  option::CustomTemplate<pagedDynamicArray::GetCustom>,
 	  option::InputOptions<Options>>>;
 
@@ -354,7 +358,7 @@ public:
 		--_numItems;
 		auto &slot = pageRef->slots[offset];
 		if constexpr (WRAP_IN_STORAGE) {
-			static_assert(is::TriviallyRelocatable<Item>);
+			static_assert(is::relocatable<Item>);
 			return slot.relocate();
 		} else {
 			static_assert(std::is_trivially_copyable_v<Item>);
@@ -396,7 +400,7 @@ public:
 namespace VOLTISO_NAMESPACE {
 
 template <class Item>
-class PagedDynamicArray
+class RELOCATABLE(PagedDynamicArray)
     : public pagedDynamicArray::Custom<Options<option::Item<Item>>> {
 	using Base = pagedDynamicArray::Custom<Options<option::Item<Item>>>;
 

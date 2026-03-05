@@ -1,11 +1,19 @@
-cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
 
 # Setup vcpkg script with CMake (note: should be placed before project() call)
 set(CMAKE_TOOLCHAIN_FILE
   ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
   CACHE STRING "Vcpkg toolchain file")
 
-project(voltiso)
+project(voltiso CXX)
+
+set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Enable C++ module scanning
+# set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+
+# add_compile_options(-ftemplate-backtrace-limit=0) # longer compilation errors
 
 # Optimize all configurations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto") # LTO (can also use -flto=thin to speed up compilation)
@@ -32,9 +40,6 @@ set(VOLTISO_NAMESPACE "v" CACHE STRING "Change from `v` to `voltiso` if you have
 add_compile_definitions(VOLTISO_NAMESPACE=${VOLTISO_NAMESPACE})
 
 # include_directories(include packages/poker/include)
-
-set(CMAKE_CXX_STANDARD 26)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Use libc++ (clang's C++ standard library)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
@@ -80,10 +85,9 @@ add_executable(
   util/test/hash.test.cpp
   util/test/entry.test.cpp
   util/test/singleton.test.cpp
-  util/test/options.test.cpp
   util/test/object.test.cpp
   util/test/context.test.cpp
-  util/test/is-trivially-relocatable.test.cpp
+  util/test/is-relocatable.test.cpp
   util/test/is-instantiated-from-same.test.cpp
   util/test/is-derived-from-template.test.cpp
   util/test/options.test.cpp
@@ -110,13 +114,15 @@ add_executable(
   util/test/subject.test.cpp
   util/test/executable-path.test.cpp
   util/test/tensor.test.cpp
+	util/test/tribool.test.cpp
   util/test/quaternion.test.cpp
   util/test/ref.test.cpp
   util/test/const-string-view.test.cpp
   util/test/mutex.test.cpp
-	util/test/singleton.test.cpp
 	util/test/soa.test.cpp
 	util/test/paged-dynamic-array.test.cpp
+	util/test/get.test.cpp
+	util/test/get-raw-array.test.cpp
 
   # util/test/state.test.cpp # TODO
 

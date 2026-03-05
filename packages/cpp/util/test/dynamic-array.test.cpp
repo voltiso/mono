@@ -98,8 +98,7 @@ struct S {
 	bool operator==(int other) const { return value == other; }
 };
 
-template <>
-constexpr auto VOLTISO_NAMESPACE::is::TriviallyRelocatable<S> = true;
+template <> constexpr auto VOLTISO_NAMESPACE::is::relocatable<S> = true;
 
 TEST(DynamicArray, inPlace) {
 	numConstructors = 0;
@@ -230,7 +229,7 @@ int ShrinkProbe::numDestructorCalls = 0;
 } // namespace
 
 template <>
-constexpr auto VOLTISO_NAMESPACE::is::TriviallyRelocatable<ShrinkProbe> = true;
+constexpr auto VOLTISO_NAMESPACE::is::relocatable<ShrinkProbe> = true;
 
 // Test if destructors are called on `setNumItems`
 TEST(DynamicArray, setLessNumItems_destroysShrunkTail) {

@@ -1,0 +1,20 @@
+#pragma once
+#include <v/_/_>
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE::is {
+
+namespace _ {
+// Base case: If the expression inside decltype fails, it falls back to
+// false_type.
+template <typename T, typename = void> struct Complete : std::false_type {};
+
+// Specialization: If sizeof(T) is valid, the type must be complete.
+template <typename T>
+struct Complete<T, std::void_t<decltype(sizeof(T))>> : std::true_type {};
+} // namespace _
+
+template <typename T> inline constexpr bool complete = _::Complete<T>::value;
+
+} // namespace VOLTISO_NAMESPACE::is

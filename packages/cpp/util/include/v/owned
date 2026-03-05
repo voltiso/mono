@@ -3,11 +3,11 @@
 
 #include "v/concepts/options"
 #include "v/is/instantiated-from"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/input-options"
-#include "v/option/trivially-relocatable"
+#include "v/option/relocatable"
 #include "v/option/weak"
 #include "v/options"
 #include "v/pool"
@@ -15,11 +15,13 @@
 
 #include <type_traits>
 
+#include <v/ON>
+
 // forward declarations
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
   requires concepts::Options<Options>
-class Custom;
+class RELOCATABLE(Custom);
 
 template <class Item> class Weak;
 } // namespace VOLTISO_NAMESPACE::owned
@@ -65,13 +67,13 @@ struct Specializations<Options<option::Item<Item>, option::WEAK<true>>> {
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
+class RELOCATABLE(Custom)
     : public Object<typename Options ::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>,
-        option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
+        option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
+        option::InputOptions<Options>>> {
 private:
 	using Base = Object<typename Options ::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<_::GetCustom>,
+	  option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
 	  option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
@@ -256,7 +258,7 @@ public:
 }; // class Custom
 
 template <class Item>
-class Weak
+class RELOCATABLE(Weak)
     : public owned::Custom<Options<
         option::Item<Item>, option::WEAK<true>, option::Self<Weak<Item>>>> {
 	using Base = owned::Custom<
@@ -338,14 +340,11 @@ DEFINE_OPERATOR(||)
 
 // !
 
-// !
-
-// !
-
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-class Owned : public owned::Custom<
-                Options<option::Item<Item>, option::Self<Owned<Item>>>> {
+class RELOCATABLE(Owned)
+    : public owned::Custom<
+        Options<option::Item<Item>, option::Self<Owned<Item>>>> {
 	using Base =
 	  owned::Custom<Options<option::Item<Item>, option::Self<Owned<Item>>>>;
 	using Base::Base;
@@ -354,7 +353,8 @@ public:
 	using Base::operator=;
 }; // class Owned
 
-template <class Item>
-static constexpr auto is::TriviallyRelocatable<Owned<Item>> = true;
+template <class Item> static constexpr auto is::relocatable<Owned<Item>> = true;
 
 } // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

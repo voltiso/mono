@@ -11,6 +11,7 @@
 #include "v/option/input-options"
 #include "v/option/mutable"
 #include "v/option/noexcept"
+#include "v/option/relocatable"
 #include "v/option/self"
 #include "v/option/thread-safe"
 #include "v/options"
@@ -106,8 +107,8 @@ public:
 } // namespace VOLTISO_NAMESPACE::runner::_
 
 namespace VOLTISO_NAMESPACE::runner::_ {
-template <class TRunner> struct ImmediateTaskRef {
-	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+template <class TRunner>
+struct ImmediateTaskRef : Object<Options<option::relocatable<true>>> {
 	using Task = TRunner::Task;
 
 	Task &task;
@@ -123,8 +124,8 @@ template <class TRunner> struct ImmediateTaskRef {
 	}
 };
 
-template <class TRunner> struct ScheduledTaskRef {
-	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+template <class TRunner>
+struct ScheduledTaskRef : Object<Options<option::relocatable<true>>> {
 	using Task = TRunner::Task;
 
 	Task &task;

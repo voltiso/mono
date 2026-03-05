@@ -3,12 +3,12 @@
 
 #include "./malloc.forward.hpp" // IWYU pragma: keep
 
+#include "v/_/singleton.hpp"
 #include "v/brand/custom"
 #include "v/handle"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/input-options"
-#include "v/singleton"
 
 #include <v/ON>
 

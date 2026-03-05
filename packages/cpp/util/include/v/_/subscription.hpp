@@ -13,7 +13,9 @@
 // ! SubscriptionBase
 
 namespace VOLTISO_NAMESPACE {
-class Subscription {
+class RELOCATABLE(Subscription) {
+	VOLTISO_RELOCATABLE_BODY(Subscription);
+
 public:
 	using Callback = subscription::Callback;
 
@@ -23,9 +25,8 @@ protected:
 	Callback _callback;
 
 public:
-	static_assert(is::TriviallyRelocatable<decltype(_pSink)>);
-	static_assert(is::TriviallyRelocatable<decltype(_callback)>);
-	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+	static_assert(is::relocatable<decltype(_pSink)>);
+	static_assert(is::relocatable<decltype(_callback)>);
 
 public:
 	INLINE ~Subscription() noexcept; // circular dep
@@ -56,7 +57,8 @@ protected:
 // ! Subscription implementation
 
 namespace VOLTISO_NAMESPACE {
-template <class Value> class EagerSubscription : public Subscription {
+template <class Value>
+class RELOCATABLE(EagerSubscription) : public Subscription {
 	using Base = Subscription;
 	using AnyCallback = subscription::AnyCallback;
 	using EagerCallback = subscription::EagerCallback<Value>;
@@ -67,9 +69,8 @@ template <class Value> class EagerSubscription : public Subscription {
 	AnyCallback _anyCallback;
 
 public:
-	static_assert(is::TriviallyRelocatable<decltype(_anyCallback)>);
-	static constexpr bool IS_TRIVIALLY_RELOCATABLE =
-	  Base::IS_TRIVIALLY_RELOCATABLE;
+	static_assert(is::relocatable<decltype(_anyCallback)>);
+	VOLTISO_RELOCATABLE_BODY(EagerSubscription);
 
 public:
 	using Sink = Sink<Value>;

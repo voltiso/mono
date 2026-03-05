@@ -4,12 +4,12 @@
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/concepts/options"
 #include "v/get/hash"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/entry"
 #include "v/option/input-options"
-#include "v/option/trivially-relocatable"
+#include "v/option/relocatable"
 #include "v/options"
 #include "v/pool"
 #include <v/get/key>
@@ -91,8 +91,7 @@ using Buckets = DynamicArray<Bucket<Options>>::template WithAllocator<
 namespace VOLTISO_NAMESPACE {
 template <class Options>
   requires concepts::Options<Options>
-static constexpr auto is::TriviallyRelocatable<hashTable::_::Bucket<Options>> =
-  true;
+static constexpr auto is::relocatable<hashTable::_::Bucket<Options>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 //
@@ -503,13 +502,12 @@ namespace VOLTISO_NAMESPACE::hashTable {
 
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
-        option::InputOptions<Options>>> {
+class Custom : public Object<typename Options::template WithDefault<
+                 option::relocatable<true>, option::CustomTemplate<Custom>,
+                 option::InputOptions<Options>>> {
 private:
 	using Base = Object<typename Options::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+	  option::relocatable<true>, option::CustomTemplate<Custom>,
 	  option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
@@ -907,7 +905,7 @@ class HashTable
 }; // class HashTable
 
 template <class Entry>
-static constexpr auto is::TriviallyRelocatable<HashTable<Entry>> = true;
+static constexpr auto is::relocatable<HashTable<Entry>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

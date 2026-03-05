@@ -16,7 +16,7 @@ template <class Item> class Shared;
 namespace VOLTISO_NAMESPACE::shared {
 template <class Options>
   requires concepts::Options<Options>
-class Custom;
+class RELOCATABLE(Custom);
 
 template <class Options>
   requires concepts::Options<Options>
@@ -70,12 +70,12 @@ struct alignas(ALIGN) ControlBlock {
 namespace VOLTISO_NAMESPACE::shared {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
+class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+        option::relocatable<true>, option::CustomTemplate<GetCustom>,
         option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+	  option::relocatable<true>, option::CustomTemplate<GetCustom>,
 	  option::InputOptions<Options>>>;
 
 	// final self - named it `Shared` for better editor support
@@ -234,8 +234,8 @@ public:
 	operator Item &&() const { return (Item &&)target(); }
 
 	// non-const -> const
-	operator Custom<
-	  typename Options::template With<option::Item<const Item>>> &() {
+	operator Custom<typename Options::template With<option::Item<const Item>>>
+	  &() {
 		using NewOptions =
 		  typename Options::template With<option::Item<const Item>>;
 		return reinterpret_cast<Custom<NewOptions> &>(*this);
@@ -365,7 +365,7 @@ DEFINE_OPERATOR(||)
 
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-class Shared : public shared::Custom<Options<option::Item<Item>>> {
+class RELOCATABLE(Shared) : public shared::Custom<Options<option::Item<Item>>> {
 	using Base = shared::Custom<Options<option::Item<Item>>>;
 	using Base::Base;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 
 namespace VOLTISO_NAMESPACE {
 template <class TKey, class TValue> class Entry {
@@ -18,6 +18,6 @@ public:
 };
 
 template <class Key, class Value>
-static constexpr auto is::TriviallyRelocatable<Entry<Key, Value>> =
-  is::TriviallyRelocatable<Key> && is::TriviallyRelocatable<Value>;
+static constexpr auto is::relocatable<Entry<Key, Value>> =
+  is::relocatable<Key> && is::relocatable<Value>;
 } // namespace VOLTISO_NAMESPACE

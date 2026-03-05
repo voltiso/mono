@@ -16,7 +16,7 @@ struct get_param_value<Option, Option<V>, Fallback> {
 
 // Implementation helper
 template <template <auto> class Option, class... Tuple> struct ValueImpl {
-	static constexpr auto RESULT = Option<0>::DEFAULT;
+	static constexpr auto RESULT = Option<false>::DEFAULT;
 };
 
 // Specialization for non-empty tuples

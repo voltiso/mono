@@ -340,11 +340,13 @@ public:
 		  template consume<typename T::ConstView>(_arrays, index);
 	}
 
-	// ! do not use operator[] here - to prevent bugs
-	// ! (returning const T does not work)
 	// Returns an AoS value snapshot (`const T`) materialized from SoA
 	// storage. The returned object is independent; mutating it does not affect
 	// the Array.
+	//  - ⚠️ Careful with `operator[]` here - to prevent bugs.
+	//    (returning const T does nothing).
+	//  - 💡 To prevent bugs, never use `auto&& item = array[i]`. Use `auto&` or
+	//    `auto` according to what you expect to do (mutate vs copy).
 	INLINE const T operator[](size_t index) const {
 		return soa::_::StructConsumerValue<
 		  typename soa::Layout<T>::Fields, 0>::template consume<T>(_arrays, index);

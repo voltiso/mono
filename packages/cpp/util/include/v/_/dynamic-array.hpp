@@ -3,22 +3,26 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 
-#include "v/_/tensor.forward.hpp"
+#include "v/_/tensor/forward.hpp"
+#include "v/_/view.forward.hpp"
 #include "v/concepts/options"
 #include "v/get/brands"
+#include "v/get/extent"
 #include "v/get/num-items"
 #include "v/get/num-slots"
 #include "v/handle"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/likelihood"
+#include "v/memory/iterator"
 #include "v/object"
 #include "v/option/allocator"
 #include "v/option/in-place"
 #include "v/option/in-place-only"
 #include "v/option/input-options"
 #include "v/option/item"
-#include "v/option/trivially-relocatable"
+#include "v/option/relocatable"
 #include "v/options"
+#include "v/raw-array"
 #include "v/storage"
 #include "v/tag/concat"
 #include "v/tag/copy"
@@ -32,7 +36,7 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::dynamicArray::_ {
-template <class Options> struct Base_ : Object<Options> {
+template <class Options> struct RELOCATABLE(Base_) : Object<Options> {
 	using Base = Object<Options>;
 	using Base::Base;
 	using Base::operator=;
@@ -40,7 +44,7 @@ template <class Options> struct Base_ : Object<Options> {
 
 template <class Options>
   requires concepts::Options<Options>
-struct DataMembersNoInPlace : Base_<Options> {
+struct RELOCATABLE(DataMembersNoInPlace) : Base_<Options> {
 	using Base = Base_<Options>;
 	using Base::Base;
 	using Base::operator=;
@@ -63,7 +67,7 @@ public:
 
 template <class Options>
   requires concepts::Options<Options>
-struct DataMembersInPlaceBase : Base_<Options> {
+struct RELOCATABLE(DataMembersInPlaceBase) : Base_<Options> {
 	using Base = Base_<Options>;
 	using Base::Base;
 	using Base::operator=;
@@ -80,7 +84,7 @@ struct DataMembersInPlaceBase : Base_<Options> {
 
 template <class Options>
   requires concepts::Options<Options>
-struct DataMembersInPlaceOnly : DataMembersInPlaceBase<Options> {
+struct RELOCATABLE(DataMembersInPlaceOnly) : DataMembersInPlaceBase<Options> {
 	using Base = DataMembersInPlaceBase<Options>;
 	using Base::Base;
 	using Base::operator=;
@@ -100,7 +104,7 @@ public:
 
 template <class Options>
   requires concepts::Options<Options>
-struct DataMembersInPlace : DataMembersInPlaceBase<Options> {
+struct RELOCATABLE(DataMembersInPlace) : DataMembersInPlaceBase<Options> {
 	using Base = DataMembersInPlaceBase<Options>;
 	using Base::Base;
 	using Base::operator=;
@@ -195,13 +199,13 @@ template <class Item> struct Specializations<Options<option::Item<Item>>> {
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
+class RELOCATABLE(Custom)
     : public _::DataMembers<typename Options::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>,
-        option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
+        option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
+        option::InputOptions<Options>>> {
 private:
 	using Base = _::DataMembers<typename Options::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<_::GetCustom>,
+	  option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
 	  option::InputOptions<Options>>>;
 
 protected:
@@ -227,9 +231,9 @@ private:
 	// using Final = Base::Final;
 
 	static_assert(
-	  is::TriviallyRelocatable<Item>,
+	  is::relocatable<Item>,
 	  "`Item` must be marked as trivially relocatable using "
-	  "`is::TriviallyRelocatable<Item> = true`");
+	  "`is::relocatable<Item> = true`");
 
 	static_assert(
 	  Options::template GET<option::IN_PLACE> == 0 ||
@@ -326,13 +330,13 @@ public:
 			  [[unlikely]] {
 				this->allocation.item() = other.allocation.item();
 			} else [[likely]] {
-				static_assert(is::TriviallyRelocatable<Item>);
+				static_assert(is::relocatable<Item>);
 				memcpy(
 				  &this->inPlaceItems[0], &other.inPlaceItems[0],
 				  sizeof(Item) * other._numItems);
 			}
 		} else if constexpr (Options::template GET<option::IN_PLACE_ONLY>() > 0) {
-			static_assert(is::TriviallyRelocatable<Storage<Item>>);
+			static_assert(is::relocatable<Storage<Item>>);
 			memcpy(
 			  &this->inPlaceItems[0], &other.inPlaceItems[0],
 			  sizeof(Item) * other._numItems);
@@ -633,39 +637,40 @@ public:
 	}
 
 	// `numSlots` must be greater than zero
-	INLINE Storage<Item> *slots() {
+	INLINE auto slots() -> RawArray<Storage<Item>> & {
+		using R = RawArray<Storage<Item>> &;
+		static_assert(std::is_same_v<R, Storage<Item>(&)[]>);
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
-			// static_assert(std::is_base_of_v<
-			//               Custom<Options>,
-			//               std::remove_reference_t<decltype(self)>>);
-			return std::bit_cast<Storage<Item> *>(this->allocation.value);
-			// return static_cast<Storage<Item> *>(
-			//     _allocator()(this->allocation.item()));
+			auto *ptr = std::bit_cast<Storage<Item> *>(this->allocation.value);
+			return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
 			if (this->_numSlots <= Options::template GET<option::IN_PLACE>)
 			  [[likely]] {
-				return this->inPlaceItems.items;
+				// return this->inPlaceItems.items;
+				return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items);
 			} else [[unlikely]] {
-				return std::bit_cast<Storage<Item> *>(this->allocation.storedItem());
-				// return static_cast<Storage<Item> *>(
-				//     _allocator()(this->allocation));
+				auto *ptr =
+				  std::bit_cast<Storage<Item> *>(this->allocation.storedItem());
+				return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
 			}
 		} else {
 			static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
-			// LE(this->_numSlots, getParameter::VALUE<option::IN_PLACE_ONLY,
-			// Parameters>);
-			return this->inPlaceItems.items;
+			// return this->inPlaceItems.items;
+			return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items);
 		}
 	}
 
 	// const -> non-const
-	INLINE const Storage<Item> *slots() const {
+	INLINE auto slots() const -> const RawArray<Storage<Item>> & {
 		return const_cast<Custom *>(this)->slots();
 	}
 
-	INLINE Item *items() { return std::bit_cast<Item *>(slots()); }
-	INLINE const Item *items() const {
-		return std::bit_cast<const Item *>(slots());
+	INLINE auto items() -> RawArray<Item> & {
+		return reinterpret_cast<RawArray<Item> &>(slots());
+	}
+
+	INLINE auto items() const -> const RawArray<Item> & {
+		return reinterpret_cast<const RawArray<Item> &>(slots());
 	}
 
 	using Index = Size;
@@ -914,7 +919,7 @@ public:
 	bool hasItems() const { return this->_numItems != 0; }
 
 	INLINE constexpr void pop() noexcept {
-		static_assert(is::TriviallyRelocatable<Item>);
+		static_assert(is::relocatable<Item>);
 		GT(this->_numItems, 0);
 		auto lastIndex = this->_numItems - 1;
 		this->_numItems = lastIndex;
@@ -924,7 +929,7 @@ public:
 	INLINE constexpr auto pop() noexcept
 	  requires requires { slots()[0].relocate(); }
 	{
-		static_assert(is::TriviallyRelocatable<Item>);
+		static_assert(is::relocatable<Item>);
 		GT(this->_numItems, 0);
 		auto lastIndex = this->_numItems - 1;
 		this->_numItems = lastIndex;
@@ -934,7 +939,7 @@ public:
 
 	/** Erase element by moving last item to this slot. (swap-and-pop) */
 	INLINE constexpr auto swapErase(const Index &idx) noexcept {
-		static_assert(is::TriviallyRelocatable<Item>);
+		static_assert(is::relocatable<Item>);
 		// note: this should not trigger any move/copy constructors if RVO works.
 		GE(idx, 0);
 		LT(idx, this->_numItems);
@@ -960,7 +965,7 @@ public:
 	// note: this should not trigger any move/copy constructors if NRVO works (who
 	// knows).
 	{
-		static_assert(is::TriviallyRelocatable<Item>);
+		static_assert(is::relocatable<Item>);
 		// (who knows).
 		GE(idx, 0);
 		LT(idx, this->_numItems);
@@ -1062,10 +1067,14 @@ public:
 	// 	}
 
 	// raw array conversion should be explicit (can loose size information)
-	explicit operator RawArray<Item> &() noexcept { return slots(); }
+	explicit operator RawArray<Item> &() noexcept {
+		return reinterpret_cast<RawArray<Item> &>(*slots());
+	}
 
 	// raw array conversion should be explicit (can loose size information)
-	explicit operator const RawArray<Item> &() const noexcept { return slots(); }
+	explicit operator const RawArray<Item> &() const noexcept {
+		return reinterpret_cast<RawArray<Item> &>(*slots());
+	}
 
 public:
 	template <class Option> using With = Base::template With<Option>;
@@ -1081,11 +1090,9 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-class DynamicArray
-    : public dynamicArray::Custom<
-        Options<option::Item<Item>, option::Self<DynamicArray<Item>>>> {
-	using Base = dynamicArray::Custom<
-	  Options<option::Item<Item>, option::Self<DynamicArray<Item>>>>;
+class RELOCATABLE(DynamicArray)
+    : public dynamicArray::Custom<Options<option::Item<Item>>> {
+	using Base = dynamicArray::Custom<Options<option::Item<Item>>>;
 
 public:
 	using Base::Base;

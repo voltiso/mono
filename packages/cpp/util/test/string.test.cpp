@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <v/string>
+#include "v/dynamic-string"
+#include "v/string"
 
 #include <string>
 #include <type_traits>

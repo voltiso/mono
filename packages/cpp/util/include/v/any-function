@@ -5,14 +5,14 @@
 #include "v/is/derived-from-template"
 #include "v/is/instantiated-from"
 #include "v/is/member-function-const"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/option/input-options"
 #include "v/option/mutable"
 #include "v/option/noexcept"
 #include "v/option/optional"
 #include "v/option/parameters"
+#include "v/option/relocatable"
 #include "v/option/return"
-#include "v/option/trivially-relocatable"
 #include "v/pack"
 #include "v/pool"
 #include "v/storage"
@@ -68,16 +68,16 @@ struct Specializations<Options<
 namespace VOLTISO_NAMESPACE::anyFunction {
 template <class Options, class Parameters>
   requires concepts::Options<Options>
-class CustomBase;
+class RELOCATABLE(CustomBase);
 
 template <class Options, class... ParametersList>
   requires concepts::Options<Options>
 class CustomBase<Options, Pack<ParametersList...>>
     : public Object<typename Options::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+        option::relocatable<true>, option::CustomTemplate<GetCustom>,
         option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+	  option::relocatable<true>, option::CustomTemplate<GetCustom>,
 	  option::InputOptions<Options>>>;
 
 private:
@@ -218,7 +218,7 @@ public:
 	    This::template _isCallableOk<TCallable>() &&
 	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
 	CustomBase(TCallable &&f) {
-		static_assert(is::TriviallyRelocatable<std::decay_t<TCallable>>);
+		static_assert(is::relocatable<std::decay_t<TCallable>>);
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		new (&_storage) RawPointer{std::forward<TCallable>(f)};
 		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
@@ -238,7 +238,7 @@ public:
 	CustomBase(TCallable &&f) {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		static_assert(
-		  is::TriviallyRelocatable<std::decay_t<TCallable>>,
+		  is::relocatable<std::decay_t<TCallable>>,
 		  "mark your type as trivially relocatable, or use createIndirect");
 		using Callable = std::decay_t<TCallable>;
 		new (&_storage) Callable{std::forward<TCallable>(f)};
@@ -329,9 +329,9 @@ private:
 			}
 		}
 		// static_assert(
-		//   is::TriviallyRelocatable<Callable>,
+		//   is::relocatable<Callable>,
 		//   "Mark your type as trivially relocatable");
-		// if constexpr (!is::TriviallyRelocatable<TCallable>) {
+		// if constexpr (!is::relocatable<TCallable>) {
 		// 	return false;
 		// }
 		return true;
@@ -380,7 +380,7 @@ struct GetCustomBase<Options> {
 
 template <class Options = V::Options<>>
   requires concepts::Options<Options>
-class Custom : public _::GetCustomBase<Options>::Result {
+class RELOCATABLE(Custom) : public _::GetCustomBase<Options>::Result {
 	using Base = _::GetCustomBase<Options>::Result;
 	using Base::Base;
 };
@@ -389,7 +389,8 @@ class Custom : public _::GetCustomBase<Options>::Result {
 // !
 
 namespace VOLTISO_NAMESPACE {
-template <class Signature> class AnyFunction;
+template <class Signature> class RELOCATABLE(AnyFunction);
+
 template <class Return, class... ParametersList>
 class AnyFunction<Return(ParametersList...)>
     : public anyFunction::Custom<Options<

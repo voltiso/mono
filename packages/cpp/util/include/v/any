@@ -1,7 +1,6 @@
 #pragma once
 
 #include "v/is/instantiated-from"
-#include "v/is/trivially-relocatable"
 #include "v/relocate"
 #include "v/storage"
 
@@ -21,7 +20,10 @@ namespace VOLTISO_NAMESPACE {
  *  - can be safely bit_cast to `T*` (i.e. shared pointer must have T as first
  * in its control block)
  */
-template <class Item = void> class Any {
+template <class Item = void>
+class RELOCATABLE(Any)
+    : public Object<
+        Options<option::relocatable<true>, option::Self<Any<Item>>>> {
 private:
 	using Storage = Storage<Item *>;
 	using Deleter = void (*)(Storage &);
@@ -45,7 +47,8 @@ public:
 	// won't work with unique pointers (`Owned`)
 	Any(const Any &) = delete;
 
-	Any(Any &&other)
+public:
+	Any(Any &&other) noexcept
 	    : _storage(relocate(other._storage)), _deleter(other._deleter) {
 		NE(this, &other);
 		other._deleter = nullptr;
@@ -71,23 +74,24 @@ public:
 		    { *t };
 	    }) ||
 	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
-	Any &operator=(OtherItem &&other) {
+	Any &operator=(OtherItem &&other) noexcept(
+	  noexcept(target() = std::forward<OtherItem>(other))) {
 		target() = std::forward<OtherItem>(other);
 		return *this;
 	}
 
 	template <
 	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
-	TT &target() const {
+	TT &target() const noexcept {
 		CHECK(_storage.storedItem());
 		return *_storage.storedItem();
 	}
 
-	Item *operator->() const { return _storage.storedItem(); }
+	Item *operator->() const noexcept { return _storage.storedItem(); }
 
 	template <
 	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
-	TT &operator*() const {
+	TT &operator*() const noexcept {
 		return target();
 	}
 
@@ -95,51 +99,49 @@ public:
 
 	template <class TT = Item>
 	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
-	operator TT &() const {
+	operator TT &() const noexcept {
 		return target();
 	}
 
 	template <class TT = Item>
 	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
-	operator const TT &() const {
+	operator const TT &() const noexcept {
 		return target();
 	}
 
 	template <class TT = Item>
 	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
-	operator TT &&() const {
+	operator TT &&() const noexcept {
 		return (Item &&)(**this);
 	}
 
 	template <class TT = Item>
 	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
-	operator const TT &&() const {
+	operator const TT &&() const noexcept {
 		return (Item &&)(**this);
 	}
 
 public:
-	[[nodiscard]] Any<const Item> &&freeze() && {
+	[[nodiscard]] Any<const Item> &&freeze() && noexcept {
 		return reinterpret_cast<Any<const Item> &&>(*this);
 	}
 
-	[[nodiscard]] const Any<const Item> &&freeze() const && {
+	[[nodiscard]] const Any<const Item> &&freeze() const && noexcept {
 		return reinterpret_cast<const Any<const Item> &&>(*this);
 	}
 
-	const Any<const Item> &frozen() const && {
+	const Any<const Item> &frozen() const && noexcept {
 		static_assert(false, "Ref::frozen() works only for lvalue references");
 	}
 
-	[[nodiscard]] Any<const Item> &frozen() & {
+	[[nodiscard]] Any<const Item> &frozen() & noexcept {
 		return reinterpret_cast<Any<const Item> &>(*this);
 	}
 
-	[[nodiscard]] const Any<const Item> &frozen() const & {
+	[[nodiscard]] const Any<const Item> &frozen() const & noexcept {
 		return reinterpret_cast<const Any<const Item> &>(*this);
 	}
 };
-
-template <class T> constexpr bool is::TriviallyRelocatable<Any<T>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

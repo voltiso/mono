@@ -2,6 +2,7 @@
 #include <v/_/_>
 
 #include "v/brand/path"
+#include "v/dynamic-string"
 #include "v/option/extents"
 #include "v/option/self"
 #include "v/options"

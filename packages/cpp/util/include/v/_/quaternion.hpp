@@ -2,8 +2,8 @@
 #include <v/_/_>
 
 #include "v/_/quaternion.forward.hpp"
-
-#include "v/_/tensor.hpp"
+#include "v/_/tensor/tensor.hpp"
+#include "v/is/relocatable"
 
 #include <initializer_list>
 #include <type_traits>
@@ -11,27 +11,18 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-template <class Item>
-class Quaternion : public tensor::Custom<Options<
-                     option::Item<Item>, option::Extents<ValuePack<4>>,
-                     option::Self<Quaternion<Item>>>> {
-	using Base = tensor::Custom<Options<
-	  option::Item<Item>, option::Extents<ValuePack<4>>,
-	  option::Self<Quaternion<Item>>>>;
+#pragma push_macro("BASE")
+#define BASE                                                                   \
+	tensor::Custom<Options<                                                      \
+	  option::relocatable<true>, option::Item<Item>,                             \
+	  option::Extents<ValuePack<4>>, option::Self<Quaternion<Item>>>>
+template <class Item> class RELOCATABLE(Quaternion) : public BASE {
+	using Base = BASE;
+#pragma pop_macro("BASE")
 	using Base::Base;
+	static_assert(is::relocatable<Item>);
 
-public:
-	// everything deriving from Tensor must explicitly inherit these for
-	// explicit-copy semantics
-	Quaternion(Quaternion &&) = delete;
-	template <class Source>
-	  requires std::is_same_v<Source, Quaternion>
-	Quaternion(const Source &&other)
-	    : Base(static_cast<const Source &&>(other)) {}
-	Quaternion &operator=(Quaternion &&) = delete;
-	template <class Arg> auto &operator=(const Arg &&arg) {
-		return Base::operator=(static_cast<const Arg &&>(arg));
-	}
+	VOLTISO_INHERIT_RVALUE_COPY(Quaternion, Base);
 
 public:
 	constexpr auto w() const -> const Item & { return (*this)[0]; }

@@ -250,7 +250,7 @@ public:
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::pool
 // VOLTISO_OBJECT_FINAL(pool)
-// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
+// VOLTISO_OBJECT_RELOCATABLE(pool)
 
 namespace VOLTISO_NAMESPACE {
 // template <class Item>

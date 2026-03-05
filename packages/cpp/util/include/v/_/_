@@ -29,6 +29,14 @@
 
 // !
 
+#ifndef VOLTISO_ENABLE_TRIVIAL_ABI
+// ⚠️ If you ever want ABI compatibility, you must disable this. This option only
+// works with Clang.
+	#define VOLTISO_ENABLE_TRIVIAL_ABI true
+#endif
+
+// !
+
 #ifdef __has_feature
 	#if __has_feature(address_sanitizer)
 		#include <sanitizer/lsan_interface.h>
@@ -52,12 +60,7 @@
 
 // !
 
-#if __has_cpp_attribute(clang::trivial_abi)
-  // The attribute goes between 'class' and the Name
-	#define VOLTISO_RELOCATABLE(ClassName) [[clang::trivial_abi]] ClassName
-#else
-	#define VOLTISO_RELOCATABLE(ClassName) ClassName
-#endif
+#define VOLTISO_COMMA ,
 
 // !
 
@@ -99,3 +102,38 @@
 #include "v/_/0-operators.hpp" // IWYU pragma: export
 
 // --------------------------------------------------------------
+
+// !
+
+#if defined(__has_cpp_attribute)
+	#if __has_cpp_attribute(clang::trivial_abi)
+		#define VOLTISO_HAS_ATTRIBUTE_TRIVIAL_ABI 1
+	#else
+		#define VOLTISO_HAS_ATTRIBUTE_TRIVIAL_ABI 0
+	#endif
+#else
+	#define VOLTISO_HAS_ATTRIBUTE_TRIVIAL_ABI 0
+#endif
+
+#if VOLTISO_HAS_ATTRIBUTE_TRIVIAL_ABI && VOLTISO_ENABLE_TRIVIAL_ABI
+  // The attribute goes between 'class' and the Name
+	#define VOLTISO_RELOCATABLE(ClassName) [[clang::trivial_abi]] ClassName
+#else
+	#define VOLTISO_RELOCATABLE(ClassName) ClassName
+#endif
+
+// ! same as libc++ - `using __trivially_relocatable = Self`
+#define VOLTISO_RELOCATABLE_MARKER __trivially_relocatable
+
+#define VOLTISO_RELOCATABLE_BODY(Self)                                         \
+public:                                                                        \
+	using VOLTISO_RELOCATABLE_MARKER = Self; /* libc++ way */
+
+// ! USAGE
+// struct VOLTISO_RELOCATABLE(A) {
+// 	VOLTISO_RELOCATABLE_BODY(A);
+// 	A(const A &) {}
+// };
+
+// // static_assert(VOLTISO_NAMESPACE::_::classNameMarkedRelocatable<A>);
+// static_assert(std::__libcpp_is_trivially_relocatable<A>());

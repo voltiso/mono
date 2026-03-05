@@ -38,6 +38,14 @@
 
 // !
 
+#pragma push_macro("RELOCATABLE")
+#define RELOCATABLE VOLTISO_RELOCATABLE
+
+#pragma push_macro("COMMA")
+#define COMMA VOLTISO_COMMA
+
+// !
+
 #pragma push_macro("V")
 #define V VOLTISO_NAMESPACE
 

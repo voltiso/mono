@@ -1,28 +1,49 @@
 #include <gtest/gtest.h>
 
-#include "v/_/tensor.hpp"
-#include "v/is/trivially-relocatable"
+#include "v/is/relocatable"
 #include "v/storage"
 #include "v/tensor"
 #include "v/view"
 
 #include <type_traits>
 
+#include <v/ON>
+
 using namespace VOLTISO_NAMESPACE;
 
-// struct [[clang::trivial_abi]] Test {
-// 	int a;
-// 	Test(const Test &) {}
-// };
-// #pragma GCC diagnostic push
-// #pragma GCC diagnostic ignored "-Wdeprecated-builtins"
-// static_assert(__is_trivially_relocatable(Test));
-// #pragma GCC diagnostic pop
-// static_assert(__builtin_is_cpp_trivially_relocatable(Test));
+template <class T> struct RELOCATABLE(BaseBase) {
+	BaseBase(const BaseBase &) {}
+};
+
+template <class T> struct RELOCATABLE(Base) : BaseBase<T> {
+	Base(const Base &) {}
+	T t;
+};
+
+// !
+
+static_assert(
+  std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
+
+static_assert(std::is_trivially_copyable_v<v::_::tensor::CustomNR<v::Options<
+                v::option::Item<int>, v::option::Extents<v::ValuePack<3>>,
+                v::option::implicitCopy<true>>>>);
 
 static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
 
-static_assert(is::TriviallyRelocatable<Tensor<int, 1>>);
+static_assert(
+  is::_::builtinRelocatable<_::tensor::Base<Options<option::Item<int>>>>);
+
+static_assert(is::_::builtinRelocatable<
+              _::tensor::RelocatableBase<Options<option::Item<int>>>>);
+
+static_assert(is::_::builtinRelocatable<
+              V::_::tensor::CustomNR<Options<option::Item<int>>>>);
+
+static_assert(
+  is::_::builtinRelocatable<tensor::Custom<Options<option::Item<int>>>>);
+static_assert(is::_::builtinRelocatable<Tensor<int, 1>>);
+static_assert(is::relocatable<Tensor<int, 1>>);
 
 // ! note: our Tensor is not an aggregate type !
 // there's too many cool stuff in it
@@ -30,6 +51,34 @@ static_assert(is::TriviallyRelocatable<Tensor<int, 1>>);
 // - If you need an aggregate type, just use `std::array`
 static_assert(std::is_aggregate_v<std::array<int, 3>>);
 static_assert(!std::is_aggregate_v<Tensor<int, 3>>);
+
+// !
+
+using Implicit = Tensor<int, 3>::WithImplicitCopy;
+
+static_assert(std::is_trivially_copyable_v<Implicit>);
+
+// void test() {
+// 	Implicit a;
+// 	Implicit b = a;
+// 	Implicit c = std::move(a);
+// 	(void)c;
+// 	b = a;
+// 	b = std::move(a);
+// }
+
+static_assert(std::is_constructible_v<Implicit, Implicit &>);
+static_assert(std::is_constructible_v<Implicit, Implicit &&>);
+static_assert(std::is_constructible_v<Implicit, const Implicit &>);
+static_assert(std::is_constructible_v<Implicit, const Implicit &&>);
+
+static_assert(std::is_assignable_v<Implicit &, Implicit>);
+static_assert(std::is_assignable_v<Implicit &, Implicit &>);
+static_assert(std::is_assignable_v<Implicit &, Implicit &&>);
+static_assert(std::is_assignable_v<Implicit &, const Implicit &>);
+static_assert(std::is_assignable_v<Implicit &, const Implicit &&>);
+
+// !
 
 TEST(Tensor, uninitialized) {
 	Storage<Tensor<int, 10>> array;
@@ -226,3 +275,5 @@ TEST(Tensor, mdFlat) {
 	EXPECT_EQ(tensor[1][0], 3);
 	EXPECT_EQ(tensor[1][1], 4);
 }
+
+#include <v/OFF>

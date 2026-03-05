@@ -1,6 +1,6 @@
 #include "_.hpp"
 
-#include <v/is/trivially-relocatable>
+#include <v/is/relocatable>
 #include <v/min>
 #include <v/storage>
 #include <v/tensor>

@@ -4,7 +4,7 @@
 #include <v/allocator/Malloc>
 #include <v/has>
 #include <v/is::InstantiatedFrom>
-#include <v/is::TriviallyRelocatable>
+#include <v/is::relocatable>
 #include <v/override>
 #include <v/singleton>
 #include <v/storage/Storage>
@@ -261,10 +261,10 @@ public:
 	void setNumBytes(Size newNumBytes) {
 		// simply don't allow to avoid accidental slow copying
 		static_assert(
-		  is::TriviallyRelocatable<Item>,
+		  is::relocatable<Item>,
 		  "Allocation::setNumBytes(): Item must be marked as trivially "
 		  "relocatable using "
-		  "`is::TriviallyRelocatable<Item> = true`");
+		  "`is::relocatable<Item> = true`");
 		_::getData(*this) =
 		  Options::Allocator::setNumBytes(_::getData(*this), newNumBytes);
 		if constexpr (IS_WITH_SIZE) {

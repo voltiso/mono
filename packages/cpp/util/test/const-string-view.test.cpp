@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <v/const-string-view>
+#include <v/dynamic-string>
 #include <v/string>
 
 using namespace VOLTISO_NAMESPACE;
@@ -57,4 +58,30 @@ TEST(ConstStringView, fromDynamicString) {
 	auto str = dynamicString::from("abc");
 	auto slice = ConstStringView(str);
 	(void)slice;
+}
+
+TEST(ConstStringView, stream) {
+	std::ostringstream os;
+	os << ConstStringView("abc");
+	EXPECT_EQ(os.str(), "abc");
+}
+
+TEST(ConstStringView, stdFormat) {
+	auto static_str = ConstStringView("abc");
+	EXPECT_EQ(std::format("Test: {}", static_str), "Test: abc");
+
+	std::string s = "hello";
+	auto dynamic_str = ConstStringView(s);
+	EXPECT_EQ(std::format("[{}]", dynamic_str), "[hello]");
+
+	// ConstStringView in format with multiple args
+	EXPECT_EQ(std::format("{} - {}!", static_str, dynamic_str), "abc - hello!");
+
+	// formatting const reference should also work
+	const auto &ref = static_str;
+	EXPECT_EQ(std::format("Ref: {}", ref), "Ref: abc");
+
+	// with std::format using a const ConstStringView
+	const ConstStringView<3> const_str("def");
+	EXPECT_EQ(std::format("[{}]", const_str), "[def]");
 }

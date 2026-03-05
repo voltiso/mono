@@ -9,6 +9,7 @@
 using namespace VOLTISO_NAMESPACE;
 
 static_assert(std::is_trivially_copyable_v<Quaternion<int>>);
+static_assert(is::relocatable<Quaternion<int>>);
 
 TEST(Quaternion, uninitialized) {
 	Storage<Quaternion<int>> q;

@@ -1,10 +1,67 @@
+#include "v/_/storage.hpp"
 #include <gtest/gtest.h>
 
 #include <v/storage>
 
 #include <type_traits>
 
+#include <v/ON>
+
 using namespace VOLTISO_NAMESPACE;
+
+// !
+
+struct Complex {
+	Complex(const Complex &) {}
+};
+
+static_assert(
+  std::is_same_v<Storage<int>::__trivially_relocatable, Storage<int>>);
+
+static_assert(is::_::builtinRelocatable<
+              storage::_::DataMembersBytes<Options<option::Item<int>>>>);
+static_assert(
+  is::_::builtinRelocatable<storage::_::CustomNR<Options<option::Item<int>>>>);
+static_assert(
+  is::_::builtinRelocatable<storage::Custom<Options<option::Item<int>>>>);
+static_assert(
+  !is::_::builtinRelocatable<storage::Custom<Options<option::Item<Complex>>>>);
+static_assert(is::_::builtinRelocatable<Storage<int>>);
+static_assert(!is::_::builtinRelocatable<Storage<Complex>>);
+static_assert(is::relocatable<Storage<int>>);
+static_assert(!is::relocatable<Storage<Complex>>);
+
+// !
+
+struct RELOCATABLE(ForcedRelocatable)
+    : Object<Options<option::relocatable<true>>> {
+	static int numDestructorCalls;
+	int value = 0;
+	ForcedRelocatable() = default;
+	explicit ForcedRelocatable(int v) : value(v) {}
+	~ForcedRelocatable() { ++numDestructorCalls; }
+	ForcedRelocatable(ForcedRelocatable &&) = delete;
+	ForcedRelocatable &operator=(const ForcedRelocatable &) = delete;
+	ForcedRelocatable &operator=(ForcedRelocatable &&) = delete;
+
+private:
+	// for VOLTISO_RELOCATABLE / [[clang::trivial_abi]]
+	ForcedRelocatable(const ForcedRelocatable &) = default;
+};
+
+static_assert(is::relocatable<ForcedRelocatable>);
+static_assert(
+  is::relocatable<
+    storage::_::DataMembers<Options<option::Item<ForcedRelocatable>>>>);
+static_assert(is::relocatable<
+              storage::_::CustomNR<Options<option::Item<ForcedRelocatable>>>>);
+static_assert(
+  is::relocatable<storage::Custom<Options<option::Item<ForcedRelocatable>>>>);
+
+static_assert(is::_::builtinRelocatable<Storage<ForcedRelocatable>>);
+static_assert(is::relocatable<Storage<ForcedRelocatable>>);
+
+// !
 
 TEST(Storage, doesNotInitialize) {
 	int memory = 333;
@@ -29,6 +86,8 @@ TEST(Storage, doesNotInitialize) {
 
 	// !
 	static_assert(std::is_trivially_copyable_v<S>);
+	static_assert(std::is_trivially_copyable_v<
+	              storage::_::DataMembersBytes<Options<option::Item<int>>>>);
 	static_assert(std::is_trivially_copyable_v<Storage<S>>);
 
 	static_assert(std::is_trivially_move_assignable_v<S>);
@@ -88,6 +147,11 @@ TEST(Storage, preventMemcpy) {
 	static_assert(std::is_trivially_copy_assignable_v<S>);
 	static_assert(!std::is_trivially_copy_assignable_v<Storage<S>>);
 
+	// auto test = [] {
+	// 	Storage<S> a;
+	// 	Storage<S> b = a.copy();
+	// };
+
 	// Item not trivially copyable - no copy allowed
 	static_assert(!std::is_constructible_v<Storage<S>, Storage<S>>);
 	static_assert(!std::is_constructible_v<Storage<S>, Storage<S> &&>);
@@ -106,3 +170,5 @@ TEST(Storage, zeroInitialize) {
 	Storage<S> storage = {};
 	EXPECT_EQ(storage.storedItem().value, 0);
 }
+
+#include <v/OFF>

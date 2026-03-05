@@ -7,7 +7,7 @@
 #include "v/object"
 #include "v/option/handle-kind"
 #include "v/option/input-options"
-#include "v/option/trivially-relocatable"
+#include "v/option/relocatable"
 #include "v/options"
 
 // #include <cstdint>
@@ -54,13 +54,12 @@ template <class Type> consteval auto getNullValue() noexcept {
 namespace VOLTISO_NAMESPACE::handle {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
-        option::InputOptions<Options>>> {
+class Custom : public Object<typename Options::template WithDefault<
+                 option::relocatable<true>, option::CustomTemplate<Custom>,
+                 option::InputOptions<Options>>> {
 private:
 	using Base = Object<typename Options::template WithDefault<
-	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+	  option::relocatable<true>, option::CustomTemplate<Custom>,
 	  option::InputOptions<Options>>>;
 
 public:

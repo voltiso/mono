@@ -6,7 +6,7 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::option {
-template <bool B> struct TRIVIALLY_RELOCATABLE : ValueOption<B, false> {};
+template <bool B> struct implicitCopy : ValueOption<B, false> {};
 } // namespace VOLTISO_NAMESPACE::option
 
 #include <v/OFF>

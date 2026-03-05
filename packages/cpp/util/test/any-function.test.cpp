@@ -2,14 +2,14 @@
 
 #include <type_traits>
 #include <v/any-function>
-#include <v/is/trivially-relocatable>
+#include <v/is/relocatable>
 
 #include <string>
 
 using namespace VOLTISO_NAMESPACE;
 
 static_assert(sizeof(AnyFunction<int(int)>) == sizeof(void *) * 3);
-static_assert(is::TriviallyRelocatable<AnyFunction<int(int)>>);
+static_assert(is::relocatable<AnyFunction<int(int)>>);
 
 TEST(AnyFunction, moveSemantics) {
 	v::AnyFunction<void()> test = [] {};

@@ -6,7 +6,7 @@
 #include "v/Object"
 #include "v/Options"
 #include "v/allocator/Malloc"
-#include "v/is::TriviallyRelocatable"
+#include "v/is::relocatable"
 
 namespace VOLTISO_NAMESPACE::hashTable::_ {
 template <class Options> struct Bucket {
@@ -23,8 +23,7 @@ template <class Options> struct Bucket {
 
 namespace VOLTISO_NAMESPACE {
 template <class Options>
-static constexpr auto is::TriviallyRelocatable<hashTable::_::Bucket<Options>> =
-  true;
+static constexpr auto is::relocatable<hashTable::_::Bucket<Options>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 //
@@ -414,7 +413,7 @@ public:
 };
 } // namespace VOLTISO_NAMESPACE::hashTable
 VOLTISO_OBJECT_FINAL(hashTable)
-VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(hashTable)
+VOLTISO_OBJECT_RELOCATABLE(hashTable)
 
 namespace VOLTISO_NAMESPACE {
 template <class Entry>

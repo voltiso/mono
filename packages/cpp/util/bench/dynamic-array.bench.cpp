@@ -1,7 +1,7 @@
 #include "_.hpp"
 
 #include <v/dynamic-array>
-#include <v/is/trivially-relocatable>
+#include <v/is/relocatable>
 #include <v/storage>
 
 #include <v/ON>
@@ -26,7 +26,7 @@ template <int SIZE> struct Trivial {
 static_assert(sizeof(Trivial<123>) == 123);
 
 static_assert(std::is_trivially_copyable_v<Trivial<123>>);
-static_assert(is::TriviallyRelocatable<Trivial<123>>);
+static_assert(is::relocatable<Trivial<123>>);
 
 static constexpr auto MEMORY = 4 * 1024 * 1024;
 
@@ -127,7 +127,7 @@ template <int SIZE> struct TriviallyRelocatable {
 };
 
 template <int SIZE>
-constexpr auto is::TriviallyRelocatable<TriviallyRelocatable<SIZE>> = true;
+constexpr auto is::relocatable<TriviallyRelocatable<SIZE>> = true;
 
 static_assert(sizeof(TriviallyRelocatable<123>) == 123);
 static_assert(sizeof(Storage<TriviallyRelocatable<123>>) == 123);
@@ -138,7 +138,7 @@ static_assert(
 static_assert(
   !std::is_trivially_move_constructible_v<TriviallyRelocatable<123>>);
 
-static_assert(is::TriviallyRelocatable<TriviallyRelocatable<123>>);
+static_assert(is::relocatable<TriviallyRelocatable<123>>);
 
 //
 

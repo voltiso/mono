@@ -6,7 +6,7 @@
 #include "v/_/0-is-object.hpp"
 #include "v/_/const-string-view.forward.hpp"
 #include "v/_/dynamic-array.forward.hpp"
-#include "v/_/tensor.forward.hpp"
+#include "v/_/tensor/forward.hpp"
 #include "v/extent"
 #include "v/get/extent"
 #include "v/memory/iterator"
@@ -271,12 +271,12 @@ public:
 	// ! explicit - raw arrays don't handle comparison nicely
 	explicit operator Items &() const { return items; }
 
-	auto &operator[](Size i) {
+	constexpr auto &operator[](Size i) {
 		LT(i, extent());
 		return items[i];
 	}
 
-	const auto &operator[](Size i) const {
+	constexpr const auto &operator[](Size i) const {
 		LT(i, extent());
 		return items[i];
 	}
@@ -341,6 +341,9 @@ public:
 	// ! iteration
 	auto begin() const noexcept { return memory::Iterator(items); }
 	auto end() const noexcept { return memory::Iterator(items + extent()); }
+
+	// ! for static_assert, etc.
+	[[nodiscard]] constexpr auto data() const noexcept { return items; }
 
 public:
 	template <class Extents>

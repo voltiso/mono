@@ -6,6 +6,10 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+static_assert(is::_::builtinRelocatable<Any<>>);
+static_assert(is::relocatable<Any<>>);
+static_assert(is::relocatable<Any<int>>);
+
 struct TestObject {
 	static int numDestructorCalls;
 	~TestObject() { numDestructorCalls += 1; }

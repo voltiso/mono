@@ -56,8 +56,7 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class T>
-static constexpr bool is::TriviallyRelocatable<LateInit<T>> =
-  is::TriviallyRelocatable<T>;
+static constexpr bool is::relocatable<LateInit<T>> = is::relocatable<T>;
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

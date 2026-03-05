@@ -4,9 +4,10 @@
 #include "v/_/0-object.forward.hpp" // IWYU pragma: keep
 
 #include "v/option/custom-template"
+#include "v/option/implicit-copy" // IWYU pragma: keep for macro
 #include "v/option/input-options"
+#include "v/option/relocatable"
 #include "v/option/self"
-#include "v/option/trivially-relocatable"
 #include "v/options"
 
 #include <memory>
@@ -23,10 +24,6 @@ template <class TOptions = Options<>>
 class Object {
 public:
 	using Options = TOptions;
-
-	// static constexpr bool IS_VOLTISO_OBJECT = true;
-	static constexpr bool IS_TRIVIALLY_RELOCATABLE =
-	  Options::template GET<option::TRIVIALLY_RELOCATABLE>;
 
 protected:
 	template <class OptionsArg>
@@ -47,6 +44,35 @@ protected:
 	  // try using provided `CustomTemplate<InputOptions>` instead
 	  // (which might not yield the final class in chain)
 	  CustomTemplate<InputOptions>>;
+
+public:
+	// static constexpr bool IS_VOLTISO_OBJECT = true;
+	// static constexpr bool IS_RELOCATABLE =
+	//   Options::template GET<option::relocatable>;
+
+	// libc++ way:
+	using __trivially_relocatable = std::conditional_t<
+	  Options::template GET<option::relocatable>.isTrue(), Self, void>;
+
+	Object(const Object &) = default;
+
+	// force non-relocatable base
+	Object(const Object &)
+	  requires(Options::template GET<option::relocatable>.isFalse())
+	{}
+
+	// ! we can't do this for trivially-copyable types
+	// Object(const Object &other) noexcept(
+	//   noexcept(Self(static_cast<const Self &&>(other))))
+	//   requires(Options::template GET<option::implicitCopy>)
+	// {
+	// 	static_assert(
+	// 	  !std::is_constructible_v<Self, const Self &>,
+	// 	  "option::implicitCopy is only valid when object is not copyable by "
+	// 	  "default");
+
+	// 	new (&self()) Self(static_cast<const Self &&>(other));
+	// }
 
 protected:
 	// get Self from CRTP, and apply correct cvref-qualifiers
@@ -160,6 +186,8 @@ public:
 };
 } // namespace VOLTISO_NAMESPACE
 
+// static_assert(std::is_trivially_copyable_v<v::Object<>>);
+
 // ! BELOW: experiments how to make derived class explicit-copy only, while
 // keeping it trivially-copyable
 
@@ -206,3 +234,40 @@ public:
 
 // static_assert(std::is_constructible_v<S, const S &&>);
 // static_assert(std::is_constructible_v<D, const D &&>);
+
+#define VOLTISO_INHERIT_RVALUE_COPY(Self, Base)                                \
+public:                                                                        \
+	Self(const Self &other)                                                      \
+	  requires(Base::Options::template GET<option::implicitCopy>)                \
+	= default;                                                                   \
+                                                                               \
+	Self &operator=(const Self &other)                                           \
+	  requires(Base::Options::template GET<option::implicitCopy>)                \
+	= default;                                                                   \
+                                                                               \
+	Self(Self &&)                                                                \
+	  requires(Base::Options::template GET<option::implicitCopy>)                \
+	= default;                                                                   \
+                                                                               \
+	Self &operator=(Self &&)                                                     \
+	  requires(Base::Options::template GET<option::implicitCopy>)                \
+	= default;                                                                   \
+                                                                               \
+protected:                                                                     \
+	Self(const Self &) = default; /* for [[trivial_abi]] */                      \
+	Self &operator=(const Self &) = delete;                                      \
+	Self(Self &&) = delete;                                                      \
+	Self &operator=(Self &&) = delete;                                           \
+                                                                               \
+public:                                                                        \
+	template <class Source>                                                      \
+	  requires std::is_same_v<Source, Self> &&                                   \
+	           std::is_constructible_v<Base, const Source &&>                    \
+	Self(const Source &&other) : Base(static_cast<const Source &&>(other)) {}    \
+                                                                               \
+	template <class Arg>                                                         \
+	auto &operator=(const Arg &&arg)                                             \
+	  requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }     \
+	{                                                                            \
+		return Base::operator=(static_cast<const Arg &&>(arg));                    \
+	}

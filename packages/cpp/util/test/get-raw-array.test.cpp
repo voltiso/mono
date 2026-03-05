@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <v/array>
-#include <v/get/raw-array>
+#include "v/get/raw-array"
+#include "v/tensor"
 
 TEST(getRawArray, rawArray) {
 	int a[5] = {1, 2, 3, 4, 5};
@@ -12,8 +12,8 @@ TEST(getRawArray, rawArray) {
 }
 
 TEST(getRawArray, vArray) {
-	v::Array<int, 5> a = {1, 2, 3, 4, 5};
-	static_assert(v::get::extent(a).value == 5);
+	v::Tensor<int, 5> a = {1, 2, 3, 4, 5};
+	static_assert(v::get::extent(a) == 5);
 	auto &aa = static_cast<int (&)[5]>(a);
 	static_assert(std::is_same_v<decltype(aa), int (&)[5]>);
 	static_assert(std::is_constructible_v<int (&)[5], decltype(a)>);
