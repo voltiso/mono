@@ -6,7 +6,7 @@ exports[`parseStackTrace > jest stack 1`] = `
     "column": 25,
     "functionName": "Object.<anonymous>",
     "line": 22,
-    "path": "/home/atablash/mono/libs/util/src/stack-trace/parseStackTrace.test.ts",
+    "path": "/home/atablash/mono/ts/util/src/stack-trace/parseStackTrace.test.ts",
   },
   {
     "column": 28,

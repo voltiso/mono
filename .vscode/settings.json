@@ -55,8 +55,8 @@
 	//
 	// Project-specific settings
 	//
-	"cmake.buildDirectory": "${workspaceFolder}/libs/cpp/build",
-	"cmake.sourceDirectory": "${workspaceFolder}/libs/cpp",
+	"cmake.buildDirectory": "${workspaceFolder}/cpp/build",
+	"cmake.sourceDirectory": "${workspaceFolder}/cpp",
 	"cmake.configureOnOpen": false,
 	"cmake.configureOnEdit": false,
 

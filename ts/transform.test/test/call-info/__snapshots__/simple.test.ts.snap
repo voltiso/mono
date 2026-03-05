@@ -39,7 +39,7 @@ var Test;
                     version: void 0
                 },
                 packagePath: 'src/call-info/simple.ts',
-                gitPath: 'libs/transform.test/src/call-info/simple.ts',
+                gitPath: 'ts/transform.test/src/call-info/simple.ts',
                 position: 583,
                 line: 24,
                 column: 32,
@@ -64,7 +64,7 @@ var Test;
                     version: void 0
                 },
                 packagePath: 'src/call-info/simple.ts',
-                gitPath: 'libs/transform.test/src/call-info/simple.ts',
+                gitPath: 'ts/transform.test/src/call-info/simple.ts',
                 position: 646,
                 line: 26,
                 column: 32,

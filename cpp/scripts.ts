@@ -7,7 +7,7 @@ import { run } from '@voltiso/script'
 import type { BuildType } from '@voltiso/script.cmake'
 import { installVcpkg } from '@voltiso/script.cmake'
 
-const vcpkgVersion = '2026.01.16'
+const vcpkgVersion = '2026.02.27'
 
 export const clean = 'rimraf build vcpkg compile_commands.json'
 

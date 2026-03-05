@@ -8,13 +8,13 @@
 
 | 📁                                                                                          | ℹ️                                                                                                                                                                                                                                              |
 | :------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`@voltiso/styler`](https://github.com/voltiso/voltiso/tree/master/libs/styler)         | 🦋 _The easiest_ **css-in-js** for React                                                                                                                                                                                                        |
-| [`@voltiso/schemar`](https://github.com/voltiso/voltiso/tree/master/libs/schemar)       | 👮 _The cleanest_ **schema validation**<br>🚗 Live **auto-inferred TS** typings                                                                                                                                                                 |
-| [`@voltiso/rpc`](https://github.com/voltiso/voltiso/tree/master/libs/rpc)               | 🌐 TypeScript **RPC** lib<br>🚗 Live **auto-inferred full-stack TS** typings<br>👮 Full-stack validation                                                                                                                                        |
-| [`@voltiso/transactor`](https://github.com/voltiso/voltiso/tree/master/libs/transactor) | 🗄️ NoSQL **Document Database** API<br>🟰 **ORM-free**: Document _is_ Object<br>👮 **Schema** validation<br>⚛️ Atomic **triggers**<br>🚗 Live **auto-inferred TS** typings<br>🔥 Currently **FireStore** backend<br>🌐 Currently **server-side** |
-| [`@voltiso/util`](https://github.com/voltiso/voltiso/tree/master/libs/util)             | 👌 TypeScript toolbox                                                                                                                                                                                                                           |
-| [`@voltiso/script[.lib]`](https://github.com/voltiso/voltiso/tree/master/libs/script)   | 🔨 CLI build tools                                                                                                                                                                                                                              |
-| [`@voltiso/config.**.*`](https://github.com/voltiso/voltiso/tree/master/libs/config)    | ⚙️ Our configs<br> `tsconfig`, `jest`, `tsdoc`, ...                                                                                                                                                                                             |
+| [`@voltiso/styler`](https://github.com/voltiso/voltiso/tree/master/ts/styler)         | 🦋 _The easiest_ **css-in-js** for React                                                                                                                                                                                                        |
+| [`@voltiso/schemar`](https://github.com/voltiso/voltiso/tree/master/ts/schemar)       | 👮 _The cleanest_ **schema validation**<br>🚗 Live **auto-inferred TS** typings                                                                                                                                                                 |
+| [`@voltiso/rpc`](https://github.com/voltiso/voltiso/tree/master/ts/rpc)               | 🌐 TypeScript **RPC** lib<br>🚗 Live **auto-inferred full-stack TS** typings<br>👮 Full-stack validation                                                                                                                                        |
+| [`@voltiso/transactor`](https://github.com/voltiso/voltiso/tree/master/ts/transactor) | 🗄️ NoSQL **Document Database** API<br>🟰 **ORM-free**: Document _is_ Object<br>👮 **Schema** validation<br>⚛️ Atomic **triggers**<br>🚗 Live **auto-inferred TS** typings<br>🔥 Currently **FireStore** backend<br>🌐 Currently **server-side** |
+| [`@voltiso/util`](https://github.com/voltiso/voltiso/tree/master/ts/util)             | 👌 TypeScript toolbox                                                                                                                                                                                                                           |
+| [`@voltiso/script[.lib]`](https://github.com/voltiso/voltiso/tree/master/ts/script)   | 🔨 CLI build tools                                                                                                                                                                                                                              |
+| [`@voltiso/config.**.*`](https://github.com/voltiso/voltiso/tree/master/ts/config)    | ⚙️ Our configs<br> `tsconfig`, `jest`, `tsdoc`, ...                                                                                                                                                                                             |
 
 > 💡 **Windows** users ❤️ WSL
 >
@@ -41,8 +41,8 @@ pnpm add @voltiso/config.jest
 # ...
 ```
 
-See the `libs/*/` directories for the full list of available `@voltiso/*`
-libs.
+See the `ts/*/` directories for the full list of available `@voltiso/*`
+packages.
 
 ```sh
 pnpm install @voltiso/script

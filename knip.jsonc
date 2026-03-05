@@ -37,26 +37,26 @@
 				"type-coverage"
 			]
 		},
-		"libs/config.ts": {
+		"ts/config.ts": {
 			"ignoreFiles": ["empty-hack-no-input-files.ts"]
 		},
-		"libs/cpp": {
+		"cpp": {
 			"ignoreDependencies": ["@voltiso/script.cmake"]
 		},
-		"libs/script": {
+		"ts/script": {
 			"entry": ["src/_bin/v.ts"],
 			"ignoreDependencies": ["@voltiso/transform"]
 		},
-		"libs/styler.test.native": {
+		"ts/styler.test.native": {
 			"ignoreDependencies": ["@babel/runtime"]
 		},
-		"libs/transactor": {
+		"ts/transactor": {
 			"entry": ["src/client/index.ts"]
 		},
-		"libs/transactor.firestore.test": {
+		"ts/transactor.firestore.test": {
 			"ignoreDependencies": ["firebase-tools"]
 		},
-		"libs/transform": {
+		"ts/transform": {
 			"ignoreDependencies": ["typescript-transform-paths"]
 		}
 	}
