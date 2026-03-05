@@ -28,7 +28,7 @@ static void BM_Array(benchmark::State &state) {
 	while (state.KeepRunningBatch(COUNT)) {
 		// LOG(INFO) << "COUNT: " << COUNT;
 		using Vec = Tensor<Count, COUNT>::template With<
-		  option::STARTING_INDEX<STARTING_INDEX>>;
+		  option::startingIndex<STARTING_INDEX>>;
 		Vec vec = {};
 		EQ(vec[STARTING_INDEX], 0);
 		for (Count i = STARTING_INDEX; i < (Count)(STARTING_INDEX + COUNT); ++i) {

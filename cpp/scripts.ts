@@ -6,6 +6,8 @@ import path from 'node:path'
 import { run } from '@voltiso/script'
 import type { BuildType } from '@voltiso/script.cmake'
 import { installVcpkg } from '@voltiso/script.cmake'
+import { clang } from './scripts/config'
+import { testCoverage } from './scripts/test-coverage'
 
 const vcpkgVersion = '2026.02.27'
 
@@ -37,7 +39,7 @@ export async function exists(fileName: string): Promise<boolean> {
 
 export const prepublishOnly = [
 	() => installVcpkg(vcpkgVersion),
-	`ln -sf ${dir({ compiler: 'clang-22', buildType: 'Release' })}/compile_commands.json`,
+	`ln -sf ${dir({ compiler: clang, buildType: 'Release' })}/compile_commands.json`,
 ]
 
 async function configure(options: Options) {
@@ -48,7 +50,7 @@ async function configure(options: Options) {
 //
 
 const testOptions: Options = {
-	compiler: 'clang-22',
+	compiler: clang,
 	buildType: 'Debug',
 }
 
@@ -56,15 +58,19 @@ export const test = [
 	() => 'prepublishOnly', // ! fast enough?
 	() => configure(testOptions),
 	`cmake --build --preset ${preset(testOptions)} --target voltiso-util-test`,
-	`cd ${dir(testOptions)} && GTEST_COLOR=1 ctest --output-on-failure voltiso-util-test`,
+	`cd ${dir(testOptions)} && LLVM_PROFILE_FILE="default-%p.profraw" GTEST_COLOR=1 ctest --output-on-failure`,
+	() =>
+		testCoverage({
+			cwd: dir(testOptions),
+			testExecutable: 'voltiso-util-test',
+			thresholdPercent: 100.0,
+		}),
 ]
-
-export const check = test
 
 //
 
 const benchOptions: Options = {
-	compiler: 'clang-22',
+	compiler: clang,
 	// compiler: 'gcc-15',
 
 	// buildType: 'Debug',
@@ -85,3 +91,5 @@ export const bench = [
 		// '--benchmark_repetitions=10 --benchmark_enable_random_interleaving=true --benchmark_report_aggregates_only=true',
 	].join(' '),
 ]
+
+export const check = [test, bench]

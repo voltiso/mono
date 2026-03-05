@@ -112,20 +112,23 @@ add_executable(
   util/test/subject.test.cpp
   util/test/executable-path.test.cpp
   util/test/tensor.test.cpp
-	util/test/tribool.test.cpp
+  util/test/tribool.test.cpp
   util/test/quaternion.test.cpp
   util/test/ref.test.cpp
   util/test/const-string-view.test.cpp
   util/test/mutex.test.cpp
-	util/test/soa.test.cpp
-	util/test/paged-dynamic-array.test.cpp
-	util/test/get.test.cpp
-	util/test/get-raw-array.test.cpp
+  util/test/soa.test.cpp
+  util/test/paged-dynamic-array.test.cpp
+  util/test/get.test.cpp
+  util/test/get-raw-array.test.cpp
 
   # util/test/state.test.cpp # TODO
 
   # util/test/_in-place.test.cpp # deprecated for now
 )
+
+target_compile_options(voltiso-util-test PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(voltiso-util-test PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 # google benchmark
 find_package(benchmark REQUIRED)

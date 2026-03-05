@@ -11,17 +11,6 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-template <class T> struct RELOCATABLE(BaseBase) {
-	BaseBase(const BaseBase &) {}
-};
-
-template <class T> struct RELOCATABLE(Base) : BaseBase<T> {
-	Base(const Base &) {}
-	T t;
-};
-
-// !
-
 static_assert(
   std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
 
@@ -106,14 +95,6 @@ TEST(Tensor, initializerList) {
 	EXPECT_EQ(array[2], 0);
 }
 
-// TEST(Tensor, initializerList_dynamic) {
-// 	Tensor<int, extent::DYNAMIC> array = {1, 2, 3};
-// 	EXPECT_EQ(array.extent(), 3);
-// 	EXPECT_EQ(array[0], 1);
-// 	EXPECT_EQ(array[1], 2);
-// 	EXPECT_EQ(array[2], 3);
-// }
-
 TEST(Tensor, deductionGuide) {
 	auto array = Tensor{1, 2, 3};
 	static_assert(std::is_same_v<decltype(array), Tensor<int, 3L>>);
@@ -134,16 +115,6 @@ TEST(Tensor, deductionGuideSingleString) {
 	static_assert(std::is_same_v<decltype(array), Tensor<const char *, 1L>>);
 	EXPECT_EQ(array[0], "a");
 }
-
-// ! currently explicit
-// TEST(Tensor, initializerList_assign) {
-//   Tensor<int, 3> array;
-//   array = {1, 2}; // copy assignment must be explicit?
-
-//   EXPECT_EQ(array[0], 1);
-//   EXPECT_EQ(array[1], 2);
-//   EXPECT_EQ(array[2], 0);
-// }
 
 TEST(Tensor, initializerList_deductionGuide) {
 	Tensor array = {1, 2};
@@ -275,5 +246,107 @@ TEST(Tensor, mdFlat) {
 	EXPECT_EQ(tensor[1][0], 3);
 	EXPECT_EQ(tensor[1][1], 4);
 }
+
+// ! NEW TESTS BEFORE REFACTOR AND DYNAMIC TENSORS
+
+TEST(Tensor, iterators) {
+	Tensor<int, 3> tensor = {10, 20, 30};
+
+	// Test range-based for loop
+	int sum = 0;
+	for (const auto &val : tensor) {
+		sum += val;
+	}
+	EXPECT_EQ(sum, 60);
+
+	// Test standard algorithm compatibility
+	EXPECT_EQ(std::distance(tensor.begin(), tensor.end()), 3);
+	EXPECT_TRUE(std::equal(tensor.begin(), tensor.end(), tensor.data()));
+}
+
+TEST(Tensor, stringConversions) {
+	Tensor<char, 3> text = {'a', 'b', 'c'};
+
+	// Implicit conversion to std::string_view
+	std::string_view sv = text;
+	EXPECT_EQ(sv, "abc");
+	EXPECT_EQ(sv.length(), 3);
+
+	// Explicit conversion to std::string
+	std::string s = static_cast<std::string>(text);
+	EXPECT_EQ(s, "abc");
+	EXPECT_EQ(s.length(), 3);
+}
+
+TEST(Tensor, viewMemberFunction) {
+	Tensor<int, 3> tensor = {1, 2, 3};
+
+	// Non-const view
+	auto v = tensor.view();
+	EXPECT_EQ(v[0], 1);
+	EXPECT_EQ(v[1], 2);
+	EXPECT_EQ(v[2], 3);
+
+	// Const view
+	const Tensor<int, 3> constTensor = {4, 5, 6};
+	auto cv = constTensor.view();
+	EXPECT_EQ(cv[0], 4);
+}
+
+TEST(Tensor, runtimeStridesAndNumItems) {
+	Tensor<int, 2, 3> tensor = {1, 2, 3, 4, 5, 6};
+
+	EXPECT_EQ(tensor.numItems(), 6);
+	EXPECT_EQ(tensor.extent(), 2); // Base::EXTENT returns the first dimension
+
+	auto s = tensor.strides();
+	// For a 2x3 row-major tensor:
+	// Stride of dim 0 (rows) should be 3
+	// Stride of dim 1 (cols) should be 1
+	EXPECT_EQ(s[0], 3);
+	EXPECT_EQ(s[1], 1);
+
+	Tensor<int, 2, 3, 4> tensor3D;
+	auto s3 = tensor3D.strides();
+	EXPECT_EQ(s3[0], 12); // 3 * 4
+	EXPECT_EQ(s3[1], 4);
+	EXPECT_EQ(s3[2], 1);
+}
+
+TEST(Tensor, explicitRawArrayConversion) {
+	Tensor<int, 3> tensor = {7, 8, 9};
+
+	// Explicit cast to underlying raw array reference
+	auto &raw = static_cast<RawArray<int, 3> &>(tensor);
+	EXPECT_EQ(raw[0], 7);
+	EXPECT_EQ(raw[1], 8);
+	EXPECT_EQ(raw[2], 9);
+
+	// Ensure modifying the raw array modifies the tensor
+	raw[0] = 99;
+	EXPECT_EQ(tensor[0], 99);
+}
+
+TEST(Tensor, customStartingIndex) {
+	using Custom1Indexed = tensor::Custom<Options<
+	  option::Item<int>, option::Extents<ValuePack<3>>,
+	  option::startingIndex<1> // Adjust this to match your exact option type name
+	  >>;
+
+	Custom1Indexed tensor = {10, 20, 30};
+	EXPECT_EQ(tensor[1], 10);
+	EXPECT_EQ(tensor[2], 20);
+	EXPECT_EQ(tensor[3], 30);
+}
+
+// ! DYNAMIC
+
+// TEST(Tensor, initializerList_dynamic) {
+// 	Tensor<int, extent::DYNAMIC> array = {1, 2, 3};
+// 	EXPECT_EQ(array.extent(), 3);
+// 	EXPECT_EQ(array[0], 1);
+// 	EXPECT_EQ(array[1], 2);
+// 	EXPECT_EQ(array[2], 3);
+// }
 
 #include <v/OFF>

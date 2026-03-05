@@ -363,10 +363,6 @@ private:
 	}
 
 	INLINE void _destroy() noexcept(std::is_nothrow_destructible_v<Item>) {
-#if VOLTISO_DEBUG_SINGLETON
-		std::cout << "Singleton<" << demangle(typeid(Item)) << "> DESTROY"
-		          << std::endl;
-#endif
 		if constexpr (!std::is_trivially_destructible_v<Item>) {
 			this->_storage.destroy();
 		}

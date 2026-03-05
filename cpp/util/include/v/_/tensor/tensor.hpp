@@ -161,7 +161,7 @@ public:
 	}();
 
 	static constexpr auto STARTING_INDEX =
-	  Options::template GET<option::STARTING_INDEX>;
+	  Options::template GET<option::startingIndex>;
 
 	// Make sure required parameters are set
 	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
