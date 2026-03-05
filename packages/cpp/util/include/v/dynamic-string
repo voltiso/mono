@@ -1,4 +1,4 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/dynamic-string.hpp" // IWYU pragma: export
+#include "v/_/dynamic-string/dynamic-string.hpp" // IWYU pragma: export

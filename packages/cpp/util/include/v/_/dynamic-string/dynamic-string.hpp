@@ -1,7 +1,8 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/dynamic-string.forward.hpp"
+#include "forward.hpp"
+
 #include "v/const-string-view"
 #include "v/dynamic-array"
 #include "v/get/brands"

@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/storage.hpp" // IWYU pragma: export
+#include "v/_/storage/storage.hpp" // IWYU pragma: export
 
 // required by Storage
 #include "v/is/relocatable" // IWYU pragma: keep

@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/storage.forward.hpp"
+#include "forward.hpp"
 
 #include "v/_/0-object.forward.hpp"
 #include "v/_/is/relocatable.hpp"

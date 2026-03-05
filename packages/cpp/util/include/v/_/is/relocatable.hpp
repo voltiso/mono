@@ -1,8 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-// #include "v/_/string-from-type.hpp"
-#include "v/is/complete"
+#include "v/_/string/from-type.hpp"
 
 namespace VOLTISO_NAMESPACE::is {
 
@@ -57,7 +56,7 @@ constexpr bool hasMarker = []() constexpr {
 
 template <class T>
 static constexpr auto relocatable = []() constexpr {
-	static_assert(is::complete<T>, "is::relocatable: type is not complete");
+	// static_assert(is::complete<T>, "is::relocatable: type is not complete");
 
 	const auto hasMarker = _::hasMarker<T>;
 	const auto builtinRelocatable = _::builtinRelocatable<T>;
@@ -71,8 +70,7 @@ static constexpr auto relocatable = []() constexpr {
 			  builtinRelocatable,
 			  "type is marked trivially relocatable, but compiler says otherwise "
 			  "(use RELOCATABLE macro in class definition) - "
-			  // << stringFromType<T>()
-			);
+			    << string::from<T>());
 		}
 	}
 

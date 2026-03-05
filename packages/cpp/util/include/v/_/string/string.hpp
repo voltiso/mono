@@ -1,8 +1,8 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/dynamic-string.forward.hpp"
-#include "v/_/string.forward.hpp"
+#include "v/_/dynamic-string/forward.hpp"
+#include "v/_/string/forward.hpp"
 #include "v/_/tensor/forward.hpp"
 #include "v/const-string-view"
 #include "v/option/custom-template"

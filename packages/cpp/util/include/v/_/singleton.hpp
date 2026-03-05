@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/storage.forward.hpp"
+#include "v/_/storage/forward.hpp"
 
 #include "v/atomic"
 #include "v/concepts/constexpr-constructible"

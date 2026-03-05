@@ -3,8 +3,8 @@
 
 #include "v/_/const-string-view.forward.hpp"
 
-#include "v/_/dynamic-string.forward.hpp"
-#include "v/_/string.forward.hpp"
+#include "v/_/dynamic-string/forward.hpp"
+#include "v/_/string/forward.hpp"
 #include "v/_/tensor/concat-traits.hpp"
 #include "v/extent"
 #include "v/get/extent"
