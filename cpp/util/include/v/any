@@ -21,9 +21,9 @@ namespace VOLTISO_NAMESPACE {
  * in its control block)
  */
 template <class Item = void>
-class RELOCATABLE(Any)
-    : public Object<
-        Options<option::relocatable<true>, option::Self<Any<Item>>>> {
+class RELOCATABLE(Any) : public Object<Options<option::Self<Any<Item>>>> {
+	RELOCATABLE_BODY(Any<Item>);
+
 private:
 	using Storage = Storage<Item *>;
 	using Deleter = void (*)(Storage &);

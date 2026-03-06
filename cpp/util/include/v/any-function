@@ -11,7 +11,6 @@
 #include "v/option/noexcept"
 #include "v/option/optional"
 #include "v/option/parameters"
-#include "v/option/relocatable"
 #include "v/option/return"
 #include "v/pack"
 #include "v/pool"
@@ -74,11 +73,9 @@ template <class Options, class... ParametersList>
   requires concepts::Options<Options>
 class CustomBase<Options, Pack<ParametersList...>>
     : public Object<typename Options::template WithDefault<
-        option::relocatable<true>, option::CustomTemplate<GetCustom>,
-        option::InputOptions<Options>>> {
+        option::CustomTemplate<GetCustom>, option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
-	  option::relocatable<true>, option::CustomTemplate<GetCustom>,
-	  option::InputOptions<Options>>>;
+	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
 
 private:
 	using This = CustomBase;
@@ -381,6 +378,9 @@ struct GetCustomBase<Options> {
 template <class Options = V::Options<>>
   requires concepts::Options<Options>
 class RELOCATABLE(Custom) : public _::GetCustomBase<Options>::Result {
+	RELOCATABLE_BODY(Custom<Options>);
+
+private:
 	using Base = _::GetCustomBase<Options>::Result;
 	using Base::Base;
 };
@@ -392,13 +392,22 @@ namespace VOLTISO_NAMESPACE {
 template <class Signature> class RELOCATABLE(AnyFunction);
 
 template <class Return, class... ParametersList>
-class AnyFunction<Return(ParametersList...)>
+class RELOCATABLE(AnyFunction<Return(ParametersList...)>)
     : public anyFunction::Custom<Options<
         option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
+
+	RELOCATABLE_BODY(AnyFunction<Return(ParametersList...)>);
+
+private:
 	using Base = anyFunction::Custom<Options<
 	  option::Return<Return>, option::Parameters<Pack<ParametersList...>>>>;
 	using Base::Base;
 }; // class AnyFunction
 } // namespace VOLTISO_NAMESPACE
+
+// using F = v::AnyFunction<int(int)>;
+// static_assert(v::is::_::builtinRelocatable<F>);
+// static_assert(std::__libcpp_is_trivially_relocatable<F>());
+// static_assert(std::is_trivially_copyable_v<F>);
 
 #include <v/OFF>

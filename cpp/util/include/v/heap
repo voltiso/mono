@@ -198,8 +198,12 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-class Heap : public heap::Custom<
-               Options<option::Item<Item>, option::Self<Heap<Item>>>> {
+class RELOCATABLE(Heap)
+    : public heap::Custom<
+        Options<option::Item<Item>, option::Self<Heap<Item>>>> {
+	RELOCATABLE_BODY(Heap<Item>);
+
+private:
 	using Base =
 	  heap::Custom<Options<option::Item<Item>, option::Self<Heap<Item>>>>;
 	using Base::Base;

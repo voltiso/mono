@@ -6,7 +6,6 @@
 #include "v/option/custom-template"
 #include "v/option/implicit-copy" // IWYU pragma: keep for macro
 #include "v/option/input-options"
-#include "v/option/relocatable"
 #include "v/option/self"
 #include "v/options"
 
@@ -48,20 +47,7 @@ public:
 	using Final = Self; // ! todo - keep only this
 
 public:
-	// static constexpr bool IS_VOLTISO_OBJECT = true;
-	// static constexpr bool IS_RELOCATABLE =
-	//   Options::template GET<option::relocatable>;
-
-	// libc++ way:
-	using __trivially_relocatable = std::conditional_t<
-	  Options::template GET<option::relocatable>.isTrue(), Self, void>;
-
 	Object(const Object &) = default;
-
-	// force non-relocatable base
-	Object(const Object &)
-	  requires(Options::template GET<option::relocatable>.isFalse())
-	{}
 
 	// ! we can't do this for trivially-copyable types
 	// Object(const Object &other) noexcept(

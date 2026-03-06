@@ -14,12 +14,15 @@ namespace VOLTISO_NAMESPACE {
 #pragma push_macro("BASE")
 #define BASE                                                                   \
 	tensor::Custom<Options<                                                      \
-	  option::relocatable<true>, option::Item<Item>,                             \
-	  option::Extents<ValuePack<4>>, option::Self<Quaternion<Item>>>>
+	  option::Item<Item>, option::Extents<ValuePack<4>>,                         \
+	  option::Self<Quaternion<Item>>>>
 template <class Item> class RELOCATABLE(Quaternion) : public BASE {
+	RELOCATABLE_BODY(Quaternion<Item>);
+
+private:
 	using Base = BASE;
-#pragma pop_macro("BASE")
 	using Base::Base;
+#pragma pop_macro("BASE")
 	static_assert(is::relocatable<Item>);
 
 	VOLTISO_INHERIT_RVALUE_COPY(Quaternion, Base);

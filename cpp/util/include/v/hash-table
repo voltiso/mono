@@ -9,7 +9,6 @@
 #include "v/option/custom-template"
 #include "v/option/entry"
 #include "v/option/input-options"
-#include "v/option/relocatable"
 #include "v/options"
 #include "v/pool"
 #include <v/get/key>
@@ -48,7 +47,10 @@ using GenericPoolHandle = typename GenericPool<
 
 template <class Options>
   requires concepts::Options<Options>
-struct Node {
+struct RELOCATABLE(Node) {
+	RELOCATABLE_BODY(Node<Options>);
+
+public:
 	using GenericPoolHandle = GenericPoolHandle<Options>;
 	using Custom = Custom<Options>;
 	using Entry = Custom::Entry;
@@ -502,13 +504,14 @@ namespace VOLTISO_NAMESPACE::hashTable {
 
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public Object<typename Options::template WithDefault<
-                 option::relocatable<true>, option::CustomTemplate<Custom>,
-                 option::InputOptions<Options>>> {
+class RELOCATABLE(Custom)
+    : public Object<typename Options::template WithDefault<
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
+	RELOCATABLE_BODY(Custom<Options>);
+
 private:
 	using Base = Object<typename Options::template WithDefault<
-	  option::relocatable<true>, option::CustomTemplate<Custom>,
-	  option::InputOptions<Options>>>;
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
 public:
@@ -896,9 +899,12 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Entry>
-class HashTable
+class RELOCATABLE(HashTable)
     : public hashTable::Custom<
         Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>> {
+	RELOCATABLE_BODY(HashTable<Entry>);
+
+private:
 	using Base = hashTable::Custom<
 	  Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>>;
 	using Base::Base;

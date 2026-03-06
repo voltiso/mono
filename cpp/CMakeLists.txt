@@ -43,6 +43,9 @@ add_compile_definitions(VOLTISO_NAMESPACE=${VOLTISO_NAMESPACE})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 
+# Colored compiler diagnostics (Clang/GCC) when building under Ninja/Make
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+
 # enable warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wfatal-errors -Wno-unused-parameter -Winvalid-pch") # -Wshadow
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-changes-meaning -Wno-unknown-warning-option") # -Wshadow

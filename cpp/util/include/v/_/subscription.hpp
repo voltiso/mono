@@ -13,7 +13,8 @@
 // ! SubscriptionBase
 
 namespace VOLTISO_NAMESPACE {
-class RELOCATABLE(Subscription) : public mixin::Relocatable<Subscription> {
+class RELOCATABLE(Subscription) {
+	RELOCATABLE_BODY(Subscription);
 
 public:
 	using Callback = subscription::Callback;
@@ -57,8 +58,10 @@ protected:
 
 namespace VOLTISO_NAMESPACE {
 template <class Value>
-class RELOCATABLE(EagerSubscription)
-    : public Subscription, public mixin::Relocatable<EagerSubscription<Value>> {
+class RELOCATABLE(EagerSubscription) : public Subscription {
+	RELOCATABLE_BODY(EagerSubscription<Value>);
+
+private:
 	using Base = Subscription;
 	using AnyCallback = subscription::AnyCallback;
 	using EagerCallback = subscription::EagerCallback<Value>;

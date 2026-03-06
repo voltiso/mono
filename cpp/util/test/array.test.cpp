@@ -15,7 +15,7 @@ using namespace VOLTISO_NAMESPACE;
 
 static_assert(
   std::is_trivially_copyable_v<array::Custom<Options<option::Item<int>>>>);
-static_assert(std::is_trivially_copyable_v<v::_::array::CustomNR<v::Options<
+static_assert(std::is_trivially_copyable_v<v::_::array::CustomNNR<v::Options<
                 v::option::Item<int>, v::option::Extents<v::ValuePack<3>>,
                 v::option::implicitCopy<true>>>>);
 static_assert(std::is_trivially_copyable_v<Array<int, 1>>);
@@ -25,7 +25,7 @@ static_assert(
 static_assert(is::_::builtinRelocatable<
               _::array::RelocatableBase<Options<option::Item<int>>>>);
 static_assert(
-  is::_::builtinRelocatable<_::array::CustomNR<Options<option::Item<int>>>>);
+  is::_::builtinRelocatable<_::array::CustomNNR<Options<option::Item<int>>>>);
 static_assert(
   is::_::builtinRelocatable<array::Custom<Options<option::Item<int>>>>);
 static_assert(is::_::builtinRelocatable<Array<int, 1>>);

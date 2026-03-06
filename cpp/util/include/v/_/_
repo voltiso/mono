@@ -124,4 +124,15 @@
 // libc++ way
 #define VOLTISO_RELOCATABLE_MARKER __trivially_relocatable
 
+// - tried implementing as a mixin::Relocatable, but it's not good when
+//   multiple bases expose the marker
+// - tried using option::relocatable, but it's not safe when derived classes
+//   auto-inherit
+// ...so we're left with macro
+#define VOLTISO_RELOCATABLE_BODY(Self)                                         \
+public:                                                                        \
+	using VOLTISO_RELOCATABLE_MARKER = Self;                                     \
+                                                                               \
+private:
+
 // !

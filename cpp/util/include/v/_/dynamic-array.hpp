@@ -20,7 +20,6 @@
 #include "v/option/in-place-only"
 #include "v/option/input-options"
 #include "v/option/item"
-#include "v/option/relocatable"
 #include "v/options"
 #include "v/raw-array"
 #include "v/storage"
@@ -201,12 +200,12 @@ template <class Options>
   requires concepts::Options<Options>
 class RELOCATABLE(Custom)
     : public _::DataMembers<typename Options::template WithDefault<
-        option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
-        option::InputOptions<Options>>> {
+        option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
+	RELOCATABLE_BODY(Custom<Options>);
+
 private:
 	using Base = _::DataMembers<typename Options::template WithDefault<
-	  option::relocatable<true>, option::CustomTemplate<_::GetCustom>,
-	  option::InputOptions<Options>>>;
+	  option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>>;
 
 protected:
 	using Self = Base::Self;
@@ -1092,6 +1091,9 @@ namespace VOLTISO_NAMESPACE {
 template <class Item>
 class RELOCATABLE(DynamicArray)
     : public dynamicArray::Custom<Options<option::Item<Item>>> {
+	RELOCATABLE_BODY(DynamicArray<Item>);
+
+private:
 	using Base = dynamicArray::Custom<Options<option::Item<Item>>>;
 
 public:

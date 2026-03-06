@@ -107,8 +107,10 @@ public:
 
 namespace VOLTISO_NAMESPACE::runner::_ {
 template <class TRunner>
-struct RELOCATABLE(ImmediateTaskRef)
-    : public mixin::Relocatable<ImmediateTaskRef<TRunner>> {
+struct RELOCATABLE(ImmediateTaskRef) {
+	RELOCATABLE_BODY(ImmediateTaskRef<TRunner>);
+
+public:
 	using Task = TRunner::Task;
 
 	Task &task;
@@ -125,8 +127,10 @@ struct RELOCATABLE(ImmediateTaskRef)
 };
 
 template <class TRunner>
-struct RELOCATABLE(ScheduledTaskRef)
-    : public mixin::Relocatable<ScheduledTaskRef<TRunner>> {
+struct RELOCATABLE(ScheduledTaskRef) {
+	RELOCATABLE_BODY(ScheduledTaskRef<TRunner>);
+
+public:
 	using Task = TRunner::Task;
 
 	Task &task;

@@ -6,6 +6,7 @@
 #include "v/_/0-object.forward.hpp"
 #include "v/_/is/relocatable.hpp"
 #include "v/_/tensor/tensor.hpp"
+#include "v/mixin/non-relocatable"
 #include "v/object"
 #include "v/option/constexpr"
 #include "v/options"
@@ -27,8 +28,10 @@ struct Specializations;
 namespace VOLTISO_NAMESPACE::storage::_ {
 template <class Options>
   requires concepts::Options<Options>
-class RELOCATABLE(DataMembersUnion)
-    : public mixin::Relocatable<DataMembersUnion<Options>> {
+class RELOCATABLE(DataMembersUnion) {
+	RELOCATABLE_BODY(DataMembersUnion<Options>);
+
+private:
 	using Item = Options::template Get<option::Item>;
 
 public:
@@ -69,17 +72,17 @@ protected:
 // ⚠️ Not necessarily relocatable! Never use this directly.
 template <class Options>
   requires concepts::Options<Options>
-class RELOCATABLE(DataMembersBytes) {
+class RELOCATABLE(DataMembersBytesNNR) {
 	using Item = Options::template Get<option::Item>;
 
 public:
 	alignas(Item) Tensor<std::byte, sizeof(Item)>::WithImplicitCopy bytes;
 
 public:
-	constexpr DataMembersBytes() noexcept = default;
+	constexpr DataMembersBytesNNR() noexcept = default;
 
 protected:
-	DataMembersBytes(const DataMembersBytes &) =
+	DataMembersBytesNNR(const DataMembersBytesNNR &) =
 	  default; /* for [[trivial_abi]] */
 
 public:
@@ -100,7 +103,7 @@ template <class Options>
   requires concepts::Options<Options>
 using DataMembers = std::conditional_t<
   Options::template GET<option::CONSTEXPR>, DataMembersUnion<Options>,
-  DataMembersBytes<Options>>;
+  DataMembersBytesNNR<Options>>;
 } // namespace VOLTISO_NAMESPACE::storage::_
 
 // !
@@ -128,14 +131,12 @@ namespace VOLTISO_NAMESPACE::storage::_ {
 #pragma push_macro("BASE")
 #define BASE                                                                   \
 	Object<typename Options::template WithDefault<                               \
-	  option::relocatable<                                                       \
-	    is::relocatable<typename Options::template Get<option::Item>>>,          \
 	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>
 
-// ⚠️ Not really relocatable! Never use this directly.
+// ⚠️ Not necessarily relocatable! Never use this directly.
 template <class Options>
   requires concepts::Options<Options>
-class RELOCATABLE(CustomNR) : public BASE, public _::DataMembers<Options> {
+class RELOCATABLE(CustomNNR) : public BASE, public _::DataMembers<Options> {
 	using Base = BASE;
 #pragma pop_macro("BASE")
 
@@ -152,58 +153,58 @@ private:
 	  std::is_trivially_destructible_v<Item>;
 
 public:
-	constexpr CustomNR() noexcept
+	constexpr CustomNNR() noexcept
 	  requires(_DEFAULT_CONSTRUCTIBLE)
 	= default;
 
-	constexpr CustomNR() noexcept
+	constexpr CustomNNR() noexcept
 	  requires(!_DEFAULT_CONSTRUCTIBLE)
 	{}
 
-	~CustomNR() noexcept
+	~CustomNNR() noexcept
 	  requires(_DEFAULT_DESTRUCTIBLE)
 	= default;
 
-	~CustomNR() noexcept
+	~CustomNNR() noexcept
 	  requires(!_DEFAULT_DESTRUCTIBLE)
 	{
 		// destruction handled manually
 	}
 
-	constexpr CustomNR(std::initializer_list<std::byte> bytes) noexcept
+	constexpr CustomNNR(std::initializer_list<std::byte> bytes) noexcept
 	    : _::DataMembers<Options>(bytes) {}
 
 	// allow explicit-copy for trivially copyable Items
 protected:
-	CustomNR(const CustomNR &) = delete;
+	CustomNNR(const CustomNNR &) = delete;
 
-	CustomNR(const CustomNR &)
+	CustomNNR(const CustomNNR &)
 	  requires(is::relocatable<Item>)
 	= default; /* for [[trivial_abi]] */
 
 public:
-	CustomNR(CustomNR &&) = delete;
+	CustomNNR(CustomNNR &&) = delete;
 	template <class Source>
-	  requires std::is_base_of_v<CustomNR, Source>
-	CustomNR(const Source &&other)
+	  requires std::is_base_of_v<CustomNNR, Source>
+	CustomNNR(const Source &&other)
 	  requires(std::is_trivially_copyable_v<Item>)
 	{
-		static_assert(sizeof(CustomNR) == sizeof(Item));
-		std::memcpy(this, &other, sizeof(CustomNR));
+		static_assert(sizeof(CustomNNR) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(CustomNNR));
 	}
 
 	// We allow `operator=` for trivially copyable items
 	// template so storage itself stays trivially copyable
 	// But only explicit-copy. (see `Object.copy()`)
-	CustomNR &operator=(const CustomNR &) = delete;
-	CustomNR &operator=(CustomNR &&) = delete;
+	CustomNNR &operator=(const CustomNNR &) = delete;
+	CustomNNR &operator=(CustomNNR &&) = delete;
 	template <class TOther>
-	  requires(std::is_base_of_v<CustomNR, TOther>)
-	CustomNR &operator=(const TOther &&other)
+	  requires(std::is_base_of_v<CustomNNR, TOther>)
+	CustomNNR &operator=(const TOther &&other)
 	  requires(std::is_trivially_copyable_v<Item>)
 	{
-		static_assert(sizeof(CustomNR) == sizeof(Item));
-		std::memcpy(this, &other, sizeof(CustomNR));
+		static_assert(sizeof(CustomNNR) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(CustomNNR));
 		return Base::self();
 	}
 
@@ -251,11 +252,11 @@ public:
 
 	// pre-condition: other object constructed
 	// post-condition: other object NOT constructed
-	VOLTISO_FORCE_INLINE constexpr auto &relocateFrom(CustomNR &other) noexcept
+	VOLTISO_FORCE_INLINE constexpr auto &relocateFrom(CustomNNR &other) noexcept
 	  requires(is::relocatable<Item>)
 	{
-		static_assert(sizeof(CustomNR) == sizeof(Item));
-		std::memcpy(this, &other, sizeof(CustomNR));
+		static_assert(sizeof(CustomNNR) == sizeof(Item));
+		std::memcpy(this, &other, sizeof(CustomNNR));
 		return *this;
 	}
 
@@ -308,20 +309,24 @@ public:
 }; // class Storage
 } // namespace VOLTISO_NAMESPACE::storage::_
 
-// !
+// ! storage::Custom - relocatable or not
 
 namespace VOLTISO_NAMESPACE::storage {
 template <concepts::Options Options>
-class Custom : public _::CustomNR<Options> {
-	using Base = _::CustomNR<Options>;
+class Custom : public _::CustomNNR<Options>, public mixin::NonRelocatable {
+private:
+	using Base = _::CustomNNR<Options>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(Custom<Options>) : public _::CustomNR<Options> {
-	using Base = _::CustomNR<Options>;
+class RELOCATABLE(Custom<Options>) : public _::CustomNNR<Options> {
+	RELOCATABLE_BODY(Custom<Options>);
+
+private:
+	using Base = _::CustomNNR<Options>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
 };
@@ -345,6 +350,9 @@ template <class Item>
   requires is::relocatable<Item>
 class RELOCATABLE(Storage<Item>)
     : public storage::Custom<Options<option::Item<Item>>> {
+	RELOCATABLE_BODY(Storage<Item>);
+
+private:
 	using Base = storage::Custom<Options<option::Item<Item>>>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Storage, Base);

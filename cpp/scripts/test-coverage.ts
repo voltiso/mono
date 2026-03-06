@@ -68,7 +68,7 @@ export function testCoverage({
 		const linesPercent = coverageData.data[0].totals.lines.percent
 
 		console.log(`\n========================================`)
-		console.log(`📈 Line Coverage: ${linesPercent.toFixed(2)}%`)
+		console.log(`📈 Test Coverage: ${linesPercent.toFixed(2)}%`)
 		console.log(`========================================`)
 
 		if (linesPercent < thresholdPercent) {

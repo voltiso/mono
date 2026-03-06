@@ -54,9 +54,13 @@ static_assert(is::relocatable<int (*)(int, int)>);
 
 // Test lambda
 static_assert(is::relocatable<decltype([](int a, int b) { return a + b; })>);
+// static_assert(std::__libcpp_is_trivially_relocatable<decltype([](int a, int
+// b) { return a + b; })>());
 
 // Test lambda with capture
 static_assert(is::relocatable<decltype([a = 1](int b) { return a + b; })>);
+// static_assert(std::__libcpp_is_trivially_relocatable<decltype([a = 1](int b)
+// { return a + b; })>());
 
 // Test lambda with non-relocatable capture
 struct NonRelocatable {
@@ -65,6 +69,28 @@ struct NonRelocatable {
 };
 static_assert(
   !is::relocatable<decltype([a = NonRelocatable{1}]() { return a; })>);
+// static_assert(
+//   !std::__libcpp_is_trivially_relocatable<decltype([a = NonRelocatable{1}]()
+//   { return a; })>());
+
+// ! libc++ does not agree on this, because it doesn't use clang's internal
+// __is_trivially_relocatable
+struct VOLTISO_RELOCATABLE(ForcedRelocatable) {
+	VOLTISO_RELOCATABLE_BODY(ForcedRelocatable);
+
+public:
+	ForcedRelocatable() = default;
+	ForcedRelocatable(const ForcedRelocatable &) {}
+};
+static_assert(is::relocatable<ForcedRelocatable>);
+static_assert(!std::is_trivially_copyable_v<ForcedRelocatable>);
+static_assert(
+  is::relocatable<decltype([a = ForcedRelocatable{}]() { return a; })>);
+// static_assert(
+//   std::__libcpp_is_trivially_relocatable<decltype([a = ForcedRelocatable{}]()
+//   {
+// 	  return a;
+//   })>()); // ! should pass
 
 // Test member function pointer
 struct TestStruct {

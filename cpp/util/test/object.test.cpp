@@ -21,43 +21,6 @@ static_assert(sizeof(Derived) == sizeof(int));
 static_assert(is::_::builtinRelocatable<Object<Options<>>>);
 static_assert(is::relocatable<Object<Options<>>>);
 
-static_assert(
-  !is::_::builtinRelocatable<Object<Options<option::relocatable<false>>>>);
-static_assert(!is::relocatable<Object<Options<option::relocatable<false>>>>);
-
-// !
-
-// #pragma clang diagnostic push
-// #pragma clang diagnostic ignored "-Wignored-attributes"
-// struct [[clang::trivial_abi]] S {
-// 	S() = default;
-
-// private:
-// 	S(const S &) = default;
-
-// 	// S(const S &) {};
-// };
-// #pragma clang diagnostic pop
-// static_assert(is::_::builtinRelocatable<S>);
-
-// !
-
-// ! This fails
-// ! The `[[clang::trivial_abi]]` attribute is NOT really ignored
-// ! for the pusposes of trivial relocatability
-// ! NOT GOOD !
-// #if defined(__clang__)
-// 	#pragma clang diagnostic push
-// 	#pragma clang diagnostic ignored "-Wignored-attributes"
-// struct [[clang::trivial_abi]] TrivialAbi
-//     : Object<Options<option::relocatable<false>>> {
-// 	// TrivialAbi(const TrivialAbi &) {}
-// };
-// static_assert(!is::_::builtinRelocatable<TrivialAbi>);
-// static_assert(!is::relocatable<TrivialAbi>);
-// 	#pragma clang diagnostic pop
-// #endif
-
 // !
 
 struct NotDefaultRelocatable : Object<Options<>> {

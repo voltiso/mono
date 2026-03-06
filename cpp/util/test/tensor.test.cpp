@@ -14,7 +14,7 @@ using namespace VOLTISO_NAMESPACE;
 static_assert(
   std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
 
-static_assert(std::is_trivially_copyable_v<v::_::tensor::CustomNR<v::Options<
+static_assert(std::is_trivially_copyable_v<v::_::tensor::CustomNNR<v::Options<
                 v::option::Item<int>, v::option::Extents<v::ValuePack<3>>,
                 v::option::implicitCopy<true>>>>);
 
@@ -27,7 +27,7 @@ static_assert(is::_::builtinRelocatable<
               _::tensor::RelocatableBase<Options<option::Item<int>>>>);
 
 static_assert(is::_::builtinRelocatable<
-              V::_::tensor::CustomNR<Options<option::Item<int>>>>);
+              V::_::tensor::CustomNNR<Options<option::Item<int>>>>);
 
 static_assert(
   is::_::builtinRelocatable<tensor::Custom<Options<option::Item<int>>>>);

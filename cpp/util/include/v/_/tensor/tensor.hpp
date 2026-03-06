@@ -7,7 +7,6 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/_/is/relocatable.hpp"
-#include "v/_/mixin/relocatable.hpp"
 #include "v/_/view.forward.hpp"
 #include "v/concepts/options"
 #include "v/extent"
@@ -20,7 +19,6 @@
 #include "v/option/implicit-copy"
 #include "v/option/input-options"
 #include "v/option/item"
-#include "v/option/relocatable"
 #include "v/option/starting-index"
 #include "v/raw-array"
 #include "v/size"
@@ -113,17 +111,13 @@ public:
 // operator='s, and we don't want to duplicate code. Everything because clang
 // doesn't support conditional `[[clang::trivial_abi]]`.
 template <concepts::Options Options>
-class RELOCATABLE(CustomNR)
+class RELOCATABLE(CustomNNR)
     : public Object<typename Options ::template WithDefault<
-        option::relocatable<
-          is::relocatable<typename Options::template Get<option::Item>>>,
         option::CustomTemplate<V::tensor::GetCustom>,
         option::InputOptions<Options>>>,
       public _::tensor::RelocatableBase<Options> {
 protected:
 	using Object = Object<typename Options ::template WithDefault<
-	  option::relocatable<
-	    is::relocatable<typename Options::template Get<option::Item>>>,
 	  option::CustomTemplate<V::tensor::GetCustom>,
 	  option::InputOptions<Options>>>;
 
@@ -180,29 +174,29 @@ public:
 	constexpr auto strides() const noexcept { return STRIDES; }
 
 public:
-	CustomNR() = default;
+	CustomNNR() = default;
 
 	// ! linear-time assign - deleted
 public:
-	CustomNR(const CustomNR &other)
+	CustomNNR(const CustomNNR &other)
 	  requires(Object::Options::template GET<option::implicitCopy>)
 	= default;
 
 protected:
 	// use `.copy()` instead to make copies
-	CustomNR(const CustomNR &) =
+	CustomNNR(const CustomNNR &) =
 	  default; // default one to make [[trivial_abi]] work
-	CustomNR &operator=(const CustomNR &) = default;
+	CustomNNR &operator=(const CustomNNR &) = default;
 
-	CustomNR(CustomNR &&) = delete;
-	CustomNR &operator=(CustomNR &&) = delete;
+	CustomNNR(CustomNNR &&) = delete;
+	CustomNNR &operator=(CustomNNR &&) = delete;
 
 public:
-	CustomNR(CustomNR &&other)
+	CustomNNR(CustomNNR &&other)
 	  requires(Object::Options::template GET<option::implicitCopy>)
 	= default;
 
-	CustomNR &operator=(CustomNR &&other)
+	CustomNNR &operator=(CustomNNR &&other)
 	  requires(Object::Options::template GET<option::implicitCopy>)
 	= default;
 
@@ -211,9 +205,9 @@ public:
 	// OR this is regular move - we have to copy anyway
 	template <class Other>
 	  requires(Other::EXTENTS == EXTENTS)
-	constexpr CustomNR(const Other &&other) {
+	constexpr CustomNNR(const Other &&other) {
 		if constexpr (std::is_trivially_copyable_v<Item>) {
-			std::memcpy(this, &other, sizeof(CustomNR));
+			std::memcpy(this, &other, sizeof(CustomNNR));
 		} else {
 			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
 		}
@@ -225,19 +219,19 @@ public:
 	  requires(Other::EXTENTS == EXTENTS)
 	constexpr Self &operator=(const Other &&other) {
 		if constexpr (std::is_trivially_copyable_v<Item>) {
-			std::memcpy(this, &other, sizeof(CustomNR));
+			std::memcpy(this, &other, sizeof(CustomNNR));
 		} else {
 			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
 		}
 		return Object::self();
 	}
 
-	INLINE constexpr CustomNR(std::initializer_list<Item> list) noexcept {
+	INLINE constexpr CustomNNR(std::initializer_list<Item> list) noexcept {
 		EQ(list.size(), NUM_ITEMS);
 		std::copy(list.begin(), list.end(), this->items);
 	}
 
-	INLINE constexpr CustomNR(
+	INLINE constexpr CustomNNR(
 	  std::initializer_list<std::initializer_list<Item>> list) noexcept {
 		// Assert the number of rows
 		EQ(list.size(), Base::EXTENT);
@@ -262,13 +256,13 @@ public:
 
 public:
 	template <class TSource>
-	constexpr CustomNR(tag::Copy, const TSource &source) {
+	constexpr CustomNNR(tag::Copy, const TSource &source) {
 		static_assert(TSource::NUM_ITEMS == NUM_ITEMS);
 		std::copy(source.items, source.items + NUM_ITEMS, this->items);
 	}
 
 public:
-	constexpr CustomNR(tag::Copy, RawArray<const Item, NUM_ITEMS> &items) {
+	constexpr CustomNNR(tag::Copy, RawArray<const Item, NUM_ITEMS> &items) {
 		std::copy(items, items + NUM_ITEMS, this->items);
 	}
 
@@ -278,7 +272,7 @@ public:
 	// usually N will be NUM_ITEMS+1 for null-terminated strings
 	template <Size N>
 	  requires(N >= NUM_ITEMS)
-	consteval CustomNR(tag::CopyConsteval, const Item (&items)[N]) {
+	consteval CustomNNR(tag::CopyConsteval, const Item (&items)[N]) {
 		std::copy(items, items + NUM_ITEMS, this->items);
 	}
 
@@ -308,7 +302,7 @@ public:
 	    nullptr>
 	  requires(Base::EXTENT == NUM_ITEMS)
 	Item &operator[](const InferredHandle &handle) {
-		return const_cast<Item &>(const_cast<const CustomNR &>(*this)[handle]);
+		return const_cast<Item &>(const_cast<const CustomNNR &>(*this)[handle]);
 	}
 
 	// Automatic deduction does not work when assigning raw value, since the above
@@ -345,7 +339,7 @@ public:
 	}
 
 	// comparisons
-	constexpr bool operator==(const CustomNR &other) const {
+	constexpr bool operator==(const CustomNNR &other) const {
 		return NUM_ITEMS == other.NUM_ITEMS &&
 		       std::equal(this->items, this->items + NUM_ITEMS, other.items);
 	}
@@ -434,7 +428,7 @@ public:
 private:
 	// The implemented constexpr constructor for concatenation
 	template <class... Slices>
-	constexpr CustomNR(tag::Concat, Slices &&...slices)
+	constexpr CustomNNR(tag::Concat, Slices &&...slices)
 	// requires(EXTENT == _::array::sumExtents(slices...))
 	// : items{}
 	{
@@ -505,18 +499,16 @@ public:
 // !
 namespace VOLTISO_NAMESPACE::tensor {
 template <concepts::Options Options>
-class Custom : public _::tensor::CustomNR<Options> {
-	using Base = _::tensor::CustomNR<Options>;
+class Custom : public _::tensor::CustomNNR<Options> {
+	using Base = _::tensor::CustomNNR<Options>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(Custom<Options>)
-    : public _::tensor::CustomNR<Options>,
-      public mixin::Relocatable<Custom<Options>> {
-	using Base = _::tensor::CustomNR<Options>;
+class RELOCATABLE(Custom<Options>) : public _::tensor::CustomNNR<Options> {
+	using Base = _::tensor::CustomNNR<Options>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
 };
@@ -545,6 +537,9 @@ template <class Item, auto... ES> class Tensor : public BASE {
 template <class Item, auto... ES>
   requires is::relocatable<Item>
 class RELOCATABLE(Tensor<Item COMMA ES...>) : public BASE {
+	RELOCATABLE_BODY(Tensor<Item COMMA ES...>);
+
+private:
 	using Base = BASE;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Tensor, Base);

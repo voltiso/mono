@@ -1,5 +1,7 @@
 #pragma once
 
+#include "v/size"
+
 #include <cstddef>
 #include <limits>
 

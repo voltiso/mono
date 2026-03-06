@@ -8,7 +8,6 @@
 #include "v/option/custom-template"
 #include "v/option/input-options"
 #include "v/option/optional"
-#include "v/option/relocatable"
 #include "v/option/self"
 #include "v/option/target"
 #include "v/options"
@@ -31,8 +30,11 @@ template <class InputOptions>
   requires concepts::Options<InputOptions>
 // requires(!std::is_const_v<T>) // ! allow `Ref<const T>`
 class Custom : public Object<typename InputOptions::template WithDefault<
-                 option::relocatable<true>, option::CustomTemplate<GetCustom>,
+                 option::CustomTemplate<GetCustom>,
                  option::InputOptions<InputOptions>>> {
+	RELOCATABLE_BODY(Custom<InputOptions>);
+
+private:
 	using Base = Object<typename InputOptions::template WithDefault<
 	  option::CustomTemplate<GetCustom>, option::InputOptions<InputOptions>>>;
 

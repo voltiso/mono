@@ -88,33 +88,33 @@ static constexpr auto relocatable = []() constexpr {
 			static_assert(
 			  !hasIncorrectBaseMarker,
 			  "compiler says type is trivially relocatable, but marker is incorrect "
-			  "- possibly base class marker is inherited (use mixin::Relocatable in "
-			  "derived class too)"
+			  "- possibly base class marker is inherited (use "
+			  "VOLTISO_RELOCATABLE_BODY in derived class too)"
 			  //  << string::from<T>() // ! circular dep! how to fix?
 			);
 		}
 	}
 
-	// currently never triggers, because we use the same marker as libc++
-	if constexpr (is::Object<T> && requires {
-		              std::__libcpp_is_trivially_relocatable<T>();
-	              }) {
-		if constexpr (hasCorrectMarker) {
+	// ! we return true for references (contrary to standard)
+	// we can have containers of references, which really are relocatable pointers
+	constexpr auto resultNotUsingBuiltin = hasCorrectMarker ||
+	                                       std::is_trivially_copyable_v<T> ||
+	                                       std::is_reference_v<T>;
+
+	constexpr auto result = resultNotUsingBuiltin || builtinRelocatable;
+
+	// not fatal, but nice to have full libc++ interop
+	if constexpr (requires { std::__libcpp_is_trivially_relocatable<T>(); }) {
+		// libc++ does not agree on references (and standard too)
+		if constexpr (!std::is_reference_v<T>) {
+			// libc++ does not use builtin, since it's non-standard
 			static_assert(
-			  std::__libcpp_is_trivially_relocatable<T>(),
-			  "type is marked trivially relocatable, but libc++ says otherwise ");
+			  resultNotUsingBuiltin == std::__libcpp_is_trivially_relocatable<T>(),
+			  "libc++ does not agree on trivial relocatability");
 		}
 	}
 
-	if constexpr (hasCorrectMarker || builtinRelocatable) {
-		return true;
-	}
-
-	// Fallback for compilers without trivial-relocatability support.
-	// ! we return true for references (contrary to standard, we may want to
-	// change this)
-	return std::is_reference_v<T> ||
-	       std::is_trivially_copyable_v<T>; // may be incomplete yet
+	return result;
 }();
 
 } // namespace VOLTISO_NAMESPACE::is
