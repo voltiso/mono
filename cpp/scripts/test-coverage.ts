@@ -85,7 +85,11 @@ export function testCoverage({
 		console.error(error)
 		process.exitCode = 1
 	} finally {
-		// 4. Cleanup ONLY the intermediate file, GUARANTEED to run every time
 		rmSync(join(cwd, 'default.profdata'), { force: true })
+		readdirSync(cwd)
+			.filter(file => file.endsWith('.profraw'))
+			.forEach(file => {
+				rmSync(join(cwd, file), { force: true })
+			})
 	}
 }

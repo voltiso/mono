@@ -103,8 +103,7 @@
 
 // --------------------------------------------------------------
 
-// !
-
+// ! RELOCATABLE marker
 #if defined(__has_cpp_attribute)
 	#if __has_cpp_attribute(clang::trivial_abi)
 		#define VOLTISO_HAS_ATTRIBUTE_TRIVIAL_ABI 1
@@ -122,18 +121,7 @@
 	#define VOLTISO_RELOCATABLE(ClassName) ClassName
 #endif
 
-// ! same as libc++ - `using __trivially_relocatable = Self`
+// libc++ way
 #define VOLTISO_RELOCATABLE_MARKER __trivially_relocatable
 
-#define VOLTISO_RELOCATABLE_BODY(Self)                                         \
-public:                                                                        \
-	using VOLTISO_RELOCATABLE_MARKER = Self; /* libc++ way */
-
-// ! USAGE
-// struct VOLTISO_RELOCATABLE(A) {
-// 	VOLTISO_RELOCATABLE_BODY(A);
-// 	A(const A &) {}
-// };
-
-// // static_assert(VOLTISO_NAMESPACE::_::classNameMarkedRelocatable<A>);
-// static_assert(std::__libcpp_is_trivially_relocatable<A>());
+// !

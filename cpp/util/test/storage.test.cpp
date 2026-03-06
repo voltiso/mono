@@ -33,7 +33,7 @@ static_assert(!is::relocatable<Storage<Complex>>);
 // !
 
 struct RELOCATABLE(ForcedRelocatable)
-    : Object<Options<option::relocatable<true>>> {
+    : public mixin::Relocatable<ForcedRelocatable> {
 	static int numDestructorCalls;
 	int value = 0;
 	ForcedRelocatable() = default;

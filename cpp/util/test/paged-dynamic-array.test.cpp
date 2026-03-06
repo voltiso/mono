@@ -142,8 +142,8 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 // go out of scope. Type must be non-trivially-copyable so WRAP_IN_STORAGE
 // is used and slot.destroy()/relocate() paths are exercised.
 namespace {
-struct VOLTISO_RELOCATABLE(PagedDestructorProbe) {
-	VOLTISO_RELOCATABLE_BODY(PagedDestructorProbe);
+struct VOLTISO_RELOCATABLE(PagedDestructorProbe)
+    : public mixin::Relocatable<PagedDestructorProbe> {
 	static int numDestructorCalls;
 	int value = 0;
 	PagedDestructorProbe() = default;

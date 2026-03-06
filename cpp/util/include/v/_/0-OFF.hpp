@@ -12,6 +12,7 @@
 #pragma pop_macro("INLINE")
 
 #pragma pop_macro("RELOCATABLE")
+
 #pragma pop_macro("COMMA")
 
 #pragma pop_macro("V")

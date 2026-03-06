@@ -7,6 +7,7 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/_/is/relocatable.hpp"
+#include "v/_/mixin/relocatable.hpp"
 #include "v/_/view.forward.hpp"
 #include "v/concepts/options"
 #include "v/extent"
@@ -512,7 +513,9 @@ class Custom : public _::tensor::CustomNR<Options> {
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(Custom<Options>) : public _::tensor::CustomNR<Options> {
+class RELOCATABLE(Custom<Options>)
+    : public _::tensor::CustomNR<Options>,
+      public mixin::Relocatable<Custom<Options>> {
 	using Base = _::tensor::CustomNR<Options>;
 	using Base::Base;
 	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);

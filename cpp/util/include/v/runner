@@ -11,7 +11,6 @@
 #include "v/option/input-options"
 #include "v/option/mutable"
 #include "v/option/noexcept"
-#include "v/option/relocatable"
 #include "v/option/self"
 #include "v/option/thread-safe"
 #include "v/options"
@@ -108,7 +107,8 @@ public:
 
 namespace VOLTISO_NAMESPACE::runner::_ {
 template <class TRunner>
-struct ImmediateTaskRef : Object<Options<option::relocatable<true>>> {
+struct RELOCATABLE(ImmediateTaskRef)
+    : public mixin::Relocatable<ImmediateTaskRef<TRunner>> {
 	using Task = TRunner::Task;
 
 	Task &task;
@@ -125,7 +125,8 @@ struct ImmediateTaskRef : Object<Options<option::relocatable<true>>> {
 };
 
 template <class TRunner>
-struct ScheduledTaskRef : Object<Options<option::relocatable<true>>> {
+struct RELOCATABLE(ScheduledTaskRef)
+    : public mixin::Relocatable<ScheduledTaskRef<TRunner>> {
 	using Task = TRunner::Task;
 
 	Task &task;

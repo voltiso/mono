@@ -35,7 +35,7 @@ protected:
 	  !std::is_same_v<typename Options::template Get<option::InputOptions>, void>,
 	  typename Options::template Get<option::InputOptions>, Options>;
 
-protected:
+public:
 	// CRTP
 	using Self = std::conditional_t<
 	  !std::is_same_v<typename Options::template Get<option::Self>, void>,
@@ -44,6 +44,8 @@ protected:
 	  // try using provided `CustomTemplate<InputOptions>` instead
 	  // (which might not yield the final class in chain)
 	  CustomTemplate<InputOptions>>;
+
+	using Final = Self; // ! todo - keep only this
 
 public:
 	// static constexpr bool IS_VOLTISO_OBJECT = true;

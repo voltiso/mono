@@ -27,8 +27,8 @@ struct Specializations;
 namespace VOLTISO_NAMESPACE::storage::_ {
 template <class Options>
   requires concepts::Options<Options>
-class RELOCATABLE(DataMembersUnion) {
-	VOLTISO_RELOCATABLE_BODY(DataMembersUnion);
+class RELOCATABLE(DataMembersUnion)
+    : public mixin::Relocatable<DataMembersUnion<Options>> {
 	using Item = Options::template Get<option::Item>;
 
 public:
