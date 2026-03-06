@@ -205,7 +205,7 @@ public:
 	{
 		static_assert(sizeof(CustomNNR) == sizeof(Item));
 		std::memcpy(this, &other, sizeof(CustomNNR));
-		return Base::self();
+		return Base::final();
 	}
 
 	// ! (1) if there is TObject::relocateFrom(Storage) - use it

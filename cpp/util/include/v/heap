@@ -16,10 +16,10 @@ template <class Options>
 class Custom
     : protected dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
         option::Item<Storage<typename Options::template Get<option::Item>>>>> {
-	//   using Self = Custom;
+	//   using Final = Custom;
 	using Base = dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
 	  option::Item<Storage<typename Options::template Get<option::Item>>>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -200,12 +200,12 @@ namespace VOLTISO_NAMESPACE {
 template <class Item>
 class RELOCATABLE(Heap)
     : public heap::Custom<
-        Options<option::Item<Item>, option::Self<Heap<Item>>>> {
+        Options<option::Item<Item>, option::Final<Heap<Item>>>> {
 	RELOCATABLE_BODY(Heap<Item>);
 
 private:
 	using Base =
-	  heap::Custom<Options<option::Item<Item>, option::Self<Heap<Item>>>>;
+	  heap::Custom<Options<option::Item<Item>, option::Final<Heap<Item>>>>;
 	using Base::Base;
 };
 

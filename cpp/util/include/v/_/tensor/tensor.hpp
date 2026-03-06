@@ -127,7 +127,7 @@ private:
 	using Base = _::tensor::Base<Options>;
 
 protected:
-	using Self = Object::Self;
+	using Final = Object::Final;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -163,7 +163,7 @@ public:
 	// static_assert(EXTENT > 0, "Array size must be greater than 0");
 
 	template <class Kind>
-	using CustomHandle = Handle::WithBrand<Self>::template WithKind<Kind>;
+	using CustomHandle = Handle::WithBrand<Final>::template WithKind<Kind>;
 
 	using Handle = CustomHandle<
 	  std::conditional_t<(STARTING_INDEX < 0), std::make_signed<Size>, Size>>;
@@ -217,13 +217,13 @@ public:
 	// OR this is regular move - we have to copy anyway
 	template <class Other>
 	  requires(Other::EXTENTS == EXTENTS)
-	constexpr Self &operator=(const Other &&other) {
+	constexpr Final &operator=(const Other &&other) {
 		if constexpr (std::is_trivially_copyable_v<Item>) {
 			std::memcpy(this, &other, sizeof(CustomNNR));
 		} else {
 			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
 		}
-		return Object::self();
+		return Object::final();
 	}
 
 	INLINE constexpr CustomNNR(std::initializer_list<Item> list) noexcept {
@@ -247,11 +247,11 @@ public:
 	}
 
 	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
-		return Self{tag::COPY, std::forward<Arg>(arg)};
+		return Final{tag::COPY, std::forward<Arg>(arg)};
 	}
 
 	template <class... Args> static INLINE constexpr auto concat(Args &&...args) {
-		return Self{tag::CONCAT, std::forward<Args>(args)...};
+		return Final{tag::CONCAT, std::forward<Args>(args)...};
 	}
 
 public:
@@ -278,13 +278,13 @@ public:
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicArray::from(this->self());
+		return dynamicArray::from(this->final());
 	}
 
 public:
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
 	    nullptr>
 	  requires(Base::EXTENT == NUM_ITEMS)
 	const Item &operator[](const InferredHandle &handle) const {
@@ -298,7 +298,7 @@ public:
 	// non-const -> const
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
 	    nullptr>
 	  requires(Base::EXTENT == NUM_ITEMS)
 	Item &operator[](const InferredHandle &handle) {
@@ -419,7 +419,7 @@ public:
 		// not const char* if the latter would have an UNBOUND extent.
 		constexpr Size NEW_NUM_ITEMS = NUM_ITEMS + get::NUM_ITEMS<Other>;
 		using Result =
-		  Self::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
+		  Final::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
 		EQ(_::tensor::sumNumItems(self, other), NEW_NUM_ITEMS);
 		return Result::concat(
 		  std::forward<decltype(self)>(self), std::forward<Other>(other));
@@ -523,7 +523,7 @@ namespace VOLTISO_NAMESPACE {
 #define BASE                                                                   \
 	tensor::Custom<Options<                                                      \
 	  option::Item<Item>, option::Extents<ValuePack<ES...>>,                     \
-	  option::Self<Tensor<Item, ES...>>>>
+	  option::Final<Tensor<Item, ES...>>>>
 
 // ! inherit `const Other&&` constructor
 // hacky to preserve trivial-copyability, while forbidding implicit copy/move

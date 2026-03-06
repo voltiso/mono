@@ -194,7 +194,7 @@ class SetAccessor : public Accessor<Options, IS_CONST> {
 private:
 	using Base = Accessor<Options, IS_CONST>;
 	using Base::Base;
-	using Self = SetAccessor;
+	using Final = SetAccessor;
 
 private:
 	using GenericPoolHandle = GenericPoolHandle<Options>;
@@ -226,7 +226,7 @@ protected:
 
 public:
 	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
-	Self &insert() {
+	Final &insert() {
 		CHECK(!this->_exists);
 		this->_maybeGrow();
 		auto &pool = this->_hashTable._pool;
@@ -241,21 +241,21 @@ public:
 		return *this;
 	}
 
-	Self &maybeInsert() {
+	Final &maybeInsert() {
 		if (!this->_exists) {
 			insert();
 		}
 		return *this;
 	}
 
-	Self &maybeInsertLikely() {
+	Final &maybeInsertLikely() {
 		if (!this->_exists) [[likely]] {
 			insert();
 		}
 		return *this;
 	}
 
-	Self &maybeInsertUnlikely() {
+	Final &maybeInsertUnlikely() {
 		if (!this->_exists) [[unlikely]] {
 			insert();
 		}
@@ -280,7 +280,7 @@ public:
 template <class Options, bool IS_CONST>
 class MapAccessor : public Accessor<Options, IS_CONST> {
 private:
-	using Self = MapAccessor;
+	using Final = MapAccessor;
 	using Base = Accessor<Options, IS_CONST>;
 	using Base::Base;
 	using Custom = Custom<Options>;
@@ -355,7 +355,7 @@ public:
 
 public:
 	template <Likelihood LIKELIHOOD = Likelihood::UNKNOWN, class... Args>
-	Self &maybeInsert(Args &&...args) {
+	Final &maybeInsert(Args &&...args) {
 		return this->_maybeInsert<LIKELIHOOD>(std::forward<Args>(args)...);
 	}
 
@@ -373,7 +373,7 @@ public:
 
 private:
 	template <Likelihood LIKELIHOOD, class... Args>
-	Self &_maybeInsert(Args &&...args) {
+	Final &_maybeInsert(Args &&...args) {
 		if constexpr (LIKELIHOOD == Likelihood::UNKNOWN) {
 			if (!this->_exists) {
 				insert(std::forward<Args>(args)...);
@@ -512,7 +512,7 @@ class RELOCATABLE(Custom)
 private:
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Entry = Options::template Get<option::Entry>;
@@ -795,7 +795,7 @@ public:
 	// const -> non-const
 	ConstSetAccessor operator()(const Entry &entry) const {
 		static_assert(
-		  std::is_const_v<std::remove_reference_t<decltype(this->self())>>);
+		  std::is_const_v<std::remove_reference_t<decltype(this->final())>>);
 		auto accessor = const_cast<Custom *>(this)->operator()(entry);
 		return std::bit_cast<ConstSetAccessor>(accessor); // rvo works?
 	}
@@ -901,12 +901,12 @@ namespace VOLTISO_NAMESPACE {
 template <class Entry>
 class RELOCATABLE(HashTable)
     : public hashTable::Custom<
-        Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>> {
+        Options<option::Entry<Entry>, option::Final<HashTable<Entry>>>> {
 	RELOCATABLE_BODY(HashTable<Entry>);
 
 private:
 	using Base = hashTable::Custom<
-	  Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>>;
+	  Options<option::Entry<Entry>, option::Final<HashTable<Entry>>>>;
 	using Base::Base;
 }; // class HashTable
 

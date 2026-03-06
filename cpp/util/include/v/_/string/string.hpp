@@ -68,7 +68,7 @@ class Custom
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicString::from(this->self());
+		return dynamicString::from(this->final());
 	}
 };
 } // namespace V::string
@@ -95,9 +95,9 @@ namespace V {
 template <Size NUM_ITEMS>
 class String : public string::Custom<Options<
                  option::Extents<ValuePack<NUM_ITEMS>>,
-                 option::Self<String<NUM_ITEMS>>>> {
+                 option::Final<String<NUM_ITEMS>>>> {
 	using Base = string::Custom<Options<
-	  option::Extents<ValuePack<NUM_ITEMS>>, option::Self<String<NUM_ITEMS>>>>;
+	  option::Extents<ValuePack<NUM_ITEMS>>, option::Final<String<NUM_ITEMS>>>>;
 	using Base::Base;
 
 public:
@@ -138,7 +138,7 @@ public:
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicString::from(this->self());
+		return dynamicString::from(this->final());
 	}
 
 public:
@@ -167,7 +167,7 @@ template <Size N> String(const char (&)[N]) -> String<N - 1>;
 //     extent::UNBOUND)
 // constexpr auto operator<<(const Lhs &lhs, const String<SelfN> &rhs) {
 // 	return lhs.template as<array::Custom<Options<option::Item<char>>>>()
-// 	  .operator<<(rhs.self());
+// 	  .operator<<(rhs.final());
 // }
 
 } // namespace V

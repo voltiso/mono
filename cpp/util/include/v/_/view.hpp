@@ -362,10 +362,10 @@ namespace V {
 template <class Item, auto... ES>
 class View : public view::Custom<Options<
                option::Item<Item>, option::Extents<ValuePack<ES...>>,
-               option::Self<View<Item, ES...>>>> {
+               option::Final<View<Item, ES...>>>> {
 	using Base = view::Custom<Options<
 	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
-	  option::Self<View<Item, ES...>>>>;
+	  option::Final<View<Item, ES...>>>>;
 	using Base::Base;
 
 public:

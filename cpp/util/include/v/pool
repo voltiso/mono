@@ -144,7 +144,7 @@ class Custom
         typename Options::template Get<option::Allocator>>::Lazy::Guard {
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -154,7 +154,7 @@ public:
 
 	using Allocator = Options::template Get<option::Allocator>;
 
-	using Handle = Handle ::WithKind<Item *>::template WithBrand<Self>;
+	using Handle = Handle ::WithKind<Item *>::template WithBrand<Final>;
 
 	using Accessor = pool::Accessor<Options, false>;
 	using ConstAccessor = pool::Accessor<Options, true>;
@@ -275,9 +275,9 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Item>
 class Pool : public pool::Custom<
-               Options<option::Item<Item>, option::Self<Pool<Item>>>> {
+               Options<option::Item<Item>, option::Final<Pool<Item>>>> {
 	using Base =
-	  pool::Custom<Options<option::Item<Item>, option::Self<Pool<Item>>>>;
+	  pool::Custom<Options<option::Item<Item>, option::Final<Pool<Item>>>>;
 	using Base::Base;
 };
 

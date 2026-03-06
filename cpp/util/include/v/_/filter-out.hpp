@@ -2,18 +2,18 @@
 
 #include "v/_/options.hpp"
 #include "v/is/instantiated-from-same"
-#include "v/option/self"
+#include "v/option/final"
 
 #include <type_traits> // For std::conditional_t, std::is_same_v, std::false_type
 
 namespace VOLTISO_NAMESPACE::_ {
 
-// --- Predicate to check if a type is option::Self ---
-// Assumes option::Self is a template taking one argument (the type it holds).
-template <typename T> struct IsOptionSelf : std::false_type {}; // Default case
+// --- Predicate to check if a type is option::Final ---
+// Assumes option::Final is a template taking one argument (the type it holds).
+template <typename T> struct IsOptionFinal : std::false_type {}; // Default case
 
-template <typename HeldType> // Specialization for option::Self<HeldType>
-struct IsOptionSelf<option::Self<HeldType>> : std::true_type {};
+template <typename HeldType> // Specialization for option::Final<HeldType>
+struct IsOptionFinal<option::Final<HeldType>> : std::true_type {};
 
 // --- Predicate Wrapper for Option Kind Check ---
 // Wraps the is_InstantiatedFromSame check for a specific OptionKind template.

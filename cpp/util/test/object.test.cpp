@@ -39,7 +39,7 @@ class Custom
         typename Options::template With<option::CustomTemplate<Custom>>> {
 	using Base =
 	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Base::Base;

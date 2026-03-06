@@ -302,7 +302,7 @@ template <class Options>
   requires concepts::Options<Options>
 class Custom : public Object<Options> {
 	using Base = Object<Options>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Entry = Options::template Get<option::Entry>;
@@ -474,9 +474,9 @@ namespace VOLTISO_NAMESPACE {
 template <class Entry>
 class SplayTable
     : public splayTable::Custom<
-        Options<option::Entry<Entry>, option::Self<SplayTable<Entry>>>> {
+        Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>> {
 	using Base = splayTable::Custom<
-	  Options<option::Entry<Entry>, option::Self<SplayTable<Entry>>>>;
+	  Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>>;
 	using Base::Base;
 };
 

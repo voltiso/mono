@@ -4,7 +4,7 @@
 #include "v/brand/path"
 #include "v/dynamic-string"
 #include "v/option/extents"
-#include "v/option/self"
+#include "v/option/final"
 #include "v/options"
 #include "v/size"
 #include "v/string"
@@ -16,10 +16,10 @@ namespace VOLTISO_NAMESPACE {
 template <Size NUM_ITEMS>
 class Path : public string::Custom<Options<
                option::Extents<ValuePack<NUM_ITEMS>>, brand::Path<>,
-               option::Self<Path<NUM_ITEMS>>>> {
+               option::Final<Path<NUM_ITEMS>>>> {
 	using Base = string::Custom<Options<
 	  option::Extents<ValuePack<NUM_ITEMS>>, brand::Path<>,
-	  option::Self<Path<NUM_ITEMS>>>>;
+	  option::Final<Path<NUM_ITEMS>>>>;
 
 public:
 	using Base::Base;

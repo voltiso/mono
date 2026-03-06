@@ -455,7 +455,7 @@ class Custom
         option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Pool = Options::template Get<option::Pool>;
@@ -538,9 +538,9 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Pool>
 class Splay : public splay::Custom<
-                Options<option::Pool<Pool>, option::Self<Splay<Pool>>>> {
+                Options<option::Pool<Pool>, option::Final<Splay<Pool>>>> {
 	// using Base =
-	//   splay::Custom<Options<option::Pool<Pool>, option::Self<Splay<Pool>>>>;
+	//   splay::Custom<Options<option::Pool<Pool>, option::Final<Splay<Pool>>>>;
 };
 } // namespace VOLTISO_NAMESPACE
 

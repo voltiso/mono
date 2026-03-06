@@ -8,7 +8,7 @@
 #include "v/get/brands"
 #include "v/option/custom-template"
 #include "v/option/item"
-#include "v/option/self"
+#include "v/option/final"
 #include "v/options"
 #include "v/tag/concat"
 
@@ -40,7 +40,7 @@ class Custom
 	using Base::Base; // not enough
 
 protected:
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	template <class... Args>
@@ -52,20 +52,20 @@ public:
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicArray::from(this->self());
+		return dynamicArray::from(this->final());
 	}
 
 public:
 	template <class... Args>
 	VOLTISO_FORCE_INLINE static auto concat(const Args &...args) {
-		static_assert(std::is_base_of_v<Custom, Self>);
-		return Self(tag::CONCAT, args...);
+		static_assert(std::is_base_of_v<Custom, Final>);
+		return Final(tag::CONCAT, args...);
 	}
 
 	template <class Arg> VOLTISO_FORCE_INLINE static auto from(const Arg &arg) {
-		static_assert(std::is_base_of_v<Custom, Self>);
-		// return Self(ConstStringView{arg}.copy());
-		return Self(tag::COPY, arg);
+		static_assert(std::is_base_of_v<Custom, Final>);
+		// return Final(ConstStringView{arg}.copy());
+		return Final(tag::COPY, arg);
 	}
 
 protected:
@@ -93,9 +93,9 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 class DynamicString : public dynamicString::Custom<VOLTISO_NAMESPACE::Options<
-                        option::Item<char>, option::Self<DynamicString>>> {
+                        option::Item<char>, option::Final<DynamicString>>> {
 	using Base = dynamicString::Custom<VOLTISO_NAMESPACE::Options<
-	  option::Item<char>, option::Self<DynamicString>>>;
+	  option::Item<char>, option::Final<DynamicString>>>;
 	using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE

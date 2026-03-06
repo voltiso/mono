@@ -74,7 +74,7 @@ class RELOCATABLE(Custom)
 private:
 	using Base = Object<typename Options ::template WithDefault<
 	  option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 	using Item = Options::template Get<option::Item>;
 	static_assert(
@@ -85,12 +85,12 @@ private:
 	static constexpr bool WEAK = Options::template GET<option::WEAK>;
 
 public:
-	template <class... Args> static Self create(Args &&...args) {
-		return Self(pool().insert(std::forward<Args>(args)...), nullptr);
+	template <class... Args> static Final create(Args &&...args) {
+		return Final(pool().insert(std::forward<Args>(args)...), nullptr);
 	}
 
-	static Self create(const Item &item) {
-		return Self(pool().insert(item), nullptr);
+	static Final create(const Item &item) {
+		return Final(pool().insert(item), nullptr);
 	}
 
 	VOLTISO_FORCE_INLINE ~Custom() {
@@ -259,9 +259,9 @@ public:
 template <class Item>
 class RELOCATABLE(Weak)
     : public owned::Custom<Options<
-        option::Item<Item>, option::WEAK<true>, option::Self<Weak<Item>>>> {
+        option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>> {
 	using Base = owned::Custom<
-	  Options<option::Item<Item>, option::WEAK<true>, option::Self<Weak<Item>>>>;
+	  Options<option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>>;
 	using Base::Base;
 
 public:
@@ -343,12 +343,12 @@ namespace VOLTISO_NAMESPACE {
 template <class Item>
 class RELOCATABLE(Owned)
     : public owned::Custom<
-        Options<option::Item<Item>, option::Self<Owned<Item>>>> {
+        Options<option::Item<Item>, option::Final<Owned<Item>>>> {
 	RELOCATABLE_BODY(Owned<Item>);
 
 private:
 	using Base =
-	  owned::Custom<Options<option::Item<Item>, option::Self<Owned<Item>>>>;
+	  owned::Custom<Options<option::Item<Item>, option::Final<Owned<Item>>>>;
 	using Base::Base;
 
 public:

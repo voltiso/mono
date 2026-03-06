@@ -11,7 +11,7 @@
 #include "v/option/input-options"
 #include "v/option/mutable"
 #include "v/option/noexcept"
-#include "v/option/self"
+#include "v/option/final"
 #include "v/option/thread-safe"
 #include "v/options"
 #include "v/owned"
@@ -170,7 +170,7 @@ class Custom
 private:
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Task = runner::_::Task<Custom>;
@@ -462,8 +462,8 @@ public:
 } // namespace VOLTISO_NAMESPACE::runner
 
 namespace VOLTISO_NAMESPACE {
-class Runner : public runner::Custom<Options<option::Self<Runner>>> {
-	using Base = runner::Custom<VOLTISO_NAMESPACE::Options<option::Self<Runner>>>;
+class Runner : public runner::Custom<Options<option::Final<Runner>>> {
+	using Base = runner::Custom<VOLTISO_NAMESPACE::Options<option::Final<Runner>>>;
 	using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE

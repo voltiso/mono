@@ -193,7 +193,7 @@ public:
 		// if (other._controlBlock) [[likely]] {
 		++other._controlBlock->numReferences;
 		// }
-		return Base::self();
+		return Base::final();
 	}
 
 	Custom(Custom &&other) noexcept : _controlBlock(other._controlBlock) {
@@ -206,7 +206,7 @@ public:
 		this->_controlBlock->dereference();
 		this->_controlBlock = other._controlBlock;
 		other._controlBlock = handle::INVALID;
-		return Base::self();
+		return Base::final();
 	}
 
 public:
@@ -224,7 +224,7 @@ public:
 	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
 	Shared &operator=(OtherItem &&other) {
 		target() = std::forward<OtherItem>(other);
-		return Base::self();
+		return Base::final();
 	}
 
 public:

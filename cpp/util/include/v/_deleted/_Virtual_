@@ -1,8 +1,0 @@
-#pragma once
-
-namespace VOLTISO_NAMESPACE {
-class Virtual {
-public:
-  virtual ~Virtual() = default;
-}; // class Virtual
-} // namespace VOLTISO_NAMESPACE

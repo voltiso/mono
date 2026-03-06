@@ -4,7 +4,7 @@
 #include "v/type-option"
 
 namespace VOLTISO_NAMESPACE::option {
-template <class T> struct Self : TypeOption<T, void> {
+template <class T> struct Final : TypeOption<T, void> {
 	// this should near the end of the list for cleaner compilation errors
 	static constexpr auto ORDER = 1000;
 };

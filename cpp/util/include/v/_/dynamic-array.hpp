@@ -208,7 +208,7 @@ private:
 	  option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>>;
 
 protected:
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Item = Options::template Get<VOLTISO_NAMESPACE::option::Item>;
@@ -247,7 +247,7 @@ public:
 	// template <class Type>
 	// using CustomHandle = Handle ::Brand_<Self>::template Type_<Type>;
 	// using Handle = CustomHandle<Size>;
-	using Handle = Handle::WithBrand<Self>::template WithKind<Size>;
+	using Handle = Handle::WithBrand<Final>::template WithKind<Size>;
 
 	static_assert(std::is_same_v<typename Handle::Value, Size>);
 
@@ -360,22 +360,22 @@ public:
 	//   std::is_reference_v<Items> ||
 	//   std::is_const_v<std::remove_reference_t<Items>>)
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(Items &&items) {
-		static_assert(std::is_base_of_v<Custom<Options>, Self>);
-		return Self{tag::COPY, std::forward<Items>(items)};
+		static_assert(std::is_base_of_v<Custom<Options>, Final>);
+		return Final{tag::COPY, std::forward<Items>(items)};
 	}
 
 	template <class SourceItem>
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 	from(const std::initializer_list<SourceItem> &items) {
-		return Self{items};
+		return Final{items};
 	}
 
 public:
 	template <class... Args>
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 	concat(Args &&...args) {
-		static_assert(std::is_base_of_v<Custom<Options>, Self>);
-		return Self{tag::CONCAT, std::forward<Args>(args)...};
+		static_assert(std::is_base_of_v<Custom<Options>, Final>);
+		return Final{tag::CONCAT, std::forward<Args>(args)...};
 	}
 
 protected:
@@ -509,15 +509,15 @@ public:
 public:
 	// `numItems` must be at least 1
 	template <class... Args>
-	static Self createWithNumItems(Size numItems, Args &&...args) {
-		return Self{CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
+	static Final createWithNumItems(Size numItems, Args &&...args) {
+		return Final{CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
 	}
 
 private:
 	struct CreateWithNumItemsTag {};
 	template <class... Args>
 	Custom(CreateWithNumItemsTag, Size numItems, Args &&...args) {
-		static_assert(!std::is_polymorphic_v<Self>);
+		static_assert(!std::is_polymorphic_v<Final>);
 		// auto &self = reinterpret_cast<Self &>(_self);
 
 		this->_numItems = numItems;
@@ -547,7 +547,7 @@ private:
 	//
 
 private:
-	static auto &_allocator() { return Self::Allocator::maybeInitialize(); }
+	static auto &_allocator() { return Final::Allocator::maybeInitialize(); }
 
 public:
 	static const auto &allocator() { return _allocator(); }

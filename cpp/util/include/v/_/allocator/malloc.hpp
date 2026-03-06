@@ -33,8 +33,8 @@ private:
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 
 protected:
-	using Self = Base::Self;
-	using Singleton = V::Singleton<Self>::Lazy;
+	using Final = Base::Final;
+	using Singleton = V::Singleton<Final>::Lazy;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
@@ -57,7 +57,7 @@ public:
 
 public:
 	using Brand = Options::template Get<brand::Custom>;
-	using Handle = Handle::WithBrand<Self>::template WithKind<void *>;
+	using Handle = Handle::WithBrand<Final>::template WithKind<void *>;
 
 	// `numBytes` must be greater than zero
 	Handle allocateBytes(Size numBytes);
@@ -80,8 +80,8 @@ public:
 // VOLTISO_OBJECT_FINAL(allocator::malloc)
 
 namespace VOLTISO_NAMESPACE::allocator {
-struct Malloc final : malloc::Custom<Options<option::Self<Malloc>>> {
-	using Base = malloc::Custom<V::Options<option::Self<Malloc>>>;
+struct Malloc final : malloc::Custom<Options<option::Final<Malloc>>> {
+	using Base = malloc::Custom<V::Options<option::Final<Malloc>>>;
 
 protected:
 	friend Singleton;

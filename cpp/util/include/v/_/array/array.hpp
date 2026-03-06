@@ -109,7 +109,7 @@ private:
 	using Base = _::array::Base<Options>;
 
 protected:
-	using Self = Object::Self;
+	using Final = Object::Final;
 
 public:
 	using Item = typename Base::Item;
@@ -127,7 +127,7 @@ public:
 	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
 
 	template <class Kind>
-	using CustomHandle = Handle::WithBrand<Self>::template WithKind<Kind>;
+	using CustomHandle = Handle::WithBrand<Final>::template WithKind<Kind>;
 
 	using Handle = CustomHandle<
 	  std::conditional_t<(STARTING_INDEX < 0), std::make_signed<Size>, Size>>;
@@ -176,13 +176,13 @@ public:
 
 	template <class Other>
 	  requires(Other::EXTENT == EXTENT)
-	constexpr Self &operator=(const Other &&other) {
+	constexpr Final &operator=(const Other &&other) {
 		if constexpr (std::is_trivially_copyable_v<Item>) {
 			std::memcpy(this, &other, sizeof(CustomNNR));
 		} else {
 			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
 		}
-		return Object::self();
+		return Object::final();
 	}
 
 	INLINE constexpr CustomNNR(std::initializer_list<Item> list) noexcept {
@@ -191,11 +191,11 @@ public:
 	}
 
 	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
-		return Self{tag::COPY, std::forward<Arg>(arg)};
+		return Final{tag::COPY, std::forward<Arg>(arg)};
 	}
 
 	template <class... Args> static INLINE constexpr auto concat(Args &&...args) {
-		return Self{tag::CONCAT, std::forward<Args>(args)...};
+		return Final{tag::CONCAT, std::forward<Args>(args)...};
 	}
 
 public:
@@ -220,7 +220,7 @@ public:
 public:
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
 	    nullptr>
 	const Item &operator[](const InferredHandle &handle) const {
 		GE(handle.value, STARTING_INDEX);
@@ -232,7 +232,7 @@ public:
 
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
 	    nullptr>
 	Item &operator[](const InferredHandle &handle) {
 		return const_cast<Item &>(const_cast<const CustomNNR &>(*this)[handle]);
@@ -310,7 +310,7 @@ public:
 	constexpr auto operator<<(this auto &&self, Other &&other) {
 		constexpr Size NEW_NUM_ITEMS = NUM_ITEMS + get::NUM_ITEMS<Other>;
 		using Result =
-		  Self::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
+		  Final::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
 		EQ(_::array::sumNumItems(self, other), NEW_NUM_ITEMS);
 		return Result::concat(
 		  std::forward<decltype(self)>(self), std::forward<Other>(other));
@@ -382,7 +382,7 @@ namespace VOLTISO_NAMESPACE {
 #define BASE                                                                   \
 	array::Custom<Options<                                                       \
 	  option::Item<Item>, option::Extents<ValuePack<EXTENT>>,                    \
-	  option::Self<Array<Item, EXTENT>>>>
+	  option::Final<Array<Item, EXTENT>>>>
 
 template <class Item, auto EXTENT> class Array : public BASE {
 	using Base = BASE;

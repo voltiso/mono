@@ -15,7 +15,7 @@ namespace VOLTISO_NAMESPACE {
 #define BASE                                                                   \
 	tensor::Custom<Options<                                                      \
 	  option::Item<Item>, option::Extents<ValuePack<4>>,                         \
-	  option::Self<Quaternion<Item>>>>
+	  option::Final<Quaternion<Item>>>>
 template <class Item> class RELOCATABLE(Quaternion) : public BASE {
 	RELOCATABLE_BODY(Quaternion<Item>);
 

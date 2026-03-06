@@ -81,7 +81,7 @@ private:
 	using This = CustomBase;
 
 protected:
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	using Return = Options::template Get<option::Return>;
@@ -269,9 +269,9 @@ public:
 	    !std::is_reference_v<TCallable> &&
 	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>())
-	static Self createIndirect(TCallable &&f) {
+	static Final createIndirect(TCallable &&f) {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
-		return Self{CreateIndirectTag{}, std::forward<TCallable>(f)};
+		return Final{CreateIndirectTag{}, std::forward<TCallable>(f)};
 	}
 
 private:

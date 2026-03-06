@@ -8,7 +8,7 @@
 #include "v/option/custom-template"
 #include "v/option/input-options"
 #include "v/option/optional"
-#include "v/option/self"
+#include "v/option/final"
 #include "v/option/target"
 #include "v/options"
 
@@ -103,9 +103,9 @@ namespace VOLTISO_NAMESPACE {
 template <class Target>
 class Ref final
     : public ref::Custom<
-        V::Options<option::Target<Target>, option::Self<Ref<Target>>>> {
+        V::Options<option::Target<Target>, option::Final<Ref<Target>>>> {
 	using Base =
-	  ref::Custom<V::Options<option::Target<Target>, option::Self<Ref<Target>>>>;
+	  ref::Custom<V::Options<option::Target<Target>, option::Final<Ref<Target>>>>;
 	using Base::Base;
 }; // class Ref
 // deduction guide

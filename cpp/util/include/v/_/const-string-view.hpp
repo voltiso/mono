@@ -19,7 +19,7 @@ class ConstStringView : public View<const char, T_EXTENT> {
 	// using Base::Base;
 
 protected:
-	using Self = Base::Self;
+	using Final = Base::Final;
 
 public:
 	// create from anything - forward to Base
@@ -71,10 +71,10 @@ public:
 	{ // Allow rvalue this
 		// Use get::EXTENT<Other> to ensure we get extent of e.g. const char (&)[N]
 		// not const char* if the latter would have an UNBOUND extent.
-		// ! NOTE: Base::Self is not correct - we have no CustomSlice class for now
+		// ! NOTE: Base::Final is not correct - we have no CustomSlice class for now
 		constexpr auto NEW_NUM_ITEMS =
 		  get::EXTENT<decltype(self)> + get::EXTENT<Other>;
-		// using Result = Self::template With<option::NUM_ITEMS<NEW_NUM_ITEMS>>;
+		// using Result = Final::template With<option::NUM_ITEMS<NEW_NUM_ITEMS>>;
 		using Result = String<NEW_NUM_ITEMS>;
 		// using Result = String<NEW_NUM_ITEMS> ::WithDefault<GetBrands<>>;
 		static_assert(_::tensor::sumNumItems(self, other) == NEW_NUM_ITEMS);
