@@ -52,7 +52,19 @@ template <class T, class... Ts> consteval Size sumNumItems(T &&, Ts &&...ts) {
 	return get::NUM_ITEMS<T> + sumNumItems(std::forward<Ts>(ts)...);
 }
 
-template <class Options> class Base {
+// !
+
+// ⚠️ Not-Necessarily-Relocatable (NNR) base! Never use this directly.
+template <concepts::Options Options>
+class CustomNNR : public Object<typename Options::template WithDefault<
+                    option::CustomTemplate<V::array::GetCustom>,
+                    option::InputOptions<Options>>> {
+protected:
+	using Object = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<V::array::GetCustom>,
+	  option::InputOptions<Options>>>;
+	using Object::Object;
+
 public:
 	using Item = Options::template Get<option::Item>;
 	using Extents = Options::template Get<option::Extents>;
@@ -73,51 +85,15 @@ public:
 
 	static_assert(
 	  EXTENT >= 0, "Array requires static extent (dynamic extent unsupported)");
-};
-
-template <concepts::Options Options>
-class RelocatableBase : public Base<Options> {
-	using Base = Base<Options>;
 
 public:
-	// Keep storage in a dedicated base so relocatable wrappers can reuse it.
-	RawArray<typename Base::Item, Base::NUM_ITEMS> items;
-};
-
-template <concepts::Options Options>
-  requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(RelocatableBase<Options>) : public Base<Options> {
-	using Base = Base<Options>;
-
-public:
-	RawArray<typename Base::Item, Base::NUM_ITEMS> items;
-};
-
-template <concepts::Options Options>
-class RELOCATABLE(CustomNNR)
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<V::array::GetCustom>,
-        option::InputOptions<Options>>>,
-      public _::array::RelocatableBase<Options> {
-protected:
-	using Object = Object<typename Options::template WithDefault<
-	  option::CustomTemplate<V::array::GetCustom>,
-	  option::InputOptions<Options>>>;
-	using Object::Object;
-
-private:
-	using Base = _::array::Base<Options>;
+	// ⚠️ All data members here
+	RawArray<Item, NUM_ITEMS> items;
 
 protected:
 	using Final = Object::Final;
 
 public:
-	using Item = typename Base::Item;
-	using Extents = typename Base::Extents;
-
-	static constexpr auto EXTENT = Base::EXTENT;
-	static constexpr auto EXTENTS = Base::EXTENTS;
-	static constexpr auto NUM_ITEMS = Base::NUM_ITEMS;
 	static constexpr auto STARTING_INDEX =
 	  Options::template GET<option::startingIndex>;
 

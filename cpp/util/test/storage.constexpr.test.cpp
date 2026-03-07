@@ -16,7 +16,7 @@ TEST(StorageConstexpr, doesNotInitialize) {
 	new (&memory) G;
 	auto &storage = *reinterpret_cast<G *>(&memory);
 	EXPECT_EQ(storage.storedItem().myValue, 333);
-	EXPECT_EQ(storage.bytes.NUM_ITEMS, sizeof(S));
+	EXPECT_EQ(storage.bytes().NUM_ITEMS, sizeof(S));
 
 	//
 

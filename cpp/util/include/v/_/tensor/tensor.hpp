@@ -65,9 +65,18 @@ public:
 	}();
 };
 
-template <class Options>
-class Base : public ExtentData<Options, extentKind<Options>> {
-	using B = ExtentData<Options, extentKind<Options>>;
+// !
+
+template <concepts::Options Options>
+class CustomNNR : public Object<typename Options ::template WithDefault<
+                    option::CustomTemplate<V::tensor::GetCustom>,
+                    option::InputOptions<Options>>>,
+                  public ExtentData<Options, extentKind<Options>> {
+protected:
+	using Object = Object<typename Options ::template WithDefault<
+	  option::CustomTemplate<V::tensor::GetCustom>,
+	  option::InputOptions<Options>>>;
+	using Object::Object;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -83,59 +92,17 @@ public:
 		}
 		return result;
 	}();
-};
-
-// here we apply trivial_abi/relocatability conditionally to the storage - just
-// to make sure compiler won't move it around in memory
-template <concepts::Options Options>
-class RelocatableBase : public Base<Options> {
-	using Base = Base<Options>;
 
 public:
-	RawArray<typename Base::Item, Base::NUM_ITEMS> items; // = {};
-};
-
-template <concepts::Options Options>
-  requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(RelocatableBase<Options>) : public Base<Options> {
-	using Base = Base<Options>;
-
-public:
-	RawArray<typename Base::Item, Base::NUM_ITEMS> items; // = {};
-};
-
-// !
-
-// Here we incorrectly mark the class as relocatable, even if derived Custom
-// class disables it. The reason is we have LOTS of constructors and
-// operator='s, and we don't want to duplicate code. Everything because clang
-// doesn't support conditional `[[clang::trivial_abi]]`.
-template <concepts::Options Options>
-class RELOCATABLE(CustomNNR)
-    : public Object<typename Options ::template WithDefault<
-        option::CustomTemplate<V::tensor::GetCustom>,
-        option::InputOptions<Options>>>,
-      public _::tensor::RelocatableBase<Options> {
-protected:
-	using Object = Object<typename Options ::template WithDefault<
-	  option::CustomTemplate<V::tensor::GetCustom>,
-	  option::InputOptions<Options>>>;
-
-	using Object::Object;
+	RawArray<Item, NUM_ITEMS> items; // = {};
 
 private:
-	using Base = _::tensor::Base<Options>;
+	using Base = ExtentData<Options, extentKind<Options>>;
 
 protected:
 	using Final = Object::Final;
 
 public:
-	using Item = Options::template Get<option::Item>;
-	static constexpr auto NUM_ITEMS = Base::NUM_ITEMS;
-
-	using Extents = Options::template Get<option::Extents>;
-	static constexpr auto EXTENTS = Base::EXTENTS;
-
 	static_assert(
 	  !std::is_const_v<Item>,
 	  "const Item does not make sense, just use `const Array<Item>`");
@@ -508,9 +475,12 @@ class Custom : public _::tensor::CustomNNR<Options> {
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>) : public _::tensor::CustomNNR<Options> {
+	RELOCATABLE_BODY(Custom<Options>);
+
+private:
 	using Base = _::tensor::CustomNNR<Options>;
 	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom<Options>, Base);
 };
 } // namespace VOLTISO_NAMESPACE::tensor
 // !
@@ -521,9 +491,8 @@ namespace VOLTISO_NAMESPACE {
 
 #pragma push_macro("BASE")
 #define BASE                                                                   \
-	tensor::Custom<Options<                                                      \
-	  option::Item<Item>, option::Extents<ValuePack<ES...>>,                     \
-	  option::Final<Tensor<Item, ES...>>>>
+	tensor::Custom<Options<option::Item<Item>, option::Extents<ValuePack<ES...>>>>
+// option::Final<Tensor<Item, ES...>>>>
 
 // ! inherit `const Other&&` constructor
 // hacky to preserve trivial-copyability, while forbidding implicit copy/move

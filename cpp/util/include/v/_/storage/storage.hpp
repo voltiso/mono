@@ -26,26 +26,35 @@ struct Specializations;
 } // namespace VOLTISO_NAMESPACE::storage
 
 namespace VOLTISO_NAMESPACE::storage::_ {
-template <class Options>
-  requires concepts::Options<Options>
-class RELOCATABLE(DataMembersUnion) {
+template <concepts::Options Options> class RELOCATABLE(DataMembersUnion) {
 	RELOCATABLE_BODY(DataMembersUnion<Options>);
 
 private:
 	using Item = Options::template Get<option::Item>;
+	using Tensor = Tensor<std::byte, sizeof(Item)>;
 
-public:
+private:
 	union {
-		Tensor<std::byte, sizeof(Item)> bytes;
+		Tensor::WithImplicitCopy _bytes;
 		// ⚠️ This may not be constructed yet
-		Item item; // note: better use .storedItem() for compat
+		Item _storedItem; // note: better use .storedItem() for compat
 	};
 
 public:
+	constexpr Tensor &bytes() noexcept {
+		return this->_bytes.template as<Tensor>();
+	}
+	constexpr const Tensor &bytes() const noexcept {
+		return this->_bytes.template as<const Tensor>();
+	}
+
 	// ⚠️ This may not be constructed yet
-	constexpr Item &storedItem() noexcept { return this->item; }
+	constexpr Item &storedItem() noexcept { return this->_storedItem; }
+
 	// ⚠️ This may not be constructed yet
-	constexpr const Item &storedItem() const noexcept { return this->item; }
+	constexpr const Item &storedItem() const noexcept {
+		return this->_storedItem;
+	}
 
 protected:
 	constexpr DataMembersUnion() noexcept
@@ -63,20 +72,30 @@ protected:
 	constexpr ~DataMembersUnion() noexcept
 	  requires(!std::is_trivially_destructible_v<Item>)
 	{}
-
-protected:
-	Item &_item() noexcept { return this->item; }
-	const Item &_item() const noexcept { return this->item; }
 };
 
 // ⚠️ Not necessarily relocatable! Never use this directly.
 template <class Options>
   requires concepts::Options<Options>
 class RELOCATABLE(DataMembersBytesNNR) {
+private:
 	using Item = Options::template Get<option::Item>;
+	using Tensor = Tensor<std::byte, sizeof(Item)>;
+
+private:
+	// it was public, but we want trivially_copyable.
+	// solution is to either use Tensor::WithImplicitCopy here,
+	// or access via accessor method. We chose the latter, because don't want to
+	// have public interface exposing Tensor::WithImplicitCopy.
+	alignas(Item) Tensor::WithImplicitCopy _bytes;
 
 public:
-	alignas(Item) Tensor<std::byte, sizeof(Item)>::WithImplicitCopy bytes;
+	constexpr Tensor &bytes() noexcept {
+		return this->_bytes.template as<Tensor>();
+	}
+	constexpr const Tensor &bytes() const noexcept {
+		return this->_bytes.template as<Tensor>();
+	}
 
 public:
 	constexpr DataMembersBytesNNR() noexcept = default;
@@ -87,11 +106,13 @@ protected:
 
 public:
 	// ⚠️ This may not be constructed yet
-	Item &storedItem() noexcept { return reinterpret_cast<Item &>(this->bytes); }
+	Item &storedItem() noexcept {
+		return reinterpret_cast<Item &>(this->bytes());
+	}
 
 	// ⚠️ This may not be constructed yet
 	const Item &storedItem() const noexcept {
-		return reinterpret_cast<const Item &>(this->bytes);
+		return reinterpret_cast<const Item &>(this->bytes());
 	}
 
 protected:
@@ -232,7 +253,7 @@ public:
 		// 		return __builtin_bit_cast(TObject, bytes);
 		// #else
 		// std::bit_cast requires TObject to be trivially copyable
-		return std::bit_cast<Item>(this->bytes);
+		return std::bit_cast<Item>(this->bytes());
 		// #endif
 	}
 
@@ -246,7 +267,7 @@ public:
 	    std::is_trivially_default_constructible_v<Item>)
 	{
 		Item result; // we want trivial default constructor here
-		std::memcpy((void *)&result, &this->bytes, sizeof(Item));
+		std::memcpy((void *)&result, &this->bytes(), sizeof(Item));
 		return result; // ! hoping for RVO
 	}
 
@@ -293,12 +314,12 @@ public:
 	  std::is_nothrow_constructible_v<Item, Args...>) {
 		// note: not using `std::construct_at` because TObject constructor may be
 		// private and friend Storage<TObject>
-		new (&this->bytes) Item{std::forward<Args>(args)...};
+		new (&this->bytes()) Item{std::forward<Args>(args)...};
 	}
 
 	// ⚠️ Remember to call `.destroy()` if you constructed something
 	void destroy() noexcept(std::is_nothrow_destructible_v<Item>) {
-		this->_item().~Item();
+		this->storedItem().~Item();
 	}
 
 public:

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "v/_/storage/storage.hpp"
+#include "v/option/constexpr"
 #include "v/storage"
 
 #include <type_traits>
@@ -7,6 +9,28 @@
 #include <v/ON>
 
 using namespace VOLTISO_NAMESPACE;
+
+// ! debug
+
+static_assert(std::is_trivially_copyable_v<Tensor<std::byte, 1>>);
+static_assert(is::_::builtinRelocatable<Tensor<std::byte, 1>>);
+
+static_assert(std::is_trivially_copyable_v<storage::_::DataMembersUnion<
+                Options<option::Item<int>, option::CONSTEXPR<true>>>>);
+
+static_assert(is::_::builtinRelocatable<storage::_::DataMembersUnion<
+                Options<option::Item<int>, option::CONSTEXPR<true>>>>);
+
+static_assert(is::_::builtinRelocatable<storage::_::CustomNNR<
+                Options<option::Item<int>, option::CONSTEXPR<true>>>>);
+
+static_assert(
+  is::_::builtinRelocatable<
+    storage::Custom<Options<option::Item<int>, option::CONSTEXPR<true>>>>);
+
+static_assert(
+  is::relocatable<
+    storage::Custom<Options<option::Item<int>, option::CONSTEXPR<true>>>>);
 
 // !
 
@@ -16,26 +40,24 @@ struct Complex {
 
 static_assert(
   std::is_same_v<Storage<int>::__trivially_relocatable, Storage<int>>);
-
-static_assert(is::_::builtinRelocatable<
-              storage::_::DataMembersBytesNNR<Options<option::Item<int>>>>);
-static_assert(
-  is::_::builtinRelocatable<storage::_::CustomNNR<Options<option::Item<int>>>>);
-static_assert(
-  is::_::builtinRelocatable<storage::Custom<Options<option::Item<int>>>>);
-static_assert(
-  !is::_::builtinRelocatable<storage::Custom<Options<option::Item<Complex>>>>);
-static_assert(is::_::builtinRelocatable<Storage<int>>);
-static_assert(!is::_::builtinRelocatable<Storage<Complex>>);
 static_assert(is::relocatable<Storage<int>>);
-static_assert(!is::relocatable<Storage<Complex>>);
+static_assert(is::relocatable<storage::Custom<Options<option::Item<int>>>>);
 
-// ! xxx::Custom used as final type should be relocatable with correct marker
-template <class T>
-concept RelocatableWithCorrectMarker =
-  is::relocatable<T> && is::_::hasCorrectMarker<T>;
-static_assert(RelocatableWithCorrectMarker<
-              storage::Custom<Options<option::Item<int>>>>);
+static_assert(!is::relocatable<Storage<Complex>>);
+static_assert(
+  !is::relocatable<storage::Custom<Options<option::Item<Complex>>>>);
+
+// !
+
+static_assert(is::relocatable<Storage<int>::Constexpr>);
+static_assert(
+  is::relocatable<
+    storage::Custom<Options<option::Item<int>, option::CONSTEXPR<true>>>>);
+
+static_assert(!is::relocatable<Storage<Complex>::Constexpr>);
+static_assert(
+  !is::relocatable<
+    storage::Custom<Options<option::Item<Complex>, option::CONSTEXPR<true>>>>);
 
 // !
 
@@ -58,15 +80,13 @@ private:
 };
 
 static_assert(is::relocatable<ForcedRelocatable>);
-// static_assert(
-//   is::relocatable<
-//     storage::_::DataMembers<Options<option::Item<ForcedRelocatable>>>>);
-// static_assert(is::relocatable<
-//               storage::_::CustomNNR<Options<option::Item<ForcedRelocatable>>>>);
+static_assert(
+  is::relocatable<
+    storage::_::DataMembers<Options<option::Item<ForcedRelocatable>>>>);
 static_assert(
   is::relocatable<storage::Custom<Options<option::Item<ForcedRelocatable>>>>);
 
-// static_assert(is::_::builtinRelocatable<Storage<ForcedRelocatable>>);
+static_assert(is::_::builtinRelocatable<Storage<ForcedRelocatable>>);
 static_assert(is::relocatable<Storage<ForcedRelocatable>>);
 
 // !
@@ -79,7 +99,7 @@ TEST(Storage, doesNotInitialize) {
 	new (&memory) Storage<S>;
 	auto &storage = *reinterpret_cast<Storage<S> *>(&memory);
 	EXPECT_EQ(storage.storedItem().myValue, 333);
-	EXPECT_EQ(storage.bytes.NUM_ITEMS, sizeof(S));
+	EXPECT_EQ(storage.bytes().NUM_ITEMS, sizeof(S));
 
 	//
 

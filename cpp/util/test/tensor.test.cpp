@@ -11,6 +11,37 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+// !
+
+class RELOCATABLE(AbiTest) : public Tensor<int, 1> {};
+
+// ! should fail
+// struct NonRelocatable {
+// 	NonRelocatable(const NonRelocatable &) = delete;
+// };
+// class RELOCATABLE(AbiTest2) : public Tensor<NonRelocatable, 1> {};
+
+// !
+
+static_assert(
+  std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
+static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
+
+static_assert(is::relocatable<tensor::Custom<Options<option::Item<int>>>>);
+static_assert(is::relocatable<Tensor<int, 1>>);
+
+struct NonRelocatable {
+	NonRelocatable(const NonRelocatable &) {}
+	~NonRelocatable() {}
+};
+static_assert(!is::relocatable<NonRelocatable>);
+
+static_assert(!is::relocatable<Tensor<NonRelocatable, 3>>);
+static_assert(
+  !is::relocatable<tensor::Custom<Options<option::Item<NonRelocatable>>>>);
+
+// !
+
 static_assert(
   std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
 
@@ -19,12 +50,6 @@ static_assert(std::is_trivially_copyable_v<v::_::tensor::CustomNNR<v::Options<
                 v::option::implicitCopy<true>>>>);
 
 static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
-
-static_assert(
-  is::_::builtinRelocatable<_::tensor::Base<Options<option::Item<int>>>>);
-
-static_assert(is::_::builtinRelocatable<
-              _::tensor::RelocatableBase<Options<option::Item<int>>>>);
 
 static_assert(is::_::builtinRelocatable<
               V::_::tensor::CustomNNR<Options<option::Item<int>>>>);

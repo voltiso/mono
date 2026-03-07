@@ -13,26 +13,32 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+// !
+
 static_assert(
   std::is_trivially_copyable_v<array::Custom<Options<option::Item<int>>>>);
-static_assert(std::is_trivially_copyable_v<v::_::array::CustomNNR<v::Options<
-                v::option::Item<int>, v::option::Extents<v::ValuePack<3>>,
-                v::option::implicitCopy<true>>>>);
 static_assert(std::is_trivially_copyable_v<Array<int, 1>>);
 
-static_assert(
-  is::_::builtinRelocatable<_::array::Base<Options<option::Item<int>>>>);
-static_assert(is::_::builtinRelocatable<
-              _::array::RelocatableBase<Options<option::Item<int>>>>);
-static_assert(
-  is::_::builtinRelocatable<_::array::CustomNNR<Options<option::Item<int>>>>);
-static_assert(
-  is::_::builtinRelocatable<array::Custom<Options<option::Item<int>>>>);
-static_assert(is::_::builtinRelocatable<Array<int, 1>>);
+static_assert(is::relocatable<array::Custom<Options<option::Item<int>>>>);
 static_assert(is::relocatable<Array<int, 1>>);
 
+struct NonRelocatable {
+	NonRelocatable(const NonRelocatable &) {}
+};
+static_assert(!is::relocatable<NonRelocatable>);
+
+static_assert(!is::relocatable<Array<NonRelocatable, 3>>);
+static_assert(
+  !is::relocatable<array::Custom<Options<option::Item<NonRelocatable>>>>);
+
+// !
+
+// ! note: our Array is not an aggregate type !
+// there's too many cool stuff in it
+// we don't want implicit linear-time copies, etc.
+// - If you need an aggregate type, just use `std::array`
+static_assert(!std::is_aggregate_v<Array<int, 3>>); // !
 static_assert(std::is_aggregate_v<std::array<int, 3>>);
-static_assert(!std::is_aggregate_v<Array<int, 3>>);
 
 using Implicit = Array<int, 3>::WithImplicitCopy;
 

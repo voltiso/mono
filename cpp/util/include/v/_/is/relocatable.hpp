@@ -77,21 +77,26 @@ static constexpr auto relocatable = []() constexpr {
 			static_assert(
 			  builtinRelocatable,
 			  "type is marked trivially relocatable, but compiler says otherwise "
-			  "(use RELOCATABLE macro in class definition) - "
+			  "(use RELOCATABLE macro in class definition, make sure base classes "
+			  "pass this test, and ...) - "
 			    << string::from<T>());
 		}
 	}
 
-	if constexpr (
-	  VOLTISO_HAS_BUILTIN_IS_RELOCATABLE && VOLTISO_ENABLE_TRIVIAL_ABI) {
-		if constexpr (builtinRelocatable) {
+	if constexpr (builtinRelocatable) {
+		static_assert(
+		  !hasIncorrectBaseMarker,
+		  "compiler says type is trivially relocatable, but marker is incorrect "
+		  "- possibly base class marker is inherited (use "
+		  "VOLTISO_RELOCATABLE_BODY in derived class too)"
+		  //  << string::from<T>() // ! circular dep! how to fix?
+		);
+
+		if constexpr (is::Object<T>) {
 			static_assert(
-			  !hasIncorrectBaseMarker,
-			  "compiler says type is trivially relocatable, but marker is incorrect "
-			  "- possibly base class marker is inherited (use "
-			  "VOLTISO_RELOCATABLE_BODY in derived class too)"
-			  //  << string::from<T>() // ! circular dep! how to fix?
-			);
+			  hasCorrectMarker,
+			  "type is trivially relocatable, but marker is "
+			  "missing or incorrect - use VOLTISO_RELOCATABLE_BODY");
 		}
 	}
 
@@ -111,6 +116,12 @@ static constexpr auto relocatable = []() constexpr {
 			static_assert(
 			  resultNotUsingBuiltin == std::__libcpp_is_trivially_relocatable<T>(),
 			  "libc++ does not agree on trivial relocatability");
+		}
+
+		if constexpr (is::Object<T>) {
+			static_assert(
+			  result == std::__libcpp_is_trivially_relocatable<T>(),
+			  "libc++ does not agree on trivial relocatability for Object");
 		}
 	}
 

@@ -4,13 +4,15 @@
 #include "v/_/0-object.forward.hpp" // IWYU pragma: keep
 
 #include "v/option/custom-template"
+#include "v/option/final"
 #include "v/option/implicit-copy" // IWYU pragma: keep for macro
 #include "v/option/input-options"
-#include "v/option/final"
 #include "v/options"
 
 #include <memory>
 #include <type_traits>
+
+#include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
 
@@ -20,7 +22,9 @@ namespace VOLTISO_NAMESPACE {
 //  - Can't test in `Object` body, because `Final` may be incomplete
 template <class TOptions = Options<>>
 // requires concepts::Options<Options> && std::is_final_v<Final>
-class Object {
+class RELOCATABLE(Object) {
+	RELOCATABLE_BODY(Object<TOptions>);
+
 public:
 	using Options = TOptions;
 
@@ -84,7 +88,9 @@ public:
 	as(this auto &&self) noexcept {
 		static_assert(sizeof(NewFinalClass) == sizeof(self));
 		static_assert(!std::is_reference_v<NewFinalClass>);
-		static_assert(!std::is_const_v<NewFinalClass>);
+		static_assert(
+		  !std::is_const_v<NewFinalClass>,
+		  "don't apply cv-qualifiers, they are auto-inferred correctly");
 		static_assert(!std::is_volatile_v<NewFinalClass>);
 		using Param = decltype(self);
 
@@ -221,7 +227,7 @@ public:
 // static_assert(std::is_constructible_v<S, const S &&>);
 // static_assert(std::is_constructible_v<D, const D &&>);
 
-#define VOLTISO_INHERIT_RVALUE_COPY(Final, Base)                                \
+#define VOLTISO_INHERIT_RVALUE_COPY(Final, Base)                               \
 public:                                                                        \
 	Final(const Final &other)                                                    \
 	  requires(Base::Options::template GET<option::implicitCopy>)                \
@@ -240,14 +246,14 @@ public:                                                                        \
 	= default;                                                                   \
                                                                                \
 protected:                                                                     \
-	Final(const Final &) = default; /* for [[trivial_abi]] */                    \
+	explicit Final(const Final &) = default; /* for [[trivial_abi]] */           \
 	Final &operator=(const Final &) = delete;                                    \
-	Final(Final &&) = delete;                                                     \
-	Final &operator=(Final &&) = delete;                                          \
+	Final(Final &&) = delete;                                                    \
+	Final &operator=(Final &&) = delete;                                         \
                                                                                \
 public:                                                                        \
 	template <class Source>                                                      \
-	  requires std::is_same_v<Source, Final> &&                                   \
+	  requires std::is_same_v<Source, Final> &&                                  \
 	           std::is_constructible_v<Base, const Source &&>                    \
 	Final(const Source &&other) : Base(static_cast<const Source &&>(other)) {}   \
                                                                                \
@@ -257,3 +263,5 @@ public:                                                                        \
 	{                                                                            \
 		return Base::operator=(static_cast<const Arg &&>(arg));                    \
 	}
+
+#include <v/OFF>
