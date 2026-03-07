@@ -3,7 +3,7 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 
-#include "v/_/tensor/forward.hpp"
+#include "v/_/tensor/_forward.hpp"
 #include "v/_/view.forward.hpp"
 #include "v/concepts/options"
 #include "v/get/brands"
@@ -510,7 +510,8 @@ public:
 	// `numItems` must be at least 1
 	template <class... Args>
 	static Final createWithNumItems(Size numItems, Args &&...args) {
-		return Final{CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
+		return Final{
+		  CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
 	}
 
 private:

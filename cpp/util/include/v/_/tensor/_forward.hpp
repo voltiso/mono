@@ -9,15 +9,11 @@
 
 namespace VOLTISO_NAMESPACE::tensor {
 
-//
-
 template <concepts::Options Options> class Custom;
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>);
-
-//
 
 template <concepts::Options Options> struct Specializations {
 	using Result = Custom<Options>;

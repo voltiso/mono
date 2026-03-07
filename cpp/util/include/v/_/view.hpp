@@ -6,7 +6,7 @@
 #include "v/_/0-is-object.hpp"
 #include "v/_/const-string-view.forward.hpp"
 #include "v/_/dynamic-array.forward.hpp"
-#include "v/_/tensor/forward.hpp"
+#include "v/_/tensor/_forward.hpp"
 #include "v/extent"
 #include "v/get/extent"
 #include "v/memory/iterator"
