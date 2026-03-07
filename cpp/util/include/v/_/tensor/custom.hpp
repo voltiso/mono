@@ -14,19 +14,15 @@ namespace VOLTISO_NAMESPACE::tensor {
 template <concepts::Options Options>
 class Custom : public _::tensor::CustomNNR<Options> {
 	using Base = _::tensor::CustomNNR<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>) : public _::tensor::CustomNNR<Options> {
 	RELOCATABLE_BODY(Custom<Options>);
-
-private:
 	using Base = _::tensor::CustomNNR<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 } // namespace VOLTISO_NAMESPACE::tensor
 

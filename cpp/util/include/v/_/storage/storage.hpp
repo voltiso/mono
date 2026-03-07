@@ -335,21 +335,16 @@ public:
 namespace VOLTISO_NAMESPACE::storage {
 template <concepts::Options Options>
 class Custom : public _::CustomNNR<Options>, public mixin::NonRelocatable {
-private:
 	using Base = _::CustomNNR<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>) : public _::CustomNNR<Options> {
 	RELOCATABLE_BODY(Custom<Options>);
-
-private:
 	using Base = _::CustomNNR<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 } // namespace VOLTISO_NAMESPACE::storage
 
@@ -363,8 +358,7 @@ namespace VOLTISO_NAMESPACE {
 template <class Item>
 class Storage : public storage::Custom<Options<option::Item<Item>>> {
 	using Base = storage::Custom<Options<option::Item<Item>>>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Storage, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Storage);
 };
 
 template <class Item>
@@ -372,11 +366,8 @@ template <class Item>
 class RELOCATABLE(Storage<Item>)
     : public storage::Custom<Options<option::Item<Item>>> {
 	RELOCATABLE_BODY(Storage<Item>);
-
-private:
 	using Base = storage::Custom<Options<option::Item<Item>>>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Storage, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Storage);
 };
 } // namespace VOLTISO_NAMESPACE
 

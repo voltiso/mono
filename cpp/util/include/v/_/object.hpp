@@ -227,41 +227,72 @@ public:
 // static_assert(std::is_constructible_v<S, const S &&>);
 // static_assert(std::is_constructible_v<D, const D &&>);
 
-#define VOLTISO_INHERIT_RVALUE_COPY(Final, Base)                               \
+// ⚠️ Requires `Base` typedef in scope.
+// - We want it trivially copyable
+#define VOLTISO_INHERIT_RVALUE_COPY(Self)                                      \
 public:                                                                        \
-	Final(const Final &other)                                                    \
+	using Base::Base;                                                            \
+	using Base::operator=;                                                       \
+                                                                               \
+public:                                                                        \
+	Self(Self &&) = delete;                                                      \
+	Self(Self &&)                                                                \
 	  requires(Base::Options::template GET<option::implicitCopy>)                \
 	= default;                                                                   \
                                                                                \
-	Final &operator=(const Final &other)                                         \
+	Self(const Self &other)                                                      \
 	  requires(Base::Options::template GET<option::implicitCopy>)                \
 	= default;                                                                   \
                                                                                \
-	Final(Final &&)                                                              \
-	  requires(Base::Options::template GET<option::implicitCopy>)                \
-	= default;                                                                   \
-                                                                               \
-	Final &operator=(Final &&)                                                   \
+	Self &operator=(const Self &) = delete;                                      \
+	Self &operator=(const Self &other)                                           \
 	  requires(Base::Options::template GET<option::implicitCopy>)                \
 	= default;                                                                   \
                                                                                \
 protected:                                                                     \
-	explicit Final(const Final &) = default; /* for [[trivial_abi]] */           \
-	Final &operator=(const Final &) = delete;                                    \
-	Final(Final &&) = delete;                                                    \
-	Final &operator=(Final &&) = delete;                                         \
+	explicit Self(const Self &) = default; /* for [[trivial_abi]] */             \
                                                                                \
 public:                                                                        \
-	template <class Source>                                                      \
-	  requires std::is_same_v<Source, Final> &&                                  \
-	           std::is_constructible_v<Base, const Source &&>                    \
-	Final(const Source &&other) : Base(static_cast<const Source &&>(other)) {}   \
+	/* explicit copy construct */                                                \
+	template <class Src>                                                         \
+	  requires std::is_same_v<Src, Self> &&                                      \
+	           std::is_constructible_v<Base, const Src &&>                       \
+	Self(const Src &&src) : Base(static_cast<const Src &&>(src)) {}              \
                                                                                \
-	template <class Arg>                                                         \
-	auto &operator=(const Arg &&arg)                                             \
-	  requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }     \
+	/* move assign */                                                            \
+	template <class Src>                                                         \
+	  requires(!std::is_reference_v<Src> && !std::is_const_v<Src>)               \
+	auto &operator=(Src &&src)                                                   \
+	  requires requires { Base::operator=(static_cast<Src &&>(src)); }           \
 	{                                                                            \
-		return Base::operator=(static_cast<const Arg &&>(arg));                    \
-	}
+		return Base::operator=(static_cast<Src &&>(src));                          \
+	}                                                                            \
+                                                                               \
+private:
 
 #include <v/OFF>
+
+/*
+
+
+
+*/
+
+// !
+
+/*
+  Final &operator=(Final &&) = delete;                                         \
+
+  Final &operator=(Final &&)                                                   \
+    requires(Base::Options::template GET<option::implicitCopy>)                \
+  = default;                                                                   \
+
+                               \
+  template <class Arg>                                                         \
+  auto &operator=(const Arg &&arg)                                             \
+    requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }     \
+  {                                                                            \
+    return Base::operator=(static_cast<const Arg &&>(arg));                    \
+  }                                                                            \
+
+*/

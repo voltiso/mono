@@ -5,10 +5,12 @@
 
 #include "v/_/view.forward.hpp"
 #include "v/concepts/options"
+#include "v/copy"
 #include "v/get/extent"
 #include "v/get/num-items"
 #include "v/handle"
 #include "v/memory/iterator"
+#include "v/mixin/contiguous-array"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/extents"
@@ -27,9 +29,9 @@
 #include <array>
 #include <cstring>
 #include <initializer_list>
+#include <iterator>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <type_traits>
 #include <utility>
 
@@ -45,42 +47,34 @@ template <class T, class... Ts> consteval Size sumNumItems(T &&, Ts &&...ts) {
 // !
 
 template <concepts::Options Options>
-class Impl : public Object<typename Options::template WithDefault<
+class ImplBase : public Object<Options>,
+                 public mixin::ContiguousArray<Options> {};
+
+// !
+
+template <concepts::Options Options>
+class Impl : public ImplBase<typename Options::template WithDefault<
                option::CustomTemplate<V::array::GetCustom>,
                option::InputOptions<Options>>> {
 protected:
-	using Object = Object<typename Options::template WithDefault<
+	using Base = ImplBase<typename Options::template WithDefault<
 	  option::CustomTemplate<V::array::GetCustom>,
 	  option::InputOptions<Options>>>;
-	using Object::Object;
+	// using Object::Object;
+	using Final = Base::Final;
 
 public:
 	using Item = Options::template Get<option::Item>;
-	using Extents = Options::template Get<option::Extents>;
-	static constexpr auto EXTENT = [] {
-		constexpr auto extentsTuple = Extents::tuple();
-		if constexpr (std::tuple_size_v<decltype(extentsTuple)> == 0) {
-			// Keep parity with Tensor's default (single-item when no extent is set).
-			return 1;
-		} else {
-			static_assert(
-			  std::tuple_size_v<decltype(extentsTuple)> == 1,
-			  "Array supports exactly one extent");
-			return std::get<0>(extentsTuple);
-		}
-	}();
-	static constexpr auto EXTENTS = std::array<Size, 1>{EXTENT};
-	static constexpr auto NUM_ITEMS = EXTENT;
+	static constexpr auto NUM_ITEMS = Base::NUM_ITEMS;
+	static constexpr auto EXTENT = Base::EXTENT;
 
-	static_assert(
-	  EXTENT >= 0, "Array requires static extent (dynamic extent unsupported)");
+private:
+	// ⚠️ All data members here
+	RawArray<Item, NUM_ITEMS> _items;
 
 public:
-	// ⚠️ All data members here
-	RawArray<Item, NUM_ITEMS> items;
-
-protected:
-	using Final = Object::Final;
+	constexpr auto &items() noexcept { return this->_items; }
+	constexpr const auto &items() const noexcept { return this->_items; }
 
 public:
 	static constexpr auto STARTING_INDEX =
@@ -104,56 +98,63 @@ public:
 
 public:
 	Impl() = default;
-
-public:
-	// Allow regular copy only when explicitly enabled via option::implicitCopy.
 	Impl(const Impl &other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
+	  requires(Base::Options::template GET<option::implicitCopy>)
 	= default;
 
 protected:
-	// Keep defaulted special members for trivial ABI / relocatability behavior.
-	Impl(const Impl &) = default;
+	Impl(const Impl &) = default; // for [[clang::trivial_abi]]
+	// `operator=` default - derived can default theirs, and be trivially_copyable
+	// Downside is we can't have manual implementation for relocatables
 	Impl &operator=(const Impl &) = default;
+
 	Impl(Impl &&) = delete;
-	Impl &operator=(Impl &&) = delete;
+	Impl(Impl &&)
+	  requires(Base::Options::template GET<option::implicitCopy>)
+	= default;
 
 public:
-	Impl(Impl &&other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
+	Impl &operator=(Impl &&) = delete;
+	Impl &operator=(Impl &&)
+	  requires(Base::Options::template GET<option::implicitCopy>)
 	= default;
 
-	Impl &operator=(Impl &&other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
-	= default;
+private:
+	template <class Other, std::size_t... Is>
+	constexpr Impl(const Other &other, std::index_sequence<Is...>)
+	    : _items{copy(*std::next(other.begin(), Is))...} {}
+
+	// template <class Other, std::size_t... Is>
+	// constexpr Impl(Other &&other, std::index_sequence<Is...>)
+	//     : _items{move(*std::next(other.begin(), Is))...} {}
 
 public:
 	// `other` is typically `copy()` result: linear-time copy is explicit.
 	template <class Other>
-	  requires(Other::EXTENT == EXTENT)
-	constexpr Impl(const Other &&other) {
-		if constexpr (std::is_trivially_copyable_v<Item>) {
-			std::memcpy(this, &other, sizeof(Impl));
-		} else {
-			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
-		}
-	}
+	  requires(NUM_ITEMS == Other::NUM_ITEMS)
+	constexpr Impl(const Other &&other)
+	    : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
 
 	template <class Other>
-	  requires(Other::EXTENT == EXTENT)
-	constexpr Final &operator=(const Other &&other) {
-		if constexpr (std::is_trivially_copyable_v<Item>) {
-			std::memcpy(this, &other, sizeof(Impl));
-		} else {
-			std::copy(other.items, other.items + Other::NUM_ITEMS, this->items);
-		}
-		return Object::final();
+	  requires(
+	    NUM_ITEMS == Other::NUM_ITEMS &&
+	    Base::Options::template GET<option::implicitCopy>)
+	constexpr Impl(const Other &other)
+	    : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
+
+	// explicit copy
+	template <class Other>
+	  requires(std::is_const_v<Other> && NUM_ITEMS == Other::NUM_ITEMS)
+	constexpr auto &operator=(Other &&other) {
+		std::copy(other.begin(), other.end(), this->begin());
+		return *this;
 	}
 
-	INLINE constexpr Impl(std::initializer_list<Item> list) noexcept {
-		EQ(list.size(), NUM_ITEMS);
-		std::copy(list.begin(), list.end(), this->items);
-	}
+public:
+	template <class... Items>
+	  requires(sizeof...(Items) == NUM_ITEMS)
+	INLINE constexpr Impl(Items &&...items) noexcept
+	    : _items{std::forward<Items>(items)...} {}
 
 	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
 		return Final{tag::COPY, std::forward<Arg>(arg)};
@@ -167,18 +168,18 @@ public:
 	template <class TSource> constexpr Impl(tag::Copy, const TSource &source) {
 		// Compile-time shape compatibility check.
 		static_assert(TSource::NUM_ITEMS == NUM_ITEMS);
-		std::copy(source.items, source.items + NUM_ITEMS, this->items);
+		std::copy(source.items(), source.items() + NUM_ITEMS, this->items());
 	}
 
 	constexpr Impl(tag::Copy, RawArray<const Item, NUM_ITEMS> &items) {
-		std::copy(items, items + NUM_ITEMS, this->items);
+		std::copy(items, items + NUM_ITEMS, this->items());
 	}
 
 	template <Size N>
 	  requires(N >= NUM_ITEMS)
 	consteval Impl(tag::CopyConsteval, const Item (&items)[N]) {
 		// Accept N >= NUM_ITEMS to support null-terminated string literals.
-		std::copy(items, items + NUM_ITEMS, this->items);
+		std::copy(items, items + NUM_ITEMS, this->items());
 	}
 
 public:
@@ -191,7 +192,7 @@ public:
 		LT(
 		  handle.value - STARTING_INDEX,
 		  (std::make_signed_t<decltype(NUM_ITEMS)>)NUM_ITEMS);
-		return this->items[handle.value - STARTING_INDEX];
+		return this->items()[handle.value - STARTING_INDEX];
 	}
 
 	template <
@@ -213,37 +214,37 @@ public:
 	}
 
 	constexpr bool operator==(const Impl &other) const {
-		return std::equal(this->items, this->items + NUM_ITEMS, other.items);
+		return std::equal(this->items(), this->items() + NUM_ITEMS, other.items());
 	}
 
 	// Explicit: conversion loses semantic type information.
 	explicit operator RawArray<Item, NUM_ITEMS> &() noexcept {
-		return this->items;
+		return this->items();
 	}
 	explicit operator const RawArray<Item, NUM_ITEMS> &() const noexcept {
-		return this->items;
+		return this->items();
 	}
 
 	// string_view is constant-time, so implicit is fine.
 	constexpr operator ::std::string_view() const
 	  requires std::is_same_v<std::remove_const_t<Item>, char>
 	{
-		return ::std::string_view(this->items, NUM_ITEMS);
+		return ::std::string_view(this->items(), NUM_ITEMS);
 	}
 
 	explicit constexpr operator ::std::string() noexcept(
-	  noexcept(std::string(this->items, this->items + NUM_ITEMS)))
+	  noexcept(std::string(this->items(), this->items() + NUM_ITEMS)))
 	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
 	{
-		return std::string(this->items, this->items + NUM_ITEMS);
+		return std::string(this->items(), this->items() + NUM_ITEMS);
 	}
 
 	constexpr operator View<Item, NUM_ITEMS>() {
-		return View<Item, NUM_ITEMS>{this->items};
+		return View<Item, NUM_ITEMS>{this->items()};
 	}
 
 	constexpr operator View<const Item, NUM_ITEMS>() const {
-		return View<const Item, NUM_ITEMS>{this->items};
+		return View<const Item, NUM_ITEMS>{this->items()};
 	}
 
 	[[nodiscard]] constexpr auto view() noexcept {
@@ -257,13 +258,13 @@ public:
 	using ConstIterator = memory::Iterator<const Item>;
 
 	// Iterator validity follows underlying storage relocation rules.
-	Iterator begin() { return Iterator{this->items}; }
-	Iterator end() { return Iterator{this->items + NUM_ITEMS}; }
-	ConstIterator begin() const { return ConstIterator{this->items}; }
-	ConstIterator end() const { return ConstIterator{this->items + NUM_ITEMS}; }
+	Iterator begin() { return Iterator{this->items()}; }
+	Iterator end() { return Iterator{this->items() + NUM_ITEMS}; }
+	ConstIterator begin() const { return ConstIterator{this->items()}; }
+	ConstIterator end() const { return ConstIterator{this->items() + NUM_ITEMS}; }
 
 	constexpr Size size() const noexcept { return NUM_ITEMS; }
-	[[nodiscard]] constexpr auto data() const noexcept { return this->items; }
+	[[nodiscard]] constexpr auto data() const noexcept { return this->items(); }
 
 public:
 	// Concat for statically-sized sources only.
@@ -307,7 +308,7 @@ private:
 			  sliceInstance.extent() == get::EXTENT<SliceT>,
 			  "Slice extent mismatch.");
 			for (Size i = 0; i < sliceInstance.extent(); ++i) {
-				this->items[currentOffset + i] = sliceInstance.items[i];
+				this->items()[currentOffset + i] = sliceInstance.items[i];
 			}
 			currentOffset += sliceInstance.extent();
 		}
@@ -315,8 +316,8 @@ private:
 
 public:
 	template <class Extents>
-	using WithExtents = Object::template With<option::Extents<Extents>>;
-	using WithImplicitCopy = Object::template With<option::implicitCopy<true>>;
+	using WithExtents = Base::template With<option::Extents<Extents>>;
+	using WithImplicitCopy = Base::template With<option::implicitCopy<true>>;
 }; // class Impl
 } // namespace VOLTISO_NAMESPACE::array::_
 

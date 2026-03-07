@@ -82,6 +82,7 @@ add_executable(
   voltiso-util-test
   test.cpp
 
+  util/test/array.test.cpp
   util/test/retainer.test.cpp
   util/test/hash.test.cpp
   util/test/entry.test.cpp
@@ -115,7 +116,6 @@ add_executable(
   util/test/subject.test.cpp
   util/test/executable-path.test.cpp
   util/test/tensor.test.cpp
-  util/test/array.test.cpp
   util/test/tribool.test.cpp
   util/test/quaternion.test.cpp
   util/test/ref.test.cpp

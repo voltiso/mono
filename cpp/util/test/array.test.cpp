@@ -18,41 +18,10 @@ using namespace VOLTISO_NAMESPACE;
 static_assert(
   std::is_trivially_copyable_v<array::Custom<Options<option::Item<int>>>>);
 static_assert(std::is_trivially_copyable_v<Array<int, 1>>);
-
-static_assert(is::relocatable<array::Custom<Options<option::Item<int>>>>);
-static_assert(is::relocatable<Array<int, 1>>);
-
-struct NonRelocatable {
-	NonRelocatable(const NonRelocatable &) {}
-};
-static_assert(!is::relocatable<NonRelocatable>);
-
-static_assert(!is::relocatable<Array<NonRelocatable, 3>>);
-static_assert(
-  !is::relocatable<array::Custom<Options<option::Item<NonRelocatable>>>>);
+using Implicit = Array<int, 3>::WithImplicitCopy;
+static_assert(std::is_trivially_copyable_v<Implicit>);
 
 // !
-
-// ! note: our Array is not an aggregate type !
-// there's too many cool stuff in it
-// we don't want implicit linear-time copies, etc.
-// - If you need an aggregate type, just use `std::array`
-static_assert(!std::is_aggregate_v<Array<int, 3>>); // !
-static_assert(std::is_aggregate_v<std::array<int, 3>>);
-
-using Implicit = Array<int, 3>::WithImplicitCopy;
-
-static_assert(std::is_trivially_copyable_v<Implicit>);
-// WithImplicitCopy should restore regular copy/move ergonomics.
-static_assert(std::is_constructible_v<Implicit, Implicit &>);
-static_assert(std::is_constructible_v<Implicit, Implicit &&>);
-static_assert(std::is_constructible_v<Implicit, const Implicit &>);
-static_assert(std::is_constructible_v<Implicit, const Implicit &&>);
-static_assert(std::is_assignable_v<Implicit &, Implicit>);
-static_assert(std::is_assignable_v<Implicit &, Implicit &>);
-static_assert(std::is_assignable_v<Implicit &, Implicit &&>);
-static_assert(std::is_assignable_v<Implicit &, const Implicit &>);
-static_assert(std::is_assignable_v<Implicit &, const Implicit &&>);
 
 TEST(Array, uninitialized) {
 	Storage<Array<int, 10>> array;
@@ -163,16 +132,21 @@ TEST(Array, concat) {
 }
 
 TEST(Array, noImplicitCopy) {
-	// Regular copy/move is intentionally disabled (linear-time operation).
-	static_assert(!std::is_constructible_v<Array<int, 3>, Array<int, 3> &>);
-	static_assert(!std::is_constructible_v<Array<int, 3>, Array<int, 3>>);
+	// using Array =
+	//   array::_::Impl<Options<option::Item<int>,
+	//   option::Extents<ValuePack<3>>>>;
+	using Array = Array<int, 3>;
 
-	Array<int, 3> array = {1, 2, 3};
-	Array<int, 3> newArray = array.copy();
+	// Regular copy/move is intentionally disabled (linear-time operation).
+	static_assert(!std::is_constructible_v<Array, Array &>);
+	static_assert(!std::is_constructible_v<Array, Array>);
+
+	Array array = {1, 2, 3};
+	Array newArray = array.copy();
 	EXPECT_EQ(newArray, array);
 
-	Array<int, 3> anotherArray;
-	static_assert(!std::is_assignable_v<Array<int, 3> &, Array<int, 3>>);
+	Array anotherArray;
+	static_assert(!std::is_assignable_v<Array &, Array>);
 	anotherArray = array.copy();
 	EXPECT_EQ(anotherArray, array);
 }
@@ -245,4 +219,241 @@ TEST(Array, customStartingIndex) {
 	EXPECT_EQ(array[3], 30);
 }
 
+struct CopyLifecycle {
+	static int numConstructed;
+	static int numDestructed;
+	int num = 0;
+	CopyLifecycle(int num) : num(num) { ++numConstructed; }
+	CopyLifecycle(const CopyLifecycle &other) : num(other.num + 1) {
+		++numConstructed;
+	}
+	~CopyLifecycle() { ++numDestructed; }
+	auto &operator=(const CopyLifecycle &other) = delete;
+};
+int CopyLifecycle::numConstructed = 0;
+int CopyLifecycle::numDestructed = 0;
+
+TEST(Array, copyLifecycle) {
+	CopyLifecycle::numConstructed = 0;
+	CopyLifecycle::numDestructed = 0;
+	{
+		Array<CopyLifecycle, 3> array = {0, 0, 0};
+		EXPECT_EQ(array[0].num, 0);
+		EXPECT_EQ(array[1].num, 0);
+		EXPECT_EQ(array[2].num, 0);
+		auto array2 = array.copy();
+		static_assert(std::is_same_v<decltype(array2), Array<CopyLifecycle, 3>>);
+		EXPECT_EQ(array2[0].num, 1);
+		EXPECT_EQ(array2[1].num, 1);
+		EXPECT_EQ(array2[2].num, 1);
+	}
+	EXPECT_EQ(CopyLifecycle::numConstructed, 6);
+	EXPECT_EQ(CopyLifecycle::numDestructed, 6);
+}
+
+struct AssignLifecycle {
+	static int numConstructed;
+	static int numDestructed;
+	int num = 0;
+	AssignLifecycle(int num) : num(num) { ++numConstructed; }
+	~AssignLifecycle() { ++numDestructed; }
+	void operator=(const AssignLifecycle &other) { num = other.num + 1; }
+	AssignLifecycle(const AssignLifecycle &other) = delete;
+};
+int AssignLifecycle::numConstructed = 0;
+int AssignLifecycle::numDestructed = 0;
+
+TEST(Array, assignLifecycle) {
+	AssignLifecycle::numConstructed = 0;
+	AssignLifecycle::numDestructed = 0;
+	{
+		Array<AssignLifecycle, 3> array = {0, 0, 0};
+		EXPECT_EQ(array[0].num, 0);
+		EXPECT_EQ(array[1].num, 0);
+		EXPECT_EQ(array[2].num, 0);
+		Array<AssignLifecycle, 3> array2 = {10, 10, 10};
+		array2 = array.copy();
+		EXPECT_EQ(array2[0].num, 1);
+		EXPECT_EQ(array2[1].num, 1);
+		EXPECT_EQ(array2[2].num, 1);
+	}
+	EXPECT_EQ(AssignLifecycle::numConstructed, 6);
+	EXPECT_EQ(AssignLifecycle::numDestructed, 6);
+}
+
+TEST(Array, copyConversion) {
+	struct S {
+		S(int) {}
+	};
+
+	// using Array =
+	//   array::_::Impl<Options<option::Item<int>,
+	//   option::Extents<ValuePack<3>>>>;
+	// using SArray =
+	// array::_::Impl<Options<option::Item<S>, option::Extents<ValuePack<3>>>>;
+
+	using IArray = Array<int, 3>;
+	using SArray = Array<S, 3>;
+
+	IArray array = {1, 2, 3};
+	SArray array2 = array.copy();
+	array2 = array.copy();
+}
+
+TEST(Array, implicitCopyConversion) {
+	Array<int, 3>::WithImplicitCopy array = {1, 2, 3};
+	struct S {
+		S(int) {}
+	};
+	Array<S, 3>::WithImplicitCopy array2 = array;
+	array2 = array;
+}
+
+// TEST(Array, moveConversion) {
+
+struct MoveOnly {
+	int x = 0;
+	MoveOnly() = delete;
+	MoveOnly(int x) : x(x) {}
+	MoveOnly(MoveOnly &&other) : x(other.x) { other.x = 0; }
+
+	MoveOnly(const MoveOnly &) = delete;
+	MoveOnly &operator=(const MoveOnly &) = delete;
+	MoveOnly &operator=(MoveOnly &&) = delete;
+};
+static_assert(!is::relocatable<MoveOnly>);
+
+TEST(Array, implicitMoveOnly) {
+	using Array = Array<MoveOnly, 3>::WithImplicitCopy;
+	Array array = {1, 2, 3};
+	EXPECT_EQ(array[0].x, 1);
+	EXPECT_EQ(array[1].x, 2);
+	EXPECT_EQ(array[2].x, 3);
+
+	static_assert(!std::is_constructible_v<Array, Array &>);
+	// auto arrayCopy = array.copy();
+
+	static_assert(std::is_constructible_v<Array, Array &&>);
+	auto arrayMove = array.move();
+	static_assert(std::is_same_v<decltype(arrayMove), Array>);
+
+	EXPECT_EQ(arrayMove[0].x, 1);
+	EXPECT_EQ(arrayMove[1].x, 2);
+	EXPECT_EQ(arrayMove[2].x, 3);
+	EXPECT_EQ(array[0].x, 0);
+	EXPECT_EQ(array[1].x, 0);
+	EXPECT_EQ(array[2].x, 0);
+}
+
+struct MoveAssignOnly {
+	int x = 0;
+	MoveAssignOnly() = delete;
+	MoveAssignOnly(int x) : x(x) {}
+	MoveAssignOnly &operator=(MoveAssignOnly &&other) {
+		x = other.x;
+		other.x = 0;
+		return *this;
+	};
+
+	MoveAssignOnly(MoveAssignOnly &&other) = delete;
+	MoveAssignOnly(const MoveAssignOnly &) = delete;
+	MoveAssignOnly &operator=(const MoveAssignOnly &) = delete;
+};
+static_assert(!is::relocatable<MoveAssignOnly>);
+
+TEST(Array, implicitMoveAssignOnly) {
+	// using Array = array::_::Impl<Options<
+	//   option::Item<MoveAssignOnly>, option::Extents<ValuePack<3>>,
+	//   option::implicitCopy<true>>>;
+	using Array = Array<MoveAssignOnly, 3>::WithImplicitCopy;
+	Array array = {1, 2, 3};
+	Array array2 = {4, 5, 6};
+
+	static_assert(!std::is_assignable_v<Array &, Array &>);
+	// static_assert(std::is_assignable_v<Array &, Array &&>);
+	array = array2.move();
+	EXPECT_EQ(array[0].x, 4);
+	EXPECT_EQ(array[1].x, 5);
+	EXPECT_EQ(array[2].x, 6);
+	EXPECT_EQ(array2[0].x, 0);
+	EXPECT_EQ(array2[1].x, 0);
+	EXPECT_EQ(array2[2].x, 0);
+}
+
+TEST(Array, implicitCopyMove) {
+	struct CopyMove {
+		int x = 0;
+		CopyMove() = delete;
+		CopyMove(int x) : x(x) {}
+		CopyMove(CopyMove &&other) : x(other.x) { other.x = 0; }
+		CopyMove(const CopyMove &other) : x(other.x) {}
+		CopyMove &operator=(CopyMove &&other) = delete;
+		CopyMove &operator=(const CopyMove &other) = delete;
+	};
+	static_assert(!is::relocatable<CopyMove>);
+	using Array = Array<CopyMove, 3>::WithImplicitCopy;
+	Array array = {1, 2, 3};
+	EXPECT_EQ(array[0].x, 1);
+	EXPECT_EQ(array[1].x, 2);
+	EXPECT_EQ(array[2].x, 3);
+
+	// should select copy constructor
+	auto arrayCopy = array.copy();
+	EXPECT_EQ(arrayCopy[0].x, 1);
+	EXPECT_EQ(arrayCopy[1].x, 2);
+	EXPECT_EQ(arrayCopy[2].x, 3);
+	EXPECT_EQ(array[0].x, 1);
+	EXPECT_EQ(array[1].x, 2);
+	EXPECT_EQ(array[2].x, 3);
+
+	// should select move constructor
+	auto arrayMove = array.move();
+	EXPECT_EQ(arrayMove[0].x, 1);
+	EXPECT_EQ(arrayMove[1].x, 2);
+	EXPECT_EQ(arrayMove[2].x, 3);
+	EXPECT_EQ(array[0].x, 0);
+	EXPECT_EQ(array[1].x, 0);
+	EXPECT_EQ(array[2].x, 0);
+}
+
 #include <v/OFF>
+
+// !
+
+static_assert(is::relocatable<array::Custom<Options<option::Item<int>>>>);
+static_assert(is::relocatable<Array<int, 1>>);
+
+struct NonRelocatable {
+	NonRelocatable(const NonRelocatable &) {}
+};
+static_assert(!is::relocatable<NonRelocatable>);
+
+static_assert(!is::relocatable<Array<NonRelocatable, 3>>);
+static_assert(
+  !is::relocatable<array::Custom<Options<option::Item<NonRelocatable>>>>);
+
+// !
+
+// ! note: our Array is not an aggregate type !
+// there's too many cool stuff in it
+// we don't want implicit linear-time copies, etc.
+// - If you need an aggregate type, just use `std::array`
+static_assert(!std::is_aggregate_v<Array<int, 3>>); // !
+static_assert(std::is_aggregate_v<std::array<int, 3>>);
+
+// void test() {
+// 	Implicit a = {1, 2, 3};
+// 	Implicit b = a;
+// 	b = a;
+// }
+
+// WithImplicitCopy should restore regular copy/move ergonomics.
+static_assert(std::is_constructible_v<Implicit, Implicit &>);
+static_assert(std::is_constructible_v<Implicit, Implicit &&>);
+static_assert(std::is_constructible_v<Implicit, const Implicit &>);
+static_assert(std::is_constructible_v<Implicit, const Implicit &&>);
+static_assert(std::is_assignable_v<Implicit &, Implicit>);
+static_assert(std::is_assignable_v<Implicit &, Implicit &>);
+static_assert(std::is_assignable_v<Implicit &, Implicit &&>);
+static_assert(std::is_assignable_v<Implicit &, const Implicit &>);
+static_assert(std::is_assignable_v<Implicit &, const Implicit &&>);

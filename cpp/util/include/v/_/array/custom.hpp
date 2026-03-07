@@ -14,19 +14,15 @@ namespace VOLTISO_NAMESPACE::array {
 template <concepts::Options Options>
 class Custom : public array::_::Impl<Options> {
 	using Base = array::_::Impl<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>) : public array::_::Impl<Options> {
 	RELOCATABLE_BODY(Custom<Options>);
-
-private:
 	using Base = array::_::Impl<Options>;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Custom);
 };
 } // namespace VOLTISO_NAMESPACE::array
 

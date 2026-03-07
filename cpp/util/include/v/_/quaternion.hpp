@@ -18,14 +18,10 @@ namespace VOLTISO_NAMESPACE {
 	  option::Final<Quaternion<Item>>>>
 template <class Item> class RELOCATABLE(Quaternion) : public BASE {
 	RELOCATABLE_BODY(Quaternion<Item>);
-
-private:
 	using Base = BASE;
-	using Base::Base;
 #pragma pop_macro("BASE")
 	static_assert(is::relocatable<Item>);
-
-	VOLTISO_INHERIT_RVALUE_COPY(Quaternion, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Quaternion);
 
 public:
 	constexpr auto w() const -> const Item & { return (*this)[0]; }

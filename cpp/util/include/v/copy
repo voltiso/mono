@@ -1,0 +1,15 @@
+#pragma once
+#include <v/_/_>
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+template <class T>
+[[nodiscard]] constexpr decltype(auto) copy(T &&obj) noexcept {
+	// our super-explicit copy semantics - construction from `const T&&` is a copy
+	if constexpr (std::is_rvalue_reference_v<T> && !std::is_const_v<T>) {
+		return static_cast<const T &&>(obj);
+	}
+	return std::forward<T>(obj);
+}
+} // namespace VOLTISO_NAMESPACE

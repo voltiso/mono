@@ -21,19 +21,15 @@ namespace VOLTISO_NAMESPACE {
 
 template <class Item, auto EXTENT> class Array : public BASE {
 	using Base = BASE;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Array, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Array);
 };
 
 template <class Item, auto EXTENT>
   requires is::relocatable<Item>
 class RELOCATABLE(Array<Item COMMA EXTENT>) : public BASE {
 	RELOCATABLE_BODY(Array<Item COMMA EXTENT>);
-
-private:
 	using Base = BASE;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Array, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Array);
 };
 
 #pragma pop_macro("BASE")

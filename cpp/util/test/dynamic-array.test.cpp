@@ -82,6 +82,7 @@ TEST(DynamicArray, initializerList_assign) {
 	EXPECT_EQ(array[2], 3);
 
 	array = {1, 2};
+
 	EXPECT_EQ(array.numItems(), 2);
 	EXPECT_EQ(array[0], 1);
 	EXPECT_EQ(array[1], 2);

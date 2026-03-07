@@ -19,19 +19,15 @@ namespace VOLTISO_NAMESPACE {
 
 template <class Item, auto... ES> class Tensor : public BASE {
 	using Base = BASE;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Tensor, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Tensor);
 };
 
 template <class Item, auto... ES>
   requires is::relocatable<Item>
 class RELOCATABLE(Tensor<Item COMMA ES...>) : public BASE {
 	RELOCATABLE_BODY(Tensor<Item COMMA ES...>);
-
-private:
 	using Base = BASE;
-	using Base::Base;
-	VOLTISO_INHERIT_RVALUE_COPY(Tensor, Base);
+	VOLTISO_INHERIT_RVALUE_COPY(Tensor);
 };
 
 #pragma pop_macro("BASE")

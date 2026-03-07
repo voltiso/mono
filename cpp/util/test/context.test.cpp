@@ -6,14 +6,14 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-struct S {
-  S() = default;
-  S(const S &) = delete;
-  S &operator=(const S &) = delete;
+struct CopyLifecycle {
+	CopyLifecycle() = default;
+	CopyLifecycle(const CopyLifecycle &) = delete;
+	CopyLifecycle &operator=(const CopyLifecycle &) = delete;
 };
 
 TEST(context, forbidRvalueReference) {
-  int i = 123;
+	int i = 123;
 	auto guard1 = context::Guard(i);
 	static_assert(std::is_same_v<decltype(guard1), context::Guard<int>>);
 
@@ -28,14 +28,16 @@ TEST(context, forbidRvalueReference) {
 }
 
 TEST(context, forbidRvalueReferenceCustomType) {
-  S s;
-  // auto guard = context::Guard(123); // should not compile
-  // auto guard = context::Guard<const int>(123); // should not compile
+	CopyLifecycle s;
+	// auto guard = context::Guard(123); // should not compile
+	// auto guard = context::Guard<const int>(123); // should not compile
 	auto guard1 = context::Guard(s);
-	static_assert(std::is_same_v<decltype(guard1), context::Guard<S>>);
+	static_assert(
+	  std::is_same_v<decltype(guard1), context::Guard<CopyLifecycle>>);
 
 	auto guard2 = context::Guard(s);
-	static_assert(std::is_same_v<decltype(guard2), context::Guard<S>>);
+	static_assert(
+	  std::is_same_v<decltype(guard2), context::Guard<CopyLifecycle>>);
 
 	// ! should not compile (rvalue reference)
 	// auto guard3 = context::Guard(S()); // !!!

@@ -1,0 +1,69 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/concepts/options"
+#include "v/option/extents"
+#include "v/option/implicit-copy"
+#include "v/option/item"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::mixin {
+template <concepts::Options Options> class ContiguousArray {
+private:
+	using Final = Object<Options>::Final;
+
+	INLINE constexpr auto &_final() noexcept {
+		return reinterpret_cast<Final &>(*this);
+	}
+
+	INLINE constexpr auto &_final() const noexcept {
+		return reinterpret_cast<const Final &>(*this);
+	}
+
+	INLINE constexpr auto &_items() noexcept { return _final().items(); }
+
+	INLINE constexpr auto &_items() const noexcept { return _final().items(); }
+
+protected:
+	using Item = Options::template Get<option::Item>;
+	using Extents = Options::template Get<option::Extents>;
+	static constexpr auto EXTENT = [] {
+		constexpr auto extentsTuple = Extents::tuple();
+		if constexpr (std::tuple_size_v<decltype(extentsTuple)> == 0) {
+			return 1;
+		} else {
+			static_assert(
+			  std::tuple_size_v<decltype(extentsTuple)> == 1,
+			  "Array supports exactly one extent");
+			return std::get<0>(extentsTuple);
+		}
+	}();
+	static constexpr auto EXTENTS = std::array<Size, 1>{EXTENT};
+	static constexpr auto NUM_ITEMS = EXTENT;
+
+	static_assert(
+	  EXTENT >= 0, "Array requires static extent (dynamic extent unsupported)");
+
+	// public:
+	// 	template <class Other>
+	// 	  requires(NUM_ITEMS == Other::NUM_ITEMS)
+	// 	constexpr Final &operator=(const Other &&other) {
+	// 		static_assert(false);
+	// 		if constexpr (std::is_trivially_copyable_v<Item>) {
+	// 			std::memcpy(_items(), other.items(), sizeof(Item) * NUM_ITEMS);
+	// 		} else {
+	// 			std::copy(other.items(), other.items() + Other::NUM_ITEMS, _items());
+	// 		}
+	// 		return _final();
+	// 	}
+
+	// 	template <class Other>
+	// 	  requires(Options::template GET<option::implicitCopy>)
+	// 	constexpr Final &operator=(const Other &other) {
+	// 		return operator=(static_cast<const Other &&>(other));
+	// 	}
+};
+} // namespace VOLTISO_NAMESPACE::mixin
+
+#include <v/OFF>
