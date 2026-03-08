@@ -1,0 +1,59 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/concepts/options"
+#include "v/option/item"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::storage::_ {
+
+// ⚠️ Not necessarily relocatable! Never use this directly.
+template <concepts::Options Options> class RELOCATABLE(DataBytes) {
+private:
+	using Item = Options::template Get<option::Item>;
+	// using Tensor = Tensor<std::byte, sizeof(Item)>;
+
+protected:
+	// it was public, but we want trivially_copyable.
+	// solution is to either use Tensor::WithImplicitCopy here,
+	// or access via accessor method. We chose the latter, because don't want to
+	// have public interface exposing Tensor::WithImplicitCopy.
+	// - ACTUALLY - circular dep, must use raw bytes
+	// alignas(Item) Tensor::WithImplicitCopy _bytes;
+	alignas(Item) std::byte _bytes[sizeof(Item)];
+
+	// ! -------------------
+	// ! CONSTRUCT
+	// ! -------------------
+public:
+	constexpr DataBytes() noexcept = default;
+
+	constexpr DataBytes(const DataBytes &) noexcept = default;
+	constexpr DataBytes(DataBytes &&) noexcept = default;
+
+	constexpr DataBytes &operator=(const DataBytes &) noexcept = default;
+	constexpr DataBytes &operator=(DataBytes &&) noexcept = default;
+
+	// ! -------------------
+	// ! API
+	// ! -------------------
+public:
+	// TODO: return View (or Tensor cast?) - probably view better
+	constexpr auto &bytes() noexcept { return this->_bytes; }
+	constexpr const auto &bytes() const noexcept { return this->_bytes; }
+
+	// ⚠️ This may not be constructed yet
+	Item &storedItem() noexcept {
+		return reinterpret_cast<Item &>(this->bytes());
+	}
+
+	// ⚠️ This may not be constructed yet
+	const Item &storedItem() const noexcept {
+		return reinterpret_cast<const Item &>(this->bytes());
+	}
+};
+
+} // namespace VOLTISO_NAMESPACE::storage::_
+
+#include <v/OFF>

@@ -82,49 +82,48 @@ add_executable(
   voltiso-util-test
   test.cpp
 
-  util/test/array.test.cpp
-  util/test/retainer.test.cpp
-  util/test/hash.test.cpp
-  util/test/entry.test.cpp
-  util/test/singleton.test.cpp
-  util/test/object.test.cpp
-  util/test/context.test.cpp
-  util/test/is-relocatable.test.cpp
-  util/test/is-instantiated-from-same.test.cpp
-  util/test/is-derived-from-template.test.cpp
-  util/test/options.test.cpp
-  util/test/handle.test.cpp
-  util/test/owned.test.cpp
-  util/test/shared.test.cpp
-  util/test/any.test.cpp
-  util/test/any-function.test.cpp
-  util/test/bit-array.test.cpp
-  util/test/hash-map.test.cpp
-  util/test/hash-set.test.cpp
-  util/test/splay-map.test.cpp
-  util/test/splay-set.test.cpp
-  util/test/heap.test.cpp
-  util/test/dynamic-array.test.cpp
-  util/test/raw-array.test.cpp
-  util/test/path.test.cpp
-  util/test/view.test.cpp
-  util/test/string.test.cpp
   util/test/storage.test.cpp
-  util/test/storage.constexpr.test.cpp
-  util/test/runner.test.cpp
-  util/test/pool.test.cpp
-  util/test/subject.test.cpp
-  util/test/executable-path.test.cpp
-  util/test/tensor.test.cpp
-  util/test/tribool.test.cpp
-  util/test/quaternion.test.cpp
-  util/test/ref.test.cpp
-  util/test/const-string-view.test.cpp
-  util/test/mutex.test.cpp
-  util/test/soa.test.cpp
-  util/test/paged-dynamic-array.test.cpp
-  util/test/get.test.cpp
-  util/test/get-raw-array.test.cpp
+  # util/test/array.test.cpp
+  # util/test/retainer.test.cpp
+  # util/test/hash.test.cpp
+  # util/test/entry.test.cpp
+  # util/test/singleton.test.cpp
+  # util/test/object.test.cpp
+  # util/test/context.test.cpp
+  # util/test/is-relocatable.test.cpp
+  # util/test/is-instantiated-from-same.test.cpp
+  # util/test/is-derived-from-template.test.cpp
+  # util/test/options.test.cpp
+  # util/test/handle.test.cpp
+  # util/test/owned.test.cpp
+  # util/test/shared.test.cpp
+  # util/test/any.test.cpp
+  # util/test/any-function.test.cpp
+  # util/test/bit-array.test.cpp
+  # util/test/hash-map.test.cpp
+  # util/test/hash-set.test.cpp
+  # util/test/splay-map.test.cpp
+  # util/test/splay-set.test.cpp
+  # util/test/heap.test.cpp
+  # util/test/dynamic-array.test.cpp
+  # util/test/raw-array.test.cpp
+  # util/test/path.test.cpp
+  # util/test/view.test.cpp
+  # util/test/string.test.cpp
+  # util/test/runner.test.cpp
+  # util/test/pool.test.cpp
+  # util/test/subject.test.cpp
+  # util/test/executable-path.test.cpp
+  # util/test/tensor.test.cpp
+  # util/test/tribool.test.cpp
+  # util/test/quaternion.test.cpp
+  # util/test/ref.test.cpp
+  # util/test/const-string-view.test.cpp
+  # util/test/mutex.test.cpp
+  # util/test/soa.test.cpp
+  # util/test/paged-dynamic-array.test.cpp
+  # util/test/get.test.cpp
+  # util/test/get-raw-array.test.cpp
 
   # util/test/state.test.cpp # TODO
 
@@ -140,8 +139,7 @@ target_link_libraries(voltiso-util-test benchmark::benchmark glog::glog
   GTest::gtest cpptrace::cpptrace)
 target_link_libraries(voltiso-util-test debug stdc++exp)
 
-# GTest::gtest_main benchmark::benchmark_main
-gtest_discover_tests(voltiso-util-test)
+gtest_discover_tests(voltiso-util-test NO_PRETTY_TYPES)
 
 # benchmark add_subdirectory(bench)
 

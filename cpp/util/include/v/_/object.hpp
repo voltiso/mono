@@ -235,38 +235,13 @@ public:                                                                        \
 	using Base::operator=;                                                       \
                                                                                \
 public:                                                                        \
-	Self(Self &&) = delete;                                                      \
-	Self(Self &&)                                                                \
-	  requires(Base::Options::template GET<option::implicitCopy>)                \
-	= default;                                                                   \
-                                                                               \
-	Self(const Self &other)                                                      \
-	  requires(Base::Options::template GET<option::implicitCopy>)                \
-	= default;                                                                   \
-                                                                               \
-	Self &operator=(const Self &) = delete;                                      \
-	Self &operator=(const Self &other)                                           \
-	  requires(Base::Options::template GET<option::implicitCopy>)                \
+	explicit(!std::is_convertible_v<const Base &, Base>)                         \
+	  Self(const Self &) noexcept(std::is_nothrow_copy_constructible_v<Base>)    \
+	  requires(std::is_copy_constructible_v<Base>)                               \
 	= default;                                                                   \
                                                                                \
 protected:                                                                     \
-	explicit Self(const Self &) = default; /* for [[trivial_abi]] */             \
-                                                                               \
-public:                                                                        \
-	/* explicit copy construct */                                                \
-	template <class Src>                                                         \
-	  requires std::is_same_v<Src, Self> &&                                      \
-	           std::is_constructible_v<Base, const Src &&>                       \
-	Self(const Src &&src) : Base(static_cast<const Src &&>(src)) {}              \
-                                                                               \
-	/* move assign */                                                            \
-	template <class Src>                                                         \
-	  requires(!std::is_reference_v<Src> && !std::is_const_v<Src>)               \
-	auto &operator=(Src &&src)                                                   \
-	  requires requires { Base::operator=(static_cast<Src &&>(src)); }           \
-	{                                                                            \
-		return Base::operator=(static_cast<Src &&>(src));                          \
-	}                                                                            \
+	explicit Self(const Self &) = default;                                       \
                                                                                \
 private:
 
@@ -274,6 +249,59 @@ private:
 
 /*
 
+
+
+
+
+  explicit(!std::is_convertible_v<Base &&, Base>)                              \
+    Self(Self &&) noexcept(std::is_nothrow_move_constructible_v<Base>)         \
+    requires(std::is_move_constructible_v<Base>)                               \
+  = default;                                                                   \
+                                                                               \
+  Self(Self &&) = delete;                                                      \
+                                                                               \
+                                                                               \
+  explicit(!std::is_convertible_v<const Base &, Base>)                         \
+    Self(const Self &) noexcept(std::is_nothrow_copy_constructible_v<Base>)    \
+    requires(Base::Options::template GET<option::implicitCopy>)                \
+  = default;                                                                   \
+                                                                               \
+  template <class Src>                                                         \
+    requires(!std::is_reference_v<Src> && !std::is_const_v<Src>)               \
+  auto &operator=(Src &&src) noexcept(                                         \
+    noexcept(Base::operator=(static_cast<Src &&>(src))))                       \
+    requires requires { Base::operator=(static_cast<Src &&>(src)); }           \
+  {                                                                            \
+    return Base::operator=(static_cast<Src &&>(src));                          \
+  }                                                                            \
+                                                                               \
+  Self &operator=(const Self &other) noexcept(                                 \
+    std::is_nothrow_copy_assignable_v<Base>)                                   \
+    requires(Base::Options::template GET<option::implicitCopy>)                \
+  = default;                                                                   \
+                                                                               \
+  Self &operator=(const Self &) = delete;                                      \
+                                                                               \
+  template <class Src>                                                         \
+    requires std::is_same_v<Src, Self> &&                                      \
+             std::is_constructible_v<Base, const Src &&>                       \
+  explicit(!std::is_convertible_v<const Base &&, Base>)                        \
+    Self(const Src &&src) noexcept(                                            \
+      std::is_nothrow_constructible_v<Base, const Src &&>)                     \
+      : Base(static_cast<const Src &&>(src)) {}                                \
+                                                                               \
+                                                                               \
+
+*/
+
+// !
+
+/*
+
+  explicit(!std::is_convertible_v<Base &&, Base>)                              \
+    Self(Self &&) noexcept(std::is_nothrow_move_constructible_v<Base>)         \
+    requires(Base::Options::template GET<option::implicitCopy>)                \
+  = default;                                                                   \
 
 
 */

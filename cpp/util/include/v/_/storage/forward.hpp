@@ -15,6 +15,18 @@ template <concepts::Options Options>
 class RELOCATABLE(Custom<Options>);
 } // namespace VOLTISO_NAMESPACE::storage
 
+// !
+
+namespace VOLTISO_NAMESPACE::storage {
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations {
+	using Result = Custom<Options>;
+};
+} // namespace VOLTISO_NAMESPACE::storage
+
+// !
+
 namespace VOLTISO_NAMESPACE {
 template <class Item> class Storage;
 template <class Item>
