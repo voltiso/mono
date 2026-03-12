@@ -302,7 +302,8 @@ TEST(Array, assignLifecycle) {
 
 TEST(Array, copyConversion) {
 	struct S {
-		S(int) {}
+		int x;
+		S(int x) : x(x) {}
 	};
 
 	using IArray = Array<int, 3>;
@@ -310,10 +311,17 @@ TEST(Array, copyConversion) {
 
 	IArray array = {1, 2, 3};
 	SArray array2 = array.copy();
-	array2 = array.copy();
+	EXPECT_EQ(array2[0].x, 1);
+	EXPECT_EQ(array2[1].x, 2);
+	EXPECT_EQ(array2[2].x, 3);
+	SArray array3 = {0, 0, 0};
+	array3 = array.copy();
+	EXPECT_EQ(array3[0].x, 1);
+	EXPECT_EQ(array3[1].x, 2);
+	EXPECT_EQ(array3[2].x, 3);
 }
 
-TEST(Array, implicitCopyConversion) {
+TEST(Array, copyConversionImplicit) {
 	Array<int, 3>::WithImplicitCopy array = {1, 2, 3};
 	struct S {
 		int x;
@@ -323,23 +331,36 @@ TEST(Array, implicitCopyConversion) {
 	EXPECT_EQ(array2[0].x, 2);
 	EXPECT_EQ(array2[1].x, 4);
 	EXPECT_EQ(array2[2].x, 6);
+	Array<S, 3>::WithImplicitCopy array3 = {0, 0, 0};
+	array3 = array;
+	EXPECT_EQ(array3[0].x, 2);
+	EXPECT_EQ(array3[1].x, 4);
+	EXPECT_EQ(array3[2].x, 6);
 }
 
-TEST(Array, implicitAssignConversion) {
-	Array<int, 3>::WithImplicitCopy array = {1, 2, 3};
-	struct SS {
-		SS() = default;
-		int x = 0;
-		void operator=(int x) { this->x = x; }
-		SS(const SS &) = delete;
-		SS(SS &&) = delete;
-		SS &operator=(const SS &) = delete;
+TEST(Array, moveConversionImplicit) {
+	Array<int, 3>::WithImplicitCopy iArray1 = {1, 2, 3};
+	struct S {
+		int x;
+		S(int &&x) : x(2 * x) { x = 0; }
 	};
-	Array<SS, 3>::WithImplicitCopy array3;
-	array3 = array;
-	EXPECT_EQ(array3[0].x, 1);
-	EXPECT_EQ(array3[1].x, 2);
-	EXPECT_EQ(array3[2].x, 3);
+	Array<S, 3>::WithImplicitCopy sArray1 = iArray1.move();
+	EXPECT_EQ(sArray1[0].x, 2);
+	EXPECT_EQ(sArray1[1].x, 4);
+	EXPECT_EQ(sArray1[2].x, 6);
+	EXPECT_EQ(iArray1[0], 0);
+	EXPECT_EQ(iArray1[1], 0);
+	EXPECT_EQ(iArray1[2], 0);
+
+	Array<int, 3>::WithImplicitCopy iArray2 = {1, 2, 3};
+	Array<S, 3>::WithImplicitCopy sArray2 = {0, 0, 0};
+	sArray2 = iArray2.move();
+	EXPECT_EQ(sArray2[0].x, 2);
+	EXPECT_EQ(sArray2[1].x, 4);
+	EXPECT_EQ(sArray2[2].x, 6);
+	EXPECT_EQ(iArray2[0], 0);
+	EXPECT_EQ(iArray2[1], 0);
+	EXPECT_EQ(iArray2[2], 0);
 }
 
 // !

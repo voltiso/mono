@@ -110,11 +110,7 @@ public:
 	Impl() = default;
 
 	template <class... Items>
-	  requires(
-	    sizeof...(Items) == NUM_ITEMS
-	    // &&
-	    // !(sizeof...(Items) == 1 && (std::is_same_v<std::remove_cvref_t<Items>, Impl> && ...))
-	    )
+	  requires(sizeof...(Items) == NUM_ITEMS)
 	INLINE constexpr Impl(Items &&...items) noexcept
 	  requires requires { decltype(_items){std::forward<Items>(items)...}; }
 	    : _items{std::forward<Items>(items)...} {}
@@ -154,9 +150,17 @@ public:
 	  requires(_implicitCopy)
 	= default;
 
+	// implicit construct-move-conversion
+	template <class Other>
+	  requires(
+	    !std::is_reference_v<Other> && !std::is_const_v<Other> && _implicitCopy &&
+	    is::DerivedFromTemplate<Other, Impl> && NUM_ITEMS == Other::NUM_ITEMS)
+	constexpr Impl(Other &&other) : Impl(std::move(other), std::make_index_sequence<NUM_ITEMS>{}) {}
+
 private:
 	// move helper
 	template <class Other, std::size_t... Is>
+	  requires(!std::is_const_v<Other> && !std::is_reference_v<Other>)
 	constexpr Impl(Other &&other, std::index_sequence<Is...>)
 	    : _items{move(*std::next(other.begin(), Is))...} {}
 
@@ -201,37 +205,6 @@ public:
 	}
 
 	// ! ---------------------------------
-
-protected:
-public:
-	// Impl &operator=(const Impl &) = delete;
-	// Impl &operator=(Impl &&) = delete;
-
-	// move construct
-	// constexpr Impl(Impl &&other)
-	//   requires(_implicitCopy)
-	//     : Impl(std::move(other), std::make_index_sequence<NUM_ITEMS>{}) {}
-
-	// move construct
-	// template <class Other>
-	//   requires(
-	//     !std::is_reference_v<Other> && !std::is_const_v<Other> && _implicitCopy &&
-	//     NUM_ITEMS == Other::NUM_ITEMS)
-	// constexpr Impl(Other &&other) : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
-
-public:
-	// explicit copy construct
-
-	// constexpr Impl(const Impl &&other) : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
-	// template <class Other>
-	//   requires(
-	//     // strictly `const T&& other`
-	//     !std::is_reference_v<Other> && std::is_const_v<Other> && NUM_ITEMS == Other::NUM_ITEMS)
-	// constexpr Impl(Other &&other) : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
-
-	// template <class Other>
-	//   requires(_implicitCopy && NUM_ITEMS == Other::NUM_ITEMS)
-	// constexpr Impl(const Other &other) : Impl(other, std::make_index_sequence<NUM_ITEMS>{}) {}
 
 public:
 	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
