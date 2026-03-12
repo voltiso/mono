@@ -19,8 +19,7 @@ template <concepts::Options Options> struct Specializations {
 	using Result = Custom<Options>;
 };
 
-template <class... Args>
-using GetCustom = typename Specializations<Args...>::Result;
+template <class... Args> using GetCustom = typename Specializations<Args...>::Result;
 
 } // namespace VOLTISO_NAMESPACE::array
 

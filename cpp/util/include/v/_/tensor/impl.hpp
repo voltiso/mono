@@ -1,8 +1,8 @@
 #pragma once
 #include <v/_/_>
 
-#include "_forward.hpp"
 #include "concat-traits.hpp"
+#include "forward.hpp"
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/_/view.forward.hpp"
@@ -60,13 +60,11 @@ public:
 
 template <concepts::Options Options>
 class CustomNNR : public Object<typename Options ::template WithDefault<
-                    option::CustomTemplate<V::tensor::GetCustom>,
-                    option::InputOptions<Options>>>,
+                    option::CustomTemplate<V::tensor::GetCustom>, option::InputOptions<Options>>>,
                   public ExtentData<Options, extentKind<Options>> {
 protected:
 	using Object = Object<typename Options ::template WithDefault<
-	  option::CustomTemplate<V::tensor::GetCustom>,
-	  option::InputOptions<Options>>>;
+	  option::CustomTemplate<V::tensor::GetCustom>, option::InputOptions<Options>>>;
 	using Object::Object;
 
 public:
@@ -95,8 +93,7 @@ protected:
 
 public:
 	static_assert(
-	  !std::is_const_v<Item>,
-	  "const Item does not make sense, just use `const Array<Item>`");
+	  !std::is_const_v<Item>, "const Item does not make sense, just use `const Array<Item>`");
 
 	static constexpr auto STRIDES = []() {
 		constexpr auto N = EXTENTS.size();
@@ -110,49 +107,58 @@ public:
 		return strides;
 	}();
 
-	static constexpr auto STARTING_INDEX =
-	  Options::template GET<option::startingIndex>;
+	static constexpr auto STARTING_INDEX = Options::template GET<option::startingIndex>;
 
 	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
 
-	template <class Kind>
-	using CustomHandle = Handle::WithBrand<Final>::template WithKind<Kind>;
+	template <class Kind> using CustomHandle = Handle::WithBrand<Final>::template WithKind<Kind>;
 
-	using Handle = CustomHandle<
-	  std::conditional_t<(STARTING_INDEX < 0), std::make_signed<Size>, Size>>;
+	using Handle =
+	  CustomHandle<std::conditional_t<(STARTING_INDEX < 0), std::make_signed<Size>, Size>>;
 
 public:
 	constexpr auto extent() const noexcept { return Base::EXTENT; }
 	constexpr auto numItems() const noexcept { return NUM_ITEMS; }
 	constexpr auto strides() const noexcept { return STRIDES; }
 
+private:
+	static constexpr auto _implicitCopy = Options::template GET<option::implicitCopy>;
+
 public:
 	CustomNNR() = default;
 
 public:
-	CustomNNR(const CustomNNR &other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
+	CustomNNR(const CustomNNR &) = default;
+
+	// CustomNNR(const CustomNNR &other)
+	//   requires(_implicitCopy)
+	// = default;
+
+	//
+
+	CustomNNR(CustomNNR &&other)
+	  requires(_implicitCopy)
 	= default;
 
 protected:
-	CustomNNR(const CustomNNR &) = default;
+	CustomNNR(CustomNNR &&other) = default;
+
+public:
 	CustomNNR &operator=(const CustomNNR &) = default;
-	CustomNNR(CustomNNR &&) = delete;
+
+	//
+
 	CustomNNR &operator=(CustomNNR &&) = delete;
 
-public:
-	CustomNNR(CustomNNR &&other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
-	= default;
-
 	CustomNNR &operator=(CustomNNR &&other)
-	  requires(Object::Options::template GET<option::implicitCopy>)
+	  requires(_implicitCopy)
 	= default;
 
 public:
+	// explicit copy
 	template <class Other>
-	  requires(Other::EXTENTS == EXTENTS)
-	constexpr CustomNNR(const Other &&other) {
+	  requires(!std::is_reference_v<Other> && std::is_const_v<Other> && Other::EXTENTS == EXTENTS)
+	constexpr CustomNNR(/*const*/ Other &&other) {
 		if constexpr (std::is_trivially_copyable_v<Item>) {
 			std::memcpy(this, &other, sizeof(CustomNNR));
 		} else {
@@ -176,8 +182,7 @@ public:
 		std::copy(list.begin(), list.end(), this->items);
 	}
 
-	INLINE constexpr CustomNNR(
-	  std::initializer_list<std::initializer_list<Item>> list) noexcept {
+	INLINE constexpr CustomNNR(std::initializer_list<std::initializer_list<Item>> list) noexcept {
 		EQ(list.size(), Base::EXTENT);
 		Size i = 0;
 		for (const auto &row : list) {
@@ -197,8 +202,7 @@ public:
 	}
 
 public:
-	template <class TSource>
-	constexpr CustomNNR(tag::Copy, const TSource &source) {
+	template <class TSource> constexpr CustomNNR(tag::Copy, const TSource &source) {
 		static_assert(TSource::NUM_ITEMS == NUM_ITEMS);
 		std::copy(source.items, source.items + NUM_ITEMS, this->items);
 	}
@@ -214,28 +218,22 @@ public:
 	}
 
 public:
-	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicArray::from(this->final());
-	}
+	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto { return dynamicArray::from(this->final()); }
 
 public:
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
-	    nullptr>
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * = nullptr>
 	  requires(Base::EXTENT == NUM_ITEMS)
 	const Item &operator[](const InferredHandle &handle) const {
 		GE(handle.value, STARTING_INDEX);
-		LT(
-		  handle.value - STARTING_INDEX,
-		  (std::make_signed_t<decltype(NUM_ITEMS)>)NUM_ITEMS);
+		LT(handle.value - STARTING_INDEX, (std::make_signed_t<decltype(NUM_ITEMS)>)NUM_ITEMS);
 		return this->items[handle.value - STARTING_INDEX];
 	}
 
 	template <
 	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * =
-	    nullptr>
+	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * = nullptr>
 	  requires(Base::EXTENT == NUM_ITEMS)
 	Item &operator[](const InferredHandle &handle) {
 		return const_cast<Item &>(const_cast<const CustomNNR &>(*this)[handle]);
@@ -263,8 +261,7 @@ public:
 	auto operator[](Size index) const
 	  requires(EXTENTS.size() > 1)
 	{
-		using SubView =
-		  const View<const Item>::template WithExtents<typename Extents::Tail>;
+		using SubView = const View<const Item>::template WithExtents<typename Extents::Tail>;
 		return SubView{this->items + index * extent() - STARTING_INDEX};
 	}
 
@@ -273,13 +270,9 @@ public:
 		       std::equal(this->items, this->items + NUM_ITEMS, other.items);
 	}
 
-	explicit operator RawArray<Item, NUM_ITEMS> &() noexcept {
-		return this->items;
-	}
+	explicit operator RawArray<Item, NUM_ITEMS> &() noexcept { return this->items; }
 
-	explicit operator const RawArray<Item, NUM_ITEMS> &() const noexcept {
-		return this->items;
-	}
+	explicit operator const RawArray<Item, NUM_ITEMS> &() const noexcept { return this->items; }
 
 	constexpr operator ::std::string_view() const
 	  requires std::is_same_v<std::remove_const_t<Item>, char>
@@ -287,16 +280,14 @@ public:
 		return ::std::string_view(this->items, NUM_ITEMS);
 	}
 
-	explicit constexpr operator ::std::string() noexcept(
-	  noexcept(std::string(this->items, this->items + NUM_ITEMS)))
+	explicit constexpr
+	operator ::std::string() noexcept(noexcept(std::string(this->items, this->items + NUM_ITEMS)))
 	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
 	{
 		return std::string(this->items, this->items + NUM_ITEMS);
 	}
 
-	constexpr operator View<Item, NUM_ITEMS>() {
-		return View<Item, NUM_ITEMS>{this->items};
-	}
+	constexpr operator View<Item, NUM_ITEMS>() { return View<Item, NUM_ITEMS>{this->items}; }
 
 	constexpr operator View<const Item, NUM_ITEMS>() const {
 		return View<const Item, NUM_ITEMS>{this->items};
@@ -325,21 +316,16 @@ public:
 
 public:
 	template <class Other>
-	  requires(
-	    get::EXTENT<Other> != V::extent::DYNAMIC &&
-	    get::EXTENT<Other> != V::extent::UNBOUND)
+	  requires(get::EXTENT<Other> != V::extent::DYNAMIC && get::EXTENT<Other> != V::extent::UNBOUND)
 	constexpr auto operator<<(this auto &&self, Other &&other) {
 		constexpr Size NEW_NUM_ITEMS = NUM_ITEMS + get::NUM_ITEMS<Other>;
-		using Result =
-		  Final::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
+		using Result = Final::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
 		EQ(_::tensor::sumNumItems(self, other), NEW_NUM_ITEMS);
-		return Result::concat(
-		  std::forward<decltype(self)>(self), std::forward<Other>(other));
+		return Result::concat(std::forward<decltype(self)>(self), std::forward<Other>(other));
 	}
 
 private:
-	template <class... Slices>
-	constexpr CustomNNR(tag::Concat, Slices &&...slices) {
+	template <class... Slices> constexpr CustomNNR(tag::Concat, Slices &&...slices) {
 		constexpr auto sumResult = _::tensor::sumNumItems(slices...);
 		if constexpr (!is::staticError(sumResult)) {
 			static_assert(NUM_ITEMS == sumResult);
@@ -349,8 +335,7 @@ private:
 		  (processSlice(current_offset, std::forward<Slices>(slices)), 0)...};
 	}
 
-	template <class SliceT>
-	constexpr void processSlice(Size &current_offset, SliceT &&slice) {
+	template <class SliceT> constexpr void processSlice(Size &current_offset, SliceT &&slice) {
 		if constexpr (std::is_same_v<std::decay_t<SliceT>, tag::Copy>) {
 			return;
 		} else {
@@ -373,8 +358,7 @@ private:
 	}
 
 public:
-	template <class Extents>
-	using WithExtents = Object::template With<option::Extents<Extents>>;
+	template <class Extents> using WithExtents = Object::template With<option::Extents<Extents>>;
 	using WithImplicitCopy = Object::template With<option::implicitCopy<true>>;
 };
 } // namespace V::_::tensor

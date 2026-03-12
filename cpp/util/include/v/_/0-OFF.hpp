@@ -10,9 +10,14 @@
 #pragma pop_macro("NOT")
 
 #pragma pop_macro("INLINE")
+#pragma pop_macro("NO_INLINE")
+#pragma pop_macro("COLD")
 
 #pragma pop_macro("RELOCATABLE")
 #pragma pop_macro("RELOCATABLE_BODY")
+#pragma pop_macro("RELOCATABLE_BODY_IF")
+
+#pragma pop_macro("INHERIT")
 
 #pragma pop_macro("COMMA")
 

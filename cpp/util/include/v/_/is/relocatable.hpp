@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/string/from-type.hpp"
+// #include "v/_/string/from-type.hpp"
 
 namespace VOLTISO_NAMESPACE::is {
 
@@ -44,17 +44,34 @@ constexpr bool builtinRelocatable =
 
 namespace _ {
 template <class T>
+constexpr bool hasMarker = []() constexpr {
+	if constexpr (requires { typename T::__trivially_relocatable; }) {
+		return true;
+	}
+	return false;
+}();
+
+template <class T>
+constexpr bool hasVoidMarker = []() constexpr {
+	if constexpr (requires { typename T::__trivially_relocatable; }) {
+		return std::is_void_v<typename T::__trivially_relocatable>;
+	}
+	return false;
+}();
+
+template <class T>
 constexpr bool hasCorrectMarker = []() constexpr {
 	if constexpr (requires { typename T::__trivially_relocatable; }) {
 		return std::is_base_of_v<T, typename T::__trivially_relocatable>;
 	}
 	return false;
 }();
+
 template <class T>
 constexpr bool hasIncorrectBaseMarker = []() constexpr {
 	if constexpr (requires { typename T::__trivially_relocatable; }) {
 		using Marker = T::__trivially_relocatable;
-		return std::is_base_of_v<Marker, T> && !std::is_same_v<Marker, T>;
+		return std::is_base_of_v<Marker, T> && !std::is_same_v<Marker, T> && !std::is_void_v<Marker>;
 	}
 	return false;
 }();
@@ -66,45 +83,51 @@ template <class T>
 static constexpr auto relocatable = []() constexpr {
 	// static_assert(is::complete<T>, "is::relocatable: type is not complete");
 
+	const auto hasMarker = _::hasMarker<T>;
+	const auto hasVoidMarker = _::hasVoidMarker<T>;
 	const auto hasCorrectMarker = _::hasCorrectMarker<T>;
 	const auto hasIncorrectBaseMarker = _::hasIncorrectBaseMarker<T>;
 	const auto builtinRelocatable = _::builtinRelocatable<T>;
 
-	if constexpr (
-	  is::Object<T> && VOLTISO_HAS_BUILTIN_IS_RELOCATABLE &&
-	  VOLTISO_ENABLE_TRIVIAL_ABI) {
+	if constexpr (is::Object<T> && VOLTISO_HAS_BUILTIN_IS_RELOCATABLE && VOLTISO_ENABLE_TRIVIAL_ABI) {
 		if constexpr (hasCorrectMarker) {
 			static_assert(
-			  builtinRelocatable,
-			  "type is marked trivially relocatable, but compiler says otherwise "
-			  "(use RELOCATABLE macro in class definition, make sure base classes "
-			  "pass this test, and ...) - "
-			    << string::from<T>());
+			  builtinRelocatable, "type is marked trivially relocatable, but compiler says otherwise "
+			                      "(use RELOCATABLE macro in class definition, make sure base classes "
+			                      "pass this test)"
+			  // " - " << string::from<T>()
+			);
 		}
 	}
 
 	if constexpr (builtinRelocatable) {
 		static_assert(
 		  !hasIncorrectBaseMarker,
-		  "compiler says type is trivially relocatable, but marker is incorrect "
-		  "- possibly base class marker is inherited (use "
+		  "compiler says type is trivially relocatable, but marker is incorrect"
+		  " - possibly base class marker is inherited (use "
 		  "VOLTISO_RELOCATABLE_BODY in derived class too)"
 		  //  << string::from<T>() // ! circular dep! how to fix?
 		);
 
 		if constexpr (is::Object<T>) {
 			static_assert(
-			  hasCorrectMarker,
-			  "type is trivially relocatable, but marker is "
-			  "missing or incorrect - use VOLTISO_RELOCATABLE_BODY");
+			  hasMarker, "type is trivially relocatable, but marker is missing"
+			             "- use VOLTISO_RELOCATABLE_BODY");
+
+			static_assert(
+			  !hasVoidMarker, "type is trivially relocatable, but marker is void"
+			                  " - use VOLTISO_RELOCATABLE_BODY or VOLTISO_RELOCATABLE_BODY_IF");
+
+			static_assert(
+			  hasCorrectMarker, "type is trivially relocatable, but marker is incorrect"
+			                    " - use VOLTISO_RELOCATABLE_BODY");
 		}
 	}
 
 	// ! we return true for references (contrary to standard)
 	// we can have containers of references, which really are relocatable pointers
-	constexpr auto resultNotUsingBuiltin = hasCorrectMarker ||
-	                                       std::is_trivially_copyable_v<T> ||
-	                                       std::is_reference_v<T>;
+	constexpr auto resultNotUsingBuiltin =
+	  hasCorrectMarker || std::is_trivially_copyable_v<T> || std::is_reference_v<T>;
 
 	constexpr auto result = resultNotUsingBuiltin || builtinRelocatable;
 

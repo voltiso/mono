@@ -1,6 +1,5 @@
-// Options.hpp
-// Gemini 2.5-pro-experimental
 #pragma once
+#include <v/_/_>
 
 #include "v/is/instantiated-from-same" // For kind checking in FilterOutKind
 #include "v/size"
@@ -47,23 +46,18 @@ private:
 	static constexpr std::string_view name2 = TypeNameGetter<T2>::Get();
 
 public:
-	static constexpr bool value =
-	  (order1 < order2) || ((order1 == order2) && (name1 < name2));
+	static constexpr bool value = (order1 < order2) || ((order1 == order2) && (name1 < name2));
 };
 
 // --- Concatenate TypeLists ---
 template <typename List1, typename List2> struct Concat;
-template <typename... Ts1, typename... Ts2>
-struct Concat<TypeList<Ts1...>, TypeList<Ts2...>> {
+template <typename... Ts1, typename... Ts2> struct Concat<TypeList<Ts1...>, TypeList<Ts2...>> {
 	using Result = TypeList<Ts1..., Ts2...>;
 };
-template <typename List1, typename List2>
-using Concat_t = typename Concat<List1, List2>::Result;
+template <typename List1, typename List2> using Concat_t = typename Concat<List1, List2>::Result;
 
 // --- Merge Sort Implementation ---
-template <
-  typename List1, typename List2, template <typename, typename> class Compare>
-struct Merge;
+template <typename List1, typename List2, template <typename, typename> class Compare> struct Merge;
 template <template <typename, typename> class Compare>
 struct Merge<TypeList<>, TypeList<>, Compare> {
 	using Result = TypeList<>;
@@ -83,12 +77,11 @@ struct Merge<TypeList<H1, T1...>, TypeList<H2, T2...>, Compare> {
 private:
 	static constexpr bool H1_is_less_or_equal = !Compare<H2, H1>::value;
 	using FirstElement = typename std::conditional_t<H1_is_less_or_equal, H1, H2>;
-	using RemainingList1 = typename std::conditional_t<
-	  H1_is_less_or_equal, TypeList<T1...>, TypeList<H1, T1...>>;
-	using RemainingList2 = typename std::conditional_t<
-	  H1_is_less_or_equal, TypeList<H2, T2...>, TypeList<T2...>>;
-	using MergedTail =
-	  typename Merge<RemainingList1, RemainingList2, Compare>::Result;
+	using RemainingList1 =
+	  typename std::conditional_t<H1_is_less_or_equal, TypeList<T1...>, TypeList<H1, T1...>>;
+	using RemainingList2 =
+	  typename std::conditional_t<H1_is_less_or_equal, TypeList<H2, T2...>, TypeList<T2...>>;
+	using MergedTail = typename Merge<RemainingList1, RemainingList2, Compare>::Result;
 	template <typename H, typename List> struct PrependT;
 	template <typename H, typename... Ts> struct PrependT<H, TypeList<Ts...>> {
 		using Result = TypeList<H, Ts...>;
@@ -99,13 +92,11 @@ public:
 };
 
 // --- Split Implementation ---
-template <Size N, typename List, typename Acc = TypeList<>, typename = void>
-struct SplitN;
+template <Size N, typename List, typename Acc = TypeList<>, typename = void> struct SplitN;
 template <Size N, typename H, typename... T, typename... Acc>
 struct SplitN<N, TypeList<H, T...>, TypeList<Acc...>, std::enable_if_t<(N > 0)>>
     : SplitN<N - 1, TypeList<T...>, TypeList<Acc..., H>> {};
-template <typename... T, typename... Acc>
-struct SplitN<0, TypeList<T...>, TypeList<Acc...>, void> {
+template <typename... T, typename... Acc> struct SplitN<0, TypeList<T...>, TypeList<Acc...>, void> {
 	using FirstHalf = TypeList<Acc...>;
 	using SecondHalf = TypeList<T...>;
 };
@@ -121,63 +112,50 @@ public:
 };
 
 // --- Sort Implementation ---
-template <typename List, template <typename, typename> class Compare>
-struct Sort;
-template <template <typename, typename> class Compare>
-struct Sort<TypeList<>, Compare> {
+template <typename List, template <typename, typename> class Compare> struct Sort;
+template <template <typename, typename> class Compare> struct Sort<TypeList<>, Compare> {
 	using Result = TypeList<>;
 };
 template <typename T, template <typename, typename> class Compare>
 struct Sort<TypeList<T>, Compare> {
 	using Result = TypeList<T>;
 };
-template <
-  typename T1, typename T2, typename... Rest,
-  template <typename, typename> class Compare>
+template <typename T1, typename T2, typename... Rest, template <typename, typename> class Compare>
 struct Sort<TypeList<T1, T2, Rest...>, Compare> {
 private:
 	using Splitter = Split<TypeList<T1, T2, Rest...>>;
-	using SortedFirstHalf =
-	  typename Sort<typename Splitter::FirstHalf, Compare>::Result;
-	using SortedSecondHalf =
-	  typename Sort<typename Splitter::SecondHalf, Compare>::Result;
+	using SortedFirstHalf = typename Sort<typename Splitter::FirstHalf, Compare>::Result;
+	using SortedSecondHalf = typename Sort<typename Splitter::SecondHalf, Compare>::Result;
 
 public:
-	using Result =
-	  typename Merge<SortedFirstHalf, SortedSecondHalf, Compare>::Result;
+	using Result = typename Merge<SortedFirstHalf, SortedSecondHalf, Compare>::Result;
 };
 
 // !
 
 // --- FilterOutKind Helper (for Options::With) ---
-template <typename OptionToFilterKindFor, typename ListToFilter>
-struct FilterOutKind;
-template <typename OptionToFilterKindFor>
-struct FilterOutKind<OptionToFilterKindFor, TypeList<>> {
+template <typename OptionToFilterKindFor, typename ListToFilter> struct FilterOutKind;
+template <typename OptionToFilterKindFor> struct FilterOutKind<OptionToFilterKindFor, TypeList<>> {
 	using Result = TypeList<>;
 };
 template <typename OptionToFilterKindFor, typename Head, typename... Tail>
 struct FilterOutKind<OptionToFilterKindFor, TypeList<Head, Tail...>> {
 private:
-	using FilteredTail =
-	  typename FilterOutKind<OptionToFilterKindFor, TypeList<Tail...>>::Result;
-	static constexpr bool is_same_kind =
-	  is::InstantiatedFromSame<OptionToFilterKindFor, Head>;
+	using FilteredTail = typename FilterOutKind<OptionToFilterKindFor, TypeList<Tail...>>::Result;
+	static constexpr bool is_same_kind = is::InstantiatedFromSame<OptionToFilterKindFor, Head>;
 
 public:
-	using Result = typename std::conditional_t<
-	  is_same_kind, FilteredTail, Concat_t<TypeList<Head>, FilteredTail>>;
+	using Result =
+	  typename std::conditional_t<is_same_kind, FilteredTail, Concat_t<TypeList<Head>, FilteredTail>>;
 };
 template <typename OptionToFilterKindFor, typename ListToFilter>
-using FilterOutKind_t =
-  typename FilterOutKind<OptionToFilterKindFor, ListToFilter>::Result;
+using FilterOutKind_t = typename FilterOutKind<OptionToFilterKindFor, ListToFilter>::Result;
 
 // --- Trait to check if two template template parameters refer to the same
 // template name ---
 template <template <class...> class T1, template <class...> class T2>
 struct is_same_template_name : std::false_type {};
-template <template <class...> class T>
-struct is_same_template_name<T, T> : std::true_type {};
+template <template <class...> class T> struct is_same_template_name<T, T> : std::true_type {};
 
 // !
 
@@ -204,8 +182,7 @@ template <typename OptionInstance>
 inline constexpr bool IsOptionEqualToItsDefault_v = [] {
 	if constexpr (HasTypeOptionSignature<OptionInstance>) {
 		return std::is_same_v<
-		  typename OptionInstance::StoredType,
-		  typename OptionInstance::StoredDefault>;
+		  typename OptionInstance::StoredType, typename OptionInstance::StoredDefault>;
 	} else if constexpr (HasValueOptionSignature<OptionInstance>) {
 		return (OptionInstance::VALUE == OptionInstance::DEFAULT);
 	} else {
@@ -229,20 +206,18 @@ struct StripRedundantDefaultsInternal<TypeList<>> {
 template <typename HeadOption, typename... TailOptions> // Recursive step
 struct StripRedundantDefaultsInternal<TypeList<HeadOption, TailOptions...>> {
 private:
-	using ProcessedTail =
-	  typename StripRedundantDefaultsInternal<TypeList<TailOptions...>>::Result;
+	using ProcessedTail = typename StripRedundantDefaultsInternal<TypeList<TailOptions...>>::Result;
 	static constexpr bool is_default = IsOptionEqualToItsDefault_v<HeadOption>;
 
 public:
 	using Result = typename std::conditional_t<
 	  is_default,
-	  ProcessedTail, // Discard HeadOption if it's default
+	  ProcessedTail,                                // Discard HeadOption if it's default
 	  Concat_t<TypeList<HeadOption>, ProcessedTail> // Keep HeadOption otherwise
 	  >;
 };
 template <typename InputList>
-using StripRedundantDefaultsInternal_t =
-  typename StripRedundantDefaultsInternal<InputList>::Result;
+using StripRedundantDefaultsInternal_t = typename StripRedundantDefaultsInternal<InputList>::Result;
 
 // --- Helper: OptionsFromTypeList ---
 template <typename TL> struct OptionsFromTypeList;
@@ -252,49 +227,39 @@ struct OptionsFromTypeList<TL<FinalAs...>> {
 };
 
 // --- Internal Helper for Options::With ---
-template <typename CurrentSortedList, typename OptionsToAddList>
-struct WithInternal;
+template <typename CurrentSortedList, typename OptionsToAddList> struct WithInternal;
 template <typename CurrentSortedList>
-struct WithInternal<CurrentSortedList, TypeList<>> { // Base case for With
-	using ResultList =
-	  StripRedundantDefaultsInternal_t<CurrentSortedList>; // Strip at the end
+struct WithInternal<CurrentSortedList, TypeList<>> {                      // Base case for With
+	using ResultList = StripRedundantDefaultsInternal_t<CurrentSortedList>; // Strip at the end
 };
 template <typename CurrentSortedList, typename NewOption, typename... RestToAdd>
-struct WithInternal<
-  CurrentSortedList,
-  TypeList<NewOption, RestToAdd...>> { // Recursive step for With
+struct WithInternal<CurrentSortedList, TypeList<NewOption, RestToAdd...>> { // Recursive step for
+	                                                                          // With
 private:
 	using FilteredList = FilterOutKind_t<NewOption, CurrentSortedList>;
 	using AppendedList = Concat_t<FilteredList, TypeList<NewOption>>;
-	using NewSortedList =
-	  typename Sort<AppendedList, CompareLessWithTieBreaker>::Result;
+	using NewSortedList = typename Sort<AppendedList, CompareLessWithTieBreaker>::Result;
 
 public:
-	using ResultList =
-	  typename WithInternal<NewSortedList, TypeList<RestToAdd...>>::ResultList;
+	using ResultList = typename WithInternal<NewSortedList, TypeList<RestToAdd...>>::ResultList;
 };
 
 // --- Internal Helper for Options::WithDefault ---
-template <typename OptionToLookFor, typename ListToSearch>
-struct CheckIfKindExists;
+template <typename OptionToLookFor, typename ListToSearch> struct CheckIfKindExists;
 template <typename OptionToLookFor>
 struct CheckIfKindExists<OptionToLookFor, TypeList<>> : std::false_type {};
-template <
-  typename OptionToLookFor, typename HeadOption, typename... TailOptions>
+template <typename OptionToLookFor, typename HeadOption, typename... TailOptions>
 struct CheckIfKindExists<OptionToLookFor, TypeList<HeadOption, TailOptions...>>
     : std::conditional_t<
         is::InstantiatedFromSame<OptionToLookFor, HeadOption>, std::true_type,
         CheckIfKindExists<OptionToLookFor, TypeList<TailOptions...>>> {};
 
-template <
-  typename CurrentSortedListAsTypeList, typename DefaultOptionsToAddAsTypeList>
+template <typename CurrentSortedListAsTypeList, typename DefaultOptionsToAddAsTypeList>
 struct WithDefaultInternal;
 template <typename CurrentSortedListAsTypeList>
-struct WithDefaultInternal<
-  CurrentSortedListAsTypeList, TypeList<>> { // Base case for WithDefault
-	using ResultList =
-	  StripRedundantDefaultsInternal_t<CurrentSortedListAsTypeList>; // Strip at
-	                                                                 // the end
+struct WithDefaultInternal<CurrentSortedListAsTypeList, TypeList<>> { // Base case for WithDefault
+	using ResultList = StripRedundantDefaultsInternal_t<CurrentSortedListAsTypeList>; // Strip at
+	                                                                                  // the end
 };
 template <
   typename CurrentSortedListAsTypeList, typename HeadDefaultOption,
@@ -306,8 +271,7 @@ struct WithDefaultInternal<
 private:
 	static constexpr bool kind_exists =
 	  CheckIfKindExists<HeadDefaultOption, CurrentSortedListAsTypeList>::value;
-	static constexpr bool head_is_its_own_default =
-	  IsOptionEqualToItsDefault_v<HeadDefaultOption>;
+	static constexpr bool head_is_its_own_default = IsOptionEqualToItsDefault_v<HeadDefaultOption>;
 
 	using ListAfterProcessingHead = typename std::conditional_t<
 	  kind_exists || head_is_its_own_default, CurrentSortedListAsTypeList,
@@ -326,8 +290,7 @@ public:
 
 // Primary template declaration (can be left undefined or provide a base case if
 // needed)
-template <typename CurrentOptionsListAsTypeList, typename... Args>
-struct WithHelper;
+template <typename CurrentOptionsListAsTypeList, typename... Args> struct WithHelper;
 
 // Specialization 1: Handles the parameter pack case (Args... is MoreOptions...)
 template <typename... CurrentAs, typename... MoreOptions>
@@ -362,8 +325,7 @@ struct WithHelper<TypeList<CurrentAs...>, Options<OtherAs...>> {
 // --- Internal Helper for Options::WithDefault Overloading ---
 
 // Primary template declaration
-template <typename CurrentOptionsListAsTypeList, typename... Args>
-struct WithDefaultHelper;
+template <typename CurrentOptionsListAsTypeList, typename... Args> struct WithDefaultHelper;
 
 // Specialization 1: Handles the parameter pack case (Args... is
 // DefaultOptions...)
@@ -384,8 +346,7 @@ template <
   typename... CurrentAs,
   typename... OtherDefaultOptions> // Matches a single argument of type
                                    // Options<OtherDefaultOptions...>
-struct WithDefaultHelper<
-  TypeList<CurrentAs...>, Options<OtherDefaultOptions...>> {
+struct WithDefaultHelper<TypeList<CurrentAs...>, Options<OtherDefaultOptions...>> {
 	// Delegate to WithDefaultInternal, combining the current options with the
 	// options from the input Options<> type
 	using ResultList = typename WithDefaultInternal<

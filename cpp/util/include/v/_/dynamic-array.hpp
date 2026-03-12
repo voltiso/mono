@@ -3,8 +3,8 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 
-#include "v/_/tensor/_forward.hpp"
 #include "v/_/view.forward.hpp"
+#include "v/array"
 #include "v/concepts/options"
 #include "v/get/brands"
 #include "v/get/extent"
@@ -57,9 +57,7 @@ protected:
 	Size _numSlots = Options::template GET<option::IN_PLACE>;
 
 public:
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const {
-		return this->_numSlots;
-	}
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const { return this->_numSlots; }
 };
 
 //
@@ -73,10 +71,8 @@ struct RELOCATABLE(DataMembersInPlaceBase) : Base_<Options> {
 
 	using Allocator = Options::template Get<option::Allocator>;
 
-	static_assert(
-	  std::is_trivially_constructible_v<Storage<typename Allocator::Handle>>);
-	static_assert(std::is_trivially_default_constructible_v<
-	              Storage<typename Allocator::Handle>>);
+	static_assert(std::is_trivially_constructible_v<Storage<typename Allocator::Handle>>);
+	static_assert(std::is_trivially_default_constructible_v<Storage<typename Allocator::Handle>>);
 };
 
 //
@@ -91,12 +87,10 @@ struct RELOCATABLE(DataMembersInPlaceOnly) : DataMembersInPlaceBase<Options> {
 	using Item = Options::template Get<option::Item>;
 
 protected:
-	Tensor<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>>
-	  inPlaceItems;
+	Array<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>> inPlaceItems;
 
 public:
-	static constexpr Size NUM_SLOTS =
-	  Options::template GET<option::IN_PLACE_ONLY>;
+	static constexpr Size NUM_SLOTS = Options::template GET<option::IN_PLACE_ONLY>;
 };
 
 //
@@ -114,16 +108,14 @@ struct RELOCATABLE(DataMembersInPlace) : DataMembersInPlaceBase<Options> {
 protected:
 	union {
 		Storage<typename Allocator::Handle> allocation;
-		Tensor<Storage<Item>, Options::template GET<option::IN_PLACE>> inPlaceItems;
+		Array<typename Storage<Item>::NonUnion, Options::template GET<option::IN_PLACE>> inPlaceItems;
 	};
 
 protected:
 	Size _numSlots = Options::template GET<option::IN_PLACE>;
 
 public:
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const {
-		return this->_numSlots;
-	}
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const { return this->_numSlots; }
 };
 
 template <class Options>
@@ -131,8 +123,8 @@ template <class Options>
 using DataMembers = std::conditional_t<
   (Options::template GET<option::IN_PLACE> > 0), DataMembersInPlace<Options>,
   std::conditional_t<
-    (Options::template GET<option::IN_PLACE_ONLY> > 0),
-    DataMembersInPlaceOnly<Options>, DataMembersNoInPlace<Options>>>;
+    (Options::template GET<option::IN_PLACE_ONLY> > 0), DataMembersInPlaceOnly<Options>,
+    DataMembersNoInPlace<Options>>>;
 
 template <class Options, bool IS_CONST> class Accessor {
 private:
@@ -201,7 +193,8 @@ template <class Options>
 class RELOCATABLE(Custom)
     : public _::DataMembers<typename Options::template WithDefault<
         option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
-	RELOCATABLE_BODY(Custom<Options>);
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = _::DataMembers<typename Options::template WithDefault<
@@ -217,8 +210,7 @@ public:
 
 	static constexpr auto IN_PLACE = Options::template GET<option::IN_PLACE>;
 
-	static constexpr auto IN_PLACE_ONLY =
-	  Options::template GET<option::IN_PLACE_ONLY>;
+	static constexpr auto IN_PLACE_ONLY = Options::template GET<option::IN_PLACE_ONLY>;
 
 	using Accessor = _::Accessor<Options, false>;
 	using ConstAccessor = _::Accessor<Options, true>;
@@ -230,9 +222,8 @@ private:
 	// using Final = Base::Final;
 
 	static_assert(
-	  is::relocatable<Item>,
-	  "`Item` must be marked as trivially relocatable using "
-	  "`is::relocatable<Item> = true`");
+	  is::relocatable<Item>, "`Item` must be marked as trivially relocatable using "
+	                         "`is::relocatable<Item> = true`");
 
 	static_assert(
 	  Options::template GET<option::IN_PLACE> == 0 ||
@@ -240,8 +231,7 @@ private:
 	  "Use either `IN_PLACE` or `IN_PLACE_ONLY`, not both");
 
 	static constexpr Size NUM_IN_PLACE_SLOTS =
-	  Options::template GET<option::IN_PLACE> ||
-	  Options::template GET<option::IN_PLACE_ONLY>;
+	  Options::template GET<option::IN_PLACE> || Options::template GET<option::IN_PLACE_ONLY>;
 
 public:
 	// template <class Type>
@@ -264,8 +254,7 @@ public:
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			// speed-up usual 'non-empty' path
 			if (this->_numSlots > 0) [[likely]] {
-				auto memory =
-				  static_cast<Storage<Item> *>(_allocator()(this->allocation));
+				auto memory = static_cast<Storage<Item> *>(_allocator()(this->allocation));
 				for (Size i = 0; i < _numItems; ++i) [[likely]] {
 					memory[i].storedItem().~Item();
 				}
@@ -273,16 +262,13 @@ public:
 			}
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
 			// speed-up 'in-place' path (e.g. for `HashTable`)
-			if (this->_numSlots > Options::template GET<option::IN_PLACE>)
-			  [[unlikely]] {
-				auto memory = static_cast<Storage<Item> *>(
-				  _allocator()(this->allocation.storedItem()));
+			if (this->_numSlots > Options::template GET<option::IN_PLACE>) [[unlikely]] {
+				auto memory = static_cast<Storage<Item> *>(_allocator()(this->allocation.storedItem()));
 				// speed-up empty path
 				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
 					memory[i].storedItem().~Item();
 				}
-				_allocator().freeBytes(
-				  this->allocation.storedItem(), _numBytes(this->_numSlots));
+				_allocator().freeBytes(this->allocation.storedItem(), _numBytes(this->_numSlots));
 			} else [[likely]] {
 				// speed-up inplace path
 				// speed-up empty path
@@ -302,11 +288,10 @@ public:
 	}
 
 public:
-	Custom() noexcept = default;
+	constexpr Custom() noexcept = default;
 
 	template <class TItems>
-	explicit Custom(TItems &&items)
-	    : Custom(tag::COPY, std::forward<TItems>(items)) {}
+	explicit Custom(TItems &&items) : Custom(tag::COPY, std::forward<TItems>(items)) {}
 
 	// Explicitly delete copy constructor to prevent shallow copies.
 	// Use .copy() for deep copies.
@@ -316,8 +301,7 @@ public:
 	Custom(const Custom &&otherCopy) : Custom(tag::COPY, otherCopy) {}
 
 	// Standard move constructor
-	Custom(Custom &&other) noexcept
-	    : Base(std::move(other)) /* Move base if it's movable */ {
+	Custom(Custom &&other) noexcept : Base(std::move(other)) /* Move base if it's movable */ {
 		NE(this, &other); // forbid (for performance)
 		this->_numItems = other._numItems;
 		this->_numSlots = other._numSlots;
@@ -325,20 +309,15 @@ public:
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			this->allocation = other.allocation;
 		} else if constexpr (Options::template GET<option::IN_PLACE>() > 0) {
-			if (other._numSlots > Options::template GET<option::IN_PLACE>())
-			  [[unlikely]] {
+			if (other._numSlots > Options::template GET<option::IN_PLACE>()) [[unlikely]] {
 				this->allocation.item() = other.allocation.item();
 			} else [[likely]] {
 				static_assert(is::relocatable<Item>);
-				memcpy(
-				  &this->inPlaceItems[0], &other.inPlaceItems[0],
-				  sizeof(Item) * other._numItems);
+				memcpy(&this->inPlaceItems[0], &other.inPlaceItems[0], sizeof(Item) * other._numItems);
 			}
 		} else if constexpr (Options::template GET<option::IN_PLACE_ONLY>() > 0) {
 			static_assert(is::relocatable<Storage<Item>>);
-			memcpy(
-			  &this->inPlaceItems[0], &other.inPlaceItems[0],
-			  sizeof(Item) * other._numItems);
+			memcpy(&this->inPlaceItems[0], &other.inPlaceItems[0], sizeof(Item) * other._numItems);
 		} else {
 			static_assert(false);
 		}
@@ -372,8 +351,7 @@ public:
 
 public:
 	template <class... Args>
-	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-	concat(Args &&...args) {
+	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto concat(Args &&...args) {
 		static_assert(std::is_base_of_v<Custom<Options>, Final>);
 		return Final{tag::CONCAT, std::forward<Args>(args)...};
 	}
@@ -508,16 +486,13 @@ public:
 
 public:
 	// `numItems` must be at least 1
-	template <class... Args>
-	static Final createWithNumItems(Size numItems, Args &&...args) {
-		return Final{
-		  CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
+	template <class... Args> static Final createWithNumItems(Size numItems, Args &&...args) {
+		return Final{CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
 	}
 
 private:
 	struct CreateWithNumItemsTag {};
-	template <class... Args>
-	Custom(CreateWithNumItemsTag, Size numItems, Args &&...args) {
+	template <class... Args> Custom(CreateWithNumItemsTag, Size numItems, Args &&...args) {
 		static_assert(!std::is_polymorphic_v<Final>);
 		// auto &self = reinterpret_cast<Self &>(_self);
 
@@ -530,8 +505,7 @@ private:
 			this->allocation = _allocator().allocateBytes(_numBytes(numItems));
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
 			if (numItems > Options::template GET<option::IN_PLACE>) [[unlikely]] {
-				this->allocation.object() =
-				  _allocator().allocateBytes(_numBytes(numItems));
+				this->allocation.object() = _allocator().allocateBytes(_numBytes(numItems));
 			}
 		} else {
 			static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
@@ -548,7 +522,7 @@ private:
 	//
 
 private:
-	static auto &_allocator() { return Final::Allocator::maybeInitialize(); }
+	static auto &_allocator() { return Final::Allocator::instance(); }
 
 public:
 	static const auto &allocator() { return _allocator(); }
@@ -567,14 +541,10 @@ private:
 
 public:
 	// std compatibility
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Size size() const noexcept {
-		return _numItems;
-	}
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Size size() const noexcept { return _numItems; }
 
 	// contiguous memory
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto extent() const noexcept {
-		return _numItems;
-	}
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto extent() const noexcept { return _numItems; }
 
 	//
 
@@ -589,8 +559,7 @@ public:
 			if (this->_numSlots > 0) [[likely]] {
 				if (newNumSlots > 0) [[likely]] {
 					this->allocation = _allocator().reallocateBytes(
-					  this->allocation, _numBytes(this->_numSlots),
-					  _numBytes(newNumSlots));
+					  this->allocation, _numBytes(this->_numSlots), _numBytes(newNumSlots));
 				} else [[unlikely]] {
 					_allocator().freeBytes(this->allocation, _numBytes(this->_numSlots));
 				}
@@ -602,13 +571,11 @@ public:
 				}
 			}
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
-			if (this->_numSlots <= Options::template GET<option::IN_PLACE>)
-			  [[likely]] {
+			if (this->_numSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
 				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
 					// noop - stay in place
 				} else [[unlikely]] {
-					auto allocation =
-					  _allocator().allocateBytes(newNumSlots * sizeof(Item));
+					auto allocation = _allocator().allocateBytes(newNumSlots * sizeof(Item));
 					auto memory = _allocator()(allocation);
 					::memcpy(memory, &this->inPlaceItems[0], sizeof(Item) * _numItems);
 					this->allocation.storedItem() = allocation;
@@ -617,9 +584,7 @@ public:
 				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
 					auto oldData = this->allocation.storedItem();
 					LT(newNumSlots, this->_numSlots);
-					::memcpy(
-					  static_cast<void *>(&this->inPlaceItems), oldData,
-					  sizeof(Item) * _numItems);
+					::memcpy(static_cast<void *>(&this->inPlaceItems), oldData, sizeof(Item) * _numItems);
 					_allocator().freeBytes(oldData, this->_numSlots * sizeof(Item));
 				} else [[unlikely]] {
 					this->allocation.storedItem() = _allocator().reallocateBytes(
@@ -644,13 +609,11 @@ public:
 			auto *ptr = std::bit_cast<Storage<Item> *>(this->allocation.value);
 			return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
-			if (this->_numSlots <= Options::template GET<option::IN_PLACE>)
-			  [[likely]] {
+			if (this->_numSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
 				// return this->inPlaceItems.items;
-				return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items);
+				return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items());
 			} else [[unlikely]] {
-				auto *ptr =
-				  std::bit_cast<Storage<Item> *>(this->allocation.storedItem());
+				auto *ptr = std::bit_cast<Storage<Item> *>(this->allocation.storedItem());
 				return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
 			}
 		} else {
@@ -665,9 +628,7 @@ public:
 		return const_cast<Custom *>(this)->slots();
 	}
 
-	INLINE auto items() -> RawArray<Item> & {
-		return reinterpret_cast<RawArray<Item> &>(slots());
-	}
+	INLINE auto items() -> RawArray<Item> & { return reinterpret_cast<RawArray<Item> &>(slots()); }
 
 	INLINE auto items() const -> const RawArray<Item> & {
 		return reinterpret_cast<const RawArray<Item> &>(slots());
@@ -720,9 +681,7 @@ public:
 		return {Handle{index}, *this};
 	}
 
-	ConstAccessor operator()(const Index &index) const {
-		return {Handle(index), *this};
-	}
+	ConstAccessor operator()(const Index &index) const { return {Handle(index), *this}; }
 
 	Item &first() { return (*this)[0]; }
 	const Item &first() const { return (*this)[0]; }
@@ -746,8 +705,7 @@ public:
 			LE(_numItems, this->NUM_SLOTS);
 		}
 
-		if constexpr (
-		  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
+		if constexpr (std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
 			// noop - memory not zeroed!
 		} else {
 			slots()[index].construct(std::forward<Args>(args)...);
@@ -835,8 +793,7 @@ public:
 
 private:
 	// cannot perfect-forward
-	template <bool SHRINK_ONLY, class... Args>
-	void _setNumItems(Size newNumItems, Args &&...args) {
+	template <bool SHRINK_ONLY, class... Args> void _setNumItems(Size newNumItems, Args &&...args) {
 		if (newNumItems < _numItems) {
 			auto memory = slots();
 			for (Size i = newNumItems; i < _numItems; ++i) {
@@ -853,8 +810,7 @@ private:
 			}
 			auto memory = slots();
 			if constexpr (!SHRINK_ONLY) {
-				if constexpr (
-				  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
+				if constexpr (std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
 					// noop ! memory not zeroed!
 				} else if constexpr (std::is_copy_constructible_v<Item>) {
 					auto item = Item{std::forward<Args>(args)...};
@@ -959,9 +915,7 @@ public:
 
 	/** Erase element by moving last item to this slot. (swap-and-pop) */
 	INLINE constexpr auto swapErase(const Index &idx) noexcept
-	  requires requires {
-		  slots()[idx].relocate();
-	  } && std::is_nothrow_move_constructible_v<Item>
+	  requires requires { slots()[idx].relocate(); } && std::is_nothrow_move_constructible_v<Item>
 	// note: this should not trigger any move/copy constructors if NRVO works (who
 	// knows).
 	{
@@ -992,8 +946,8 @@ public:
 	// !
 
 	[[nodiscard]] INLINE auto map(auto &&func) const {
-		using Result = Base::template With<
-		  option::Item<std::remove_cvref_t<decltype(func(items()[0]))>>>;
+		using Result =
+		  Base::template With<option::Item<std::remove_cvref_t<decltype(func(items()[0]))>>>;
 		auto result = Result{};
 		result.setNumSlotsAtLeast(this->_numItems);
 		for (Size i = 0; i < this->_numItems; ++i) {
@@ -1035,21 +989,20 @@ public:
 	}
 	constexpr ConstIterator end() const noexcept {
 		// DCHECK_GT(numItems, 0);
-		return ConstIterator{
-		  std::addressof(slots()->storedItem()) + this->_numItems};
+		return ConstIterator{std::addressof(slots()->storedItem()) + this->_numItems};
 	}
 
 public:
 	// string_view is constant-time, so can be implicit
-	constexpr operator ::std::string_view() const noexcept(noexcept(
-	  ::std::string_view(std::addressof(slots()->storedItem()), _numItems)))
+	constexpr operator ::std::string_view() const
+	  noexcept(noexcept(::std::string_view(std::addressof(slots()->storedItem()), _numItems)))
 	  requires std::is_same_v<std::remove_const_t<Item>, char>
 	{
 		return ::std::string_view(std::addressof(slots()->storedItem()), _numItems);
 	}
 
-	explicit constexpr operator ::std::string() const noexcept(
-	  noexcept(::std::string(std::addressof(slots()->storedItem()), _numItems)))
+	explicit constexpr operator ::std::string() const
+	  noexcept(noexcept(::std::string(std::addressof(slots()->storedItem()), _numItems)))
 	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
 	{
 		return std::string(std::addressof(slots()->storedItem()), _numItems);
@@ -1090,9 +1043,9 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-class RELOCATABLE(DynamicArray)
-    : public dynamicArray::Custom<Options<option::Item<Item>>> {
-	RELOCATABLE_BODY(DynamicArray<Item>);
+class RELOCATABLE(DynamicArray) : public dynamicArray::Custom<Options<option::Item<Item>>> {
+	using Self = DynamicArray;
+	RELOCATABLE_BODY
 
 private:
 	using Base = dynamicArray::Custom<Options<option::Item<Item>>>;
@@ -1125,13 +1078,10 @@ public:
 }; // class DynamicArray
 
 // Deduction for general lists like {1, 2, 3}
-template <
-  class T, class... U,
-  std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
+template <class T, class... U, std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
 DynamicArray(T, U...) -> DynamicArray<std::type_identity_t<T>>;
 
-template <class T>
-DynamicArray(std::initializer_list<T> list) -> DynamicArray<T>;
+template <class T> DynamicArray(std::initializer_list<T> list) -> DynamicArray<T>;
 
 } // namespace VOLTISO_NAMESPACE
 
@@ -1144,19 +1094,16 @@ template <class OtherItems>
 // requires(
 //   std::is_reference_v<OtherItems> ||
 //   std::is_const_v<std::remove_reference_t<OtherItems>>)
-[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto
-from(OtherItems &&otherItems) {
+[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto from(OtherItems &&otherItems) {
 	using Item = std::remove_reference_t<decltype(*std::begin(otherItems))>;
 	using OtherItemsClass = std::remove_reference_t<OtherItems>;
 	using OtherBrands = get::Brands<OtherItemsClass>;
-	using Result =
-	  ::VOLTISO_NAMESPACE::DynamicArray<Item>::template WithDefault<OtherBrands>;
+	using Result = ::VOLTISO_NAMESPACE::DynamicArray<Item>::template WithDefault<OtherBrands>;
 	return Result::from(std::forward<OtherItems>(otherItems));
 }
 
 template <class Item>
-[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto
-from(std::initializer_list<Item> items) {
+[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto from(std::initializer_list<Item> items) {
 	using Result = ::VOLTISO_NAMESPACE::DynamicArray<Item>;
 	return Result::from(items);
 }

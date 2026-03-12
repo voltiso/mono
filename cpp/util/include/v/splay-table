@@ -1,5 +1,6 @@
 #pragma once
 
+#include "v/array"
 #include "v/concepts/options"
 #include "v/entry"
 #include "v/likelihood"
@@ -31,7 +32,7 @@ private:
 
 public:
 	Entry entry;
-	Tensor<Handle, 2> children = {handle::INVALID, handle::INVALID};
+	Array<Handle, 2> children = {handle::INVALID, handle::INVALID};
 };
 } // namespace VOLTISO_NAMESPACE::splayTable::_
 
@@ -40,8 +41,7 @@ public:
 namespace VOLTISO_NAMESPACE::splayTable::_ {
 template <class Options, bool IS_CONST> class Accessor {
 private:
-	template <class T>
-	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+	template <class T> using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
 
 private:
 	using Custom = MaybeConst<Custom<Options>>;
@@ -55,15 +55,12 @@ protected:
 	bool _exists;
 
 public:
-	[[nodiscard]] VOLTISO_FORCE_INLINE bool exists() const {
-		return this->_exists;
-	}
+	[[nodiscard]] VOLTISO_FORCE_INLINE bool exists() const { return this->_exists; }
 
 protected:
 	friend Custom;
 	Accessor(MaybeConst<Custom> &splayTable, const Handle handle)
-	    : _splayTable(splayTable), handle(handle),
-	      _exists(handle != handle::INVALID) {}
+	    : _splayTable(splayTable), handle(handle), _exists(handle != handle::INVALID) {}
 
 public:
 	const Value &value() const {
@@ -138,13 +135,11 @@ public:
 
 //
 
-template <class Options, bool IS_CONST>
-class SetAccessor : public Accessor<Options, IS_CONST> {
+template <class Options, bool IS_CONST> class SetAccessor : public Accessor<Options, IS_CONST> {
 	using Base = Accessor<Options, IS_CONST>;
 
 private:
-	template <class T>
-	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+	template <class T> using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
 
 private:
 	using Custom = Custom<Options>;
@@ -155,8 +150,7 @@ private:
 
 private:
 	friend Custom;
-	SetAccessor(
-	  const Entry &entry, MaybeConst<Custom> &splayTable, const auto &handle)
+	SetAccessor(const Entry &entry, MaybeConst<Custom> &splayTable, const auto &handle)
 	    : Base(splayTable, handle), entry(entry) {}
 
 public:
@@ -186,14 +180,12 @@ public:
 
 //
 
-template <class Options, bool IS_CONST>
-class MapAccessor : public Accessor<Options, IS_CONST> {
+template <class Options, bool IS_CONST> class MapAccessor : public Accessor<Options, IS_CONST> {
 	using Base = Accessor<Options, IS_CONST>;
 	using Base::Base;
 
 private:
-	template <class T>
-	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+	template <class T> using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
 
 private:
 	using Custom = Custom<Options>;
@@ -205,16 +197,14 @@ private:
 
 private:
 	friend Custom;
-	MapAccessor(
-	  const Key &key, MaybeConst<Custom> &splayTable, const auto &handle)
+	MapAccessor(const Key &key, MaybeConst<Custom> &splayTable, const auto &handle)
 	    : Base(splayTable, handle), key(key) {}
 
 public:
 	template <class... Args> auto &insert(Args &&...args) {
 		CHECK(!this->_exists);
 		auto &root = this->_splayTable.root;
-		this->_splayTable._splay()(root).insert(
-		  Entry{this->key, Value{std::forward<Args>(args)...}});
+		this->_splayTable._splay()(root).insert(Entry{this->key, Value{std::forward<Args>(args)...}});
 		this->_exists = true;
 		return *this;
 	}
@@ -446,16 +436,14 @@ public:
 		return ConstSetAccessor{entry, *this, handle};
 	}
 
-	template <
-	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	template <class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
 	MapAccessor operator()(const Key &key) {
 		auto splay = this->_splay();
 		auto handle = splay(this->root).find(key);
 		return MapAccessor{key, *this, handle};
 	}
 
-	template <
-	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	template <class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
 	ConstMapAccessor operator()(const Key &key) const {
 		auto splay = this->_splay();
 		auto handle = splay(this->root).find(key);
@@ -473,10 +461,8 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Entry>
 class SplayTable
-    : public splayTable::Custom<
-        Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>> {
-	using Base = splayTable::Custom<
-	  Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>>;
+    : public splayTable::Custom<Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>> {
+	using Base = splayTable::Custom<Options<option::Entry<Entry>, option::Final<SplayTable<Entry>>>>;
 	using Base::Base;
 };
 

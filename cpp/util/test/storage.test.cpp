@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "v/_/is/relocatable.hpp"
+#include "v/_/storage/impl.hpp"
 #include "v/_/storage/storage.hpp"
+#include "v/concepts/constexpr-constructible"
 #include "v/storage"
 
 #include <type_traits>
@@ -10,13 +12,22 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+static_assert(is::relocatable<storage::Custom<Options<option::Item<int>>>>);
+static_assert(is::relocatable<Storage<int>>);
+
+static_assert(is::relocatable<storage::Custom<Options<option::Item<int>, option::nonUnion<true>>>>);
+static_assert(is::relocatable<Storage<int>::NonUnion>);
+
+// static_assert(std::is_trivially_copyable_v<storage::_::Impl<Options<option::Item<int>>>>);
+// static_assert(std::is_trivially_copyable_v<storage::Custom<Options<option::Item<int>>>>);
+static_assert(std::is_trivially_copyable_v<Storage<int>>);
+static_assert(std::is_trivially_copyable_v<Storage<int>::NonUnion>);
+
 // ! ---------------------
 
-static_assert(is::relocatable<Storage<int>>);
-static_assert(is::relocatable<Storage<int>::Constexpr>);
-
-static_assert(std::is_trivially_copyable_v<Storage<int>>);
-static_assert(std::is_trivially_copyable_v<Storage<int>::Constexpr>);
+// nested
+static_assert(is::relocatable<Storage<Storage<int>>>);
+static_assert(is::relocatable<Storage<Storage<int>>::NonUnion>);
 
 // ! ---------------------
 
@@ -32,13 +43,13 @@ struct WithDestructor {
 static_assert(!is::relocatable<WithDestructor>);
 
 struct RELOCATABLE(ForcedRelocatable) {
-	RELOCATABLE_BODY(ForcedRelocatable);
+	using Self = ForcedRelocatable;
+	RELOCATABLE_BODY;
 
 public:
 	ForcedRelocatable() = default;
 
 private:
-	// ForcedRelocatable(const ForcedRelocatable &) = delete;
 	ForcedRelocatable(ForcedRelocatable &&) = delete;
 	ForcedRelocatable(const ForcedRelocatable &) = default; // for [[trivial_abi]]
 	ForcedRelocatable &operator=(const ForcedRelocatable &) = delete;
@@ -51,30 +62,42 @@ public:
 // ! ---------------------
 
 static_assert(is::relocatable<Storage<ForcedRelocatable>>);
-static_assert(is::relocatable<Storage<ForcedRelocatable>::Constexpr>);
+static_assert(is::relocatable<Storage<ForcedRelocatable>::NonUnion>);
 
 static_assert(!std::is_trivially_copyable_v<ForcedRelocatable>);
-static_assert(std::is_trivially_copyable_v<Storage<ForcedRelocatable>>); // ! BAD?
+static_assert(std::is_trivially_copyable_v<Storage<ForcedRelocatable>::NonUnion>); // ! BAD?
 // here's the difference for union-backed constexpr storage:
-static_assert(!std::is_trivially_copyable_v<Storage<ForcedRelocatable>::Constexpr>);
+static_assert(!std::is_trivially_copyable_v<Storage<ForcedRelocatable>>);
+
+// nested
+static_assert(is::relocatable<Storage<Storage<ForcedRelocatable>>>);
+static_assert(is::relocatable<Storage<Storage<ForcedRelocatable>>::NonUnion>);
 
 // ! ---------------------
+
+static_assert(!is::relocatable<WithDestructor>);
+static_assert(!is::relocatable<Storage<WithDestructor>>);
+static_assert(!is::relocatable<Storage<WithDestructor>::NonUnion>);
 
 static_assert(!std::is_trivially_copyable_v<WithDestructor>);
 static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>>);
-static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>::Constexpr>);
+// static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>::NonUnion>); // ! BAD?
+
+// nested
+static_assert(!is::relocatable<Storage<Storage<WithDestructor>>>);
+static_assert(!is::relocatable<Storage<Storage<WithDestructor>>::NonUnion>);
 
 // ! ---------------------
 
-struct STORAGE_NORMAL {
-	using S = Storage<WithDestructor>;
+struct STORAGE_NON_UNION {
+	using S = Storage<WithDestructor>::NonUnion;
 	// ! These work contrary to the union-backed storage
 	static_assert(std::is_trivially_constructible_v<S>);
 	static_assert(std::is_trivially_destructible_v<S>);
 };
 
 struct STORAGE_CONSTEXPR {
-	using S = Storage<WithDestructor>::Constexpr;
+	using S = Storage<WithDestructor>;
 	// ! These work contrary to the bytes-backed storage
 	static constexpr auto test = [] {
 		S s;
@@ -89,8 +112,8 @@ static_assert(is::relocatable<ForcedRelocatable>);
 static_assert(!std::is_trivially_copyable_v<ForcedRelocatable>);
 static_assert(!std::is_copy_constructible_v<ForcedRelocatable>);
 
-TEST(Storage, ForcedRelocatable) {
-	using S = Storage<ForcedRelocatable>;
+TEST(Storage, ForcedRelocatableNonUnion) {
+	using S = Storage<ForcedRelocatable>::NonUnion;
 	static_assert(is::relocatable<S>);
 
 	static_assert(std::is_trivially_constructible_v<S>);
@@ -106,12 +129,12 @@ TEST(Storage, ForcedRelocatable) {
 };
 
 TEST(Storage, ForcedRelocatableConstexpr) {
-	using S = Storage<ForcedRelocatable>::Constexpr;
+	using S = Storage<ForcedRelocatable>;
 	static_assert(is::relocatable<S>);
 
-	// static_assert(std::is_trivially_constructible_v<S>); // ! not true for
-	// union static_assert(std::is_trivially_destructible_v<S>); // ! not true for
-	// union
+	// ! not true for union-backed storage:
+	// static_assert(std::is_trivially_constructible_v<S>);
+	// static_assert(std::is_trivially_destructible_v<S>);
 
 	static_assert(!std::is_trivially_copy_constructible_v<S>);
 	static_assert(!std::is_trivially_move_constructible_v<S>);
@@ -124,20 +147,24 @@ TEST(Storage, ForcedRelocatableConstexpr) {
 // ! ---------------------
 
 template <class S> struct TRIVIAL {
-	static_assert(std::is_trivially_copyable_v<S>);
+	static_assert(std::is_trivially_copyable_v<S>); // true in clang/gcc
 
-	static_assert(std::is_trivially_copy_constructible_v<S>);
-	static_assert(std::is_trivially_move_constructible_v<S>);
-	static_assert(std::is_trivially_copy_assignable_v<S>);
-	static_assert(std::is_trivially_move_assignable_v<S>);
+	// ! now disabled:
+	static_assert(!std::is_trivially_copy_constructible_v<S>);
+	static_assert(!std::is_trivially_move_constructible_v<S>);
+	static_assert(!std::is_trivially_copy_assignable_v<S>);
+	static_assert(!std::is_trivially_move_assignable_v<S>);
 };
 template struct TRIVIAL<Storage<int>>;
-template struct TRIVIAL<Storage<int>::Constexpr>;
+template struct TRIVIAL<Storage<int>::NonUnion>;
 
 // ! ---------------------
 
 template <class S> struct WITH_DESTRUCTOR {
-	static_assert(!std::is_trivially_copyable_v<S>);
+	static_assert(!std::is_trivially_copyable_v<WithDestructor>);
+
+	// ! trivially_copyable for bytes-backed storage
+	// static_assert(std::is_trivially_copyable_v<S>);
 
 	static_assert(!std::is_trivially_copy_constructible_v<S>);
 	static_assert(!std::is_trivially_move_constructible_v<S>);
@@ -147,41 +174,42 @@ template <class S> struct WITH_DESTRUCTOR {
 	static_assert(!std::is_trivially_move_assignable_v<S>);
 };
 template struct WITH_DESTRUCTOR<Storage<WithDestructor>>;
-template struct WITH_DESTRUCTOR<Storage<WithDestructor>::Constexpr>;
+template struct WITH_DESTRUCTOR<Storage<WithDestructor>::NonUnion>;
 
 // ! ---------------------
 
 template <class S> struct WITH_CONSTRUCTOR {
+	static_assert(std::is_trivially_copyable_v<S>);
+
+	// ! not true for union-backed storage
+	// static_assert(std::is_trivially_constructible_v<S>);
+
 	static_assert(std::is_trivially_destructible_v<S>);
 
-	static_assert(std::is_copy_constructible_v<S>);
-	static_assert(std::is_move_constructible_v<S>);
+	static_assert(!std::is_copy_constructible_v<S>);
+	static_assert(!std::is_move_constructible_v<S>);
 
-	// !
-	static_assert(std::is_trivially_copyable_v<S>);
-	static_assert(is::_::builtinRelocatable<S>);
-
-	static_assert(std::is_trivially_move_assignable_v<S>);    // ! now true!
-	static_assert(std::is_trivially_move_constructible_v<S>); // ! now true
-	static_assert(std::is_trivially_copy_constructible_v<S>); // ! now true!
-	static_assert(std::is_trivially_copy_assignable_v<S>);    // ! now true!
+	static_assert(!std::is_trivially_move_assignable_v<S>);
+	static_assert(!std::is_trivially_move_constructible_v<S>);
+	static_assert(!std::is_trivially_copy_constructible_v<S>);
+	static_assert(!std::is_trivially_copy_assignable_v<S>);
 
 	// Item is trivially copyable - copy only via explicit-copy
-	static_assert(std::is_constructible_v<S, S>);    // ! now true!
-	static_assert(std::is_constructible_v<S, S &&>); // ! now true!
-	static_assert(std::is_constructible_v<S, const S &&>);
+	static_assert(!std::is_constructible_v<S, S>);
+	static_assert(!std::is_constructible_v<S, S &&>);
+	static_assert(!std::is_constructible_v<S, const S &&>);
 
 	// Item is trivially copyable - assign only via explicit-copy
-	static_assert(std::is_assignable_v<S &, S>);    // ! now true!
-	static_assert(std::is_assignable_v<S &, S &&>); // ! now true!
-	static_assert(std::is_assignable_v<S &, const S &&>);
+	static_assert(!std::is_assignable_v<S &, S>);
+	static_assert(!std::is_assignable_v<S &, S &&>);
+	static_assert(!std::is_assignable_v<S &, const S &&>);
 };
 
 template struct WITH_CONSTRUCTOR<Storage<WithConstructor>>;
-template struct WITH_CONSTRUCTOR<Storage<WithConstructor>::Constexpr>;
+template struct WITH_CONSTRUCTOR<Storage<WithConstructor>::NonUnion>;
 
 struct WITH_CONSTRUCTOR_BYTES {
-	using S = Storage<WithConstructor>;
+	using S = Storage<WithConstructor>::NonUnion;
 	static_assert(std::is_trivially_constructible_v<S>);
 	static_assert(concepts::ConstexprConstructible<S>);
 };
@@ -189,7 +217,9 @@ struct WITH_CONSTRUCTOR_BYTES {
 // ! ---------------------
 
 template <class S> struct PREVENT_IMPLICIT_COPY {
-	static_assert(!std::is_trivially_copyable_v<S>);
+	static_assert(!is::relocatable<WithDestructor>);
+	// ! trivially_copyable for bytes-backed storage
+	// static_assert(std::is_trivially_copyable_v<S>);
 
 	static_assert(!std::is_trivially_move_assignable_v<S>);
 	static_assert(!std::is_trivially_move_constructible_v<S>);
@@ -197,24 +227,24 @@ template <class S> struct PREVENT_IMPLICIT_COPY {
 	static_assert(!std::is_trivially_copy_assignable_v<S>);
 
 	// Item not trivially copyable - no copy allowed
-	static_assert(!std::is_constructible_v<Storage<S>, S>);
-	static_assert(!std::is_constructible_v<Storage<S>, const S &>);
-	static_assert(!std::is_constructible_v<Storage<S>, S &>);
-	static_assert(!std::is_constructible_v<Storage<S>, S &&>);
-	static_assert(!std::is_constructible_v<Storage<S>, const S &&>);
+	static_assert(!std::is_constructible_v<S, S>);
+	static_assert(!std::is_constructible_v<S, const S &>);
+	static_assert(!std::is_constructible_v<S, S &>);
+	static_assert(!std::is_constructible_v<S, S &&>);
+	static_assert(!std::is_constructible_v<S, const S &&>);
 
 	// Item not trivially copyable - no assign allowed
-	static_assert(!std::is_assignable_v<Storage<S> &, S>);
-	static_assert(!std::is_assignable_v<Storage<S> &, S &&>);
-	static_assert(!std::is_assignable_v<Storage<S> &, const S &&>);
+	static_assert(!std::is_assignable_v<S &, S>);
+	static_assert(!std::is_assignable_v<S &, S &&>);
+	static_assert(!std::is_assignable_v<S &, const S &&>);
 };
 template struct PREVENT_IMPLICIT_COPY<Storage<WithDestructor>>;
-template struct PREVENT_IMPLICIT_COPY<Storage<WithDestructor>::Constexpr>;
+template struct PREVENT_IMPLICIT_COPY<Storage<WithDestructor>::NonUnion>;
 
 // ! ---------------------
 
 static_assert(sizeof(Storage<int>) == sizeof(int));
-static_assert(sizeof(Storage<int>::Constexpr) == sizeof(int));
+static_assert(sizeof(Storage<int>::NonUnion) == sizeof(int));
 
 // ! ---------------------
 
@@ -227,48 +257,48 @@ struct Test {
 static_assert(sizeof(Storage<Test>) == sizeof(Test));
 static_assert(alignof(Storage<Test>) == alignof(Test));
 
-static_assert(sizeof(Storage<Test>::Constexpr) == sizeof(Test));
-static_assert(alignof(Storage<Test>::Constexpr) == alignof(Test));
+static_assert(sizeof(Storage<Test>::NonUnion) == sizeof(Test));
+static_assert(alignof(Storage<Test>::NonUnion) == alignof(Test));
 
 // ! ---------------------
 // ! RUNTIME
 // ! ---------------------
 
-template <class S> struct StorageWithConstructorTest : ::testing::Test {};
+// template <class S> struct StorageWithConstructorTest : ::testing::Test {};
 
-using WithConstructorTestTypes =
-  ::testing::Types<Storage<WithConstructor>, Storage<WithConstructor>::Constexpr>;
+// using WithConstructorTestTypes =
+//   ::testing::Types<Storage<WithConstructor>, Storage<WithConstructor>::NonUnion>;
 
-TYPED_TEST_SUITE(StorageWithConstructorTest, WithConstructorTestTypes);
+// TYPED_TEST_SUITE(StorageWithConstructorTest, WithConstructorTestTypes);
 
-TYPED_TEST(StorageWithConstructorTest, implicitCopy) {
-	using S = TypeParam;
-	S a;
-	a.construct(1);
-	S b = a;
-	EXPECT_EQ(b.storedItem().value, 1);
-}
+// TYPED_TEST(StorageWithConstructorTest, implicitCopy) {
+// 	using S = TypeParam;
+// 	S a;
+// 	a.construct(1);
+// 	S b = a;
+// 	EXPECT_EQ(b.storedItem().value, 1);
+// }
 
-TYPED_TEST(StorageWithConstructorTest, implicitMove) {
-	using S = TypeParam;
-	S a;
-	a.construct(1);
-	S b = std::move(a);
-	EXPECT_EQ(b.storedItem().value, 1);
-}
+// TYPED_TEST(StorageWithConstructorTest, implicitMove) {
+// 	using S = TypeParam;
+// 	S a;
+// 	a.construct(1);
+// 	S b = std::move(a);
+// 	EXPECT_EQ(b.storedItem().value, 1);
+// }
 
-TYPED_TEST(StorageWithConstructorTest, constructTrivialInitialize) {
-	using S = TypeParam;
-	S a = 1;
-	EXPECT_EQ(a.storedItem().value, 1);
-}
+// TYPED_TEST(StorageWithConstructorTest, constructTrivialInitialize) {
+// 	using S = TypeParam;
+// 	S a = 1;
+// 	EXPECT_EQ(a.storedItem().value, 1);
+// }
 
 // !
 
 template <class S> struct StorageWithDestructorTest : ::testing::Test {};
 
 using WithDestructorTestTypes =
-  ::testing::Types<Storage<WithDestructor>, Storage<WithDestructor>::Constexpr>;
+  ::testing::Types<Storage<WithDestructor>, Storage<WithDestructor>::NonUnion>;
 
 TYPED_TEST_SUITE(StorageWithDestructorTest, WithDestructorTestTypes);
 

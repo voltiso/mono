@@ -13,18 +13,7 @@ using namespace VOLTISO_NAMESPACE;
 
 // !
 
-class RELOCATABLE(AbiTest) : public Tensor<int, 1> {};
-
-// ! should fail
-// struct NonRelocatable {
-// 	NonRelocatable(const NonRelocatable &) = delete;
-// };
-// class RELOCATABLE(AbiTest2) : public Tensor<NonRelocatable, 1> {};
-
-// !
-
-static_assert(
-  std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
+static_assert(std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
 static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
 
 static_assert(is::relocatable<tensor::Custom<Options<option::Item<int>>>>);
@@ -37,26 +26,21 @@ struct NonRelocatable {
 static_assert(!is::relocatable<NonRelocatable>);
 
 static_assert(!is::relocatable<Tensor<NonRelocatable, 3>>);
-static_assert(
-  !is::relocatable<tensor::Custom<Options<option::Item<NonRelocatable>>>>);
+static_assert(!is::relocatable<tensor::Custom<Options<option::Item<NonRelocatable>>>>);
 
 // !
 
-static_assert(
-  std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
+static_assert(std::is_trivially_copyable_v<tensor::Custom<Options<option::Item<int>>>>);
 
-static_assert(std::is_trivially_copyable_v<v::_::tensor::CustomNNR<v::Options<
-                v::option::Item<int>, v::option::Extents<v::ValuePack<3>>,
-                v::option::implicitCopy<true>>>>);
+static_assert(
+  std::is_trivially_copyable_v<v::_::tensor::CustomNNR<v::Options<
+    v::option::Item<int>, v::option::Extents<v::ValuePack<3>>, v::option::implicitCopy<true>>>>);
 
 static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
 
-static_assert(is::_::builtinRelocatable<
-              V::_::tensor::CustomNNR<Options<option::Item<int>>>>);
+static_assert(is::_::builtinRelocatable<V::_::tensor::CustomNNR<Options<option::Item<int>>>>);
 
-static_assert(
-  is::_::builtinRelocatable<tensor::Custom<Options<option::Item<int>>>>);
-static_assert(is::_::builtinRelocatable<Tensor<int, 1>>);
+static_assert(is::_::builtinRelocatable<tensor::Custom<Options<option::Item<int>>>>);
 static_assert(is::relocatable<Tensor<int, 1>>);
 
 // ! note: our Tensor is not an aggregate type !
@@ -69,17 +53,19 @@ static_assert(!std::is_aggregate_v<Tensor<int, 3>>);
 // !
 
 using Implicit = Tensor<int, 3>::WithImplicitCopy;
+// using Implicit = v::_::tensor::CustomNNR<v::Options<
+//   v::option::Item<int>, v::option::Extents<v::ValuePack<3>>, v::option::implicitCopy<true>>>;
 
 static_assert(std::is_trivially_copyable_v<Implicit>);
 
-// void test() {
-// 	Implicit a;
-// 	Implicit b = a;
-// 	Implicit c = std::move(a);
-// 	(void)c;
-// 	b = a;
-// 	b = std::move(a);
-// }
+void test() {
+	Implicit a;
+	Implicit b = a;
+	Implicit c = std::move(a);
+	(void)c;
+	b = a;
+	b = std::move(a);
+}
 
 static_assert(std::is_constructible_v<Implicit, Implicit &>);
 static_assert(std::is_constructible_v<Implicit, Implicit &&>);

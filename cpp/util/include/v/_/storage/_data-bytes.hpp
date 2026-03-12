@@ -23,17 +23,7 @@ protected:
 	// alignas(Item) Tensor::WithImplicitCopy _bytes;
 	alignas(Item) std::byte _bytes[sizeof(Item)];
 
-	// ! -------------------
-	// ! CONSTRUCT
-	// ! -------------------
-public:
 	constexpr DataBytes() noexcept = default;
-
-	constexpr DataBytes(const DataBytes &) noexcept = default;
-	constexpr DataBytes(DataBytes &&) noexcept = default;
-
-	constexpr DataBytes &operator=(const DataBytes &) noexcept = default;
-	constexpr DataBytes &operator=(DataBytes &&) noexcept = default;
 
 	// ! -------------------
 	// ! API
@@ -44,14 +34,10 @@ public:
 	constexpr const auto &bytes() const noexcept { return this->_bytes; }
 
 	// ⚠️ This may not be constructed yet
-	Item &storedItem() noexcept {
-		return reinterpret_cast<Item &>(this->bytes());
-	}
+	Item &storedItem() noexcept { return reinterpret_cast<Item &>(this->bytes()); }
 
 	// ⚠️ This may not be constructed yet
-	const Item &storedItem() const noexcept {
-		return reinterpret_cast<const Item &>(this->bytes());
-	}
+	const Item &storedItem() const noexcept { return reinterpret_cast<const Item &>(this->bytes()); }
 };
 
 } // namespace VOLTISO_NAMESPACE::storage::_

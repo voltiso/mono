@@ -57,7 +57,8 @@ template <class Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
-	RELOCATABLE_BODY(Custom<Options>);
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = Object<typename Options::template WithDefault<
@@ -87,36 +88,28 @@ public:
 	// we should not allow them
 
 	template <
-	  class OtherValue, std::enable_if_t<
-	                      std::is_integral_v<OtherValue> &&
-	                      sizeof(Value) >= sizeof(OtherValue)> * = nullptr>
+	  class OtherValue,
+	  std::enable_if_t<std::is_integral_v<OtherValue> && sizeof(Value) >= sizeof(OtherValue)> * =
+	    nullptr>
 	explicit constexpr Custom(const OtherValue &value) noexcept : value(value) {}
 
 	template <
 	  class Other, std::enable_if_t<
-	                 (std::is_same_v<Brand, void> ||
-	                  std::is_same_v<typename Other::Brand, void> ||
+	                 (std::is_same_v<Brand, void> || std::is_same_v<typename Other::Brand, void> ||
 	                  std::is_same_v<typename Other::Brand, Brand>) &&
 	                 sizeof(Value) >= sizeof(typename Other::Value)> * = nullptr>
-	constexpr Custom(const Other &other)
-	    : value(std::bit_cast<Value>(other.value)) {}
+	constexpr Custom(const Other &other) : value(std::bit_cast<Value>(other.value)) {}
 
 	template <class P = Pointer, class = std::enable_if_t<std::is_pointer_v<P>>>
-	constexpr Custom(const std::nullptr_t &) noexcept
-	    : value(_::getNullValue<Kind>()) {}
+	constexpr Custom(const std::nullptr_t &) noexcept : value(_::getNullValue<Kind>()) {}
 
 	explicit constexpr operator Value() const noexcept { return value; }
 
-	auto operator<=>(const Custom &other) const noexcept {
-		return value <=> other.value;
-	}
+	auto operator<=>(const Custom &other) const noexcept { return value <=> other.value; }
 
-	bool operator==(const Custom &other) const noexcept {
-		return value == other.value;
-	}
+	bool operator==(const Custom &other) const noexcept { return value == other.value; }
 
-	template <class OtherOptions>
-	bool operator==(const Custom<OtherOptions> &other) const noexcept {
+	template <class OtherOptions> bool operator==(const Custom<OtherOptions> &other) const noexcept {
 		if constexpr (
 		  // TODO: maybe we should not allow this
 		  std::is_pointer_v<Value> && std::is_pointer_v<decltype(other.value)>) {
@@ -130,9 +123,7 @@ public:
 	// 	return value != other.value;
 	// }
 
-	constexpr auto hash() const noexcept(noexcept(get::hash(value))) {
-		return get::hash(value);
-	}
+	constexpr auto hash() const noexcept(noexcept(get::hash(value))) { return get::hash(value); }
 
 	//  - Can't use `constexpr` static here inside the class - it's incomplete
 	//  until
@@ -147,27 +138,21 @@ public:
 	// the comment above)
 	consteval Custom(_::Invalid) noexcept : value(_::getNullValue<Kind>()) {}
 
-	explicit constexpr operator bool() const noexcept {
-		return *this != handle::INVALID;
-	}
+	explicit constexpr operator bool() const noexcept { return *this != handle::INVALID; }
 
-	template <
-	  class P = Pointer, std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
-	explicit constexpr Custom(const P &value) noexcept
-	    : value(reinterpret_cast<Value>(value)) {}
+	template <class P = Pointer, std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
+	explicit constexpr Custom(const P &value) noexcept : value(reinterpret_cast<Value>(value)) {}
 
 	template <
 	  class P = Pointer,
-	  class =
-	    std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
+	  class = std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
 	operator P() const noexcept {
 		return reinterpret_cast<Pointer>(value);
 	}
 
 	template <
 	  class P = Pointer,
-	  class =
-	    std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
+	  class = std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
 	operator void *() const noexcept {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
@@ -176,26 +161,22 @@ public:
 	} // operator void *()
 
 	// for pointer-handles
-	template <
-	  class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
+	template <class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
 	auto operator*() const noexcept -> std::remove_pointer_t<P> & {
 		return *std::bit_cast<P>(this->value);
 	}
 
-	template <
-	  class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
+	template <class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
 	auto operator->() const noexcept -> P {
 		return std::bit_cast<P>(this->value);
 	}
 
 public:
 	// ⚠️ override the single `brand::Custom`
-	template <class NewBrand>
-	using WithBrand = Base::template With<brand::Custom<NewBrand>>;
+	template <class NewBrand> using WithBrand = Base::template With<brand::Custom<NewBrand>>;
 
 	// Mostly maps 1:1 to the handle Value, but stores pointers as uintptr_t
-	template <class NewType>
-	using WithKind = Base::template With<option::HandleKind<NewType>>;
+	template <class NewType> using WithKind = Base::template With<option::HandleKind<NewType>>;
 }; // class Custom
 
 // template <class Final, class Options>
@@ -206,8 +187,7 @@ public:
 
 template <class Options>
   requires concepts::Options<Options>
-inline std::ostream &
-operator<<(std::ostream &os, const Custom<Options> &handle) {
+inline std::ostream &operator<<(std::ostream &os, const Custom<Options> &handle) {
 	if (handle == handle::INVALID) [[unlikely]] {
 		return os << "Handle::INVALID";
 	}

@@ -48,8 +48,8 @@ struct Specializations {
 };
 
 template <class Return, class... ParametersList>
-struct Specializations<Options<
-  option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
+struct Specializations<
+  Options<option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
 	using Result = AnyFunction<Return(ParametersList...)>;
 };
 } // namespace VOLTISO_NAMESPACE::anyFunction
@@ -170,8 +170,7 @@ public:
 		return *reinterpret_cast<const std::uintptr_t *>(&this->_storage);
 	}
 
-	INLINE constexpr Return operator()(ParametersList... args) const
-	  noexcept(NOEXCEPT)
+	INLINE constexpr Return operator()(ParametersList... args) const noexcept(NOEXCEPT)
 	  requires(!MUTABLE && !std::is_same_v<Signature, Unset>)
 	{
 		if constexpr (!NOEXCEPT && OPTIONAL) {
@@ -179,8 +178,7 @@ public:
 				throwError(std::bad_function_call{});
 			}
 		}
-		return _invoker(
-		  _storage, std::forward<ParametersList>(args)...); // always this path
+		return _invoker(_storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
 	INLINE constexpr Return operator()(ParametersList... args) noexcept(NOEXCEPT)
@@ -191,8 +189,7 @@ public:
 				throwError(std::bad_function_call{});
 			}
 		}
-		return _invoker(
-		  _storage, std::forward<ParametersList>(args)...); // always this path
+		return _invoker(_storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
 	// proxy mode (non-owning)
@@ -210,8 +207,7 @@ public:
 	// bind function pointer or stateless lambda
 	template <class TCallable>
 	  requires(
-	    !std::is_reference_v<TCallable> &&
-	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    !std::is_reference_v<TCallable> && !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
 	CustomBase(TCallable &&f) {
@@ -227,8 +223,7 @@ public:
 	// bind small anything
 	template <class TCallable>
 	  requires(
-	    !std::is_reference_v<TCallable> &&
-	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    !std::is_reference_v<TCallable> && !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
 	    (sizeof(std::decay_t<TCallable>) <= sizeof(_storage)))
@@ -240,34 +235,28 @@ public:
 		using Callable = std::decay_t<TCallable>;
 		new (&_storage) Callable{std::forward<TCallable>(f)};
 		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
-			return (*reinterpret_cast<const Callable *>(&storage))(
-			  std::forward<ParametersList>(args)...);
+			return (*reinterpret_cast<const Callable *>(&storage))(std::forward<ParametersList>(args)...);
 		};
 		if constexpr (!std::is_trivially_destructible_v<Callable>) {
-			_deleter = [](Storage &storage) {
-				std::bit_cast<Callable>(storage).~Callable();
-			};
+			_deleter = [](Storage &storage) { std::bit_cast<Callable>(storage).~Callable(); };
 		}
 	}
 
 	// bind big anything
 	template <class TCallable>
 	  requires(
-	    !std::is_reference_v<TCallable> &&
-	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    !std::is_reference_v<TCallable> && !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
 	    (sizeof(std::decay_t<TCallable>) > sizeof(_storage)) &&
 	    This::template _isCallableOk<TCallable>())
-	CustomBase(TCallable &&f)
-	    : CustomBase{CreateIndirectTag{}, std::forward<TCallable>(f)} {
+	CustomBase(TCallable &&f) : CustomBase{CreateIndirectTag{}, std::forward<TCallable>(f)} {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 	}
 
 	// explicit "big anything"
 	template <class TCallable>
 	  requires(
-	    !std::is_reference_v<TCallable> &&
-	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    !std::is_reference_v<TCallable> && !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>())
 	static Final createIndirect(TCallable &&f) {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
@@ -279,40 +268,34 @@ private:
 	// "big anything" implementation
 	template <class TCallable>
 	  requires(
-	    !std::is_reference_v<TCallable> &&
-	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    !std::is_reference_v<TCallable> && !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>())
 	CustomBase(CreateIndirectTag, TCallable &&f) {
 		using Callable = std::decay_t<TCallable>;
 		using Pool = Pool<Callable>;
-		using Singleton = Singleton<Pool>::ThreadLocal;
+		using Singleton = Singleton<Pool>::ThreadLocal::Lazy;
 		using Handle = typename Pool::Handle;
-		auto &pool = Singleton::maybeInitialize();
+		auto &pool = Singleton::instance();
 		auto handle = pool.insert(std::forward<TCallable>(f)).handle;
 		new (&_storage) Handle(handle);
 		_deleter = [](Storage &storage) {
-			auto &pool = Singleton::maybeInitialize();
+			auto &pool = Singleton::instance();
 			pool.erase(storage.template as<Handle>());
 		};
 		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
-			return (*storage.template as<Handle>())(
-			  std::forward<ParametersList>(args)...);
+			return (*storage.template as<Handle>())(std::forward<ParametersList>(args)...);
 		};
 	}
 
 private:
-	template <class TCallable>
-	static INLINE consteval bool _isCallableOk() noexcept {
+	template <class TCallable> static INLINE consteval bool _isCallableOk() noexcept {
 		using Callable = std::decay_t<TCallable>;
-		if constexpr (!(requires(Callable f) {
-			              f(std::declval<ParametersList>()...);
-		              })) {
+		if constexpr (!(requires(Callable f) { f(std::declval<ParametersList>()...); })) {
 			return false;
 		}
 		if constexpr (!MUTABLE) {
 			if constexpr (requires { &Callable::operator(); }) {
-				if constexpr (!is::MemberFunctionConst<
-				                decltype(&Callable::operator())>) {
+				if constexpr (!is::MemberFunctionConst<decltype(&Callable::operator())>) {
 					// if constexpr (!std::is_invocable_v<const Callable,
 					// ParametersList...>) { // ! `std::is_invocable_v` broken
 					return false;
@@ -320,8 +303,7 @@ private:
 			}
 		}
 		if constexpr (NOEXCEPT) {
-			if constexpr (!(noexcept(std::declval<Callable>()(
-			                std::declval<ParametersList>()...)))) {
+			if constexpr (!(noexcept(std::declval<Callable>()(std::declval<ParametersList>()...)))) {
 				return false;
 			}
 		}
@@ -335,13 +317,10 @@ private:
 	}
 
 public:
-	INLINE constexpr operator bool() const noexcept {
-		return _invoker != nullptr;
-	}
+	INLINE constexpr operator bool() const noexcept { return _invoker != nullptr; }
 
 public:
-	template <class... OptionsList>
-	using With = Base::template With<OptionsList...>;
+	template <class... OptionsList> using With = Base::template With<OptionsList...>;
 
 	template <class Return> using WithReturn = With<option::Return<Return>>;
 
@@ -359,8 +338,7 @@ namespace _ {
 template <class Options>
   requires concepts::Options<Options>
 struct GetCustomBase {
-	using Result =
-	  CustomBase<Options, typename Options::template Get<option::Parameters>>;
+	using Result = CustomBase<Options, typename Options::template Get<option::Parameters>>;
 }; // struct GetCustomBase
 
 template <class Options>
@@ -378,7 +356,8 @@ struct GetCustomBase<Options> {
 template <class Options = V::Options<>>
   requires concepts::Options<Options>
 class RELOCATABLE(Custom) : public _::GetCustomBase<Options>::Result {
-	RELOCATABLE_BODY(Custom<Options>);
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = _::GetCustomBase<Options>::Result;
@@ -393,14 +372,14 @@ template <class Signature> class RELOCATABLE(AnyFunction);
 
 template <class Return, class... ParametersList>
 class RELOCATABLE(AnyFunction<Return(ParametersList...)>)
-    : public anyFunction::Custom<Options<
-        option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
-
-	RELOCATABLE_BODY(AnyFunction<Return(ParametersList...)>);
+    : public anyFunction::Custom<
+        Options<option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
+	using Self = AnyFunction;
+	RELOCATABLE_BODY
 
 private:
-	using Base = anyFunction::Custom<Options<
-	  option::Return<Return>, option::Parameters<Pack<ParametersList...>>>>;
+	using Base = anyFunction::Custom<
+	  Options<option::Return<Return>, option::Parameters<Pack<ParametersList...>>>>;
 	using Base::Base;
 }; // class AnyFunction
 } // namespace VOLTISO_NAMESPACE

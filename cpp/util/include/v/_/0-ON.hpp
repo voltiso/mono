@@ -36,6 +36,9 @@
 #pragma push_macro("NO_INLINE")
 #define NO_INLINE VOLTISO_NO_INLINE
 
+#pragma push_macro("COLD")
+#define COLD VOLTISO_COLD
+
 // !
 
 #pragma push_macro("RELOCATABLE")
@@ -44,8 +47,16 @@
 #pragma push_macro("RELOCATABLE_BODY")
 #define RELOCATABLE_BODY VOLTISO_RELOCATABLE_BODY
 
+#pragma push_macro("RELOCATABLE_BODY_IF")
+#define RELOCATABLE_BODY_IF VOLTISO_RELOCATABLE_BODY_IF
+
 #pragma push_macro("COMMA")
 #define COMMA VOLTISO_COMMA
+
+// !
+
+#pragma push_macro("INHERIT")
+#define INHERIT VOLTISO_INHERIT
 
 // !
 

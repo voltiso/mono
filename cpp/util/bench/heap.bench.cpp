@@ -9,7 +9,7 @@ using namespace VOLTISO_NAMESPACE;
 const int SZ = 1000;
 
 auto rands = []() {
-	Tensor<int, SZ> a;
+	Array<int, SZ> a;
 	for (int i = 0; i < SZ; ++i) {
 		a[i] = rand();
 	}

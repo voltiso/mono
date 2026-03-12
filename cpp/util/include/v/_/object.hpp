@@ -23,15 +23,15 @@ namespace VOLTISO_NAMESPACE {
 template <class TOptions = Options<>>
 // requires concepts::Options<Options> && std::is_final_v<Final>
 class RELOCATABLE(Object) {
-	RELOCATABLE_BODY(Object<TOptions>);
+	using Self = Object;
+	RELOCATABLE_BODY
 
 public:
 	using Options = TOptions;
 
 protected:
 	template <class OptionsArg>
-	using CustomTemplate =
-	  Options::template GetTemplate<option::CustomTemplate, OptionsArg>;
+	using CustomTemplate = Options::template GetTemplate<option::CustomTemplate, OptionsArg>;
 
 	// Use InputOptions if provided, otherwise fall back to Options
 	using InputOptions = std::conditional_t<
@@ -49,7 +49,7 @@ public:
 	  CustomTemplate<InputOptions>>;
 
 public:
-	Object(const Object &) = default;
+	// Object(const Object &) = default;
 
 	// ! we can't do this for trivially-copyable types
 	// Object(const Object &other) noexcept(
@@ -66,26 +66,23 @@ public:
 
 protected:
 	// get Final from CRTP, and apply correct cvref-qualifiers
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	final(this auto &&self) noexcept {
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto) final(this auto &&self) noexcept {
 		return std::forward<decltype(self)>(self).template as<Final>();
 	}
 
 public:
 	template <class... MoreOptions>
-	using With = CustomTemplate<typename InputOptions ::template With<
-	  MoreOptions...>::template Without<option::Final>>;
+	using With = CustomTemplate<
+	  typename InputOptions ::template With<MoreOptions...>::template Without<option::Final>>;
 
 	template <class... MoreOptions>
-	using WithDefault =
-	  CustomTemplate<typename InputOptions ::template WithDefault<
-	    MoreOptions...>::template Without<option::Final>>;
+	using WithDefault = CustomTemplate<
+	  typename InputOptions ::template WithDefault<MoreOptions...>::template Without<option::Final>>;
 
 public:
 	/// cast to another class, preserving cvref-qualifiers
 	template <class NewFinalClass>
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	as(this auto &&self) noexcept {
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto) as(this auto &&self) noexcept {
 		static_assert(sizeof(NewFinalClass) == sizeof(self));
 		static_assert(!std::is_reference_v<NewFinalClass>);
 		static_assert(
@@ -96,27 +93,23 @@ public:
 
 		// Determine cv-qualifiers based on param's underlying type
 		constexpr bool isConst = std::is_const_v<std::remove_reference_t<Param>>;
-		constexpr bool isVolatile =
-		  std::is_volatile_v<std::remove_reference_t<Param>>;
+		constexpr bool isVolatile = std::is_volatile_v<std::remove_reference_t<Param>>;
 
 		// Apply cv-qualifiers to the target base type NewFinalClass
 		// Build the non-reference cv-qualified type first
-		using MaybeConstNewFinal =
-		  std::conditional_t<isConst, const NewFinalClass, NewFinalClass>;
-		using NewFinalCvQualified = std::conditional_t<
-		  isVolatile, std::add_volatile_t<MaybeConstNewFinal>, MaybeConstNewFinal>;
+		using MaybeConstNewFinal = std::conditional_t<isConst, const NewFinalClass, NewFinalClass>;
+		using NewFinalCvQualified =
+		  std::conditional_t<isVolatile, std::add_volatile_t<MaybeConstNewFinal>, MaybeConstNewFinal>;
 
 		// Determine the final target type including reference qualifier
 		using TargetCvRefQualified = std::conditional_t<
-		  std::is_rvalue_reference_v<Param>,
-		  std::add_rvalue_reference_t<NewFinalCvQualified>,
+		  std::is_rvalue_reference_v<Param>, std::add_rvalue_reference_t<NewFinalCvQualified>,
 		  std::add_lvalue_reference_t<NewFinalCvQualified>>;
 
 		// Step 1: Cast address to pointer to the cv-qualified VALUE type
 		// (Safety of reinterpret_cast still depends on relationship between
 		// FinalClass and NewFinalClass)
-		auto *targetPtr =
-		  reinterpret_cast<NewFinalCvQualified *>(std::addressof(self));
+		auto *targetPtr = reinterpret_cast<NewFinalCvQualified *>(std::addressof(self));
 
 		// Step 2: Dereference and static_cast the result to the final
 		// CVREF-qualified type
@@ -125,8 +118,7 @@ public:
 
 public:
 	template <class Brand>
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	brand(this auto &&self) noexcept {
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto) brand(this auto &&self) noexcept {
 		using Param = decltype(self);
 		using FinalClass = std::remove_cvref_t<Param>;
 		// static_assert(std::is_final_v<FinalClass>);
@@ -138,8 +130,7 @@ public:
 	}
 
 public:
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	move(this auto &&self) noexcept
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto) move(this auto &&self) noexcept
 	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
 	{
 		using NewSelf = std::remove_reference_t<decltype(self)> &&;
@@ -152,175 +143,12 @@ public:
 	// * Your code must respect constness of the rvalue reference!
 	// it's not a temporary just because it's rvalue!
 	template <class T>
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	copy(this T &self) noexcept
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto) copy(this T &self) noexcept
 	// requires(std::is_constructible_v<T, const T &&>)
 	{
 		return static_cast<const T &&>(self);
 	}
-
-	// // If object does not support `const Final &&` construction, maybe it
-	// supports
-	// // `Copy<Final>`.
-	// // since trivially copyable types are unable to support the const-rvalue
-	// // syntax, we use `Copy` wrapper instead
-	// template <class T>
-	// [[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto
-	// copy(this T &self) noexcept
-	//   requires(std::is_constructible_v<T, const Copy<T> &>)
-	// {
-	// 	return Copy<T>{self};
-	// }
-
-public:
-	Object() = default;  // must be trivially default constructible
-	~Object() = default; // must be trivially destructible
 };
 } // namespace VOLTISO_NAMESPACE
 
-// static_assert(std::is_trivially_copyable_v<v::Object<>>);
-
-// ! BELOW: experiments how to make derived class explicit-copy only, while
-// keeping it trivially-copyable
-
-// struct S {
-// 	int a;
-
-// 	S() = default;
-// 	S(const S &) = delete;
-
-// 	S(S &&) = delete;
-// 	// S(S &&) {}
-
-// 	template <class Source>
-// 	  requires std::is_same_v<Source, S>
-// 	S(const Source &&) {}
-
-// 	// template <class Source, std::enable_if_t<std::is_same_v<Source, S>, int>
-// =
-// 	// 0> S(const Source &&) {}
-// };
-
-// struct D : S {
-// 	// using S::S;
-// 	D(const D &) = delete;
-// 	D(D &&) = delete;
-
-// 	template <class Source>
-// 	  requires std::is_same_v<Source, D>
-// 	D(const Source &&other) : S(static_cast<const S &&>(other)) {}
-
-// 	// template <class... Args> D(Args &&...args) :
-// S(std::forward<Args>(args)...)
-// 	// {}
-// };
-
-// static_assert(std::is_trivially_copyable_v<S>);
-// static_assert(std::is_trivially_copyable_v<D>);
-
-// static_assert(!std::is_constructible_v<S, S>);
-// static_assert(!std::is_constructible_v<D, D>);
-
-// static_assert(!std::is_constructible_v<S, S &>);
-// static_assert(!std::is_constructible_v<D, D &>);
-
-// static_assert(std::is_constructible_v<S, const S &&>);
-// static_assert(std::is_constructible_v<D, const D &&>);
-
-// ⚠️ Requires `Base` typedef in scope.
-// - We want it trivially copyable
-#define VOLTISO_INHERIT_RVALUE_COPY(Self)                                      \
-public:                                                                        \
-	using Base::Base;                                                            \
-	using Base::operator=;                                                       \
-                                                                               \
-public:                                                                        \
-	explicit(!std::is_convertible_v<const Base &, Base>)                         \
-	  Self(const Self &) noexcept(std::is_nothrow_copy_constructible_v<Base>)    \
-	  requires(std::is_copy_constructible_v<Base>)                               \
-	= default;                                                                   \
-                                                                               \
-protected:                                                                     \
-	explicit Self(const Self &) = default;                                       \
-                                                                               \
-private:
-
 #include <v/OFF>
-
-/*
-
-
-
-
-
-  explicit(!std::is_convertible_v<Base &&, Base>)                              \
-    Self(Self &&) noexcept(std::is_nothrow_move_constructible_v<Base>)         \
-    requires(std::is_move_constructible_v<Base>)                               \
-  = default;                                                                   \
-                                                                               \
-  Self(Self &&) = delete;                                                      \
-                                                                               \
-                                                                               \
-  explicit(!std::is_convertible_v<const Base &, Base>)                         \
-    Self(const Self &) noexcept(std::is_nothrow_copy_constructible_v<Base>)    \
-    requires(Base::Options::template GET<option::implicitCopy>)                \
-  = default;                                                                   \
-                                                                               \
-  template <class Src>                                                         \
-    requires(!std::is_reference_v<Src> && !std::is_const_v<Src>)               \
-  auto &operator=(Src &&src) noexcept(                                         \
-    noexcept(Base::operator=(static_cast<Src &&>(src))))                       \
-    requires requires { Base::operator=(static_cast<Src &&>(src)); }           \
-  {                                                                            \
-    return Base::operator=(static_cast<Src &&>(src));                          \
-  }                                                                            \
-                                                                               \
-  Self &operator=(const Self &other) noexcept(                                 \
-    std::is_nothrow_copy_assignable_v<Base>)                                   \
-    requires(Base::Options::template GET<option::implicitCopy>)                \
-  = default;                                                                   \
-                                                                               \
-  Self &operator=(const Self &) = delete;                                      \
-                                                                               \
-  template <class Src>                                                         \
-    requires std::is_same_v<Src, Self> &&                                      \
-             std::is_constructible_v<Base, const Src &&>                       \
-  explicit(!std::is_convertible_v<const Base &&, Base>)                        \
-    Self(const Src &&src) noexcept(                                            \
-      std::is_nothrow_constructible_v<Base, const Src &&>)                     \
-      : Base(static_cast<const Src &&>(src)) {}                                \
-                                                                               \
-                                                                               \
-
-*/
-
-// !
-
-/*
-
-  explicit(!std::is_convertible_v<Base &&, Base>)                              \
-    Self(Self &&) noexcept(std::is_nothrow_move_constructible_v<Base>)         \
-    requires(Base::Options::template GET<option::implicitCopy>)                \
-  = default;                                                                   \
-
-
-*/
-
-// !
-
-/*
-  Final &operator=(Final &&) = delete;                                         \
-
-  Final &operator=(Final &&)                                                   \
-    requires(Base::Options::template GET<option::implicitCopy>)                \
-  = default;                                                                   \
-
-                               \
-  template <class Arg>                                                         \
-  auto &operator=(const Arg &&arg)                                             \
-    requires requires { Base::operator=(static_cast<const Arg &&>(arg)); }     \
-  {                                                                            \
-    return Base::operator=(static_cast<const Arg &&>(arg));                    \
-  }                                                                            \
-
-*/

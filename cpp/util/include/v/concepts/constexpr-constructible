@@ -3,11 +3,11 @@
 
 namespace VOLTISO_NAMESPACE::concepts {
 /** Note: destructor must be `constexpr` too... not possible to create concept
- * otherwise. (corrected concept could be named `ConstinitConstructible`) */
-template <class T>
+ * otherwise. Also, it returns `true` even if subobject is uninitialized - even though it's
+ * impossible to constinit variable in such case. */
+template <class T, class... Args>
 concept ConstexprConstructible =
-  requires { typename std::bool_constant<((void)T{}, true)>; };
-
+  requires { typename std::bool_constant<((void)T{Args{}...}, true)>; };
 } // namespace VOLTISO_NAMESPACE::concepts
 
 // struct A {

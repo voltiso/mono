@@ -2,12 +2,12 @@
 #include <v/_/_>
 
 #include "v/_/options.forward.hpp" // IWYU pragma: keep
+#include "v/_/options.hpp"
 
 #include "v/_/filter-out.hpp"
 #include "v/_/get-template-option.hpp"
 #include "v/_/get-type-option.hpp"
 #include "v/_/get-value-option.hpp"
-#include "v/_/options.hpp"
 
 //
 
@@ -19,14 +19,11 @@ template <class... As> struct Options {
 
 	// Get a VALUE option
 	template <template <auto> class ValueOption>
-	static constexpr auto GET =
-	  _::getValueOption::ValueImpl<ValueOption, As...>::RESULT;
+	static constexpr auto GET = _::getValueOption::ValueImpl<ValueOption, As...>::RESULT;
 
 	// Get Template<> option
-	template <
-	  template <template <class...> class> class TemplateOption, class... Args>
-	using GetTemplate =
-	  _::TemplateImplHelper<TemplateOption, std::tuple<Args...>, As...>::Result;
+	template <template <template <class...> class> class TemplateOption, class... Args>
+	using GetTemplate = _::TemplateImplHelper<TemplateOption, std::tuple<Args...>, As...>::Result;
 
 	/**
 	 * @brief Creates a new Options type by adding/replacing options.
@@ -94,14 +91,13 @@ template <class... As> struct Options {
 	 * (template<class>).
 	 * @return A new Options type with the specified kind removed.
 	 */
-	template <
-	  template <class> class OptionKind> // Takes the TypeOption kind template
+	template <template <class> class OptionKind> // Takes the TypeOption kind template
 	using Without = typename _::OptionsFromTypeList<
 	  // Use FilterOut with the IsOptionKindPredicate adapter
 	  _::FilterOut_t<
 	    _::IsOptionKindPredicate<OptionKind>::template Apply, // Pass the
 	                                                          // predicate adapter
-	    _::TypeList<As...> // Filter the current options list
+	    _::TypeList<As...>                                    // Filter the current options list
 	    >>::Type;
 	// TODO: Add overloads or specializations for ValueOption and TemplateOption
 	// kinds if needed.

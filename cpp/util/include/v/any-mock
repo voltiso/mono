@@ -1,0 +1,43 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+// Empty struct that mocks all operations with no-op.
+// Also see `Empty`.
+struct AnyMock {
+	template <class... Args> constexpr AnyMock(Args &&...) noexcept {}
+	template <class... Args> constexpr AnyMock &operator=(Args &&...) noexcept { return *this; }
+
+	template <class T> operator T *() const noexcept { return nullptr; }
+
+	template <class T> auto &operator+(T &&) const noexcept { return *this; }
+	template <class T> auto &operator-(T &&) const noexcept { return *this; }
+	template <class T> auto &operator*(T &&) const noexcept { return *this; }
+	template <class T> auto &operator/(T &&) const noexcept { return *this; }
+	template <class T> auto &operator%(T &&) const noexcept { return *this; }
+
+	auto &operator*() const noexcept { return *this; }
+	auto &operator&() const noexcept { return *this; }
+	auto &operator->() const noexcept { return *this; }
+
+	template <class T> auto &operator&(T &&) const noexcept { return *this; }
+	template <class T> auto &operator|(T &&) const noexcept { return *this; }
+	template <class T> auto &operator^(T &&) const noexcept { return *this; }
+
+	template <class T> auto &operator&&(T &&) const noexcept { return *this; }
+	template <class T> auto &operator||(T &&) const noexcept { return *this; }
+
+	auto &operator!() const noexcept { return *this; }
+	auto &operator~() const noexcept { return *this; }
+	auto &operator++() const noexcept { return *this; }
+	auto &operator++(int) const noexcept { return *this; }
+	auto &operator--() const noexcept { return *this; }
+	auto &operator--(int) const noexcept { return *this; }
+
+	operator bool() const noexcept { return false; }
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

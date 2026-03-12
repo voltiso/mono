@@ -30,30 +30,31 @@ struct Debug {
 };
 } // namespace _
 
-template <class Options>
-inline Custom<Options>::Custom() : _debug(new _::Debug()) {}
+template <concepts::Options Options>
+inline constexpr Custom<Options>::Custom(ConstructKey) noexcept : _debug(new _::Debug()) {}
 
-template <class Options> inline Custom<Options>::~Custom() {
+template <concepts::Options Options> inline Custom<Options>::~Custom() {
 	auto &debug = *this->_debug;
 	for (auto [handle, numBytes] : debug.allocations) {
-		throwError(std::runtime_error(
-		  "Memory leak " + std::to_string(numBytes) + " bytes at " +
-		  std::to_string((Size)handle)));
+		throwError(
+		  std::runtime_error(
+		    "Memory leak " + std::to_string(numBytes) + " bytes at " + std::to_string((Size)handle)));
 	}
 	delete this->_debug;
 }
+#else
+template <concepts::Options Options>
+inline constexpr Custom<Options>::Custom(ConstructKey) noexcept {}
 #endif
 
-template <class Options>
-inline typename Custom<Options>::Handle
-Custom<Options>::allocateBytes(Size numBytes) {
+template <concepts::Options Options>
+inline typename Custom<Options>::Handle Custom<Options>::allocateBytes(Size numBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(numBytes, 0);
 #endif
 	auto handle = static_cast<Handle>(::malloc(numBytes));
 	if (!handle) [[unlikely]] {
-		throwError(std::runtime_error(
-		  "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+		throwError(std::runtime_error("Failed to allocate " + std::to_string(numBytes) + " bytes"));
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
@@ -65,7 +66,7 @@ Custom<Options>::allocateBytes(Size numBytes) {
 	return handle;
 }
 
-template <class Options>
+template <concepts::Options Options>
 inline typename Custom<Options>::Handle
 Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 #if VOLTISO_DEBUG_MALLOC
@@ -79,8 +80,7 @@ Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 #else
 	auto err = ::posix_memalign(&handle, alignment, numBytes);
 	if (err) [[unlikely]] {
-		throwError(std::runtime_error(
-		  "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+		throwError(std::runtime_error("Failed to allocate " + std::to_string(numBytes) + " bytes"));
 	}
 #endif
 
@@ -94,7 +94,7 @@ Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 	return handle;
 }
 
-template <class Options>
+template <concepts::Options Options>
 inline void Custom<Options>::freeBytes(const Handle &handle, Size oldNumBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(oldNumBytes, 0);
@@ -110,16 +110,16 @@ inline void Custom<Options>::freeBytes(const Handle &handle, Size oldNumBytes) {
 	::free(handle);
 }
 
-template <class Options>
-inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
-  const Handle &oldHandle, Size oldNumBytes, Size newNumBytes) {
+template <concepts::Options Options>
+inline typename Custom<Options>::Handle
+Custom<Options>::reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size newNumBytes) {
 	if (!newNumBytes) [[unlikely]] {
 		return nullptr;
 	}
 	auto newHandle = static_cast<Handle>(::realloc(oldHandle, newNumBytes));
 	if (!newHandle) [[unlikely]] {
-		throwError(std::runtime_error(
-		  "Failed to reallocate " + std::to_string(newNumBytes) + " bytes"));
+		throwError(
+		  std::runtime_error("Failed to reallocate " + std::to_string(newNumBytes) + " bytes"));
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
@@ -135,7 +135,7 @@ inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
 	return newHandle;
 }
 
-template <class Options>
+template <concepts::Options Options>
 inline void *Custom<Options>::operator()(const Handle &handle) {
 #if VOLTISO_DEBUG_MALLOC
 	NE(handle, handle::INVALID);

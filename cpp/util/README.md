@@ -1,6 +1,6 @@
 # `@voltiso/cpp.util`
 
-# Nomenclature
+# Naming
 
 Containers: `insert` or `erase` item - implies elements are constructed/destructed.
 * `add` can be troublesome - say the container is a dynamic tensor.

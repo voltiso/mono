@@ -8,7 +8,7 @@
 #include "v/_/is/relocatable.hpp"
 #include "v/concepts/options"
 #include "v/object"
-#include "v/option/constexpr"
+#include "v/option/non-union"
 
 #include <cstddef>
 #include <cstring>
@@ -23,8 +23,7 @@
 namespace VOLTISO_NAMESPACE::storage::_ {
 template <concepts::Options Options>
 using DataMembers = std::conditional_t<
-  Options::template GET<option::CONSTEXPR>, DataUnion<Options>,
-  DataBytes<Options>>;
+  Options::template GET<option::nonUnion>, DataBytes<Options>, DataUnion<Options>>;
 } // namespace VOLTISO_NAMESPACE::storage::_
 
 // !
@@ -37,19 +36,16 @@ template <class... Args> using GetCustom = Specializations<Args...>::Result;
 
 namespace VOLTISO_NAMESPACE::storage::_ {
 #pragma push_macro("BASE")
-#define BASE                                                                   \
-	Object<typename Options::template WithDefault<                               \
+#define BASE                                                                                       \
+	Object<typename Options::template WithDefault<                                                   \
 	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>
 
 // ⚠️ Not necessarily relocatable! Never use this directly.
 template <class Options>
   requires concepts::Options<Options>
-class RELOCATABLE(Impl) : public BASE, public _::DataMembers<Options> {
+class Impl : public BASE, public _::DataMembers<Options> {
 	using Base = BASE;
 #pragma pop_macro("BASE")
-
-private:
-	static constexpr bool _constexpr = Options::template GET<option::CONSTEXPR>;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -59,47 +55,57 @@ public:
 	// ! ---------------------------------
 public:
 	constexpr Impl() noexcept = default;
+	constexpr ~Impl() noexcept = default;
+
+protected:
+	Impl(const Impl &) = delete;
+
+	// ! if item is not relocatable, stop compiler from applying trivial_abi
+	constexpr Impl(const Impl &) noexcept
+	  requires(!is::relocatable<Item>)
+	{}
+
+	explicit Impl(Impl &&) = default; // for [[trivial_abi]]
+
+	Impl &operator=(const Impl &) = delete;
+	Impl &operator=(Impl &&) = delete;
 
 	// ! ---------------------------------
 	// ! AUTO - INIT (trivial only)
 	// ! ---------------------------------
-	template <class... Args>
-	  requires(std::is_trivially_copyable_v<Item>)
-	INLINE constexpr Impl(Args &&...args) noexcept(
-	  std::is_nothrow_constructible_v<Item, Args...>) {
-		construct(std::forward<Args>(args)...);
-	}
+	// template <class... Args>
+	//   requires(std::is_trivially_copyable_v<Item>)
+	// INLINE constexpr Impl(Args &&...args) noexcept(std::is_nothrow_constructible_v<Item, Args...>)
+	// { 	construct(std::forward<Args>(args)...);
+	// }
 
 	// ! ---------------------------------
 	// ! COPY CONSTRUCT
 	// ! ---------------------------------
 public:
 	// if Item is trivial, and allows copies, allow too
-	Impl(const Impl &) = delete;
-	Impl(const Impl &)
-	  requires(std::is_trivially_copyable_v<Item> &&
-	           std::is_copy_constructible_v<Item>)
-	= default;
+	// Impl(const Impl &) = delete;
+	// Impl(const Impl &)
+	//   requires(std::is_trivially_copyable_v<Item> && std::is_copy_constructible_v<Item>)
+	// = default;
 
 protected:
 	// for [[trivial_abi]] when Item is relocatable
 	// - make it pseudo-copyable anyway (protected)
-	Impl(const Impl &)
-	  requires(!(std::is_trivially_copyable_v<Item> &&
-	             std::is_copy_constructible_v<Item>) &&
-	           is::relocatable<Item>)
-	= default;
+	// Impl(const Impl &)
+	//   requires(!(std::is_trivially_copyable_v<Item> && std::is_copy_constructible_v<Item>) &&
+	//            is::relocatable<Item>)
+	// = default;
 
 	// ! ---------------------------------
 	// ! MOVE CONSTRUCT
 	// ! ---------------------------------
 public:
 	// if Item is trivial, and allows moves, allow too
-	Impl(Impl &&) = delete;
-	Impl(Impl &&)
-	  requires(std::is_trivially_copyable_v<Item> &&
-	           std::is_move_constructible_v<Item>)
-	= default;
+	// Impl(Impl &&) = delete;
+	// Impl(Impl &&)
+	//   requires(std::is_trivially_copyable_v<Item> && std::is_move_constructible_v<Item>)
+	// = default;
 
 	// template <class Source>
 	//   requires(std::is_base_of_v<Impl, Source>)
@@ -114,20 +120,18 @@ public:
 	// ! COPY ASSIGN
 	// ! ---------------------------------
 public:
-	Impl &operator=(const Impl &) = delete;
-	Impl &operator=(const Impl &)
-	  requires(std::is_trivially_copyable_v<Item> &&
-	           std::is_copy_assignable_v<Item>)
-	= default;
+	// Impl &operator=(const Impl &) = delete;
+	// Impl &operator=(const Impl &)
+	//   requires(std::is_trivially_copyable_v<Item> && std::is_copy_assignable_v<Item>)
+	// = default;
 
 	// ! ---------------------------------
 	// ! MOVE ASSIGN
 	// ! ---------------------------------
-	Impl &operator=(Impl &&) = delete;
-	Impl &operator=(Impl &&)
-	  requires(std::is_trivially_copyable_v<Item> &&
-	           std::is_move_assignable_v<Item>)
-	= default;
+	// Impl &operator=(Impl &&) = delete;
+	// Impl &operator=(Impl &&)
+	//   requires(std::is_trivially_copyable_v<Item> && std::is_move_assignable_v<Item>)
+	// = default;
 
 	// // We allow `operator=` for trivially copyable items
 	// // template so storage itself stays trivially copyable
@@ -178,8 +182,7 @@ public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Item relocate() noexcept
 	  requires(
 	    !requires { Item::relocateFrom(*this); } && is::relocatable<Item> &&
-	    !std::is_trivially_copyable_v<Item> &&
-	    std::is_trivially_default_constructible_v<Item>)
+	    !std::is_trivially_copyable_v<Item> && std::is_trivially_default_constructible_v<Item>)
 	{
 		Item result; // we want trivial default constructor here
 		std::memcpy((void *)&result, &this->bytes(), sizeof(Item));
@@ -226,24 +229,21 @@ public:
 	// something
 	template <class... Args>
 	// requires(_constexpr)
-	constexpr void construct(Args &&...args) noexcept(
-	  std::is_nothrow_constructible_v<Item, Args...>) {
+	constexpr void
+	construct(Args &&...args) noexcept(std::is_nothrow_constructible_v<Item, Args...>) {
 		// note: not using `std::construct_at` because TObject constructor may be
 		// private and friend Storage<TObject>
-		new (&this->storedItem()) Item{std::forward<Args>(args)...};
+		new (std::addressof(this->storedItem())) Item{std::forward<Args>(args)...};
 	}
 
 	// ⚠️ Remember to call `.destroy()` if you constructed something
-	void destroy() noexcept(std::is_nothrow_destructible_v<Item>) {
-		this->storedItem().~Item();
-	}
+	void destroy() noexcept(std::is_nothrow_destructible_v<Item>) { this->storedItem().~Item(); }
 
 public:
-	template <class... OptionsList>
-	using With = Base::template With<OptionsList...>;
+	template <class... OptionsList> using With = Base::template With<OptionsList...>;
 
-	using Constexpr = With<option::CONSTEXPR<true>>;
-}; // class Storage
+	using NonUnion = With<option::nonUnion<true>>;
+}; // class Impl
 } // namespace VOLTISO_NAMESPACE::storage::_
 
 // !

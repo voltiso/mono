@@ -55,8 +55,7 @@ struct Specializations {
 template <class Item> struct Specializations<Options<option::Item<Item>>> {
 	using Result = Owned<Item>;
 };
-template <class Item>
-struct Specializations<Options<option::Item<Item>, option::WEAK<true>>> {
+template <class Item> struct Specializations<Options<option::Item<Item>, option::WEAK<true>>> {
 	using Result = owned::Weak<Item>;
 };
 } // namespace VOLTISO_NAMESPACE::owned
@@ -69,7 +68,8 @@ template <class Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options ::template WithDefault<
         option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
-	RELOCATABLE_BODY(Custom<Options>);
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = Object<typename Options ::template WithDefault<
@@ -77,8 +77,7 @@ private:
 	using Final = Base::Final;
 
 	using Item = Options::template Get<option::Item>;
-	static_assert(
-	  !std::is_reference_v<Item>, "you probably don't want Owned<Item&>");
+	static_assert(!std::is_reference_v<Item>, "you probably don't want Owned<Item&>");
 
 	using CanonicalItem = std::remove_cv_t<Item>;
 	using Pool = Pool<CanonicalItem>;
@@ -89,9 +88,7 @@ public:
 		return Final(pool().insert(std::forward<Args>(args)...), nullptr);
 	}
 
-	static Final create(const Item &item) {
-		return Final(pool().insert(item), nullptr);
-	}
+	static Final create(const Item &item) { return Final(pool().insert(item), nullptr); }
 
 	VOLTISO_FORCE_INLINE ~Custom() {
 		if constexpr (!WEAK) {
@@ -106,8 +103,7 @@ public:
 
 private:
 	// @internal
-	template <class Item>
-	Custom(Item &&item, void *_unusedTag) : _target{std::forward<Item>(item)} {
+	template <class Item> Custom(Item &&item, void *_unusedTag) : _target{std::forward<Item>(item)} {
 		// std::cout << "create " << _item << std::endl;
 	}
 
@@ -124,8 +120,7 @@ public:
 	template <class OtherOptions>
 	  requires(
 	    WEAK && concepts::Options<OtherOptions> &&
-	    std::is_convertible_v<
-	      typename OtherOptions::template Get<option::Item> *, Item *>)
+	    std::is_convertible_v<typename OtherOptions::template Get<option::Item> *, Item *>)
 	Custom(const Custom<OtherOptions> &other) : _target(other._target) {}
 
 	template <class OtherOptions>
@@ -133,15 +128,12 @@ public:
 	friend class Custom;
 
 	// move constructor - ownership transfer (not for weak)
-	Custom(Custom &&other) noexcept : _target(other._target) {
-		other._target = handle::INVALID;
-	}
+	Custom(Custom &&other) noexcept : _target(other._target) { other._target = handle::INVALID; }
 
 	// move constructor - ownership transfer (not for weak)
 	template <class Other>
 	  requires(
-	    !WEAK && !Other::Options::template GET<option::WEAK> &&
-	    is::InstantiatedFrom<Other, Custom>)
+	    !WEAK && !Other::Options::template GET<option::WEAK> && is::InstantiatedFrom<Other, Custom>)
 	Custom(Other &&other) noexcept : _target(other._item) {
 		other._item = handle::INVALID;
 		// std::cout << other._item.value << std::endl;
@@ -160,9 +152,7 @@ public:
 	}
 
 public:
-	VOLTISO_FORCE_INLINE constexpr Item &target() const noexcept {
-		return *_target;
-	}
+	VOLTISO_FORCE_INLINE constexpr Item &target() const noexcept { return *_target; }
 
 	// ! ambiguous
 	void operator&() const = delete;
@@ -170,14 +160,10 @@ public:
 	// ! ambiguous
 	void operator*() const = delete;
 
-	VOLTISO_FORCE_INLINE constexpr Item *operator->() const noexcept {
-		return _target;
-	}
+	VOLTISO_FORCE_INLINE constexpr Item *operator->() const noexcept { return _target; }
 
 	// ref semantics
-	VOLTISO_FORCE_INLINE constexpr operator Item &() const noexcept {
-		return *_target;
-	}
+	VOLTISO_FORCE_INLINE constexpr operator Item &() const noexcept { return *_target; }
 
 	// ! is this even legal?
 	VOLTISO_FORCE_INLINE explicit constexpr operator Item &&() const noexcept {
@@ -186,13 +172,10 @@ public:
 
 private:
 	Pool::Handle _target = handle::INVALID;
-	static constexpr auto &pool() {
-		return Singleton<Pool>::ThreadLocal::maybeInitialize();
-	}
+	static constexpr auto &pool() { return Singleton<Pool>::ThreadLocal::Lazy::instance(); }
 
 public:
-	template <class Item>
-	using WithItem = Base::template With<option::Item<Item>>;
+	template <class Item> using WithItem = Base::template With<option::Item<Item>>;
 	using Weak = Base::template With<option::WEAK<true>>;
 
 public:
@@ -201,8 +184,8 @@ public:
 public:
 	template <
 	  class OtherOptions,
-	  std::enable_if_t<std::is_same_v<
-	    Item, typename OtherOptions::template Get<option::Item>>> * = nullptr>
+	  std::enable_if_t<std::is_same_v<Item, typename OtherOptions::template Get<option::Item>>> * =
+	    nullptr>
 	constexpr bool operator==(const Custom<OtherOptions> &other) const noexcept {
 		static_assert(noexcept(this->_target == other._target));
 		return this->_target == other._target;
@@ -258,10 +241,10 @@ public:
 
 template <class Item>
 class RELOCATABLE(Weak)
-    : public owned::Custom<Options<
-        option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>> {
-	using Base = owned::Custom<
-	  Options<option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>>;
+    : public owned::Custom<
+        Options<option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>> {
+	using Base =
+	  owned::Custom<Options<option::Item<Item>, option::WEAK<true>, option::Final<Weak<Item>>>>;
 	using Base::Base;
 
 public:
@@ -271,24 +254,21 @@ public:
 //
 
 template <class Options>
-VOLTISO_FORCE_INLINE decltype(auto)
-operator!(const Custom<Options> &self) noexcept {
+VOLTISO_FORCE_INLINE decltype(auto) operator!(const Custom<Options> &self) noexcept {
 	return !(self.target());
 }
 
-#define DEFINE_OPERATOR(op)                                                    \
-	template <class Options, class Other>                                        \
-	VOLTISO_FORCE_INLINE auto operator op(                                       \
-	  const Custom<Options> &lhs, Other &&rhs) noexcept                          \
-	  -> decltype((*lhs)op std::forward<Other>(rhs)) {                           \
-		return (*lhs)op std::forward<Other>(rhs);                                  \
-	}                                                                            \
-                                                                               \
-	template <class Options, class Other>                                        \
-	VOLTISO_FORCE_INLINE auto operator op(                                       \
-	  Other &&lhs, const Custom<Options> &rhs) noexcept                          \
-	  -> decltype(std::forward<Other>(lhs) op(*rhs)) {                           \
-		return std::forward<Other>(lhs) op(*rhs);                                  \
+#define DEFINE_OPERATOR(op)                                                                        \
+	template <class Options, class Other>                                                            \
+	VOLTISO_FORCE_INLINE auto operator op(const Custom<Options> &lhs, Other &&rhs) noexcept          \
+	  -> decltype((*lhs)op std::forward<Other>(rhs)) {                                               \
+		return (*lhs)op std::forward<Other>(rhs);                                                      \
+	}                                                                                                \
+                                                                                                   \
+	template <class Options, class Other>                                                            \
+	VOLTISO_FORCE_INLINE auto operator op(Other &&lhs, const Custom<Options> &rhs) noexcept          \
+	  -> decltype(std::forward<Other>(lhs) op(*rhs)) {                                               \
+		return std::forward<Other>(lhs) op(*rhs);                                                      \
 	}
 
 // ! reference semantics !
@@ -342,13 +322,12 @@ DEFINE_OPERATOR(||)
 namespace VOLTISO_NAMESPACE {
 template <class Item>
 class RELOCATABLE(Owned)
-    : public owned::Custom<
-        Options<option::Item<Item>, option::Final<Owned<Item>>>> {
-	RELOCATABLE_BODY(Owned<Item>);
+    : public owned::Custom<Options<option::Item<Item>, option::Final<Owned<Item>>>> {
+	using Self = Owned<Item>;
+	RELOCATABLE_BODY
 
 private:
-	using Base =
-	  owned::Custom<Options<option::Item<Item>, option::Final<Owned<Item>>>>;
+	using Base = owned::Custom<Options<option::Item<Item>, option::Final<Owned<Item>>>>;
 	using Base::Base;
 
 public:

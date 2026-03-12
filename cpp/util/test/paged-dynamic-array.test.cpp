@@ -3,6 +3,8 @@
 #include "v/paged-dynamic-array"
 #include "v/soa"
 
+#include <v/ON>
+
 using namespace VOLTISO_NAMESPACE;
 
 TEST(PagedDynamicArray, push_pop) {
@@ -100,8 +102,7 @@ TEST(PagedDynamicArray, regular_copy_contract) {
 }
 
 TEST(PagedDynamicArray, cow_copy_basic_behavior) {
-	using CowPagedArray =
-	  PagedDynamicArray<int>::WithPageSize<32>::WithCopyOnWrite;
+	using CowPagedArray = PagedDynamicArray<int>::WithPageSize<32>::WithCopyOnWrite;
 
 	static_assert(CowPagedArray::NUM_ITEMS_PER_PAGE == 6);
 
@@ -142,8 +143,9 @@ TEST(PagedDynamicArray, cow_copy_basic_behavior) {
 // go out of scope. Type must be non-trivially-copyable so WRAP_IN_STORAGE
 // is used and slot.destroy()/relocate() paths are exercised.
 namespace {
-struct VOLTISO_RELOCATABLE(PagedDestructorProbe) {
-	VOLTISO_RELOCATABLE_BODY(PagedDestructorProbe);
+struct RELOCATABLE(PagedDestructorProbe) {
+	using Self = PagedDestructorProbe;
+	RELOCATABLE_BODY
 
 public:
 	static int numDestructorCalls;
@@ -165,8 +167,7 @@ int PagedDestructorProbe::numDestructorCalls = 0;
 } // namespace
 
 TEST(PagedDynamicArray, destructors_called_on_destroy) {
-	using SmallPagedArray =
-	  PagedDynamicArray<PagedDestructorProbe>::WithPageSize<8>;
+	using SmallPagedArray = PagedDynamicArray<PagedDestructorProbe>::WithPageSize<8>;
 	PagedDestructorProbe::numDestructorCalls = 0;
 
 	static_assert(SmallPagedArray::NUM_ITEMS_PER_PAGE == 2);
@@ -192,9 +193,9 @@ TEST(PagedDynamicArray, destructors_called_on_destroy) {
 // - Exercises both normal and copy-on-write paged arrays with soa::Array
 // ========================================================================
 
-#define POSITION_FIELDS(X)                                                     \
-	X(float, x)                                                                  \
-	X(float, y, 42.0f)                                                           \
+#define POSITION_FIELDS(X)                                                                         \
+	X(float, x)                                                                                      \
+	X(float, y, 42.0f)                                                                               \
 	X(float, z)
 VOLTISO_SOA_STRUCT(Position, POSITION_FIELDS)
 
@@ -214,22 +215,21 @@ struct HalfInit {
 	float init{77.0f};
 };
 
-#define POSE_FIELDS(X)                                                         \
-	X(soa::Flatten<Position>, position)                                          \
-	X(Orientation, orientation, 1.0f, 0.0f, 0.0f, 0.0f)                          \
+#define POSE_FIELDS(X)                                                                             \
+	X(soa::Flatten<Position>, position)                                                              \
+	X(Orientation, orientation, 1.0f, 0.0f, 0.0f, 0.0f)                                              \
 	X(HalfInit, half)
 VOLTISO_SOA_STRUCT(Pose, POSE_FIELDS)
 
-#define MYITEM_FIELDS(X)                                                       \
-	X(Velocity, velocity)                                                        \
+#define MYITEM_FIELDS(X)                                                                           \
+	X(Velocity, velocity)                                                                            \
 	X(soa::Flatten<Pose>, pose)
 VOLTISO_SOA_STRUCT(MyItem, MYITEM_FIELDS)
 
 TEST(PagedDynamicArray, soa) {
-	using MyArray =
-	  PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<SoaArray>;
-	using MyCowArray = PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<
-	  SoaArray>::WithCopyOnWrite;
+	using MyArray = PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<SoaArray>;
+	using MyCowArray =
+	  PagedDynamicArray<MyItem>::WithPageSize<128>::WithTensor<SoaArray>::WithCopyOnWrite;
 
 	static_assert(MyArray::NUM_ITEMS_PER_PAGE == 2);
 
@@ -291,3 +291,5 @@ TEST(PagedDynamicArray, soa) {
 		EXPECT_FLOAT_EQ(b[1].pose.position.y, replacement.pose.position.y);
 	}
 }
+
+#include <v/OFF>

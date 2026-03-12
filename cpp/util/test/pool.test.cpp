@@ -4,6 +4,10 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+static_assert(is::relocatable<pool::Custom<Options<option::Item<int>>>>);
+
+static_assert(is::relocatable<Pool<int>>);
+
 namespace {
 
 // Simple test struct

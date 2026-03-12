@@ -6,7 +6,7 @@
 #include "v/_/0-is-object.hpp"
 #include "v/_/const-string-view.forward.hpp"
 #include "v/_/dynamic-array.forward.hpp"
-#include "v/_/tensor/_forward.hpp"
+#include "v/_/tensor/forward.hpp"
 #include "v/extent"
 #include "v/get/extent"
 #include "v/memory/iterator"
@@ -27,8 +27,7 @@
 
 namespace V::view {
 template <class Item, auto... EXTENTS>
-struct Specializations<
-  Options<option::Item<Item>, option::Extents<ValuePack<EXTENTS...>>>> {
+struct Specializations<Options<option::Item<Item>, option::Extents<ValuePack<EXTENTS...>>>> {
 	using Result = View<Item, EXTENTS...>;
 };
 } // namespace V::view
@@ -84,8 +83,7 @@ template <class Options> class NumItemsData<Options, false> {
 public:
 	static constexpr auto NUM_ITEMS = []() {
 		Size numItems = 1;
-		for (auto extent :
-		     Options::template Get<option::Extents>::template array<Size>()) {
+		for (auto extent : Options::template Get<option::Extents>::template array<Size>()) {
 			numItems *= extent;
 		}
 		return numItems;
@@ -115,8 +113,7 @@ class Data : public ExtentData<Options, extentKind<Options>>,
 
 public:
 	constexpr Data() = default;
-	constexpr Data(Size extent, Size numItems)
-	    : ExtentBase{extent}, NumItemsBase{numItems} {}
+	constexpr Data(Size extent, Size numItems) : ExtentBase{extent}, NumItemsBase{numItems} {}
 };
 } // namespace V::_::view
 
@@ -125,10 +122,9 @@ public:
 namespace VOLTISO_NAMESPACE::view {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>,
-      public _::view::Data<Options> {
+class Custom : public Object<typename Options::template WithDefault<
+                 option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>,
+               public _::view::Data<Options> {
 	using DataBase = _::view::Data<Options>;
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
@@ -148,8 +144,7 @@ public:
 	}
 
 public:
-	using Items =
-	  GetRawArray<Item, typename Options::template Get<option::Extents>>;
+	using Items = GetRawArray<Item, typename Options::template Get<option::Extents>>;
 	// using Items = typename view::_::GetItems<Item, E, ES...>::Result;
 
 	// Items &items;
@@ -183,9 +178,8 @@ public:
 
 		// no need to set `extent` data member?
 		using Self = std::remove_cvref_t<decltype(*this)>;
-		static_assert(!(requires {
-			&Self::extent;
-		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
+		static_assert(
+		  !(requires { &Self::extent; } && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from anything - static extent, unbound
@@ -200,8 +194,7 @@ public:
 	// create from anything - static extent
 	template <class TSource>
 	  requires(
-	    DataBase::EXTENT != extent::DYNAMIC &&
-	    DataBase::EXTENT != extent::UNBOUND &&
+	    DataBase::EXTENT != extent::DYNAMIC && DataBase::EXTENT != extent::UNBOUND &&
 	    DataBase::EXTENT == get::EXTENT<std::remove_reference_t<TSource>>)
 	constexpr Custom(TSource &&source) noexcept
 	  requires requires {
@@ -211,9 +204,8 @@ public:
 
 		// no need to set `extent` data member?
 		using Self = std::remove_cvref_t<decltype(*this)>;
-		static_assert(!(requires {
-			&Self::extent;
-		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
+		static_assert(
+		  !(requires { &Self::extent; } && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from anything indexable - dynamic extent
@@ -232,8 +224,7 @@ public:
 	  requires(requires {
 		          { source.begin() } -> std::convertible_to<Item *>;
 	          })
-	    : DataBase(get::extent(source), get::extent(source)),
-	      items(&*source.begin()) {}
+	    : DataBase(get::extent(source), get::extent(source)), items(&*source.begin()) {}
 
 	// create from initializer_list - dynamic extent
 	constexpr Custom(const std::initializer_list<Item> &source) noexcept
@@ -249,9 +240,8 @@ public:
 	constexpr Custom(ItemsPointer &&pFirstItem) noexcept : items(pFirstItem) {
 		// no need to set `extent` data member?
 		using Self = std::remove_cvref_t<decltype(*this)>;
-		static_assert(!(requires {
-			&Self::extent;
-		} && std::is_member_object_pointer_v<decltype(&Self::extent)>));
+		static_assert(
+		  !(requires { &Self::extent; } && std::is_member_object_pointer_v<decltype(&Self::extent)>));
 	}
 
 	// create from pointer - dynamic extent
@@ -281,19 +271,16 @@ public:
 		return items[i];
 	}
 
-	template <Size START, Size END>
-	[[nodiscard]] constexpr auto view() const noexcept {
+	template <Size START, Size END> [[nodiscard]] constexpr auto view() const noexcept {
 		auto ptr = items + START;
-		using SubView =
-		  Base::template With<option::Extents<ValuePack<END - START>>>;
+		using SubView = Base::template With<option::Extents<ValuePack<END - START>>>;
 		return SubView{ptr};
 	}
 
 	[[nodiscard]] constexpr auto view(Size start, Size end) const noexcept {
 		LT(start, extent());
 		LT(end, extent());
-		using Result =
-		  Base::template With<option::Extents<ValuePack<extent::DYNAMIC>>>;
+		using Result = Base::template With<option::Extents<ValuePack<extent::DYNAMIC>>>;
 		return Result{items + start, end - start};
 	}
 
@@ -304,8 +291,7 @@ public:
 			using Result = v::DynamicArray<std::remove_const_t<Item>>;
 			return Result{tag::COPY, *this};
 		} else {
-			using Result =
-			  V::Tensor<std::remove_const_t<Item>>::template WithExtents<Extents>;
+			using Result = V::Tensor<std::remove_const_t<Item>>::template WithExtents<Extents>;
 			return Result{tag::COPY, *this};
 		}
 	}
@@ -346,8 +332,7 @@ public:
 	[[nodiscard]] constexpr auto data() const noexcept { return items; }
 
 public:
-	template <class Extents>
-	using WithExtents = Base::template With<option::Extents<Extents>>;
+	template <class Extents> using WithExtents = Base::template With<option::Extents<Extents>>;
 }; // class Custom
 
 // static_assert(
@@ -360,12 +345,11 @@ public:
 
 namespace V {
 template <class Item, auto... ES>
-class View : public view::Custom<Options<
-               option::Item<Item>, option::Extents<ValuePack<ES...>>,
-               option::Final<View<Item, ES...>>>> {
+class View
+    : public view::Custom<Options<
+        option::Item<Item>, option::Extents<ValuePack<ES...>>, option::Final<View<Item, ES...>>>> {
 	using Base = view::Custom<Options<
-	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
-	  option::Final<View<Item, ES...>>>>;
+	  option::Item<Item>, option::Extents<ValuePack<ES...>>, option::Final<View<Item, ES...>>>>;
 	using Base::Base;
 
 public:
@@ -377,14 +361,12 @@ public:
 // extent::DYNAMIC>>);
 
 // deduction guide for raw arrays
-template <class Item, Size NUM_ITEMS>
-View(Item (&array)[NUM_ITEMS]) -> View<Item, NUM_ITEMS>;
+template <class Item, Size NUM_ITEMS> View(Item (&array)[NUM_ITEMS]) -> View<Item, NUM_ITEMS>;
 
 // deduction guide for anything - static extent
 template <class TArray>
   requires(!std::is_array_v<TArray>)
-View(TArray &array)
-  -> View<std::remove_reference_t<decltype(array[0])>, get::EXTENT<TArray>>;
+View(TArray &array) -> View<std::remove_reference_t<decltype(array[0])>, get::EXTENT<TArray>>;
 
 // // deduction guide for anything - dynamic extent
 // template <class TArray>
@@ -405,8 +387,7 @@ template <class A, class B>
 {
 	auto viewA = ConstStringView(a);
 	auto viewB = ConstStringView(b);
-	if constexpr (
-	  viewA.EXTENT != extent::DYNAMIC && viewB.EXTENT != extent::DYNAMIC) {
+	if constexpr (viewA.EXTENT != extent::DYNAMIC && viewB.EXTENT != extent::DYNAMIC) {
 		// static_assert(viewA.EXTENT == viewB.EXTENT, "String sizes mismatch");
 		if constexpr (viewA.EXTENT != viewB.EXTENT) {
 			return false;
@@ -443,9 +424,7 @@ template <class A, class B>
           requires {
 	          View(a);
 	          View(b);
-          } &&
-          (!(requires { ConstStringView(a); }) ||
-           !(requires { ConstStringView(b); }))
+          } && (!(requires { ConstStringView(a); }) || !(requires { ConstStringView(b); }))
 {
 	// int aa = ConstStringView(a);
 	// static_assert(requires { ConstStringView(a); });
@@ -502,9 +481,8 @@ template <class A, class B>
 // otherwise, try View(a), but only if can't convert lhs to ConstStringView
 template <class A, class B>
 [[nodiscard]] inline constexpr auto operator<<(const A &a, const B &b)
-  requires requires {
-	  View(a);
-  } && (!(requires { ConstStringView(a); }) && !is::Object<A> && is::Object<B>)
+  requires requires { View(a); } &&
+           (!(requires { ConstStringView(a); }) && !is::Object<A> && is::Object<B>)
 {
 	return View(a) << b;
 }
@@ -528,8 +506,7 @@ std::ostream &operator<<(std::ostream &os, const View<TItem, ES...> &view) {
 
 namespace std {
 template <class Item, auto E, auto... ES>
-struct tuple_size<V::View<Item, E, ES...>>
-    : std::integral_constant<V::Size, E> {};
+struct tuple_size<V::View<Item, E, ES...>> : std::integral_constant<V::Size, E> {};
 } // namespace std
 
 //

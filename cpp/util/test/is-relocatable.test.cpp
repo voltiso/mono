@@ -67,8 +67,7 @@ struct NonRelocatable {
 	int x;
 	~NonRelocatable() {}
 };
-static_assert(
-  !is::relocatable<decltype([a = NonRelocatable{1}]() { return a; })>);
+static_assert(!is::relocatable<decltype([a = NonRelocatable{1}]() { return a; })>);
 // static_assert(
 //   !std::__libcpp_is_trivially_relocatable<decltype([a = NonRelocatable{1}]()
 //   { return a; })>());
@@ -76,7 +75,8 @@ static_assert(
 // ! libc++ does not agree on this, because it doesn't use clang's internal
 // __is_trivially_relocatable
 struct VOLTISO_RELOCATABLE(ForcedRelocatable) {
-	VOLTISO_RELOCATABLE_BODY(ForcedRelocatable);
+	using Self = ForcedRelocatable;
+	VOLTISO_RELOCATABLE_BODY
 
 public:
 	ForcedRelocatable() = default;
@@ -84,8 +84,7 @@ public:
 };
 static_assert(is::relocatable<ForcedRelocatable>);
 static_assert(!std::is_trivially_copyable_v<ForcedRelocatable>);
-static_assert(
-  is::relocatable<decltype([a = ForcedRelocatable{}]() { return a; })>);
+static_assert(is::relocatable<decltype([a = ForcedRelocatable{}]() { return a; })>);
 // static_assert(
 //   std::__libcpp_is_trivially_relocatable<decltype([a = ForcedRelocatable{}]()
 //   {

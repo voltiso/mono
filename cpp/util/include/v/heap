@@ -13,9 +13,8 @@
 namespace VOLTISO_NAMESPACE::heap {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : protected dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
-        option::Item<Storage<typename Options::template Get<option::Item>>>>> {
+class Custom : protected dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
+                 option::Item<Storage<typename Options::template Get<option::Item>>>>> {
 	//   using Final = Custom;
 	using Base = dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
 	  option::Item<Storage<typename Options::template Get<option::Item>>>>>;
@@ -107,9 +106,7 @@ public:
 
 	// if can't relocate, use move constructor
 	VOLTISO_FORCE_INLINE Item pop() noexcept
-	  requires(!requires {
-		  Base::first().relocate();
-	  } && std::is_move_constructible_v<Item>)
+	  requires(!requires { Base::first().relocate(); } && std::is_move_constructible_v<Item>)
 	{
 		NE(Base::_numItems, 0);
 		auto item = std::move(Base::first().storedItem());
@@ -121,9 +118,7 @@ public:
 
 	// if everything fails, return `void`
 	VOLTISO_FORCE_INLINE void pop() noexcept
-	  requires(!requires {
-		  Base::first().relocate();
-	  } && !std::is_move_constructible_v<Item>)
+	  requires(!requires { Base::first().relocate(); } && !std::is_move_constructible_v<Item>)
 	{
 		NE(Base::_numItems, 0);
 		_pop();
@@ -147,10 +142,8 @@ private:
 			auto indexRight = indexLeft + 1;
 			if (
 			  indexRight <= Base::_numItems &&
-			  array[indexLeft].storedItem() < array[indexRight].storedItem())
-			  [[unlikely]] {
-				if (array[index].storedItem() < array[indexRight].storedItem())
-				  [[likely]] {
+			  array[indexLeft].storedItem() < array[indexRight].storedItem()) [[unlikely]] {
+				if (array[index].storedItem() < array[indexRight].storedItem()) [[likely]] {
 					static_assert(is::relocatable<Item>);
 					array[index].relocateFrom(array[indexRight]);
 					index = indexRight;
@@ -158,8 +151,7 @@ private:
 					break;
 				}
 			} else [[likely]] {
-				if (array[index].storedItem() < array[indexLeft].storedItem())
-				  [[likely]] {
+				if (array[index].storedItem() < array[indexLeft].storedItem()) [[likely]] {
 					static_assert(is::relocatable<Item>);
 					array[index].relocateFrom(array[indexLeft]);
 					index = indexLeft;
@@ -184,14 +176,12 @@ public:
 	// ! make iterators always const
 	ConstIterator begin() const {
 		GT(this->_numItems, 0);
-		return ConstIterator{
-		  std::addressof(Base::slots()->storedItem().storedItem())};
+		return ConstIterator{std::addressof(Base::slots()->storedItem().storedItem())};
 	}
 	ConstIterator end() const {
 		GT(this->_numItems, 0);
 		return ConstIterator{
-		  std::addressof(Base::slots()->storedItem().storedItem()) +
-		  this->_numItems};
+		  std::addressof(Base::slots()->storedItem().storedItem()) + this->_numItems};
 	}
 };
 } // namespace VOLTISO_NAMESPACE::heap
@@ -199,13 +189,12 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Item>
 class RELOCATABLE(Heap)
-    : public heap::Custom<
-        Options<option::Item<Item>, option::Final<Heap<Item>>>> {
-	RELOCATABLE_BODY(Heap<Item>);
+    : public heap::Custom<Options<option::Item<Item>, option::Final<Heap<Item>>>> {
+	using Self = Heap;
+	RELOCATABLE_BODY
 
 private:
-	using Base =
-	  heap::Custom<Options<option::Item<Item>, option::Final<Heap<Item>>>>;
+	using Base = heap::Custom<Options<option::Item<Item>, option::Final<Heap<Item>>>>;
 	using Base::Base;
 };
 

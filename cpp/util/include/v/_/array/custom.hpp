@@ -11,18 +11,18 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::array {
-template <concepts::Options Options>
-class Custom : public array::_::Impl<Options> {
+template <concepts::Options Options> class Custom : public array::_::Impl<Options> {
 	using Base = array::_::Impl<Options>;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom);
+	VOLTISO_INHERIT(Custom);
 };
 
 template <concepts::Options Options>
   requires is::relocatable<typename Options::template Get<option::Item>>
 class RELOCATABLE(Custom<Options>) : public array::_::Impl<Options> {
-	RELOCATABLE_BODY(Custom<Options>);
+	using Self = Custom;
+	RELOCATABLE_BODY
 	using Base = array::_::Impl<Options>;
-	VOLTISO_INHERIT_RVALUE_COPY(Custom);
+	VOLTISO_INHERIT(Custom);
 };
 } // namespace VOLTISO_NAMESPACE::array
 

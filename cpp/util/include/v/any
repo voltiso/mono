@@ -22,7 +22,8 @@ namespace VOLTISO_NAMESPACE {
  */
 template <class Item = void>
 class RELOCATABLE(Any) : public Object<Options<option::Final<Any<Item>>>> {
-	RELOCATABLE_BODY(Any<Item>);
+	using Self = Any;
+	RELOCATABLE_BODY
 
 private:
 	using Storage = Storage<Item *>;
@@ -48,8 +49,7 @@ public:
 	Any(const Any &) = delete;
 
 public:
-	Any(Any &&other) noexcept
-	    : _storage(relocate(other._storage)), _deleter(other._deleter) {
+	Any(Any &&other) noexcept : _storage(relocate(other._storage)), _deleter(other._deleter) {
 		NE(this, &other);
 		other._deleter = nullptr;
 	}
@@ -59,9 +59,7 @@ public:
 	Any(Other &&other) {
 		static_assert(sizeof(Other) == sizeof(this->_storage));
 		new (&this->_storage) Other(std::move(other));
-		_deleter = [](auto &storage) {
-			reinterpret_cast<Other &>(storage).~Other();
-		};
+		_deleter = [](auto &storage) { reinterpret_cast<Other &>(storage).~Other(); };
 	}
 
 public:
@@ -72,16 +70,13 @@ public:
 	    // Only check the second condition if OtherItem actually has operator*
 	    (!(requires(OtherItem t) {
 		    { *t };
-	    }) ||
-	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
-	Any &operator=(OtherItem &&other) noexcept(
-	  noexcept(target() = std::forward<OtherItem>(other))) {
+	    }) || !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
+	Any &operator=(OtherItem &&other) noexcept(noexcept(target() = std::forward<OtherItem>(other))) {
 		target() = std::forward<OtherItem>(other);
 		return *this;
 	}
 
-	template <
-	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+	template <class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
 	TT &target() const noexcept {
 		CHECK(_storage.storedItem());
 		return *_storage.storedItem();
@@ -89,8 +84,7 @@ public:
 
 	Item *operator->() const noexcept { return _storage.storedItem(); }
 
-	template <
-	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+	template <class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
 	TT &operator*() const noexcept {
 		return target();
 	}

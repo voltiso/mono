@@ -9,16 +9,29 @@
 
 namespace VOLTISO_NAMESPACE::storage::_ {
 
+#pragma push_macro("SPECIAL_MEMBERS")
+#define SPECIAL_MEMBERS                                                                            \
+	constexpr Union() noexcept = default;                                                            \
+	constexpr Union() noexcept                                                                       \
+	  requires(!std::is_trivially_constructible_v<Item>)                                             \
+	{}                                                                                               \
+                                                                                                   \
+	constexpr Union(const Union &) = default;                                                        \
+	constexpr Union(const Union &) noexcept                                                          \
+	  requires(!std::is_trivially_copy_constructible_v<Item>)                                        \
+	{}                                                                                               \
+                                                                                                   \
+	constexpr ~Union() noexcept = default;                                                           \
+	constexpr ~Union() noexcept                                                                      \
+	  requires(!std::is_trivially_destructible_v<Item>)                                              \
+	{}
+
 template <class Item> union Union {
 	// Tensor::WithImplicitCopy _bytes; // ! circular dep, must use raw bytes
 	std::byte _bytes[sizeof(Item)];
 	// ⚠️ This may not be constructed yet
 	Item _storedItem;
-
-	constexpr ~Union() noexcept = default;
-	constexpr ~Union() noexcept
-	  requires(!std::is_trivially_destructible_v<Item>)
-	{}
+	SPECIAL_MEMBERS
 };
 
 template <class Item>
@@ -26,22 +39,10 @@ template <class Item>
 union RELOCATABLE(Union<Item>) {
 	std::byte _bytes[sizeof(Item)];
 	Item _storedItem;
-
-	constexpr Union() noexcept = default;
-	constexpr Union() noexcept
-	  requires(!std::is_trivially_constructible_v<Item>)
-	{}
-
-	constexpr Union(const Union &) = default;
-	constexpr Union(const Union &) noexcept
-	  requires(!std::is_trivially_copy_constructible_v<Item>)
-	{}
-
-	constexpr ~Union() noexcept = default;
-	constexpr ~Union() noexcept
-	  requires(!std::is_trivially_destructible_v<Item>)
-	{}
+	SPECIAL_MEMBERS
 };
+
+#pragma pop_macro("SPECIAL_MEMBERS")
 
 // ! -------------------------------------------------------------
 
@@ -52,20 +53,6 @@ private:
 
 private:
 	Union<Item> _union;
-
-	// ! -------------------------------------------------------------------------
-	// ! CONSTRUCT
-	// ! -------------------------------------------------------------------------
-public:
-	constexpr DataUnion() noexcept = default;
-
-	constexpr DataUnion(const DataUnion &) noexcept = default;
-	constexpr DataUnion(DataUnion &&) noexcept = default;
-
-	constexpr DataUnion &operator=(const DataUnion &) noexcept = default;
-	constexpr DataUnion &operator=(DataUnion &&) noexcept = default;
-
-	constexpr ~DataUnion() noexcept = default;
 
 	// ! -------------------------------------------------------------------------
 	// ! API
@@ -79,9 +66,7 @@ public:
 	constexpr Item &storedItem() noexcept { return this->_union._storedItem; }
 
 	// ⚠️ This may not be constructed yet
-	constexpr const Item &storedItem() const noexcept {
-		return this->_union._storedItem;
-	}
+	constexpr const Item &storedItem() const noexcept { return this->_union._storedItem; }
 };
 
 } // namespace VOLTISO_NAMESPACE::storage::_

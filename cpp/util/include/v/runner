@@ -8,10 +8,10 @@
 #include "v/heap"
 #include "v/object"
 #include "v/option/custom-template"
+#include "v/option/final"
 #include "v/option/input-options"
 #include "v/option/mutable"
 #include "v/option/noexcept"
-#include "v/option/final"
 #include "v/option/thread-safe"
 #include "v/options"
 #include "v/owned"
@@ -87,11 +87,10 @@ public:
 	template <
 	  class TFunction, class TOptions,
 	  std::enable_if_t<
-	    std::is_convertible_v<TFunction, AnyCallback> &&
-	    std::is_convertible_v<TOptions, Options>> * = nullptr>
+	    std::is_convertible_v<TFunction, AnyCallback> && std::is_convertible_v<TOptions, Options>> * =
+	    nullptr>
 	Task(TRunner *runner, TFunction &&run, TOptions &&options)
-	    : run{std::forward<TFunction>(run)}, runner{runner},
-	      options{std::forward<TOptions>(options)},
+	    : run{std::forward<TFunction>(run)}, runner{runner}, options{std::forward<TOptions>(options)},
 	      targetExecutionTime{Clock::now() + options.delay} {}
 
 public:
@@ -106,9 +105,9 @@ public:
 } // namespace VOLTISO_NAMESPACE::runner::_
 
 namespace VOLTISO_NAMESPACE::runner::_ {
-template <class TRunner>
-struct RELOCATABLE(ImmediateTaskRef) {
-	RELOCATABLE_BODY(ImmediateTaskRef<TRunner>);
+template <class TRunner> struct RELOCATABLE(ImmediateTaskRef) {
+	using Self = ImmediateTaskRef;
+	RELOCATABLE_BODY
 
 public:
 	using Task = TRunner::Task;
@@ -118,17 +117,14 @@ public:
 	const Priority priority; // have to copy - task may be deleted already
 
 	ImmediateTaskRef(Task &task)
-	    : task(task), scheduleId(task.scheduleId),
-	      priority(task.options.priority) {}
+	    : task(task), scheduleId(task.scheduleId), priority(task.options.priority) {}
 
-	bool operator<(const ImmediateTaskRef &other) const {
-		return priority < other.priority;
-	}
+	bool operator<(const ImmediateTaskRef &other) const { return priority < other.priority; }
 };
 
-template <class TRunner>
-struct RELOCATABLE(ScheduledTaskRef) {
-	RELOCATABLE_BODY(ScheduledTaskRef<TRunner>);
+template <class TRunner> struct RELOCATABLE(ScheduledTaskRef) {
+	using Self = ScheduledTaskRef;
+	RELOCATABLE_BODY
 
 public:
 	using Task = TRunner::Task;
@@ -138,8 +134,7 @@ public:
 	const TimePoint targetExecutionTime;
 
 	ScheduledTaskRef(Task &task)
-	    : task(task), scheduleId(task.scheduleId),
-	      targetExecutionTime(task.targetExecutionTime) {}
+	    : task(task), scheduleId(task.scheduleId), targetExecutionTime(task.targetExecutionTime) {}
 
 	// smaller time -> greater order (priority)
 	bool operator<(const ScheduledTaskRef &other) const {
@@ -164,9 +159,8 @@ template <> struct ThreadSafeData<true> {
 namespace VOLTISO_NAMESPACE::runner {
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
+class Custom : public Object<typename Options::template WithDefault<
+                 option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
 private:
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
@@ -180,10 +174,9 @@ public:
 	using Delay = runner::_::Delay;
 	static constexpr bool IS_NOEXCEPT = Options::template GET<option::NOEXCEPT>;
 	static constexpr bool IS_MUTABLE = Options::template GET<option::MUTABLE>;
-	static constexpr bool IS_THREAD_SAFE =
-	  Options::template GET<option::THREAD_SAFE>;
-	using AnyCallback = AnyFunction<void()>::With<
-	  option::NOEXCEPT<IS_NOEXCEPT>, option::MUTABLE<IS_MUTABLE>>;
+	static constexpr bool IS_THREAD_SAFE = Options::template GET<option::THREAD_SAFE>;
+	using AnyCallback =
+	  AnyFunction<void()>::With<option::NOEXCEPT<IS_NOEXCEPT>, option::MUTABLE<IS_MUTABLE>>;
 
 private:
 	using ImmediateTaskRef = runner::_::ImmediateTaskRef<Custom>;
@@ -218,8 +211,7 @@ public:
 	}
 
 private:
-	INLINE auto _lockQueues() noexcept(noexcept(std::unique_lock{
-	  this->_threadSafeData.queuesMutex}))
+	INLINE auto _lockQueues() noexcept(noexcept(std::unique_lock{this->_threadSafeData.queuesMutex}))
 	  requires(IS_THREAD_SAFE)
 	{
 		return std::unique_lock{this->_threadSafeData.queuesMutex};
@@ -248,32 +240,28 @@ private:
 
 		// move all tasks that are ready to run to immediateTasks
 		// (and remove old scheduleIds before re-scheduling)
-		while (_scheduledTasks.hasItems() &&
-		       _scheduledTasks.peek().targetExecutionTime <= now) [[unlikely]] {
+		while (_scheduledTasks.hasItems() && _scheduledTasks.peek().targetExecutionTime <= now)
+		  [[unlikely]] {
 			auto taskRef = _scheduledTasks.pop();
 			// auto taskRef = scheduledTasks.peek();
 			// scheduledTasks.pop();
-			if (
-			  _allTasks.has(taskRef.task) &&
-			  taskRef.task.scheduleId == taskRef.scheduleId) [[likely]] {
+			if (_allTasks.has(taskRef.task) && taskRef.task.scheduleId == taskRef.scheduleId) [[likely]] {
 				_immediateTasks.maybeGrowAndPush(taskRef.task);
 			}
 		}
 
 		// ignore already canceled scheduledTasks (and old scheduleIds before
 		// re-scheduling)
-		while (_scheduledTasks.hasItems() &&
-		       (!_allTasks.has(_scheduledTasks.peek().task) ||
-		        _scheduledTasks.peek().task.scheduleId !=
-		          _scheduledTasks.peek().scheduleId)) [[unlikely]] {
+		while (_scheduledTasks.hasItems() && (!_allTasks.has(_scheduledTasks.peek().task) ||
+		                                      _scheduledTasks.peek().task.scheduleId !=
+		                                        _scheduledTasks.peek().scheduleId)) [[unlikely]] {
 			_scheduledTasks.pop();
 		}
 
 		// ignore already canceled immediateTasks
-		while (_immediateTasks.hasItems() &&
-		       (!_allTasks.has(_immediateTasks.peek().task) ||
-		        _immediateTasks.peek().task.scheduleId !=
-		          _immediateTasks.peek().scheduleId)) [[unlikely]] {
+		while (_immediateTasks.hasItems() && (!_allTasks.has(_immediateTasks.peek().task) ||
+		                                      _immediateTasks.peek().task.scheduleId !=
+		                                        _immediateTasks.peek().scheduleId)) [[unlikely]] {
 			_immediateTasks.pop();
 		}
 	}
@@ -310,11 +298,9 @@ public:
 		if (task.options.isRepeating) [[likely]] {
 			// speed up high-performance repeating tasks
 			task.targetExecutionTime += task.options.period;
-			if (
-			  task.targetExecutionTime <
-			  Clock::now() - task.options.maxLagCompensationDuration) [[unlikely]] {
-				task.targetExecutionTime =
-				  Clock::now() - task.options.maxLagCompensationDuration;
+			if (task.targetExecutionTime < Clock::now() - task.options.maxLagCompensationDuration)
+			  [[unlikely]] {
+				task.targetExecutionTime = Clock::now() - task.options.maxLagCompensationDuration;
 			}
 			task.scheduleId += 1;
 			_scheduledTasks.maybeGrowAndPush(task);
@@ -429,8 +415,7 @@ public:
 	v::Owned<Task>::Weak post(AnyCallback &&run)
 	// requires(!IS_THREAD_SAFE)
 	{
-		auto task =
-		  Owned<Task>::create(this, std::move(run), typename Task::Options{});
+		auto task = Owned<Task>::create(this, std::move(run), typename Task::Options{});
 
 		auto lock = _lockQueues();
 		_allTasks.insert(task);

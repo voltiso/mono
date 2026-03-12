@@ -101,6 +101,8 @@
 
 #include "v/_/0-operators.hpp" // IWYU pragma: export
 
+#include "v/_/0-inherit.hpp" // IWYU pragma: export
+
 // --------------------------------------------------------------
 
 // ! RELOCATABLE marker
@@ -124,15 +126,19 @@
 // libc++ way
 #define VOLTISO_RELOCATABLE_MARKER __trivially_relocatable
 
-// - tried implementing as a mixin::Relocatable, but it's not good when
-//   multiple bases expose the marker
-// - tried using option::relocatable, but it's not safe when derived classes
-//   auto-inherit
-// ...so we're left with macro
-#define VOLTISO_RELOCATABLE_BODY(Self)                                         \
-public:                                                                        \
-	using VOLTISO_RELOCATABLE_MARKER = Self;                                     \
-                                                                               \
+// ⚠️ Requires `Self` in scope
+// - tried implementing as a `mixin::Relocatable`, but it's no good when multiple bases expose the
+// marker
+// - using `option::relocatable<Self>` not great if we want markers set to Self at every level
+#define VOLTISO_RELOCATABLE_BODY                                                                   \
+public:                                                                                            \
+	using VOLTISO_RELOCATABLE_MARKER = Self;                                                         \
+                                                                                                   \
 private:
 
-// !
+// ⚠️ Requires `Self` in scope
+#define VOLTISO_RELOCATABLE_BODY_IF(Condition)                                                     \
+public:                                                                                            \
+	using VOLTISO_RELOCATABLE_MARKER = std::conditional_t<Condition, Self, void>;                    \
+                                                                                                   \
+private:

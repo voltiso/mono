@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 
+#include "v/concepts/constexpr-constructible"
 #include "v/singleton"
 
 #include <atomic>
+#include <cstdlib>
 #include <stdexcept>
 #include <thread>
 #include <type_traits>
@@ -17,12 +19,14 @@ TEST(Singleton, isEmpty) {
 	static_assert(std::is_empty_v<Singleton<int>::Lazy::ThreadLocal>);
 }
 
-struct Trivial {
-	int value;
-};
-static_assert(std::is_trivially_constructible_v<Trivial>);
-static_assert(concepts::ConstexprConstructible<Trivial>);
-static_assert(std::is_trivially_destructible_v<Trivial>);
+// ⚠️ If constexpr-constructible, we now enforce all members initialized for `constinit` to work.
+
+// struct Trivial {
+// 	int value;
+// };
+// static_assert(std::is_trivially_constructible_v<Trivial>);
+// static_assert(concepts::ConstexprConstructible<Trivial>);
+// static_assert(std::is_trivially_destructible_v<Trivial>);
 
 struct Constructor {
 	int value;
@@ -61,31 +65,28 @@ static_assert(!std::is_trivially_destructible_v<ConstinitDestructor>);
 // * Trivial: !useSlotStatic && !haveIsInitialized
 
 TEST(Singleton, internalLogic) {
-	// Trivial
-	static_assert(!singleton::_::useSlowStatic<Singleton<Trivial>::Options>);
-	static_assert(!singleton::_::haveIsInitialized<Singleton<Trivial>::Options>);
+	// // Trivial
+	// static_assert(!singleton::_::Config<Singleton<Trivial>::Options>::_hasIsInitialized);
+	// static_assert(!singleton::_::Config<Singleton<Trivial>::Lazy::Options>::_hasIsInitialized);
 
 	// Constructor
-	static_assert(!singleton::_::useSlowStatic<Singleton<Constructor>::Options>);
-	static_assert(
-	  singleton::_::haveIsInitialized<Singleton<Constructor>::Options>);
+	// static_assert(!concepts::ConstexprConstructible<Constructor>);
+	static_assert(!singleton::_::Config<Singleton<Constructor>::Options>::_hasIsInitialized);
+	static_assert(singleton::_::Config<Singleton<Constructor>::Lazy::Options>::_hasIsInitialized);
 
 	// Constinit
-	static_assert(!singleton::_::useSlowStatic<Singleton<Constinit>::Options>);
-	static_assert(
-	  !singleton::_::haveIsInitialized<Singleton<Constinit>::Options>);
+	static_assert(!singleton::_::Config<Singleton<Constinit>::Options>::_hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<Constinit>::Lazy::Options>::_hasIsInitialized);
 
 	// Destructor
-	static_assert(!singleton::_::useSlowStatic<Singleton<Destructor>::Options>);
-	static_assert(
-	  singleton::_::haveIsInitialized<Singleton<Destructor>::Options>);
+	static_assert(!singleton::_::Config<Singleton<Destructor>::Options>::_hasIsInitialized);
+	static_assert(singleton::_::Config<Singleton<Destructor>::Lazy::Options>::_hasIsInitialized);
 
 	// ConstinitDestructor
-	// * fringe case - see comment in `haveIsInitialized`
+	// * fringe case - initialize immediately, but register destructor on first access
+	static_assert(!singleton::_::Config<Singleton<ConstinitDestructor>::Options>::_hasIsInitialized);
 	static_assert(
-	  !singleton::_::useSlowStatic<Singleton<ConstinitDestructor>::Options>);
-	static_assert(
-	  singleton::_::haveIsInitialized<Singleton<ConstinitDestructor>::Options>);
+	  singleton::_::Config<Singleton<ConstinitDestructor>::Lazy::Options>::_hasIsInitialized);
 }
 
 // =========================================================================
@@ -98,10 +99,10 @@ TEST(Singleton, internalLogic) {
 
 // Proves that the memory address is stable and modifications persist
 template <class SingletonType> void testMemoryRetention() {
-	auto &s1 = SingletonType::maybeInitialize();
+	auto &s1 = SingletonType::instance();
 	s1.value = 42;
 
-	auto &s2 = SingletonType::maybeInitialize();
+	auto &s2 = SingletonType::instance();
 	EXPECT_EQ(s2.value, 42) << "State did not persist across calls!";
 	EXPECT_EQ(&s1, &s2) << "Multiple calls returned different memory addresses!";
 }
@@ -109,13 +110,13 @@ template <class SingletonType> void testMemoryRetention() {
 // Proves that ThreadLocal paths isolate memory, and Global paths share it
 template <class SingletonType, bool IsThreadLocal, bool HasInitValue>
 void testThreadIsolation(int expectedInitVal = 0) {
-	auto &s1 = SingletonType::maybeInitialize();
+	auto &s1 = SingletonType::instance();
 	s1.value = 100; // Dirty the main thread's instance
 
 	std::atomic<int> backgroundRead{0};
 
 	std::thread t([&]() {
-		auto &s2 = SingletonType::maybeInitialize();
+		auto &s2 = SingletonType::instance();
 		if constexpr (HasInitValue) {
 			backgroundRead.store(s2.value, std::memory_order_relaxed);
 		}
@@ -140,9 +141,9 @@ void testThreadIsolation(int expectedInitVal = 0) {
 template <class SingletonType, int Expected> void testInitialValue() {
 	// If lazy, we must explicitly spin it up in the test
 	if constexpr (SingletonType::Options::template GET<option::lazy>) {
-		SingletonType::maybeInitialize();
+		SingletonType::instance();
 	}
-	auto &s = SingletonType::maybeInitialize();
+	auto &s = SingletonType::instance();
 	EXPECT_EQ(s.value, Expected) << "Object was not correctly initialized!";
 }
 
@@ -150,47 +151,49 @@ template <class SingletonType, int Expected> void testInitialValue() {
 // 2. MACRO-DRIVEN EXHAUSTIVE MATRIX
 // ---------------------------------------------------------
 
-// This macro generates 4 distinct tests (Global/TL x Eager/Lazy) for any Type
-#define GENERATE_SINGLETON_TESTS(TypeName, HasInit, InitVal)                   \
-	TEST(SingletonRuntime, TypeName##_Global_Eager) {                            \
-		if constexpr (HasInit)                                                     \
-			testInitialValue<Singleton<TypeName>, InitVal>();                        \
-		testMemoryRetention<Singleton<TypeName>>();                                \
-		testThreadIsolation<Singleton<TypeName>, false, HasInit>(InitVal);         \
-	}                                                                            \
-	TEST(SingletonRuntime, TypeName##_Global_Lazy) {                             \
-		if constexpr (HasInit)                                                     \
-			testInitialValue<Singleton<TypeName>::Lazy, InitVal>();                  \
-		testMemoryRetention<Singleton<TypeName>::Lazy>();                          \
-		testThreadIsolation<Singleton<TypeName>::Lazy, false, HasInit>(InitVal);   \
-	}                                                                            \
-	TEST(SingletonRuntime, TypeName##_TL_Eager) {                                \
-		if constexpr (HasInit)                                                     \
-			testInitialValue<Singleton<TypeName>::ThreadLocal, InitVal>();           \
-		testMemoryRetention<Singleton<TypeName>::ThreadLocal>();                   \
-		testThreadIsolation<Singleton<TypeName>::ThreadLocal, true, HasInit>(      \
-		  InitVal);                                                                \
-	}                                                                            \
-	TEST(SingletonRuntime, TypeName##_TL_Lazy) {                                 \
-		if constexpr (HasInit)                                                     \
-			testInitialValue<Singleton<TypeName>::ThreadLocal::Lazy, InitVal>();     \
-		testMemoryRetention<Singleton<TypeName>::ThreadLocal::Lazy>();             \
-		testThreadIsolation<                                                       \
-		  Singleton<TypeName>::ThreadLocal::Lazy, true, HasInit>(InitVal);         \
+// Most types now only support lazy singleton variants.
+#define GENERATE_LAZY_SINGLETON_TESTS(TypeName, HasInit, InitVal)                                   \
+	TEST(SingletonRuntime, TypeName##_Global_Lazy) {                                                 \
+		if constexpr (HasInit)                                                                         \
+			testInitialValue<Singleton<TypeName>::Lazy, InitVal>();                                      \
+		testMemoryRetention<Singleton<TypeName>::Lazy>();                                              \
+		testThreadIsolation<Singleton<TypeName>::Lazy, false, HasInit>(InitVal);                       \
+	}                                                                                                \
+	TEST(SingletonRuntime, TypeName##_TL_Lazy) {                                                     \
+		if constexpr (HasInit)                                                                         \
+			testInitialValue<Singleton<TypeName>::ThreadLocal::Lazy, InitVal>();                         \
+		testMemoryRetention<Singleton<TypeName>::ThreadLocal::Lazy>();                                 \
+		testThreadIsolation<Singleton<TypeName>::ThreadLocal::Lazy, true, HasInit>(InitVal);           \
 	}
+
+// Constinit still supports eager and lazy variants.
+#define GENERATE_CONSTINIT_SINGLETON_TESTS(TypeName, HasInit, InitVal)                              \
+	TEST(SingletonRuntime, TypeName##_Global_Eager) {                                                \
+		if constexpr (HasInit)                                                                         \
+			testInitialValue<Singleton<TypeName>, InitVal>();                                            \
+		testMemoryRetention<Singleton<TypeName>>();                                                    \
+		testThreadIsolation<Singleton<TypeName>, false, HasInit>(InitVal);                             \
+	}                                                                                                \
+	TEST(SingletonRuntime, TypeName##_TL_Eager) {                                                    \
+		if constexpr (HasInit)                                                                         \
+			testInitialValue<Singleton<TypeName>::ThreadLocal, InitVal>();                               \
+		testMemoryRetention<Singleton<TypeName>::ThreadLocal>();                                       \
+		testThreadIsolation<Singleton<TypeName>::ThreadLocal, true, HasInit>(InitVal);                 \
+	}                                                                                                \
+	GENERATE_LAZY_SINGLETON_TESTS(TypeName, HasInit, InitVal)
 
 // ---------------------------------------------------------
 // 3. EXECUTE EXHAUSTIVE TESTS FOR ALL 5 ARCHETYPES
 // ---------------------------------------------------------
 
 // Trivial & Destructor have no init value (UB to read before writing)
-GENERATE_SINGLETON_TESTS(Trivial, false, 0)
-GENERATE_SINGLETON_TESTS(Destructor, false, 0)
+// GENERATE_LAZY_SINGLETON_TESTS(Trivial, false, 0)
+GENERATE_LAZY_SINGLETON_TESTS(Destructor, false, 0)
 
-// Constructor, Constinit, and ConstinitDestructor initialize to 123
-GENERATE_SINGLETON_TESTS(Constructor, true, 123)
-GENERATE_SINGLETON_TESTS(Constinit, true, 123)
-GENERATE_SINGLETON_TESTS(ConstinitDestructor, true, 123)
+// Constructor and ConstinitDestructor are lazy-only; Constinit keeps eager coverage.
+GENERATE_LAZY_SINGLETON_TESTS(Constructor, true, 123)
+GENERATE_CONSTINIT_SINGLETON_TESTS(Constinit, true, 123)
+GENERATE_LAZY_SINGLETON_TESTS(ConstinitDestructor, true, 123)
 
 // ---------------------------------------------------------
 // 4. TEARDOWN (LIFECYCLE) VERIFICATION TESTS
@@ -201,17 +204,13 @@ inline std::atomic<int> g_teardownCount{0};
 struct TrackedTeardown {
 	int value = 0;
 	TrackedTeardown() { value = 777; }
-	~TrackedTeardown() {
-		g_teardownCount.fetch_add(1, std::memory_order_relaxed);
-	}
+	~TrackedTeardown() { g_teardownCount.fetch_add(1, std::memory_order_relaxed); }
 };
 
 struct TrackedConstinitTeardown {
 	int value = 0;
 	constexpr TrackedConstinitTeardown() { value = 888; }
-	~TrackedConstinitTeardown() {
-		g_teardownCount.fetch_add(1, std::memory_order_relaxed);
-	}
+	~TrackedConstinitTeardown() { g_teardownCount.fetch_add(1, std::memory_order_relaxed); }
 };
 
 // --- A. THREAD LOCAL EXHAUSTIVE TESTS ---
@@ -220,7 +219,7 @@ TEST(SingletonLifecycle, TL_Normal_Teardown) {
 	using S = Singleton<TrackedTeardown>::ThreadLocal::Lazy;
 	int startCount = g_teardownCount.load();
 
-	std::thread t([&]() { EXPECT_EQ(S::maybeInitialize().value, 777); });
+	std::thread t([&]() { EXPECT_EQ(S::instance().value, 777); });
 	t.join(); // Thread dies, __cxa_thread_atexit MUST fire.
 
 	EXPECT_EQ(g_teardownCount.load(), startCount + 1);
@@ -231,7 +230,7 @@ TEST(SingletonLifecycle, TL_Constinit_Teardown) {
 	using S = Singleton<TrackedConstinitTeardown>::ThreadLocal::Lazy;
 	int startCount = g_teardownCount.load();
 
-	std::thread t([&]() { EXPECT_EQ(S::maybeInitialize().value, 888); });
+	std::thread t([&]() { EXPECT_EQ(S::instance().value, 888); });
 	t.join();
 
 	EXPECT_EQ(g_teardownCount.load(), startCount + 1);
@@ -242,9 +241,9 @@ TEST(SingletonLifecycle, TL_Multiple_Inits_One_Teardown) {
 	int startCount = g_teardownCount.load();
 
 	std::thread t([&]() {
-		S::maybeInitialize();
-		S::maybeInitialize();
-		S::maybeInitialize(); // Should ignore subsequent calls
+		S::instance();
+		S::instance();
+		S::instance(); // Should ignore subsequent calls
 	});
 	t.join();
 
@@ -252,56 +251,7 @@ TEST(SingletonLifecycle, TL_Multiple_Inits_One_Teardown) {
 	EXPECT_EQ(g_teardownCount.load(), startCount + 1);
 }
 
-TEST(SingletonLifecycle, TL_Guard_Before_Init) {
-	using S = Singleton<TrackedTeardown>::ThreadLocal::Lazy;
-	int startCount = g_teardownCount.load();
-
-	std::thread t([&]() {
-		typename S::Guard guard; // Guard adds refcount (1)
-		S::maybeInitialize();    // Registers OS hook (0)
-	});                        // Guard drops, OS hook fires -> clean teardown
-
-	t.join();
-	EXPECT_EQ(g_teardownCount.load(), startCount + 1);
-}
-
-TEST(SingletonLifecycle, TL_Guard_Without_Init_Does_Nothing) {
-	using S = Singleton<TrackedTeardown>::ThreadLocal::Lazy;
-	int startCount = g_teardownCount.load();
-
-	std::thread t([&]() {
-		typename S::Guard guard;
-		// maybeInitialize() is NEVER called!
-	});
-	t.join();
-
-	// Guard drops refcount to -1, calling _maybeDestroy.
-	// BUT because isInitialized is false, _destroy() is skipped safely.
-	EXPECT_EQ(g_teardownCount.load(), startCount);
-}
-
-// --- B. GLOBAL GUARD TESTS ---
-
-TEST(SingletonLifecycle, Global_Guards_Do_Not_Prematurely_Destroy) {
-	using S = Singleton<TrackedTeardown>::Lazy;
-	int startCount = g_teardownCount.load();
-
-	{
-		S::maybeInitialize();
-		typename S::Guard guard;
-		EXPECT_EQ(S::maybeInitialize().value, 777);
-
-		// Guard exists, should be alive
-		EXPECT_EQ(g_teardownCount.load(), startCount);
-	} // Guard drops, refcount goes back to 0 (OS Hook holds the base reference)
-
-	// Because the program hasn't exited, the OS hook hasn't fired.
-	// The singleton must remain alive!
-	EXPECT_EQ(g_teardownCount.load(), startCount)
-	  << "Global Singleton prematurely destroyed when final guard dropped!";
-}
-
-// --- C. GLOBAL DEATH TESTS (Process Forking) ---
+// --- GLOBAL DEATH TESTS (Process Forking) ---
 
 // We use stderr printing because gtest can capture standard error
 // from the dying child process to prove the hook fired!
@@ -314,15 +264,13 @@ struct GlobalPrinter {
 struct ConstinitGlobalPrinter {
 	int value = 0;
 	constexpr ConstinitGlobalPrinter() { value = 1; }
-	~ConstinitGlobalPrinter() {
-		fprintf(stderr, "CONSTINIT_GLOBAL_HOOK_FIRED\n");
-	}
+	~ConstinitGlobalPrinter() { fprintf(stderr, "CONSTINIT_GLOBAL_HOOK_FIRED\n"); }
 };
 
 TEST(SingletonLifecycle, Global_Destroys_On_Process_Exit) {
 	EXPECT_EXIT(
 	  {
-		  Singleton<GlobalPrinter>::Lazy::maybeInitialize();
+		  Singleton<GlobalPrinter>::Lazy::instance();
 		  // std::exit guarantees __cxa_atexit hooks are flushed
 		  std::exit(0);
 	  },
@@ -332,42 +280,87 @@ TEST(SingletonLifecycle, Global_Destroys_On_Process_Exit) {
 TEST(SingletonLifecycle, Constinit_Global_Destroys_On_Process_Exit) {
 	EXPECT_EXIT(
 	  {
-		  Singleton<ConstinitGlobalPrinter>::Lazy::maybeInitialize();
+		  Singleton<ConstinitGlobalPrinter>::Lazy::instance();
 		  std::exit(0);
 	  },
 	  testing::ExitedWithCode(0), "CONSTINIT_GLOBAL_HOOK_FIRED");
 }
 
-TEST(SingletonLifecycle, Global_Exit_After_Guard_Drops_Destroys_Cleanly) {
-	EXPECT_EXIT(
-	  {
-		  using S = Singleton<GlobalPrinter>::Lazy;
-		  S::maybeInitialize();
+namespace {
+inline std::atomic<int> g_globalLazyDtorCount{0};
+inline std::atomic<int> g_globalConcurrentCtorCount{0};
+inline std::atomic<int> g_globalConcurrentDtorCount{0};
 
-		  {
-			  typename S::Guard safeGuard;
-		  } // Guard drops normally, refcount returns to 0
-
-		  std::exit(0); // Hook fires, old value is 0. Teardown happens!
-	  },
-	  testing::ExitedWithCode(0), "GLOBAL_HOOK_FIRED");
+void verifyGlobalLazyDestroyExactlyOnce() {
+	if (g_globalLazyDtorCount.load(std::memory_order_relaxed) == 1) {
+		std::_Exit(0);
+	}
+	std::_Exit(9);
 }
 
-TEST(SingletonLifecycle, Global_Exit_With_Active_Guard_Safely_Leaks) {
-	// We use EXPECT_EXIT but check that it exits normally (0)
-	// We expect NO output (regex ""), proving the Singleton protected itself!
+void verifyGlobalConcurrentLazyCounts() {
+	const auto ctorCount = g_globalConcurrentCtorCount.load(std::memory_order_relaxed);
+	const auto dtorCount = g_globalConcurrentDtorCount.load(std::memory_order_relaxed);
+	if (ctorCount == 1 && dtorCount == 1) {
+		std::_Exit(0);
+	}
+	std::_Exit(11);
+}
+} // namespace
+
+struct GlobalCountedLazyDestroy {
+	~GlobalCountedLazyDestroy() { g_globalLazyDtorCount.fetch_add(1, std::memory_order_relaxed); }
+};
+
+struct GlobalConcurrentNonTrivialLazy {
+	GlobalConcurrentNonTrivialLazy() {
+		g_globalConcurrentCtorCount.fetch_add(1, std::memory_order_relaxed);
+	}
+	~GlobalConcurrentNonTrivialLazy() {
+		g_globalConcurrentDtorCount.fetch_add(1, std::memory_order_relaxed);
+	}
+};
+
+struct LazyGlobalPrinter {
+	~LazyGlobalPrinter() { fprintf(stderr, "LAZY_GLOBAL_HOOK_FIRED\n"); }
+};
+
+TEST(SingletonLifecycle, Global_Lazy_Destroy_Exactly_Once) {
 	EXPECT_EXIT(
 	  {
-		  using S = Singleton<GlobalPrinter>::Lazy;
-		  S::maybeInitialize();
+		  g_globalLazyDtorCount.store(0, std::memory_order_relaxed);
+		  std::atexit(verifyGlobalLazyDestroyExactlyOnce);
+		  Singleton<GlobalCountedLazyDestroy>::Lazy::instance();
+		  std::exit(100);
+	  },
+	  testing::ExitedWithCode(0), "");
+}
 
-		  // Dynamically allocate to intentionally leak the Guard reference
-		  auto *leakedGuard = new typename S::Guard();
-		  (void)leakedGuard;
-
-		  // Because refcount > 0, the OS hook will fire but safely abort the
-		  // destruction
+TEST(SingletonLifecycle, Lazy_Global_Destroys_On_Process_Exit) {
+	EXPECT_EXIT(
+	  {
+		  Singleton<LazyGlobalPrinter>::Lazy::instance();
 		  std::exit(0);
+	  },
+	  testing::ExitedWithCode(0), "LAZY_GLOBAL_HOOK_FIRED");
+}
+
+TEST(SingletonLifecycle, Global_Concurrent_NonTrivial_Lazy_CtorAndDtor_ExactlyOnce) {
+	using S = Singleton<GlobalConcurrentNonTrivialLazy>::Lazy::Concurrent;
+	EXPECT_EXIT(
+	  {
+		  g_globalConcurrentCtorCount.store(0, std::memory_order_relaxed);
+		  g_globalConcurrentDtorCount.store(0, std::memory_order_relaxed);
+		  std::atexit(verifyGlobalConcurrentLazyCounts);
+
+		  std::vector<std::thread> threads;
+		  for (int i = 0; i < 32; ++i) {
+			  threads.emplace_back([]() { S::instance(); });
+		  }
+		  for (auto &thread : threads) {
+			  thread.join();
+		  }
+		  std::exit(100);
 	  },
 	  testing::ExitedWithCode(0), "");
 }
@@ -398,13 +391,13 @@ TEST(SingletonAdvanced, ExceptionSafety) {
 
 	// 1. First attempt fails. Mutex must be unlocked, isInitialized must stay
 	// false.
-	EXPECT_THROW(S::maybeInitialize(), std::runtime_error);
+	EXPECT_THROW(S::instance(), std::runtime_error);
 	EXPECT_EQ(ThrowingConstructor::attemptCount, 1);
 
 	// 2. Second attempt succeeds because state was left clean.
-	EXPECT_NO_THROW(S::maybeInitialize());
+	EXPECT_NO_THROW(S::instance());
 	EXPECT_EQ(ThrowingConstructor::attemptCount, 2);
-	EXPECT_EQ(S::instance().value, 888);
+	EXPECT_EQ(S::instanceUnchecked().value, 888);
 }
 
 // ---------------------------------------------------------
@@ -430,8 +423,8 @@ TEST(SingletonAdvanced, ThreadSafeInitialization) {
 	// Unleash 20 threads simultaneously onto the uninitialized singleton
 	for (int i = 0; i < 20; ++i) {
 		threads.emplace_back([&]() {
-			S::maybeInitialize();
-			if (S::instance().value == 1024) {
+			S::instance();
+			if (S::instanceUnchecked().value == 1024) {
 				successCount.fetch_add(1, std::memory_order_relaxed);
 			}
 		});
@@ -451,12 +444,12 @@ TEST(SingletonAdvanced, ThreadSafeInitialization) {
 // C. EAGER SINGLETON VERIFICATION
 // ---------------------------------------------------------
 TEST(SingletonAdvanced, EagerIsReadyImmediately) {
-	// Proves that Eager singletons do not require maybeInitialize()
+	// Proves that Eager singletons do not require instance()
 	// The C++ compiler guarantees static init before first use.
-	auto &s1 = Singleton<Constructor>::instance();
+	auto &s1 = Singleton<Constinit>::instance(); // ::instanceUnchecked();
 	EXPECT_EQ(s1.value, 123);
 
-	auto &s2 = Singleton<Constructor>::ThreadLocal::instance();
+	auto &s2 = Singleton<Constinit>::ThreadLocal::instance(); // ::instanceUnchecked();
 	EXPECT_EQ(s2.value, 123);
 }
 
@@ -471,25 +464,13 @@ TEST(SingletonAdvanced, GlobalTeardownOnExit) {
 	// Uses process forking to prove the OS hook fires on std::exit
 	EXPECT_EXIT(
 	  {
-		  Singleton<GlobalTeardownTest>::Lazy::maybeInitialize();
+		  Singleton<GlobalTeardownTest>::Lazy::instance();
 		  std::exit(0);
 	  },
 	  testing::ExitedWithCode(0), "TEARDOWN_SUCCESS");
 }
 
-TEST(SingletonAdvanced, GuardPreventsTeardownOnViolentExit) {
-	// Proves that your Use-After-Free protection works.
-	// We intentionally leak a guard. The OS hook will fire, see refCount > 0,
-	// and safely abort the teardown. No output should be produced.
-	EXPECT_EXIT(
-	  {
-		  using S = Singleton<GlobalTeardownTest>::Lazy;
-		  S::maybeInitialize();
-
-		  auto *leakedGuard = new S::Guard();
-		  (void)leakedGuard;
-
-		  std::exit(0);
-	  },
-	  testing::ExitedWithCode(0), "");
+TEST(SingletonAdvanced, InstanceUncheckedDiesBeforeLazyInitialization) {
+	using S = Singleton<Constructor>::Lazy;
+	EXPECT_DEATH((void)S::instanceUnchecked(), "");
 }

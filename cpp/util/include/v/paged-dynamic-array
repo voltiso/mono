@@ -74,42 +74,37 @@ template <class Options>
   requires concepts::Options<Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<pagedDynamicArray::GetCustom>,
-        option::InputOptions<Options>>> {
-	RELOCATABLE_BODY(Custom<Options>);
+        option::CustomTemplate<pagedDynamicArray::GetCustom>, option::InputOptions<Options>>> {
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = Object<typename Options::template WithDefault<
-	  option::CustomTemplate<pagedDynamicArray::GetCustom>,
-	  option::InputOptions<Options>>>;
+	  option::CustomTemplate<pagedDynamicArray::GetCustom>, option::InputOptions<Options>>>;
 
 public:
 	using Item = Options::template Get<option::Item>;
 	// using Pool = Options::template Get<option::Pool>;
 	static constexpr Size PAGE_SIZE = Options::template GET<option::PAGE_SIZE>;
-	static constexpr bool COPY_ON_WRITE =
-	  Options::template GET<option::COPY_ON_WRITE>;
+	static constexpr bool COPY_ON_WRITE = Options::template GET<option::COPY_ON_WRITE>;
 
 	static_assert(PAGE_SIZE > 0, "PAGE_SIZE must be greater than 0");
 
 	static_assert(
-	  std::has_single_bit(static_cast<uint64_t>(PAGE_SIZE)),
-	  "PAGE_SIZE must be a power of 2");
+	  std::has_single_bit(static_cast<uint64_t>(PAGE_SIZE)), "PAGE_SIZE must be a power of 2");
 
 private:
 	// If trivially copyable, we construct items directly. Constructors for
 	// non-existing items are called immediately for performance (possible
 	// vectorization).
 	static constexpr bool WRAP_IN_STORAGE = !std::is_trivially_copyable_v<Item>;
-	using ItemOrStorage =
-	  std::conditional_t<WRAP_IN_STORAGE, Storage<Item>, Item>;
+	using ItemOrStorage = std::conditional_t<WRAP_IN_STORAGE, Storage<Item>, Item>;
 
 	template <Size NUM_ITEMS_PER_PAGE>
-	using _Slots = Options::template Get<option::Tensor>::template Tensor<
-	  ItemOrStorage, NUM_ITEMS_PER_PAGE>;
+	using _Slots =
+	  Options::template Get<option::Tensor>::template Tensor<ItemOrStorage, NUM_ITEMS_PER_PAGE>;
 
-	template <Size NUM_ITEMS_PER_PAGE>
-	struct alignas(COPY_ON_WRITE ? 0 : PAGE_SIZE) _PageBody {
+	template <Size NUM_ITEMS_PER_PAGE> struct alignas(COPY_ON_WRITE ? 0 : PAGE_SIZE) _PageBody {
 		_Slots<NUM_ITEMS_PER_PAGE> slots;
 
 		_PageBody() = default;
@@ -120,23 +115,20 @@ private:
 	};
 
 	template <Size NUM_ITEMS_PER_PAGE>
-	using _Shared =
-	  Shared<_PageBody<NUM_ITEMS_PER_PAGE>>::template WithAlign<PAGE_SIZE>;
+	using _Shared = Shared<_PageBody<NUM_ITEMS_PER_PAGE>>::template WithAlign<PAGE_SIZE>;
 
 	template <Size NUM_ITEMS_PER_PAGE>
 	using _Page = std::conditional_t<
 	  COPY_ON_WRITE, typename _Shared<NUM_ITEMS_PER_PAGE>::ControlBlock,
 	  _PageBody<NUM_ITEMS_PER_PAGE>>;
 
-	template <Size CAND = PAGE_SIZE / sizeof(Item)>
-	static constexpr auto _findNumItemsPerPage() {
+	template <Size CAND = PAGE_SIZE / sizeof(Item)> static constexpr auto _findNumItemsPerPage() {
 		// return CAND;
 
 		// faster to compile
 		struct FakePage {
 			_Slots<CAND> slots;
-			[[no_unique_address]] std::conditional_t<COPY_ON_WRITE, Size, Empty>
-			  numReferences;
+			[[no_unique_address]] std::conditional_t<COPY_ON_WRITE, Size, Empty> numReferences;
 		};
 
 		if constexpr (sizeof(FakePage) <= PAGE_SIZE) {
@@ -157,12 +149,10 @@ private:
 public:
 	static constexpr Size NUM_ITEMS_PER_PAGE = _findNumItemsPerPage<>();
 	// static constexpr Size NUM_ITEMS_PER_PAGE = PAGE_SIZE / sizeof(Item);
-	static_assert(
-	  NUM_ITEMS_PER_PAGE > 0, "NUM_ITEMS_PER_PAGE must be greater than 0");
+	static_assert(NUM_ITEMS_PER_PAGE > 0, "NUM_ITEMS_PER_PAGE must be greater than 0");
 
 public:
-	using Handle =
-	  Handle::WithBrand<GetCustom<Options>>::template WithKind<Index>;
+	using Handle = Handle::WithBrand<GetCustom<Options>>::template WithKind<Index>;
 
 private:
 	using PageBody = _PageBody<NUM_ITEMS_PER_PAGE>;
@@ -188,8 +178,7 @@ private:
 	// Pool _pool;
 
 private:
-	template <class... Args>
-	INLINE void _constructItem(Slots &dst, Index idx, Args &&...args) {
+	template <class... Args> INLINE void _constructItem(Slots &dst, Index idx, Args &&...args) {
 		if constexpr (requires {
 			              { dst[idx] } -> std::same_as<Item &>;
 		              }) {
@@ -253,8 +242,7 @@ public:
 		// likely/unlikely? depends. let compiler inline and decide
 		if (_pages.numItems() > 0) {
 			auto &lastPage = _pages.last();
-			auto numItemsInLastPage =
-			  _numItems - (_pages.numItems() - 1) * NUM_ITEMS_PER_PAGE;
+			auto numItemsInLastPage = _numItems - (_pages.numItems() - 1) * NUM_ITEMS_PER_PAGE;
 			for (Index i = 0; i < numItemsInLastPage; ++i) {
 				lastPage->slots[i].destroy();
 			}
@@ -290,13 +278,9 @@ public:
 	// ACCESSORS (The Hot Path)
 	// ========================================================================
 
-	[[nodiscard]] INLINE constexpr Size numItems() const noexcept {
-		return _numItems;
-	}
+	[[nodiscard]] INLINE constexpr Size numItems() const noexcept { return _numItems; }
 
-	[[nodiscard]] INLINE constexpr Size numPages() const noexcept {
-		return _pages.numItems();
-	}
+	[[nodiscard]] INLINE constexpr Size numPages() const noexcept { return _pages.numItems(); }
 
 	/** Only const operator[] to avoid CoW. If you need to write, use operator()
 	 * to get an Accessor. */
@@ -380,11 +364,9 @@ public:
 	// }
 
 public:
-	template <class... MoreOptions>
-	using With = Base::template With<MoreOptions...>;
+	template <class... MoreOptions> using With = Base::template With<MoreOptions...>;
 
-	template <Size NEW_PAGE_SIZE>
-	using WithPageSize = With<option::PAGE_SIZE<NEW_PAGE_SIZE>>;
+	template <Size NEW_PAGE_SIZE> using WithPageSize = With<option::PAGE_SIZE<NEW_PAGE_SIZE>>;
 
 	using WithCopyOnWrite = With<option::COPY_ON_WRITE<true>>;
 

@@ -6,9 +6,9 @@
 #include "v/concepts/options"
 #include "v/object"
 #include "v/option/custom-template"
+#include "v/option/final"
 #include "v/option/input-options"
 #include "v/option/optional"
-#include "v/option/final"
 #include "v/option/target"
 #include "v/options"
 
@@ -17,8 +17,7 @@
 // !
 
 namespace VOLTISO_NAMESPACE::ref {
-template <class Target>
-struct Specializations<Options<option::Target<Target>>> {
+template <class Target> struct Specializations<Options<option::Target<Target>>> {
 	using Result = Ref<Target>;
 };
 } // namespace VOLTISO_NAMESPACE::ref
@@ -30,9 +29,9 @@ template <class InputOptions>
   requires concepts::Options<InputOptions>
 // requires(!std::is_const_v<T>) // ! allow `Ref<const T>`
 class Custom : public Object<typename InputOptions::template WithDefault<
-                 option::CustomTemplate<GetCustom>,
-                 option::InputOptions<InputOptions>>> {
-	RELOCATABLE_BODY(Custom<InputOptions>);
+                 option::CustomTemplate<GetCustom>, option::InputOptions<InputOptions>>> {
+	using Self = Custom;
+	RELOCATABLE_BODY
 
 private:
 	using Base = Object<typename InputOptions::template WithDefault<
@@ -40,8 +39,7 @@ private:
 
 public:
 	using Target = InputOptions::template Get<option::Target>;
-	static constexpr bool IS_OPTIONAL =
-	  InputOptions::template GET<option::OPTIONAL>;
+	static constexpr bool IS_OPTIONAL = InputOptions::template GET<option::OPTIONAL>;
 
 protected:
 	template <class OtherOptions>
@@ -102,10 +100,8 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Target>
 class Ref final
-    : public ref::Custom<
-        V::Options<option::Target<Target>, option::Final<Ref<Target>>>> {
-	using Base =
-	  ref::Custom<V::Options<option::Target<Target>, option::Final<Ref<Target>>>>;
+    : public ref::Custom<V::Options<option::Target<Target>, option::Final<Ref<Target>>>> {
+	using Base = ref::Custom<V::Options<option::Target<Target>, option::Final<Ref<Target>>>>;
 	using Base::Base;
 }; // class Ref
 // deduction guide

@@ -2,8 +2,8 @@
 #include <v/_/_>
 
 #include "v/_/quaternion.forward.hpp"
-#include "v/_/tensor/tensor.hpp"
 #include "v/is/relocatable"
+#include "v/tensor"
 
 #include <initializer_list>
 #include <type_traits>
@@ -12,16 +12,16 @@
 
 namespace VOLTISO_NAMESPACE {
 #pragma push_macro("BASE")
-#define BASE                                                                   \
-	tensor::Custom<Options<                                                      \
-	  option::Item<Item>, option::Extents<ValuePack<4>>,                         \
-	  option::Final<Quaternion<Item>>>>
+#define BASE                                                                                       \
+	tensor::Custom<                                                                                  \
+	  Options<option::Item<Item>, option::Extents<ValuePack<4>>, option::Final<Quaternion<Item>>>>
 template <class Item> class RELOCATABLE(Quaternion) : public BASE {
-	RELOCATABLE_BODY(Quaternion<Item>);
+	using Self = Quaternion;
+	RELOCATABLE_BODY
 	using Base = BASE;
 #pragma pop_macro("BASE")
 	static_assert(is::relocatable<Item>);
-	VOLTISO_INHERIT_RVALUE_COPY(Quaternion);
+	VOLTISO_INHERIT(Quaternion);
 
 public:
 	constexpr auto w() const -> const Item & { return (*this)[0]; }
@@ -55,15 +55,13 @@ public:
 		const ResultItem bz = other.z();
 
 		return Quaternion<ResultItem>{
-		  aw * bw - ax * bx - ay * by - az * bz,
-		  aw * bx + ax * bw + ay * bz - az * by,
-		  aw * by - ax * bz + ay * bw + az * bx,
-		  aw * bz + ax * by - ay * bx + az * bw};
+		  aw * bw - ax * bx - ay * by - az * bz, aw * bx + ax * bw + ay * bz - az * by,
+		  aw * by - ax * bz + ay * bw + az * bx, aw * bz + ax * by - ay * bx + az * bw};
 	}
 
 	template <class OtherItem>
-	VOLTISO_FORCE_INLINE constexpr auto
-	operator*=(const Quaternion<OtherItem> &other) -> Quaternion & {
+	VOLTISO_FORCE_INLINE constexpr auto operator*=(const Quaternion<OtherItem> &other)
+	  -> Quaternion & {
 		using ResultItem = std::common_type_t<Item, OtherItem>;
 		static_assert(std::is_convertible_v<ResultItem, Item>);
 		const auto r = (*this) * other;
@@ -78,16 +76,13 @@ public:
 template <
   class T, class U, class V, class W,
   std::enable_if_t<
-    std::conjunction_v<
-      std::is_same<T, U>, std::is_same<T, V>, std::is_same<T, W>>,
-    int> = 0>
+    std::conjunction_v<std::is_same<T, U>, std::is_same<T, V>, std::is_same<T, W>>, int> = 0>
 Quaternion(T, U, V, W) -> Quaternion<std::type_identity_t<T>>;
 
 namespace quaternion {
 template <class Item, int EXTENT>
   requires(EXTENT == 4)
-[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-from(const Item (&rawArray)[EXTENT]) {
+[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(const Item (&rawArray)[EXTENT]) {
 	return Quaternion<Item>::from(rawArray);
 }
 

@@ -4,6 +4,7 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
+// See also `AnyMock`
 struct Empty {};
 } // namespace VOLTISO_NAMESPACE
 

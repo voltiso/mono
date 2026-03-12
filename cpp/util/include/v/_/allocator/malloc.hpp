@@ -1,14 +1,18 @@
 #pragma once
 #include <v/_/_>
 
-#include "./malloc.forward.hpp" // IWYU pragma: keep
+#include "malloc.forward.hpp" // IWYU pragma: keep
 
-#include "v/_/singleton.hpp"
 #include "v/brand/custom"
 #include "v/handle"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/input-options"
+#include "v/singleton"
+
+#if VOLTISO_DEBUG_MALLOC
+	#include "v/option/lazy"
+#endif
 
 #include <v/ON>
 
@@ -24,35 +28,39 @@ struct Debug;
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
 
-template <class Options>
-struct Custom
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
-private:
-	using Base = Object<typename Options::template WithDefault<
-	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
+#pragma push_macro("OBJECT")
+#define OBJECT                                                                                     \
+	Object<typename Options::template WithDefault<                                                   \
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>
+
+template <concepts::Options Options> struct RELOCATABLE(Custom) : public OBJECT {
+	using Self = Custom;
+	RELOCATABLE_BODY
+	using Base = OBJECT;
+#pragma pop_macro("OBJECT")
 
 protected:
 	using Final = Base::Final;
-	using Singleton = V::Singleton<Final>::Lazy;
+#if VOLTISO_DEBUG_MALLOC
+	using SingletonOptions = V::Options<option::Item<Final>, option::lazy<true>>;
+#else
+	using SingletonOptions = V::Options<option::Item<Final>>;
+#endif
+	using Singleton = V::singleton::GetCustom<SingletonOptions>;
+	using ConstructKey = singleton::ConstructKey<SingletonOptions>;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
 	_::Debug *_debug;
-	Custom();
 	~Custom();
-#else // #if !VOLTISO_DEBUG_MALLOC
-protected:
-	Custom() = default;
 #endif
 
 public:
-	static constexpr auto &
-	maybeInitialize() noexcept(noexcept(Singleton::maybeInitialize())) {
-		// Note: not `ThreadSingleton`. We just delegate to global malloc/free.
-		return Singleton::maybeInitialize();
-	}
+	// ⚠️ Do not use this directly. It can only be instantiated as a singleton. Use `::instance()`
+	// instead.
+	constexpr Custom(ConstructKey) noexcept;
 
+public:
 	static constexpr auto &instance() noexcept { return Singleton::instance(); }
 
 public:
@@ -69,8 +77,7 @@ public:
 
 	void freeBytes(const Handle &handle, Size oldNumBytes);
 
-	Handle
-	reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size newNumBytes);
+	Handle reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size newNumBytes);
 
 	void *operator()(const Handle &handle);
 };
@@ -80,12 +87,18 @@ public:
 // VOLTISO_OBJECT_FINAL(allocator::malloc)
 
 namespace VOLTISO_NAMESPACE::allocator {
-struct Malloc final : malloc::Custom<Options<option::Final<Malloc>>> {
-	using Base = malloc::Custom<V::Options<option::Final<Malloc>>>;
+#pragma push_macro("CUSTOM")
+#define CUSTOM malloc::Custom<V::Options<option::Final<Malloc>>>
+struct RELOCATABLE(Malloc) final : CUSTOM {
+	using Custom = CUSTOM;
+#pragma pop_macro("CUSTOM")
+	using Self = Malloc;
+	RELOCATABLE_BODY
 
-protected:
-	friend Singleton;
-	Malloc() = default;
+public:
+	// ⚠️ Do not use this directly. It can only be instantiated as a singleton. Use `::instance()`
+	// instead.
+	constexpr Malloc(ConstructKey key) : Custom(key) {}
 };
 } // namespace VOLTISO_NAMESPACE::allocator
 

@@ -14,7 +14,8 @@
 
 namespace VOLTISO_NAMESPACE {
 class RELOCATABLE(Subscription) {
-	RELOCATABLE_BODY(Subscription);
+	using Self = Subscription;
+	RELOCATABLE_BODY
 
 public:
 	using Callback = subscription::Callback;
@@ -34,8 +35,7 @@ public:
 public:
 	template <class TSink>
 	  requires(std::is_base_of_v<sink::Base, TSink>)
-	INLINE Subscription(
-	  TSink &sink, Callback &&callback) /* throws OOM */; // circular dep
+	INLINE Subscription(TSink &sink, Callback &&callback) /* throws OOM */; // circular dep
 
 	// Non-copyable
 	Subscription(const Subscription &) = delete;
@@ -57,9 +57,9 @@ protected:
 // ! Subscription implementation
 
 namespace VOLTISO_NAMESPACE {
-template <class Value>
-class RELOCATABLE(EagerSubscription) : public Subscription {
-	RELOCATABLE_BODY(EagerSubscription<Value>);
+template <class Value> class RELOCATABLE(EagerSubscription) : public Subscription {
+	using Self = EagerSubscription<Value>;
+	RELOCATABLE_BODY
 
 private:
 	using Base = Subscription;
@@ -92,8 +92,7 @@ public:
 public:
 	template <class TSink>
 	  requires(std::is_base_of_v<Sink, TSink>)
-	INLINE
-	EagerSubscription(TSink &sink, EagerCallback &&eagerCallback) /* throws OOM */
+	INLINE EagerSubscription(TSink &sink, EagerCallback &&eagerCallback) /* throws OOM */
 	    : Base(
 	        sink,
 	        // ! better store callback locally

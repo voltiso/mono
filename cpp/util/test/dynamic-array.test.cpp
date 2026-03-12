@@ -1,18 +1,43 @@
 #include <gtest/gtest.h>
 
+#include "v/dynamic-array"
+#include "v/is/relocatable"
+
 #include <type_traits>
-#include <v/dynamic-array>
+
+#include <v/ON>
 
 using namespace VOLTISO_NAMESPACE;
 
-// test if `dynamicArray::Specializations` works
-static_assert(
-  std::is_same_v<DynamicArray<int>::WithItem<double>, DynamicArray<double>>);
+static_assert(is::relocatable<DynamicArray<int>>);
 
-static_assert(
-  std::is_constructible_v<DynamicArray<int>, const DynamicArray<int> &&>);
-static_assert(
-  std::is_assignable_v<DynamicArray<int> &, const DynamicArray<int> &&>);
+struct RELOCATABLE(ForcedRelocatable) {
+	using Self = ForcedRelocatable;
+	RELOCATABLE_BODY
+public:
+	~ForcedRelocatable() {}
+};
+static_assert(is::relocatable<DynamicArray<ForcedRelocatable>>);
+
+struct RELOCATABLE(Container) {
+	using Self = Container;
+	RELOCATABLE_BODY
+
+	DynamicArray<ForcedRelocatable> array;
+
+public:
+	~Container() {}
+	Container(Container &&); // for [[trivial_abi]]
+};
+static_assert(is::relocatable<Container>);
+
+// !
+
+// test if `dynamicArray::Specializations` works
+static_assert(std::is_same_v<DynamicArray<int>::WithItem<double>, DynamicArray<double>>);
+
+static_assert(std::is_constructible_v<DynamicArray<int>, const DynamicArray<int> &&>);
+static_assert(std::is_assignable_v<DynamicArray<int> &, const DynamicArray<int> &&>);
 
 TEST(DynamicArray, defaultInitialized) {
 	auto array = DynamicArray<int>::createWithNumItems(1);
@@ -91,15 +116,16 @@ TEST(DynamicArray, initializerList_assign) {
 int numConstructors = 0;
 int numDestructors = 0;
 
-struct S {
+class RELOCATABLE(S) {
+	using Self = S;
+	RELOCATABLE_BODY
+public:
 	int value;
 	S(int value) : value(value) { ++numConstructors; }
 	~S() { ++numDestructors; }
 
 	bool operator==(int other) const { return value == other; }
 };
-
-template <> constexpr auto VOLTISO_NAMESPACE::is::relocatable<S> = true;
 
 TEST(DynamicArray, inPlace) {
 	numConstructors = 0;
@@ -215,7 +241,11 @@ TEST(DynamicArray, fromStdVector) {
 // Test if destructors are called on `setNumItems`
 
 namespace {
-struct ShrinkProbe {
+struct RELOCATABLE(ShrinkProbe) {
+	using Self = ShrinkProbe;
+	RELOCATABLE_BODY
+
+public:
 	static int numDestructorCalls;
 	int value;
 
@@ -224,13 +254,13 @@ struct ShrinkProbe {
 
 	ShrinkProbe(const ShrinkProbe &) = delete;
 	ShrinkProbe &operator=(const ShrinkProbe &) = delete;
+
+private:
+	explicit ShrinkProbe(ShrinkProbe &&); // for [[trivial_abi]]
 };
 
 int ShrinkProbe::numDestructorCalls = 0;
 } // namespace
-
-template <>
-constexpr auto VOLTISO_NAMESPACE::is::relocatable<ShrinkProbe> = true;
 
 // Test if destructors are called on `setNumItems`
 TEST(DynamicArray, setLessNumItems_destroysShrunkTail) {
@@ -251,3 +281,5 @@ TEST(DynamicArray, setLessNumItems_destroysShrunkTail) {
 	EXPECT_EQ(array.numItems(), 0);
 	EXPECT_EQ(ShrinkProbe::numDestructorCalls, 2);
 }
+
+#include <v/OFF>

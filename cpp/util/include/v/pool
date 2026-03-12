@@ -41,7 +41,7 @@ template <class Options> struct Block {
 
 	Block(Size numItems) {
 		auto numBytes = numItems * sizeof(Slot<Item>);
-		auto handle = Allocator::maybeInitialize().allocateBytes(numBytes);
+		auto handle = Allocator::instance().allocateBytes(numBytes);
 		static_assert(sizeof(Slot<Item> *) == sizeof(handle));
 		this->allocationStart = std::bit_cast<Slot<Item> *>(handle);
 		this->allocationEnd = this->allocationStart + numItems;
@@ -54,15 +54,13 @@ template <class Options> struct Block {
 	~Block() {
 		auto numBytes = (std::byte *)allocationEnd - (std::byte *)allocationStart;
 		// note - singleton already initialized few lines above!
-		Allocator::instance().freeBytes(
-		  typename Allocator::Handle(allocationStart), numBytes);
+		Allocator::instance().freeBytes(typename Allocator::Handle(allocationStart), numBytes);
 	}
 };
 } // namespace VOLTISO_NAMESPACE::pool::_
 
 namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is::relocatable<pool::_::Block<Options>> = true;
+template <class Options> static constexpr auto is::relocatable<pool::_::Block<Options>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 //
@@ -88,8 +86,7 @@ private:
 
 private:
 	friend Pool;
-	Accessor(MaybeConstPool &pool, const Handle &handle) noexcept
-	    : handle(handle), pool(pool) {}
+	Accessor(MaybeConstPool &pool, const Handle &handle) noexcept : handle(handle), pool(pool) {}
 
 	Accessor(MaybeConstPool &pool, _::Slot<MaybeConstItem> *slot) noexcept
 	    : handle(slot), pool(pool) {}
@@ -98,12 +95,8 @@ private:
 	Accessor &operator=(const Accessor &) = delete;
 
 public:
-	MaybeConstItem &item() noexcept {
-		return *std::bit_cast<MaybeConstItem *>(handle);
-	}
-	const Item &item() const noexcept {
-		return *std::bit_cast<const Item *>(handle);
-	}
+	MaybeConstItem &item() noexcept { return *std::bit_cast<MaybeConstItem *>(handle); }
+	const Item &item() const noexcept { return *std::bit_cast<const Item *>(handle); }
 
 	MaybeConstItem &operator*() noexcept { return item(); }
 	const Item &operator*() const noexcept { return item(); }
@@ -111,8 +104,7 @@ public:
 	MaybeConstItem *operator->() noexcept { return &item(); }
 	const Item *operator->() const noexcept { return &item(); }
 
-	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
-	operator Item &() noexcept {
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr> operator Item &() noexcept {
 		return item();
 	}
 
@@ -121,8 +113,7 @@ public:
 	operator Handle() const noexcept { return handle; }
 	explicit operator bool() const noexcept { return (bool)handle; }
 
-	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
-	void erase() const {
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr> void erase() const {
 		pool.erase(handle);
 	}
 };
@@ -132,19 +123,22 @@ public:
 
 namespace VOLTISO_NAMESPACE::pool {
 
+#pragma push_macro("OBJECT")
+#define OBJECT                                                                                     \
+	Object<typename Options::template WithDefault<                                                   \
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>
+
 // Current implementation does not ever release memory to the system.
 // In the future, it's possible to keep free-lists per block, but additional
 // indirection would make things a little bit slower.
 template <class Options>
   requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<Custom>, option::InputOptions<Options>>>,
-      public Singleton<
-        typename Options::template Get<option::Allocator>>::Lazy::Guard {
-	using Base = Object<typename Options::template WithDefault<
-	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
-	using Final = Base::Final;
+class RELOCATABLE(Custom) : public OBJECT {
+	using Object = OBJECT;
+#pragma pop_macro("OBJECT")
+	using Self = Custom;
+	RELOCATABLE_BODY
+	using Final = Object::Final;
 
 public:
 	using Item = Options::template Get<option::Item>;
@@ -176,6 +170,12 @@ private:
 
 	friend Accessor;
 	friend ConstAccessor;
+
+public:
+	constexpr Custom() noexcept = default;
+
+protected:
+	explicit Custom(Custom &&); // for [[trivial_abi]]
 
 #if VOLTISO_DEBUG_POOL
 public:
@@ -209,13 +209,9 @@ public:
 	}
 
 public:
-	ConstAccessor operator()(Handle handle) const noexcept {
-		return ConstAccessor(*this, handle);
-	}
+	ConstAccessor operator()(Handle handle) const noexcept { return ConstAccessor(*this, handle); }
 
-	Accessor operator()(Handle handle) noexcept {
-		return Accessor(*this, handle);
-	}
+	Accessor operator()(Handle handle) noexcept { return Accessor(*this, handle); }
 
 	template <class... Args>
 	  requires(std::is_constructible_v<Item, Args...>)
@@ -260,25 +256,27 @@ private:
 	auto &allocator() const { return Allocator::instance(); }
 
 public:
-	template <class... MoreOptions>
-	using With = Base::template With<MoreOptions...>;
-
-	template <class Item> using WithItem = With<option::Item<Item>>;
+	template <class Item> using WithItem = Object::template With<option::Item<Item>>;
 
 	template <class Allocator>
-	using WithAllocator = With<option::Allocator<Allocator>>;
+	using WithAllocator = Object::template With<option::Allocator<Allocator>>;
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::pool
 
 // !
 
 namespace VOLTISO_NAMESPACE {
-template <class Item>
-class Pool : public pool::Custom<
-               Options<option::Item<Item>, option::Final<Pool<Item>>>> {
-	using Base =
-	  pool::Custom<Options<option::Item<Item>, option::Final<Pool<Item>>>>;
-	using Base::Base;
+#pragma push_macro("CUSTOM")
+#define CUSTOM pool::Custom<Options<option::Item<Item>, option::Final<Pool<Item>>>>
+template <class Item> class RELOCATABLE(Pool) : public CUSTOM {
+	using Custom = CUSTOM;
+#pragma pop_macro("CUSTOM")
+	using Self = Pool;
+	RELOCATABLE_BODY
+	using Custom::Custom;
+
+	// private:
+	// 	explicit Pool(Pool &&) noexcept; // for [[trivial_abi]]
 };
 
 } // namespace VOLTISO_NAMESPACE

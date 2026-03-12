@@ -13,8 +13,10 @@
 // Define NO_INLINE macro based on compiler
 #if defined(_MSC_VER) // Microsoft Visual C++
 	#define VOLTISO_NO_INLINE __declspec(noinline)
+	#define VOLTISO_COLD VOLTISO_NO_INLINE
 #elif defined(__GNUC__) || defined(__clang__) // GCC or Clang
 	#define VOLTISO_NO_INLINE __attribute__((noinline))
+	#define VOLTISO_COLD __attribute__((noinline, cold))
 #else                       // Other compilers
 	#define VOLTISO_NO_INLINE // No standard fallback exists, leave empty
 #endif
