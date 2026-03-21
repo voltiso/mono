@@ -1,19 +1,17 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/options"
 
 namespace VOLTISO_NAMESPACE::mixin {
 
 template <class Crtp, bool enable = true> struct Relocatable {
-	static_assert(
-	  !concepts::Options<Crtp>, "mixin::Relocatable takes regular Crtp parameter, not Options");
+	static_assert(!is::Options<Crtp>, "mixin::Relocatable takes regular Crtp parameter, not Options");
 	using VOLTISO_RELOCATABLE_MARKER = Crtp;
 };
 
 template <class Crtp> struct Relocatable<Crtp, false> {
-	static_assert(
-	  !concepts::Options<Crtp>, "mixin::Relocatable takes regular Crtp parameter, not Options");
+	static_assert(!is::Options<Crtp>, "mixin::Relocatable takes regular Crtp parameter, not Options");
 };
 
 } // namespace VOLTISO_NAMESPACE::mixin

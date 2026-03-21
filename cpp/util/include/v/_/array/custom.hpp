@@ -1,27 +1,25 @@
 #pragma once
 #include <v/_/_>
 
-#include "_forward.hpp"
-#include "impl.hpp"
+#include "_/impl.hpp"
+#include "forward.hpp"
 
 #include "v/_/is/relocatable.hpp"
-#include "v/concepts/options"
-#include "v/option/item"
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::array {
-template <concepts::Options Options> class Custom : public array::_::Impl<Options> {
-	using Base = array::_::Impl<Options>;
+template <is::Option... Os> class Custom : public array::_::Impl<Os...> {
+	using Base = array::_::Impl<Os...>;
 	VOLTISO_INHERIT(Custom);
 };
 
-template <concepts::Options Options>
-  requires is::relocatable<typename Options::template Get<option::Item>>
-class RELOCATABLE(Custom<Options>) : public array::_::Impl<Options> {
+template <is::Option... Os>
+  requires is::relocatable<typename Options<Os...>::template Get<option::Item>>
+class RELOCATABLE(Custom<Os...>) : public array::_::Impl<Os...> {
 	using Self = Custom;
 	RELOCATABLE_BODY
-	using Base = array::_::Impl<Options>;
+	using Base = array::_::Impl<Os...>;
 	VOLTISO_INHERIT(Custom);
 };
 } // namespace VOLTISO_NAMESPACE::array

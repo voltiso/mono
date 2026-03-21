@@ -7,19 +7,18 @@
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::array {
-template <class Item, int EXTENT>
-[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-from(const Item (&rawArray)[EXTENT]) {
-	return Array<Item, EXTENT>::from(rawArray);
+namespace V::array {
+template <class Item, Size numItems>
+[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(const Item (&rawArray)[numItems]) {
+	return Array<Item, numItems>::from(rawArray);
 }
 
-template <class Item, int EXTENT>
+template <class Item, Size numItems>
 [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 from(const std::initializer_list<Item> &list) {
-	static_assert(list.size() == EXTENT, "wrong constructor selected");
-	return Array<Item, EXTENT>::from(list);
+	static_assert(list.size() == numItems, "wrong constructor selected");
+	return Array<Item, numItems>::from(list);
 }
-} // namespace VOLTISO_NAMESPACE::array
+} // namespace V::array
 
 #include <v/OFF>

@@ -12,7 +12,7 @@
 
 namespace VOLTISO_NAMESPACE::heap {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom : protected dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
                  option::Item<Storage<typename Options::template Get<option::Item>>>>> {
 	//   using Final = Custom;

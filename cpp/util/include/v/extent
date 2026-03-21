@@ -1,26 +1,22 @@
 #pragma once
 #include <v/_/_>
 
+#include "v/box"
 #include "v/size"
 
 #include <v/ON>
+namespace V {
 
 //
 
-namespace VOLTISO_NAMESPACE::_::extent {
-using Value = Size;
-}; // namespace VOLTISO_NAMESPACE::_::extent
-
-namespace V::extent {
-struct Dynamic {
-	INLINE constexpr operator _::extent::Value() const noexcept { return -1; }
+struct Extent : Box<Size> {
+	using Box::Box;
+	static const Extent dynamic;
 };
-static constexpr auto DYNAMIC = Dynamic{};
 
-struct Unbound {
-	INLINE constexpr operator _::extent::Value() const noexcept { return -2; }
-};
-static constexpr auto UNBOUND = Unbound{};
-} // namespace V::extent
+inline constexpr Extent Extent::dynamic = Extent{-1};
 
+//
+
+} // namespace V
 #include <v/OFF>

@@ -1,0 +1,11 @@
+#pragma once
+#include <v/_/_>
+
+namespace VOLTISO_NAMESPACE::is {
+/** Note: destructor must be `constexpr` too... not possible to create concept
+ * otherwise. Also, it returns `true` even if subobject is uninitialized - even though it's
+ * impossible to constinit variable in such case. */
+template <class T, auto... args>
+concept constexprConstructible =
+  requires { typename std::bool_constant<((void)T{args...}, true)>; };
+} // namespace VOLTISO_NAMESPACE::is

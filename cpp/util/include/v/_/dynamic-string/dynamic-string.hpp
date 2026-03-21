@@ -7,8 +7,8 @@
 #include "v/dynamic-array"
 #include "v/get/brands"
 #include "v/option/custom-template"
-#include "v/option/item"
 #include "v/option/final"
+#include "v/option/item"
 #include "v/options"
 #include "v/tag/concat"
 
@@ -18,46 +18,40 @@
 
 namespace VOLTISO_NAMESPACE::dynamicString {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
 
-template <class... Args>
-using GetCustom = typename Specializations<Args...>::Result;
+template <class... Args> using GetCustom = typename Specializations<Args...>::Result;
 } // namespace VOLTISO_NAMESPACE::dynamicString
 
 // !
 
 namespace VOLTISO_NAMESPACE::dynamicString {
 template <class TOptions>
-  requires concepts::Options<TOptions>
-class Custom
-    : public dynamicArray::Custom<typename TOptions::template WithDefault<
-        option::Item<char>, option::CustomTemplate<GetCustom>>> {
-	using Base = dynamicArray::Custom<typename TOptions::template WithDefault<
-	  option::Item<char>, option::CustomTemplate<GetCustom>>>;
+  requires is::Options<TOptions>
+class Custom : public dynamicArray::Custom<typename TOptions::template WithDefault<
+                 option::Item<char>, option::CustomTemplate<GetCustom>>> {
+	using Base = dynamicArray::Custom<
+	  typename TOptions::template WithDefault<option::Item<char>, option::CustomTemplate<GetCustom>>>;
 	using Base::Base; // not enough
 
 protected:
 	using Final = Base::Final;
 
 public:
-	template <class... Args>
-	INLINE Custom(Args &&...args) : Base(std::forward<Args>(args)...) {}
+	template <class... Args> INLINE Custom(Args &&...args) : Base(std::forward<Args>(args)...) {}
 
 	template <Size N>
 	explicit INLINE Custom(const char (&rawString)[N])
 	    : Base(tag::COPY, ConstStringView{rawString}) {}
 
 public:
-	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
-		return dynamicArray::from(this->final());
-	}
+	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto { return dynamicArray::from(this->final()); }
 
 public:
-	template <class... Args>
-	VOLTISO_FORCE_INLINE static auto concat(const Args &...args) {
+	template <class... Args> VOLTISO_FORCE_INLINE static auto concat(const Args &...args) {
 		static_assert(std::is_base_of_v<Custom, Final>);
 		return Final(tag::CONCAT, args...);
 	}
@@ -92,10 +86,11 @@ public:
 // !
 
 namespace VOLTISO_NAMESPACE {
-class DynamicString : public dynamicString::Custom<VOLTISO_NAMESPACE::Options<
-                        option::Item<char>, option::Final<DynamicString>>> {
-	using Base = dynamicString::Custom<VOLTISO_NAMESPACE::Options<
-	  option::Item<char>, option::Final<DynamicString>>>;
+class DynamicString
+    : public dynamicString::Custom<
+        VOLTISO_NAMESPACE::Options<option::Item<char>, option::Final<DynamicString>>> {
+	using Base = dynamicString::Custom<
+	  VOLTISO_NAMESPACE::Options<option::Item<char>, option::Final<DynamicString>>>;
 	using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE
@@ -117,8 +112,7 @@ namespace VOLTISO_NAMESPACE::dynamicString {
 
 // infer brands from `Other`
 // forward to DynamicString<...>::from` member constructor proxy
-template <class Other>
-[[nodiscard]] VOLTISO_FORCE_INLINE auto from(Other &&other) {
+template <class Other> [[nodiscard]] VOLTISO_FORCE_INLINE auto from(Other &&other) {
 	using OtherBrands = get::Brands<Other>;
 	using Result = typename DynamicString::template WithDefault<OtherBrands>;
 	return Result::from(std::forward<Other>(other));
@@ -126,8 +120,7 @@ template <class Other>
 
 // more than one argument - do not infer brands, just forward to
 // DynamicString<...>::from` member constructor proxy
-template <class... Args>
-[[nodiscard]] VOLTISO_FORCE_INLINE auto concat(Args &&...args) {
+template <class... Args> [[nodiscard]] VOLTISO_FORCE_INLINE auto concat(Args &&...args) {
 	return DynamicString::concat(std::forward<Args>(args)...);
 } // from
 } // namespace VOLTISO_NAMESPACE::dynamicString

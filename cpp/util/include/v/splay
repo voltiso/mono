@@ -2,9 +2,9 @@
 #include <v/_/_>
 
 #include "v/bst"
-#include "v/concepts/options"
 #include "v/dynamic-array"
 #include "v/get/key"
+#include "v/is/options"
 #include "v/object"
 #include "v/option/input-options"
 #include "v/option/pool"
@@ -21,10 +21,8 @@ struct AccessPathNode {
 	uint8_t childIndex;
 };
 
-inline ::std::ostream &
-operator<<(::std::ostream &os, const AccessPathNode &node) {
-	return os << "{node: " << node.node
-	          << ", childIndex: " << (int)node.childIndex << "}";
+inline ::std::ostream &operator<<(::std::ostream &os, const AccessPathNode &node) {
+	return os << "{node: " << node.node << ", childIndex: " << (int)node.childIndex << "}";
 }; // struct _
 
 } // namespace VOLTISO_NAMESPACE::splay::_
@@ -40,13 +38,12 @@ namespace VOLTISO_NAMESPACE::splay {
 //
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 
 template <class Options, bool IS_CONST> class Accessor {
 private:
-	template <class T>
-	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+	template <class T> using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
 
 protected:
 	using Custom = Custom<Options>;
@@ -63,8 +60,7 @@ protected:
 
 protected:
 	friend Custom;
-	Accessor(MaybeConst<Handle> &root, MaybeConst<Custom> &splay)
-	    : root(root), splay(splay) {}
+	Accessor(MaybeConst<Handle> &root, MaybeConst<Custom> &splay) : root(root), splay(splay) {}
 
 public:
 	Handle lowerBound(const Key &searchAtLeast) {
@@ -317,9 +313,8 @@ public:
 		} else if (!pool[nodeToUnlink]->children[1]) [[unlikely]] {
 			root = pool[nodeToUnlink]->children[0];
 		} else [[likely]] {
-			root = splay.merge(
-			  splay.pool[nodeToUnlink]->children[0],
-			  splay.pool[nodeToUnlink]->children[1]);
+			root =
+			  splay.merge(splay.pool[nodeToUnlink]->children[0], splay.pool[nodeToUnlink]->children[1]);
 		}
 		pool[nodeToUnlink]->children[0] = Handle::INVALID;
 		pool[nodeToUnlink]->children[1] = Handle::INVALID;
@@ -400,8 +395,7 @@ public:
 		} else if (!pool[n].children[1]) [[unlikely]] {
 			root = pool[n].children[0];
 		} else [[likely]] {
-			root =
-			  splay.merge(splay._pool[n].children[0], splay._pool[n].children[1]);
+			root = splay.merge(splay._pool[n].children[0], splay._pool[n].children[1]);
 		}
 		auto entry = get::entry(splay._pool[n]);
 		pool(n).erase();
@@ -414,21 +408,18 @@ public:
 
 namespace std {
 template <class Options>
-ostream &operator<<(
-  ostream &os,
-  const VOLTISO_NAMESPACE::splay::Accessor<Options, true> &accessor) {
+ostream &
+operator<<(ostream &os, const VOLTISO_NAMESPACE::splay::Accessor<Options, true> &accessor) {
 	using Handle = typename VOLTISO_NAMESPACE::splay::Custom<Options>::Handle;
 	static thread_local int indent = 0;
-	auto key =
-	  VOLTISO_NAMESPACE::get::key(accessor.splay.pool[accessor.root].item());
+	auto key = VOLTISO_NAMESPACE::get::key(accessor.splay.pool[accessor.root].item());
 	key >>= 32; // !!!
 	os << accessor.root << ", key " << key << ", numBytes "
 	   << accessor.splay.pool[accessor.root]->entry.numBytes;
 	++indent;
 	if (accessor.root) {
 		for (int i = 0; i < 2; i++) {
-			const auto constChild =
-			  Handle(accessor.splay.pool[accessor.root]->children[i].value);
+			const auto constChild = Handle(accessor.splay.pool[accessor.root]->children[i].value);
 			auto child = constChild;
 			if (child) {
 				os << "\n";
@@ -449,10 +440,9 @@ ostream &operator<<(
 
 namespace VOLTISO_NAMESPACE::splay {
 template <class Options>
-  requires concepts::Options<Options>
-class Custom
-    : public Object<typename Options::template WithDefault<
-        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
+  requires is::Options<Options>
+class Custom : public Object<typename Options::template WithDefault<
+                 option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 	using Final = Base::Final;
@@ -524,9 +514,7 @@ public:
 	}
 
 public:
-	ConstAccessor operator()(Handle &root) const {
-		return ConstAccessor(root, *this);
-	}
+	ConstAccessor operator()(Handle &root) const { return ConstAccessor(root, *this); }
 	Accessor operator()(Handle &root) { return Accessor(root, *this); }
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::splay
@@ -537,8 +525,7 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Pool>
-class Splay : public splay::Custom<
-                Options<option::Pool<Pool>, option::Final<Splay<Pool>>>> {
+class Splay : public splay::Custom<Options<option::Pool<Pool>, option::Final<Splay<Pool>>>> {
 	// using Base =
 	//   splay::Custom<Options<option::Pool<Pool>, option::Final<Splay<Pool>>>>;
 };

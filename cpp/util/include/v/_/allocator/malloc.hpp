@@ -33,7 +33,7 @@ namespace VOLTISO_NAMESPACE::allocator::malloc {
 	Object<typename Options::template WithDefault<                                                   \
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>
 
-template <concepts::Options Options> struct RELOCATABLE(Custom) : public OBJECT {
+template <is::Options Options> struct RELOCATABLE(Custom) : public OBJECT {
 	using Self = Custom;
 	RELOCATABLE_BODY
 	using Base = OBJECT;

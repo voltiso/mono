@@ -452,5 +452,8 @@
 		"Wuser",
 		"Zonejs",
 		"LSAN"
-	]
+	],
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+	}
 }

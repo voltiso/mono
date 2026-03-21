@@ -16,7 +16,7 @@
 // --- primary template for mapping Options -> string::Custom
 namespace V::string {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 
 // helper alias for option::CustomTemplate
@@ -31,7 +31,7 @@ template <class... Args> using GetCustom = typename Specializations<Args...>::Re
 
 // primary Specializations: map any Options -> Custom<Options>
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
@@ -53,7 +53,7 @@ template <class... Args> using GetCustom = typename Specializations<Args...>::Re
 // --- enable `.dynamic()` on fixed-size strings via string::Custom<Options>
 namespace V::string {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom : public V::tensor::Custom<typename Options ::template WithDefault<
                  option::Item<char>, option::CustomTemplate<string::GetCustom>>> {
 	using Base = V::tensor::Custom<typename Options ::template WithDefault<

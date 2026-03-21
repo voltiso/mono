@@ -4,13 +4,11 @@
 #include "custom.hpp"
 #include "forward.hpp"
 
-#include "v/options"
-
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-class Mutex : public mutex::Custom<V::Options<>> {
-	using Custom = mutex::Custom<V::Options<>>;
+class Mutex : public mutex::Custom<> {
+	using Custom = mutex::Custom<>;
 	using Custom::Custom;
 };
 } // namespace VOLTISO_NAMESPACE

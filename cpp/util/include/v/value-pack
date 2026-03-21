@@ -15,8 +15,7 @@ template <auto... VALUES> struct ValuePack;
 namespace V::_ {
 template <auto... T_VALUES> struct ValuePackBase {};
 
-template <auto T_HEAD, auto... T_VALUES>
-struct ValuePackBase<T_HEAD, T_VALUES...> {
+template <auto T_HEAD, auto... T_VALUES> struct ValuePackBase<T_HEAD, T_VALUES...> {
 	static constexpr auto HEAD = T_HEAD;
 	using Tail = ValuePack<T_VALUES...>;
 };
@@ -30,14 +29,14 @@ namespace V {
  * The types are deduced automatically.
  */
 template <auto... VALUES> struct ValuePack : _::ValuePackBase<VALUES...> {
-	static constexpr Size NUM_ITEMS = sizeof...(VALUES);
-
 	ValuePack() = delete;
 
-	consteval static auto tuple() { return std::tuple{VALUES...}; }
+	static consteval auto numItems() noexcept { return Size{sizeof...(VALUES)}; }
+
+	static consteval auto tuple() noexcept { return std::tuple{VALUES...}; }
 
 	template <class Item> consteval static auto array() {
-		return std::array<Item, NUM_ITEMS>{VALUES...};
+		return std::array<Item, numItems()>{VALUES...};
 	}
 }; // struct ValuePack
 } // namespace V

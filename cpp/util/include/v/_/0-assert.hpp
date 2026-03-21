@@ -11,10 +11,10 @@
 #if defined(__clang__)
   // 1. Clang drops [[assume]] and __builtin_assume if it sees ANY function
   // call. We force the LLVM optimizer's hand by using the unreachable branch.
-	#define VOLTISO_ASSUME(expr)                                                 \
-		do {                                                                       \
-			if (!(expr))                                                             \
-				__builtin_unreachable();                                               \
+	#define VOLTISO_ASSUME(expr)                                                                     \
+		do {                                                                                           \
+			if (!(expr))                                                                                 \
+				__builtin_unreachable();                                                                   \
 		} while (false)
 #elif __cplusplus >= 202302L
   // 2. Standard C++23 (for GCC and MSVC if they handle it better)
@@ -24,14 +24,14 @@
 	#define VOLTISO_ASSUME(expr) __assume(expr)
 #elif defined(__GNUC__)
   // 4. GCC legacy
-	#define VOLTISO_ASSUME(expr)                                                 \
-		do {                                                                       \
-			if (!(expr))                                                             \
-				__builtin_unreachable();                                               \
+	#define VOLTISO_ASSUME(expr)                                                                     \
+		do {                                                                                           \
+			if (!(expr))                                                                                 \
+				__builtin_unreachable();                                                                   \
 		} while (false)
 #else
-	#define VOLTISO_ASSUME(expr)                                                 \
-		do {                                                                       \
+	#define VOLTISO_ASSUME(expr)                                                                     \
+		do {                                                                                           \
 		} while (false)
 #endif
 
@@ -50,9 +50,8 @@ struct AssertOpArg {
 [[noreturn]] inline void assertFail(const AssertOpArg &arg) {
 	std::string filePath = arg.location.file_name();
 	auto lastSeparator = filePath.find_last_of("/\\"); // Find last '/' or '\\'
-	std::string fileName = (lastSeparator == std::string::npos)
-	                         ? filePath
-	                         : filePath.substr(lastSeparator + 1);
+	std::string fileName =
+	  (lastSeparator == std::string::npos) ? filePath : filePath.substr(lastSeparator + 1);
 
 	std::ostringstream oss;
 	// format location
@@ -62,15 +61,13 @@ struct AssertOpArg {
 	//                           fileName + ":" +
 	//                               std::to_string(arg.location.line()))
 	//     << console::RESET << " ";
-	oss << console::FG_BLUE << filePath << ":" << arg.location.line()
-	    << console::RESET << "\n";
+	oss << console::FG_BLUE << filePath << ":" << arg.location.line() << console::RESET << "\n";
 
 	oss << "\t" << arg.location.function_name() << '\n';
 
-	oss << "\t\t" << console::FG_GRAY(12) << arg.lhs << console::RESET << " "
-	    << arg.lhsEval << " " << console::FG_RED << arg.opStr << console::RESET
-	    << " " << arg.rhsEval << " " << console::FG_GRAY(12) << arg.rhs
-	    << console::RESET << '\n';
+	oss << "\t\t" << console::FG_GRAY(12) << arg.lhs << console::RESET << " " << arg.lhsEval << " "
+	    << console::FG_RED << arg.opStr << console::RESET << " " << arg.rhsEval << " "
+	    << console::FG_GRAY(12) << arg.rhs << console::RESET << '\n';
 
 	std::cerr << oss.str();
 	std::cerr.flush();
@@ -80,8 +77,7 @@ struct AssertOpArg {
 	// std::unreachable();
 }
 
-template <class T>
-inline /* constexpr */ std::string stdStringFrom(const T &value) {
+template <class T> inline /* constexpr */ std::string stdStringFrom(const T &value) {
 	if constexpr (std::is_same_v<T, std::string>) {
 		return value;
 		// } else if constexpr (std::is_constant_evaluated()) {
@@ -102,25 +98,25 @@ inline /* constexpr */ std::string stdStringFrom(const T &value) {
 
 } // namespace VOLTISO_NAMESPACE::_
 
-#define VOLTISO_CMP(_a, _op, _b)                                               \
-	if (std::is_constant_evaluated() || VOLTISO_NAMESPACE::IS_DEBUG_BUILD) {     \
-		if (!((_a)_op(_b))) [[unlikely]] {                                         \
-			if (std::is_constant_evaluated()) {                                      \
-				static_assert(true, "assertion failed: " #_a " " #_op " " #_b);        \
-			} else {                                                                 \
-				VOLTISO_NAMESPACE::_::assertFail({                                     \
-				  .condition = ((_a)_op(_b)),                                          \
-				  .lhs = #_a,                                                          \
-				  .lhsEval = VOLTISO_NAMESPACE::_::stdStringFrom(_a),                  \
-				  .opStr = #_op,                                                       \
-				  .rhsEval = VOLTISO_NAMESPACE::_::stdStringFrom(_b),                  \
-				  .rhs = #_b,                                                          \
-				  .location = std::source_location::current(),                         \
-				});                                                                    \
-			}                                                                        \
-		}                                                                          \
-	} else {                                                                     \
-		VOLTISO_ASSUME((_a)_op(_b));                                               \
+#define VOLTISO_CMP(_a, _op, _b)                                                                   \
+	if (std::is_constant_evaluated() || VOLTISO_NAMESPACE::IS_DEBUG_BUILD) {                         \
+		if (!((_a)_op(_b))) [[unlikely]] {                                                             \
+			if (std::is_constant_evaluated()) {                                                          \
+				static_assert(true, "assertion failed: " #_a " " #_op " " #_b);                            \
+			} else {                                                                                     \
+				VOLTISO_NAMESPACE::_::assertFail({                                                         \
+				  .condition = ((_a)_op(_b)),                                                              \
+				  .lhs = #_a,                                                                              \
+				  .lhsEval = VOLTISO_NAMESPACE::_::stdStringFrom(_a),                                      \
+				  .opStr = #_op,                                                                           \
+				  .rhsEval = VOLTISO_NAMESPACE::_::stdStringFrom(_b),                                      \
+				  .rhs = #_b,                                                                              \
+				  .location = std::source_location::current(),                                             \
+				});                                                                                        \
+			}                                                                                            \
+		}                                                                                              \
+	} else {                                                                                         \
+		VOLTISO_ASSUME((_a)_op(_b));                                                                   \
 	}
 
 #define VOLTISO_EQ(a, b) VOLTISO_CMP(a, ==, b)
@@ -132,3 +128,7 @@ inline /* constexpr */ std::string stdStringFrom(const T &value) {
 
 #define VOLTISO_CHECK(a) VOLTISO_CMP(!!(a), ==, true)
 #define VOLTISO_NOT(a) VOLTISO_CMP(!(a), ==, false)
+
+#define VOLTISO_RANGE(val, from, to)                                                               \
+	VOLTISO_LE(from, val);                                                                           \
+	VOLTISO_LT(val, to)

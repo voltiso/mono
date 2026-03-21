@@ -1,24 +1,26 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/option"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::atomic {
-template <concepts::Options Options> class Custom;
-} // namespace VOLTISO_NAMESPACE::atomic
+namespace V::atomic {
 
-namespace VOLTISO_NAMESPACE::atomic {
-template <class Options>
-  requires concepts::Options<Options>
-struct Specializations {
-	using Result = Custom<Options>;
+template <is::Option... Os> class Custom;
+
+template <is::Option... Os> struct Specializations {
+	using Result = Custom<Os...>;
 };
-} // namespace VOLTISO_NAMESPACE::atomic
 
-namespace VOLTISO_NAMESPACE::atomic {
-template <class... Args> using GetCustom = Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::atomic
+template <is::Option... Os> using GetCustom = Specializations<Os...>::Result;
+
+} // namespace V::atomic
+
+// !
+
+namespace V {
+template <class Item> class Atomic;
+} // namespace V
 
 #include <v/OFF>

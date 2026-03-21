@@ -1,15 +1,15 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/options"
 
 namespace VOLTISO_NAMESPACE::ref {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };

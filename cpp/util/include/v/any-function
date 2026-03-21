@@ -1,10 +1,10 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
 #include "v/is/derived-from-template"
 #include "v/is/instantiated-from"
 #include "v/is/member-function-const"
+#include "v/is/options"
 #include "v/is/relocatable"
 #include "v/option/input-options"
 #include "v/option/mutable"
@@ -24,11 +24,11 @@
 
 namespace VOLTISO_NAMESPACE::anyFunction {
 template <class Options>
-  requires concepts::Options<Options> // && std::is_final_v<Final>
+  requires is::Options<Options> // && std::is_final_v<Final>
 class Custom;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 
 template <class... Args> using GetCustom = Specializations<Args...>::Result;
@@ -42,7 +42,7 @@ template <class Signature> class AnyFunction;
 
 namespace VOLTISO_NAMESPACE::anyFunction {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
@@ -66,11 +66,11 @@ struct Specializations<
 
 namespace VOLTISO_NAMESPACE::anyFunction {
 template <class Options, class Parameters>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(CustomBase);
 
 template <class Options, class... ParametersList>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class CustomBase<Options, Pack<ParametersList...>>
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<GetCustom>, option::InputOptions<Options>>> {
@@ -91,9 +91,9 @@ public:
 	  std::is_same_v<Return, Unset> || std::is_same_v<Parameters, Unset>, Unset,
 	  Return(ParametersList...)>;
 
-	static constexpr auto NOEXCEPT = Options::template GET<option::NOEXCEPT>;
-	static constexpr auto MUTABLE = Options::template GET<option::MUTABLE>;
-	static constexpr auto OPTIONAL = Options::template GET<option::OPTIONAL>;
+	static constexpr auto NOEXCEPT = Options::template get<option::NOEXCEPT>;
+	static constexpr auto MUTABLE = Options::template get<option::MUTABLE>;
+	static constexpr auto OPTIONAL = Options::template get<option::OPTIONAL>;
 
 protected:
 	using RawPointer = Return (*)(ParametersList...);
@@ -126,7 +126,7 @@ public:
 	}
 
 	template <class OtherOptions, class Parameters>
-	  requires concepts::Options<OtherOptions>
+	  requires is::Options<OtherOptions>
 	friend class CustomBase;
 
 	INLINE CustomBase(CustomBase &&other) noexcept {
@@ -336,14 +336,14 @@ public:
 
 namespace _ {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct GetCustomBase {
 	using Result = CustomBase<Options, typename Options::template Get<option::Parameters>>;
 }; // struct GetCustomBase
 
 template <class Options>
   requires(
-    concepts::Options<Options> &&
+    is::Options<Options> &&
     std::is_same_v<typename Options::template Get<option::Parameters>, Unset>)
 struct GetCustomBase<Options> {
 	// CustomBase requires a true list, so give it an empty one
@@ -354,7 +354,7 @@ struct GetCustomBase<Options> {
 // !
 
 template <class Options = V::Options<>>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom) : public _::GetCustomBase<Options>::Result {
 	using Self = Custom;
 	RELOCATABLE_BODY

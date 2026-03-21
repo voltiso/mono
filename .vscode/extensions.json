@@ -93,6 +93,7 @@
 
 		/** C++ */
 		"llvm-vs-code-extensions.vscode-clangd",
+		"KylinIdeTeam.cmake-intellisence",
 		"ms-vscode.cmake-tools",
 		"vadimcn.vscode-lldb"
 	]

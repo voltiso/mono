@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "v/concepts/options"
+#include "v/is/options"
 #include "v/is/relocatable"
 #include "v/object"
 #include "v/option/custom-template"
@@ -33,12 +33,9 @@ static_assert(!is::relocatable<NotDefaultRelocatable>);
 
 namespace myObject {
 template <class Options>
-  requires(v::concepts::Options<Options>)
-class Custom
-    : public Object<
-        typename Options::template With<option::CustomTemplate<Custom>>> {
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+  requires(v::is::Options<Options>)
+class Custom : public Object<typename Options::template With<option::CustomTemplate<Custom>>> {
+	using Base = Object<typename Options::template With<option::CustomTemplate<Custom>>>;
 	using Final = Base::Final;
 
 public:
@@ -48,8 +45,7 @@ public:
 }; // class Custom
 } // namespace myObject
 
-template <class Item>
-class MyObject : public myObject::Custom<Options<option::Item<Item>>> {
+template <class Item> class MyObject : public myObject::Custom<Options<option::Item<Item>>> {
 	using Base = myObject::Custom<Options<option::Item<Item>>>;
 
 public:
@@ -62,18 +58,15 @@ TEST(Object, options) {
 	using A = Options<option::Item<int>>;
 	using B = A::With<option::CustomTemplate<myObject::Custom>>;
 	static_assert(
-	  std::is_same_v<
-	    B, Options<option::Item<int>, option::CustomTemplate<myObject::Custom>>>);
+	  std::is_same_v<B, Options<option::Item<int>, option::CustomTemplate<myObject::Custom>>>);
 }
 
 TEST(Object, rebind) {
 	using A = MyObject<int>;
 	static_assert(std::is_same_v<A::Item, int>);
 
-	static_assert(
-	  std::is_same_v<
-	    A::Options,
-	    Options<option::Item<int>, option::CustomTemplate<myObject::Custom>>>);
+	static_assert(std::is_same_v<
+	              A::Options, Options<option::Item<int>, option::CustomTemplate<myObject::Custom>>>);
 
 	// static_assert(
 	//   std::is_same_v<A::SelfTemplate<Options<>>, myObject::Custom<Options<>>>);
@@ -81,14 +74,13 @@ TEST(Object, rebind) {
 	using B = A::With<>;
 	static_assert(
 	  std::is_same_v<
-	    B, myObject::Custom<Options<
-	         option::Item<int>, option::CustomTemplate<myObject::Custom>>>>);
+	    B, myObject::Custom<Options<option::Item<int>, option::CustomTemplate<myObject::Custom>>>>);
 
 	using C = A::With<option::Item<double>>;
-	static_assert(std::is_same_v<
-	              C, myObject::Custom<v::Options<
-	                   v::option::Item<double>,
-	                   v::option::CustomTemplate<myObject::Custom>>>>);
+	static_assert(
+	  std::is_same_v<
+	    C, myObject::Custom<
+	         v::Options<v::option::Item<double>, v::option::CustomTemplate<myObject::Custom>>>>);
 
 	static_assert(std::is_same_v<C::Item, double>);
 }

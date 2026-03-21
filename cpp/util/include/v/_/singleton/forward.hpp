@@ -1,14 +1,12 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
-#include "v/option/item"
-#include "v/options"
+#include "v/is/option"
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::singleton {
-template <concepts::Options Options> class Custom;
+template <is::Option... Options> class Custom;
 } // namespace VOLTISO_NAMESPACE::singleton
 
 //
@@ -26,15 +24,11 @@ template <class Item> class Singleton;
 //
 
 namespace VOLTISO_NAMESPACE::singleton {
-template <concepts::Options Options> struct Specializations {
-	using Result = Custom<Options>;
-};
-
-template <class Item> struct Specializations<Options<option::Item<Item>>> {
-	using Result = Singleton<Item>;
+template <is::Option... Os> struct Specializations {
+	using Result = Custom<Os...>;
 };
 
 template <class... Args> using GetCustom = Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::singleton
 
+} // namespace VOLTISO_NAMESPACE::singleton
 #include <v/OFF>

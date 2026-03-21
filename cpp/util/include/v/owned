@@ -1,8 +1,8 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
 #include "v/is/instantiated-from"
+#include "v/is/options"
 #include "v/is/relocatable"
 #include "v/object"
 #include "v/option/custom-template"
@@ -19,7 +19,7 @@
 // forward declarations
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom);
 
 template <class Item> class Weak;
@@ -31,7 +31,7 @@ template <class Item> class Owned;
 
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 } // namespace VOLTISO_NAMESPACE::owned
 
@@ -39,7 +39,7 @@ struct Specializations;
 
 namespace VOLTISO_NAMESPACE::owned::_ {
 template <class... Ts>
-// requires concepts::Options<Options>
+// requires is::Options<Options>
 using GetCustom = Specializations<Ts...>::Result;
 } // namespace VOLTISO_NAMESPACE::owned::_
 
@@ -48,7 +48,7 @@ using GetCustom = Specializations<Ts...>::Result;
 // ! SPECIALIZATIONS MAP
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
@@ -64,7 +64,7 @@ template <class Item> struct Specializations<Options<option::Item<Item>, option:
 
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options ::template WithDefault<
         option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
@@ -81,7 +81,7 @@ private:
 
 	using CanonicalItem = std::remove_cv_t<Item>;
 	using Pool = Pool<CanonicalItem>;
-	static constexpr bool WEAK = Options::template GET<option::WEAK>;
+	static constexpr bool WEAK = Options::template get<option::WEAK>;
 
 public:
 	template <class... Args> static Final create(Args &&...args) {
@@ -119,12 +119,12 @@ public:
 	// copy constructor (for weak)
 	template <class OtherOptions>
 	  requires(
-	    WEAK && concepts::Options<OtherOptions> &&
+	    WEAK && is::Options<OtherOptions> &&
 	    std::is_convertible_v<typename OtherOptions::template Get<option::Item> *, Item *>)
 	Custom(const Custom<OtherOptions> &other) : _target(other._target) {}
 
 	template <class OtherOptions>
-	  requires concepts::Options<OtherOptions>
+	  requires is::Options<OtherOptions>
 	friend class Custom;
 
 	// move constructor - ownership transfer (not for weak)
@@ -133,7 +133,7 @@ public:
 	// move constructor - ownership transfer (not for weak)
 	template <class Other>
 	  requires(
-	    !WEAK && !Other::Options::template GET<option::WEAK> && is::InstantiatedFrom<Other, Custom>)
+	    !WEAK && !Other::Options::template get<option::WEAK> && is::InstantiatedFrom<Other, Custom>)
 	Custom(Other &&other) noexcept : _target(other._item) {
 		other._item = handle::INVALID;
 		// std::cout << other._item.value << std::endl;

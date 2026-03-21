@@ -5,6 +5,7 @@
 #pragma pop_macro("LE")
 #pragma pop_macro("GT")
 #pragma pop_macro("GE")
+#pragma pop_macro("RANGE")
 
 #pragma pop_macro("CHECK")
 #pragma pop_macro("NOT")

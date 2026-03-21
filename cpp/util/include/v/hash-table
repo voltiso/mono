@@ -2,8 +2,8 @@
 #include <v/_/_>
 
 #include "v/_/dynamic-array.forward.hpp"
-#include "v/concepts/options"
 #include "v/get/hash"
+#include "v/is/options"
 #include "v/is/relocatable"
 #include "v/object"
 #include "v/option/custom-template"
@@ -24,7 +24,7 @@
 // forward declarations
 namespace VOLTISO_NAMESPACE::hashTable {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 } // namespace VOLTISO_NAMESPACE::hashTable
 
@@ -36,17 +36,17 @@ template <class Options> class Iterator;
 
 namespace VOLTISO_NAMESPACE::hashTable::_ {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 using GenericPool =
   Pool<int>::template WithAllocator<typename Options::template Get<option::Allocator>>;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 using GenericPoolHandle =
   typename GenericPool<Options>::Handle::template WithBrand<void>::template WithKind<void *>;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct RELOCATABLE(Node) {
 	using Self = Node<Options>;
 	RELOCATABLE_BODY
@@ -72,7 +72,7 @@ public:
 }; // struct Node
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 using Pool =
   Pool<Node<Options>>::template WithAllocator<typename Options::template Get<option::Allocator>>;
 
@@ -92,7 +92,7 @@ using Buckets = DynamicArray<Bucket<Options>>::template WithAllocator<
 
 namespace VOLTISO_NAMESPACE {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 static constexpr auto is::relocatable<hashTable::_::Bucket<Options>> = true;
 } // namespace VOLTISO_NAMESPACE
 
@@ -484,7 +484,7 @@ namespace VOLTISO_NAMESPACE::hashTable {
 //
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<Custom>, option::InputOptions<Options>>> {

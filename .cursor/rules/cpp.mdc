@@ -1,0 +1,8 @@
+---
+description: ⚙️ C++
+globs: cpp/**/*
+---
+- 🧪 Test — `cd cpp && pnpm exec v test`
+- 📊 Bench — `cd cpp && pnpm exec v bench`
+- 🔧 Compiler binary — `clang-22`
+- 🐫 Naming — *camelCase*, even though it’s C++

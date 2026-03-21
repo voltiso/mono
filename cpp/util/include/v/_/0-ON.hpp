@@ -24,6 +24,9 @@
 
 // !
 
+#pragma push_macro("RANGE")
+#define RANGE VOLTISO_RANGE
+
 #pragma push_macro("CHECK")
 #define CHECK VOLTISO_CHECK
 

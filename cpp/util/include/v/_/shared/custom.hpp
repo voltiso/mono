@@ -4,7 +4,7 @@
 #include "_control-block.hpp"
 #include "forward.hpp"
 
-#include "v/concepts/options"
+#include "v/is/options"
 #include "v/object"
 #include "v/option/align"
 #include "v/option/custom-pool"
@@ -17,7 +17,7 @@
 
 namespace VOLTISO_NAMESPACE::shared {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<GetCustom>, option::InputOptions<Options>>> {
@@ -35,11 +35,11 @@ public:
 	using Item = Options::template Get<option::Item>;
 	// static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
 
-	static constexpr Size ALIGN = Options::template GET<option::ALIGN>
-	                                ? Options::template GET<option::ALIGN>
+	static constexpr Size ALIGN = Options::template get<option::ALIGN>
+	                                ? Options::template get<option::ALIGN>
 	                                : std::max(alignof(void *), alignof(Item));
 
-	using ControlBlock = _::ControlBlock<Item, Options::template GET<option::CUSTOM_POOL>, ALIGN>;
+	using ControlBlock = _::ControlBlock<Item, Options::template get<option::CUSTOM_POOL>, ALIGN>;
 
 	static_assert(!std::is_reference_v<Item>, "you probably don't want Shared<Item&>");
 
@@ -50,7 +50,7 @@ private:
 	Pool::Handle _controlBlock = Pool::Handle::INVALID;
 
 	static auto &_pool()
-	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	  requires(!Options::template get<option::CUSTOM_POOL>)
 	{
 		return Singleton<Pool>::ThreadLocal::Lazy::instance();
 	}
@@ -58,14 +58,14 @@ private:
 public:
 	template <class... Args>
 	static Shared create(Args &&...args)
-	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	  requires(!Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(_pool().insert(std::forward<Args>(args)...), nullptr);
 	}
 
 	template <class... Args>
 	static Shared create(Pool &pool, Args &&...args)
-	  requires(Options::template GET<option::CUSTOM_POOL>)
+	  requires(Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(pool.insert(pool, std::forward<Args>(args)...), nullptr);
 	}
@@ -73,13 +73,13 @@ public:
 	//
 
 	static Shared create(const Item &item)
-	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	  requires(!Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(_pool().insert(item), nullptr);
 	}
 
 	static Shared create(Pool &pool, const Item &item)
-	  requires(Options::template GET<option::CUSTOM_POOL>)
+	  requires(Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(pool.insert(pool, item), nullptr);
 	}
@@ -87,13 +87,13 @@ public:
 	//
 
 	static Shared create(Item &&item)
-	  requires(!Options::template GET<option::CUSTOM_POOL>)
+	  requires(!Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(_pool().insert(std::move(item)), nullptr);
 	}
 
 	static Shared create(Pool &pool, Item &&item)
-	  requires(Options::template GET<option::CUSTOM_POOL>)
+	  requires(Options::template get<option::CUSTOM_POOL>)
 	{
 		return Shared(pool.insert(pool, std::move(item)), nullptr);
 	}

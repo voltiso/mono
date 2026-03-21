@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include <v/assert>
-#include <v/const-string-view>
-#include <v/raw-array>
-#include <v/view>
+#include "v/assert"
+// #include "v/const-string-view"
+#include "v/raw-array"
+#include "v/view"
 
 // #include <type_traits>
 
@@ -57,8 +57,7 @@ TEST(View, chars) {
 TEST(View, dynamic) {
 	auto v = View("abc");
 	auto dv = v.view(1, 2);
-	static_assert(
-	  std::is_same_v<decltype(dv), View<const char, extent::DYNAMIC>>);
+	static_assert(std::is_same_v<decltype(dv), View<const char, extent::DYNAMIC>>);
 
 	EXPECT_EQ(dv.extent(), 1);
 	EXPECT_EQ(dv, "b");

@@ -1,7 +1,5 @@
-// gemini 2.5 pro experimental
 #pragma once
 
-#include "v/_/options.hpp"
 #include "v/get/options"
 
 #include <concepts>    // For std::same_as
@@ -18,18 +16,18 @@ concept IsBrandOption = requires {
 
 // --- FilterBrandsInternal Metafunction ---
 template <typename InputList> struct FilterBrandsInternal;
-template <> struct FilterBrandsInternal<TypeList<>> {
-	using Result = TypeList<>;
+template <> struct FilterBrandsInternal<options::_::TypeList<>> {
+	using Result = options::_::TypeList<>;
 };
 template <typename Head, typename... Tail>
-struct FilterBrandsInternal<TypeList<Head, Tail...>> {
+struct FilterBrandsInternal<options::_::TypeList<Head, Tail...>> {
 private:
-	using FilteredTail = typename FilterBrandsInternal<TypeList<Tail...>>::Result;
+	using FilteredTail = typename FilterBrandsInternal<options::_::TypeList<Tail...>>::Result;
 	static constexpr bool is_brand = IsBrandOption<Head>;
 
 public:
 	using Result = typename std::conditional_t<
-	  is_brand, Concat_t<TypeList<Head>, FilteredTail>, FilteredTail>;
+	  is_brand, options::_::Concat_t<options::_::TypeList<Head>, FilteredTail>, FilteredTail>;
 };
 template <typename InputList>
 using FilterBrandsInternal_t = typename FilterBrandsInternal<InputList>::Result;
@@ -40,18 +38,18 @@ using FilterBrandsInternal_t = typename FilterBrandsInternal<InputList>::Result;
 // Primary template: Handles the parameter pack case (Option1, Option2...)
 template <typename... Args> struct GetBrandsHelper {
 	// Filter the input pack directly
-	using FilteredList = FilterBrandsInternal_t<TypeList<Args...>>;
+	using FilteredList = FilterBrandsInternal_t<options::_::TypeList<Args...>>;
 	// Wrap the result in Options<>
-	using Result = typename OptionsFromTypeList<FilteredList>::Type;
+	using Result = typename options::_::OptionsFromTypeList<FilteredList>::Type;
 };
 
 // Specialization 1: Handles a single argument that IS an Options<...> type
 template <typename... As> // Matches Options<As...> as the single argument
 struct GetBrandsHelper<Options<As...>> {
 	// Filter the pack extracted from the input Options type
-	using FilteredList = FilterBrandsInternal_t<TypeList<As...>>;
+	using FilteredList = FilterBrandsInternal_t<options::_::TypeList<As...>>;
 	// Wrap the result in Options<>
-	using Result = typename OptionsFromTypeList<FilteredList>::Type;
+	using Result = typename options::_::OptionsFromTypeList<FilteredList>::Type;
 };
 
 // Specialization 2: Handles a single argument T that is NOT Options<...>
@@ -60,13 +58,10 @@ struct GetBrandsHelper<Options<As...>> {
 // exists or get::Options<T> resolves.
 namespace detail {
 template <typename T>
-using get_options_result_t =
-  typename get::Options<T>; // Use the public get::Options
+using get_options_result_t = typename get::Options<T>; // Use the public get::Options
 
-template <typename T, typename = void>
-struct is_options_type : std::false_type {};
-template <typename... As>
-struct is_options_type<Options<As...>, void> : std::true_type {};
+template <typename T, typename = void> struct is_options_type : std::false_type {};
+template <typename... As> struct is_options_type<Options<As...>, void> : std::true_type {};
 } // namespace detail
 
 template <typename T> // Matches a single argument T
@@ -74,8 +69,7 @@ template <typename T> // Matches a single argument T
 struct GetBrandsHelper<T> {
 private:
 	// Get the underlying Options type using the updated get::Options utility
-	using UnderlyingOptions =
-	  typename get::Options<T>; // e.g., T::Options or Options<>
+	using UnderlyingOptions = typename get::Options<T>; // e.g., T::Options or Options<>
 public:
 	// Recursively call GetBrandsHelper with the extracted Options type
 	// This will match the GetBrandsHelper<Options<As...>> specialization

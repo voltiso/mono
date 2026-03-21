@@ -1,10 +1,10 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
 #include "v/dynamic-array"
 #include "v/handle"
 #include "v/index"
+#include "v/is/options"
 #include "v/object"
 #include "v/option/copy-on-write"
 #include "v/option/item"
@@ -29,11 +29,11 @@
 // ========================================================================
 namespace VOLTISO_NAMESPACE::pagedDynamicArray {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 } // namespace VOLTISO_NAMESPACE::pagedDynamicArray
 
@@ -55,7 +55,7 @@ namespace VOLTISO_NAMESPACE::pagedDynamicArray {
 template <class... Args> using GetCustom = Specializations<Args...>::Result;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
@@ -71,7 +71,7 @@ template <class Item> struct Specializations<Options<option::Item<Item>>> {
 namespace VOLTISO_NAMESPACE::pagedDynamicArray {
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom)
     : public Object<typename Options::template WithDefault<
         option::CustomTemplate<pagedDynamicArray::GetCustom>, option::InputOptions<Options>>> {
@@ -85,8 +85,8 @@ private:
 public:
 	using Item = Options::template Get<option::Item>;
 	// using Pool = Options::template Get<option::Pool>;
-	static constexpr Size PAGE_SIZE = Options::template GET<option::PAGE_SIZE>;
-	static constexpr bool COPY_ON_WRITE = Options::template GET<option::COPY_ON_WRITE>;
+	static constexpr Size PAGE_SIZE = Options::template get<option::PAGE_SIZE>;
+	static constexpr bool COPY_ON_WRITE = Options::template get<option::COPY_ON_WRITE>;
 
 	static_assert(PAGE_SIZE > 0, "PAGE_SIZE must be greater than 0");
 

@@ -98,7 +98,11 @@ void BM_DynamicArray_resize_stdVector(benchmark::State &state) {
 int numConstructorCalls = 0;
 int numDestructorCalls = 0;
 
-template <int SIZE> struct TriviallyRelocatable {
+template <int SIZE> class TriviallyRelocatable {
+	using Self = TriviallyRelocatable;
+	RELOCATABLE_BODY
+
+public:
 	~TriviallyRelocatable() { ++numDestructorCalls; }
 
 	TriviallyRelocatable() { data[0] = 123; }
@@ -126,17 +130,14 @@ template <int SIZE> struct TriviallyRelocatable {
 	uint8_t data[SIZE];
 };
 
-template <int SIZE>
-constexpr auto is::relocatable<TriviallyRelocatable<SIZE>> = true;
+static_assert(is::relocatable<TriviallyRelocatable<123>>);
 
 static_assert(sizeof(TriviallyRelocatable<123>) == 123);
 static_assert(sizeof(Storage<TriviallyRelocatable<123>>) == 123);
 
 static_assert(!std::is_trivially_destructible_v<TriviallyRelocatable<123>>);
-static_assert(
-  !std::is_trivially_copy_constructible_v<TriviallyRelocatable<123>>);
-static_assert(
-  !std::is_trivially_move_constructible_v<TriviallyRelocatable<123>>);
+static_assert(!std::is_trivially_copy_constructible_v<TriviallyRelocatable<123>>);
+static_assert(!std::is_trivially_move_constructible_v<TriviallyRelocatable<123>>);
 
 static_assert(is::relocatable<TriviallyRelocatable<123>>);
 
@@ -170,8 +171,7 @@ void BM_DynamicArray_resize_nonTrivial_stdVector(benchmark::State &state) {
 
 //
 
-template <int SIZE>
-static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
+template <int SIZE> static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
 	NEWLINE
 
 	using namespace VOLTISO_NAMESPACE;
@@ -202,8 +202,7 @@ static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
 
 //
 
-template <int SIZE>
-void BM_DynamicArray_nonTrivial_stdVector(benchmark::State &state) {
+template <int SIZE> void BM_DynamicArray_nonTrivial_stdVector(benchmark::State &state) {
 	using namespace VOLTISO_NAMESPACE;
 	using T = TriviallyRelocatable<SIZE>;
 	int count = MEMORY / sizeof(T);

@@ -1,0 +1,29 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace V::trait {
+
+namespace _ {
+template <class From, class To> struct copyCvref {
+private:
+	using _To = std::remove_cvref_t<To>;
+	using _ConstTo =
+	  std::conditional_t<std::is_const_v<std::remove_reference_t<From>>, const _To, _To>;
+	using _CvTo = std::conditional_t<
+	  std::is_volatile_v<std::remove_reference_t<From>>, volatile _ConstTo, _ConstTo>;
+
+public:
+	using type = std::conditional_t<
+	  std::is_lvalue_reference_v<From>, std::add_lvalue_reference_t<_CvTo>,
+	  std::conditional_t<
+	    std::is_rvalue_reference_v<From>, std::add_rvalue_reference_t<_CvTo>, _CvTo>>;
+};
+} // namespace _
+
+template <class From, class To> using copyCvref = typename _::copyCvref<From, To>::type;
+
+} // namespace V::trait
+
+#include <v/OFF>

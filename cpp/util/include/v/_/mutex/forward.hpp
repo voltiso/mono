@@ -1,22 +1,22 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/option"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE {
+namespace V {
 class Mutex;
-} // namespace VOLTISO_NAMESPACE
+} // namespace V
 
-namespace VOLTISO_NAMESPACE::mutex {
-template <concepts::Options Options> class Custom;
+namespace V::mutex {
+template <is::Option... Os> class Custom;
 
-template <concepts::Options Options> struct Specializations {
-	using Result = mutex::Custom<Options>;
+template <is::Option... Os> struct Specializations {
+	using Result = mutex::Custom<Os...>;
 };
 
 template <class... Args> using GetCustom = Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::mutex
+} // namespace V::mutex
 
 #include <v/OFF>

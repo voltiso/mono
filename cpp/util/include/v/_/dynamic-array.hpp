@@ -5,12 +5,12 @@
 
 #include "v/_/view.forward.hpp"
 #include "v/array"
-#include "v/concepts/options"
 #include "v/get/brands"
 #include "v/get/extent"
 #include "v/get/num-items"
 #include "v/get/num-slots"
 #include "v/handle"
+#include "v/is/options"
 #include "v/is/relocatable"
 #include "v/likelihood"
 #include "v/memory/iterator"
@@ -42,7 +42,7 @@ template <class Options> struct RELOCATABLE(Base_) : Object<Options> {
 };
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct RELOCATABLE(DataMembersNoInPlace) : Base_<Options> {
 	using Base = Base_<Options>;
 	using Base::Base;
@@ -54,7 +54,7 @@ protected:
 	typename Allocator::Handle allocation;
 
 protected:
-	Size _numSlots = Options::template GET<option::IN_PLACE>;
+	Size _numSlots = Options::template get<option::IN_PLACE>;
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const { return this->_numSlots; }
@@ -63,7 +63,7 @@ public:
 //
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct RELOCATABLE(DataMembersInPlaceBase) : Base_<Options> {
 	using Base = Base_<Options>;
 	using Base::Base;
@@ -78,7 +78,7 @@ struct RELOCATABLE(DataMembersInPlaceBase) : Base_<Options> {
 //
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct RELOCATABLE(DataMembersInPlaceOnly) : DataMembersInPlaceBase<Options> {
 	using Base = DataMembersInPlaceBase<Options>;
 	using Base::Base;
@@ -87,16 +87,16 @@ struct RELOCATABLE(DataMembersInPlaceOnly) : DataMembersInPlaceBase<Options> {
 	using Item = Options::template Get<option::Item>;
 
 protected:
-	Array<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>> inPlaceItems;
+	Array<Storage<Item>, Options::template get<option::IN_PLACE_ONLY>> inPlaceItems;
 
 public:
-	static constexpr Size NUM_SLOTS = Options::template GET<option::IN_PLACE_ONLY>;
+	static constexpr Size NUM_SLOTS = Options::template get<option::IN_PLACE_ONLY>;
 };
 
 //
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct RELOCATABLE(DataMembersInPlace) : DataMembersInPlaceBase<Options> {
 	using Base = DataMembersInPlaceBase<Options>;
 	using Base::Base;
@@ -108,22 +108,22 @@ struct RELOCATABLE(DataMembersInPlace) : DataMembersInPlaceBase<Options> {
 protected:
 	union {
 		Storage<typename Allocator::Handle> allocation;
-		Array<typename Storage<Item>::NonUnion, Options::template GET<option::IN_PLACE>> inPlaceItems;
+		Array<typename Storage<Item>::NonUnion, Options::template get<option::IN_PLACE>> inPlaceItems;
 	};
 
 protected:
-	Size _numSlots = Options::template GET<option::IN_PLACE>;
+	Size _numSlots = Options::template get<option::IN_PLACE>;
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const { return this->_numSlots; }
 };
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 using DataMembers = std::conditional_t<
-  (Options::template GET<option::IN_PLACE> > 0), DataMembersInPlace<Options>,
+  (Options::template get<option::IN_PLACE> > 0), DataMembersInPlace<Options>,
   std::conditional_t<
-    (Options::template GET<option::IN_PLACE_ONLY> > 0), DataMembersInPlaceOnly<Options>,
+    (Options::template get<option::IN_PLACE_ONLY> > 0), DataMembersInPlaceOnly<Options>,
     DataMembersNoInPlace<Options>>>;
 
 template <class Options, bool IS_CONST> class Accessor {
@@ -165,7 +165,7 @@ public:
 
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 } // namespace VOLTISO_NAMESPACE::dynamicArray
 
@@ -175,7 +175,7 @@ template <class... Args> using GetCustom = Specializations<Args...>::Result;
 
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
@@ -189,7 +189,7 @@ template <class Item> struct Specializations<Options<option::Item<Item>>> {
 
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom)
     : public _::DataMembers<typename Options::template WithDefault<
         option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
@@ -208,9 +208,9 @@ public:
 
 	using Allocator = Options::template Get<VOLTISO_NAMESPACE::option::Allocator>;
 
-	static constexpr auto IN_PLACE = Options::template GET<option::IN_PLACE>;
+	static constexpr auto IN_PLACE = Options::template get<option::IN_PLACE>;
 
-	static constexpr auto IN_PLACE_ONLY = Options::template GET<option::IN_PLACE_ONLY>;
+	static constexpr auto IN_PLACE_ONLY = Options::template get<option::IN_PLACE_ONLY>;
 
 	using Accessor = _::Accessor<Options, false>;
 	using ConstAccessor = _::Accessor<Options, true>;
@@ -226,12 +226,12 @@ private:
 	                         "`is::relocatable<Item> = true`");
 
 	static_assert(
-	  Options::template GET<option::IN_PLACE> == 0 ||
-	    Options::template GET<option::IN_PLACE_ONLY> == 0,
+	  Options::template get<option::IN_PLACE> == 0 ||
+	    Options::template get<option::IN_PLACE_ONLY> == 0,
 	  "Use either `IN_PLACE` or `IN_PLACE_ONLY`, not both");
 
 	static constexpr Size NUM_IN_PLACE_SLOTS =
-	  Options::template GET<option::IN_PLACE> || Options::template GET<option::IN_PLACE_ONLY>;
+	  Options::template get<option::IN_PLACE> || Options::template get<option::IN_PLACE_ONLY>;
 
 public:
 	// template <class Type>
@@ -260,9 +260,9 @@ public:
 				}
 				_allocator().freeBytes(this->allocation, _numBytes(this->_numSlots));
 			}
-		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
+		} else if constexpr (Options::template get<option::IN_PLACE> > 0) {
 			// speed-up 'in-place' path (e.g. for `HashTable`)
-			if (this->_numSlots > Options::template GET<option::IN_PLACE>) [[unlikely]] {
+			if (this->_numSlots > Options::template get<option::IN_PLACE>) [[unlikely]] {
 				auto memory = static_cast<Storage<Item> *>(_allocator()(this->allocation.storedItem()));
 				// speed-up empty path
 				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
@@ -277,8 +277,8 @@ public:
 				}
 			}
 		} else {
-			static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
-			// DCHECK_LE(this->_numSlots, Options::template GET<option::IN_PLACE_ONLY,
+			static_assert(Options::template get<option::IN_PLACE_ONLY> > 0);
+			// DCHECK_LE(this->_numSlots, Options::template get<option::IN_PLACE_ONLY,
 			// Parameters>);
 			auto memory = static_cast<Storage<Item> *>(this->inPlaceItems.items);
 			for (Size i = 0; i < _numItems; ++i) {
@@ -308,14 +308,14 @@ public:
 		// Steal resources from 'other'
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			this->allocation = other.allocation;
-		} else if constexpr (Options::template GET<option::IN_PLACE>() > 0) {
-			if (other._numSlots > Options::template GET<option::IN_PLACE>()) [[unlikely]] {
+		} else if constexpr (Options::template get<option::IN_PLACE>() > 0) {
+			if (other._numSlots > Options::template get<option::IN_PLACE>()) [[unlikely]] {
 				this->allocation.item() = other.allocation.item();
 			} else [[likely]] {
 				static_assert(is::relocatable<Item>);
 				memcpy(&this->inPlaceItems[0], &other.inPlaceItems[0], sizeof(Item) * other._numItems);
 			}
-		} else if constexpr (Options::template GET<option::IN_PLACE_ONLY>() > 0) {
+		} else if constexpr (Options::template get<option::IN_PLACE_ONLY>() > 0) {
 			static_assert(is::relocatable<Storage<Item>>);
 			memcpy(&this->inPlaceItems[0], &other.inPlaceItems[0], sizeof(Item) * other._numItems);
 		} else {
@@ -503,12 +503,12 @@ private:
 
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			this->allocation = _allocator().allocateBytes(_numBytes(numItems));
-		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
-			if (numItems > Options::template GET<option::IN_PLACE>) [[unlikely]] {
+		} else if constexpr (Options::template get<option::IN_PLACE> > 0) {
+			if (numItems > Options::template get<option::IN_PLACE>) [[unlikely]] {
 				this->allocation.object() = _allocator().allocateBytes(_numBytes(numItems));
 			}
 		} else {
-			static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
+			static_assert(Options::template get<option::IN_PLACE_ONLY> > 0);
 			DCHECK_LE(numItems, IN_PLACE_ONLY);
 		}
 
@@ -570,9 +570,9 @@ public:
 					// noop
 				}
 			}
-		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
-			if (this->_numSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
-				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
+		} else if constexpr (Options::template get<option::IN_PLACE> > 0) {
+			if (this->_numSlots <= Options::template get<option::IN_PLACE>) [[likely]] {
+				if (newNumSlots <= Options::template get<option::IN_PLACE>) [[likely]] {
 					// noop - stay in place
 				} else [[unlikely]] {
 					auto allocation = _allocator().allocateBytes(newNumSlots * sizeof(Item));
@@ -581,7 +581,7 @@ public:
 					this->allocation.storedItem() = allocation;
 				}
 			} else [[unlikely]] {
-				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
+				if (newNumSlots <= Options::template get<option::IN_PLACE>) [[likely]] {
 					auto oldData = this->allocation.storedItem();
 					LT(newNumSlots, this->_numSlots);
 					::memcpy(static_cast<void *>(&this->inPlaceItems), oldData, sizeof(Item) * _numItems);
@@ -608,8 +608,8 @@ public:
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			auto *ptr = std::bit_cast<Storage<Item> *>(this->allocation.value);
 			return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
-		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
-			if (this->_numSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
+		} else if constexpr (Options::template get<option::IN_PLACE> > 0) {
+			if (this->_numSlots <= Options::template get<option::IN_PLACE>) [[likely]] {
 				// return this->inPlaceItems.items;
 				return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items());
 			} else [[unlikely]] {
@@ -617,7 +617,7 @@ public:
 				return reinterpret_cast<Storage<Item>(&)[]>(*ptr);
 			}
 		} else {
-			static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
+			static_assert(Options::template get<option::IN_PLACE_ONLY> > 0);
 			// return this->inPlaceItems.items;
 			return reinterpret_cast<Storage<Item>(&)[]>(*this->inPlaceItems.items);
 		}

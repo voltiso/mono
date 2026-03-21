@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/options"
 #include "v/option/item"
 #include "v/options"
 
@@ -13,11 +13,11 @@ template <class Item> class Shared;
 
 namespace VOLTISO_NAMESPACE::shared {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class RELOCATABLE(Custom);
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations {
 	using Result = shared::Custom<Options>;
 };

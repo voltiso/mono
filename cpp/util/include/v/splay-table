@@ -1,8 +1,8 @@
 #pragma once
 
 #include "v/array"
-#include "v/concepts/options"
 #include "v/entry"
+#include "v/is/options"
 #include "v/likelihood"
 #include "v/option/entry"
 #include "v/pool"
@@ -12,7 +12,7 @@
 
 namespace VOLTISO_NAMESPACE::splayTable {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 } // namespace VOLTISO_NAMESPACE::splayTable
 
@@ -22,7 +22,7 @@ template <class Entry> class SplayTable;
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Node {
 private:
 	using Entry = Options::template Get<option::Entry>;
@@ -289,7 +289,7 @@ public:
 
 namespace VOLTISO_NAMESPACE::splayTable {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom : public Object<Options> {
 	using Base = Object<Options>;
 	using Final = Base::Final;

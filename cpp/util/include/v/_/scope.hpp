@@ -58,13 +58,19 @@ public:
 namespace VOLTISO_NAMESPACE::scope::_ {
 template <class Interface, class Actual>
   requires(std::is_convertible_v<Actual *, Interface *>)
-struct ValueWithGuard {
+class ValueWithGuard {
+	using Self = ValueWithGuard;
+	RELOCATABLE_BODY
+
+public:
 	Actual value;
 	context::Guard<Interface> guard;
 
+	static_assert(is::relocatable<decltype(value)>);
+	static_assert(is::relocatable<decltype(guard)>);
+
 	template <class... Args>
-	ValueWithGuard(Args &&...args)
-	    : value(std::forward<Args>(args)...), guard(this->value) {}
+	ValueWithGuard(Args &&...args) : value(std::forward<Args>(args)...), guard(this->value) {}
 
 	ValueWithGuard(const ValueWithGuard &) = delete;
 	ValueWithGuard &operator=(const ValueWithGuard &) = delete;
@@ -72,10 +78,6 @@ struct ValueWithGuard {
 } // namespace VOLTISO_NAMESPACE::scope::_
 
 //
-
-template <class Interface, class Actual>
-constexpr auto
-  V::is::relocatable<V::scope::_::ValueWithGuard<Interface, Actual>> = true;
 
 // !
 
@@ -86,9 +88,7 @@ template <class T> INLINE auto &get() { return context::get<T>(); }
 // !
 
 namespace VOLTISO_NAMESPACE::scope {
-template <class T> INLINE T *maybeGet() noexcept {
-	return context::maybeGet<T>();
-}
+template <class T> INLINE T *maybeGet() noexcept { return context::maybeGet<T>(); }
 } // namespace VOLTISO_NAMESPACE::scope
 
 // !
@@ -102,8 +102,7 @@ template <class Interface> INLINE void borrow(Interface &value) noexcept {
 template <class T, class... Args>
   requires(std::is_constructible_v<T, Args...>)
 INLINE auto &retain(Args &&...args) {
-	return context::get<Retainer>().retain<T, Args...>(
-	  std::forward<Args>(args)...);
+	return context::get<Retainer>().retain<T, Args...>(std::forward<Args>(args)...);
 }
 
 template <class T>
@@ -115,10 +114,8 @@ INLINE auto &retain(T &&value)
 
 template <class Interface, class Actual = Interface, class... Args>
   requires(
-    std::is_convertible_v<Actual *, Interface *> &&
-    std::is_constructible_v<Actual, Args...> &&
-    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
-    !std::is_same_v<Interface, Retainer>)
+    std::is_convertible_v<Actual *, Interface *> && std::is_constructible_v<Actual, Args...> &&
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> && !std::is_same_v<Interface, Retainer>)
 INLINE auto &push(Args &&...args) {
 	return context::get<Retainer>()
 	  .retain<_::ValueWithGuard<Interface, Actual>>(std::forward<Args>(args)...)
@@ -129,8 +126,7 @@ template <class Interface, class Actual = Interface>
   requires(
     !std::is_reference_v<Actual> && // move-only
     std::is_convertible_v<Actual *, Interface *> &&
-    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
-    !std::is_same_v<Interface, Retainer>)
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> && !std::is_same_v<Interface, Retainer>)
 INLINE auto &push(Actual &&actual) {
 	return context::get<Retainer>()
 	  .retain<_::ValueWithGuard<Interface, Actual>>(std::forward<Actual>(actual))
@@ -142,12 +138,9 @@ template <class Interface, class Actual = Interface>
   requires(
     std::is_convertible_v<Actual *, Interface *> &&
     std::is_constructible_v<Actual, typename Actual::Options> &&
-    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
-    !std::is_same_v<Interface, Retainer>)
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> && !std::is_same_v<Interface, Retainer>)
 INLINE auto &push(const typename Actual::Options &options) {
-	return context::get<Retainer>()
-	  .retain<_::ValueWithGuard<Interface, Actual>>(options)
-	  .value;
+	return context::get<Retainer>().retain<_::ValueWithGuard<Interface, Actual>>(options).value;
 }
 
 template <class InterfaceAndActual>

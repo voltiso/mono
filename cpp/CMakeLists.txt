@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Enable C++ module scanning
 # set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
-# add_compile_options(-ftemplate-backtrace-limit=0) # longer compilation errors
+add_compile_options(-ftemplate-backtrace-limit=0) # longer compilation errors
 
 # Optimize all configurations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto") # LTO (can also use -flto=thin to speed up compilation)
@@ -82,10 +82,17 @@ add_executable(
   voltiso-util-test
   test.cpp
 
+  util/test/options.test.cpp
+  # util/test/box.test.cpp
+  # util/test/extents.test.cpp
+  # util/test/num-items.test.cpp
   # util/test/inherit.test.cpp
   # util/test/storage.test.cpp
   # util/test/singleton.test.cpp
-  util/test/array.test.cpp
+  # util/test/raw-array.test.cpp
+  # util/test/handle.test.cpp
+  # util/test/array.test.cpp
+  # util/test/view.test.cpp
   # util/test/tensor.test.cpp
   # util/test/quaternion.test.cpp
   # util/test/subject.test.cpp
@@ -99,8 +106,6 @@ add_executable(
   # util/test/is-relocatable.test.cpp
   # util/test/is-instantiated-from-same.test.cpp
   # util/test/is-derived-from-template.test.cpp
-  # util/test/options.test.cpp
-  # util/test/handle.test.cpp
   # util/test/owned.test.cpp
   # util/test/shared.test.cpp
   # util/test/any.test.cpp
@@ -111,9 +116,7 @@ add_executable(
   # util/test/splay-map.test.cpp
   # util/test/splay-set.test.cpp
   # util/test/heap.test.cpp
-  # util/test/raw-array.test.cpp
   # util/test/path.test.cpp
-  # util/test/view.test.cpp
   # util/test/string.test.cpp
   # util/test/runner.test.cpp
   # util/test/executable-path.test.cpp

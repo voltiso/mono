@@ -1,31 +1,26 @@
 #pragma once
 #include <v/_/_>
 
-#include "_forward.hpp"
 #include "custom.hpp"
+#include "forward.hpp"
+#include "options.hpp"
 
 #include "v/_/is/relocatable.hpp"
-#include "v/option/extents"
-#include "v/option/final"
-#include "v/option/item"
-#include "v/value-pack"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE {
+namespace V {
 #pragma push_macro("BASE")
-#define BASE                                                                                       \
-	array::Custom<Options<                                                                           \
-	  option::Item<Item>, option::Extents<ValuePack<EXTENT>>, option::Final<Array<Item, EXTENT>>>>
+#define BASE array::Custom<array::option::Item<Item>, array::option::numItems<numItems>>
 
-template <class Item, auto EXTENT> class Array : public BASE {
+template <class Item, Size numItems> class Array : public BASE {
 	using Base = BASE;
 	VOLTISO_INHERIT(Array);
 };
 
-template <class Item, auto EXTENT>
+template <class Item, Size numItems>
   requires is::relocatable<Item>
-class RELOCATABLE(Array<Item COMMA EXTENT>) : public BASE {
+class RELOCATABLE(Array<Item COMMA numItems>) : public BASE {
 	using Self = Array;
 	RELOCATABLE_BODY
 	using Base = BASE;
@@ -34,19 +29,20 @@ class RELOCATABLE(Array<Item COMMA EXTENT>) : public BASE {
 
 #pragma pop_macro("BASE")
 
-template <class T, class... U, std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
-Array(T, U...) -> Array<std::type_identity_t<T>, 1 + (Size)sizeof...(U)>;
+template <class T, class... Us>
+  requires std::conjunction_v<std::is_same<T, Us>...>
+Array(T, Us...) -> Array<std::type_identity_t<T>, 1 + (Size)sizeof...(Us)>;
 
 template <class T> Array(std::initializer_list<T> list) -> Array<T, list.size()>;
-} // namespace VOLTISO_NAMESPACE
+} // namespace V
 
 // !
 
-namespace VOLTISO_NAMESPACE::array {
-template <class Item, auto EXTENT>
-struct Specializations<Options<option::Item<Item>, option::Extents<ValuePack<EXTENT>>>> {
-	using Result = Array<Item, EXTENT>;
+namespace V::array {
+template <class Item, Size numItems>
+struct Specializations<option::Item<Item>, option::numItems<numItems>> {
+	using Result = Array<Item, numItems>;
 };
-} // namespace VOLTISO_NAMESPACE::array
+} // namespace V::array
 
 #include <v/OFF>

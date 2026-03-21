@@ -1,15 +1,15 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/options"
 
 namespace VOLTISO_NAMESPACE::dynamicString {
 template <class TOptions>
-  requires concepts::Options<TOptions>
+  requires is::Options<TOptions>
 class Custom;
 
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 struct Specializations;
 } // namespace VOLTISO_NAMESPACE::dynamicString
 
@@ -23,9 +23,7 @@ class DynamicString;
 
 namespace VOLTISO_NAMESPACE::dynamicString {
 
-template <class Other>
-[[nodiscard]] VOLTISO_FORCE_INLINE auto from(Other &&other);
+template <class Other> [[nodiscard]] VOLTISO_FORCE_INLINE auto from(Other &&other);
 
-template <class... Args>
-[[nodiscard]] VOLTISO_FORCE_INLINE auto concat(Args &&...args);
+template <class... Args> [[nodiscard]] VOLTISO_FORCE_INLINE auto concat(Args &&...args);
 } // namespace VOLTISO_NAMESPACE::dynamicString

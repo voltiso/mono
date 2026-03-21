@@ -30,10 +30,10 @@ struct Debug {
 };
 } // namespace _
 
-template <concepts::Options Options>
+template <is::Options Options>
 inline constexpr Custom<Options>::Custom(ConstructKey) noexcept : _debug(new _::Debug()) {}
 
-template <concepts::Options Options> inline Custom<Options>::~Custom() {
+template <is::Options Options> inline Custom<Options>::~Custom() {
 	auto &debug = *this->_debug;
 	for (auto [handle, numBytes] : debug.allocations) {
 		throwError(
@@ -43,11 +43,10 @@ template <concepts::Options Options> inline Custom<Options>::~Custom() {
 	delete this->_debug;
 }
 #else
-template <concepts::Options Options>
-inline constexpr Custom<Options>::Custom(ConstructKey) noexcept {}
+template <is::Options Options> inline constexpr Custom<Options>::Custom(ConstructKey) noexcept {}
 #endif
 
-template <concepts::Options Options>
+template <is::Options Options>
 inline typename Custom<Options>::Handle Custom<Options>::allocateBytes(Size numBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(numBytes, 0);
@@ -66,7 +65,7 @@ inline typename Custom<Options>::Handle Custom<Options>::allocateBytes(Size numB
 	return handle;
 }
 
-template <concepts::Options Options>
+template <is::Options Options>
 inline typename Custom<Options>::Handle
 Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 #if VOLTISO_DEBUG_MALLOC
@@ -94,7 +93,7 @@ Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 	return handle;
 }
 
-template <concepts::Options Options>
+template <is::Options Options>
 inline void Custom<Options>::freeBytes(const Handle &handle, Size oldNumBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(oldNumBytes, 0);
@@ -110,7 +109,7 @@ inline void Custom<Options>::freeBytes(const Handle &handle, Size oldNumBytes) {
 	::free(handle);
 }
 
-template <concepts::Options Options>
+template <is::Options Options>
 inline typename Custom<Options>::Handle
 Custom<Options>::reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size newNumBytes) {
 	if (!newNumBytes) [[unlikely]] {
@@ -135,8 +134,7 @@ Custom<Options>::reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size
 	return newHandle;
 }
 
-template <concepts::Options Options>
-inline void *Custom<Options>::operator()(const Handle &handle) {
+template <is::Options Options> inline void *Custom<Options>::operator()(const Handle &handle) {
 #if VOLTISO_DEBUG_MALLOC
 	NE(handle, handle::INVALID);
 	// if (handle != Handle::INVALID) {

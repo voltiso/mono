@@ -5,20 +5,20 @@
 #include "impl.hpp"
 
 #include "v/_/is/relocatable.hpp"
-#include "v/concepts/options"
+#include "v/is/options"
 #include "v/option/item"
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::tensor {
-template <concepts::Options Options> class Custom : public _::tensor::CustomNNR<Options> {
+template <is::Options Options> class Custom : public _::tensor::CustomNNR<Options> {
 	using Self = Custom;
 	RELOCATABLE_BODY_IF(is::relocatable<typename Options::template Get<option::Item>>)
 	using Base = _::tensor::CustomNNR<Options>;
 	VOLTISO_INHERIT(Custom);
 };
 
-// template <concepts::Options Options>
+// template <is::Options Options>
 //   requires is::relocatable<typename Options::template Get<option::Item>>
 // class RELOCATABLE(Custom<Options>) : public _::tensor::CustomNNR<Options> {
 // 	using Self = Custom;

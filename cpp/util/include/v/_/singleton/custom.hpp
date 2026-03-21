@@ -1,52 +1,23 @@
 #pragma once
 #include <v/_/_>
 
-#include "_config.hpp"
-#include "construct-key.hpp"
+#include "_/get-base.hpp"
 #include "forward.hpp"
 
-#include "v/concepts/options"
 #include "v/empty"
-#include "v/object"
-#include "v/option/concurrent"
-#include "v/option/custom-template"
-#include "v/option/input-options"
-#include "v/option/lazy"
-#include "v/option/thread-local"
+#include "v/is/option"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::singleton {
+namespace V::singleton {
 
-#pragma push_macro("OBJECT")
-#define OBJECT                                                                                     \
-	Object<typename Options::template WithDefault<                                                   \
-	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>
-
-template <concepts::Options Options> class Custom : public OBJECT, protected _::Config<Options> {
-	using Object = OBJECT;
-#pragma pop_macro("OBJECT")
-
-	using Self = Custom;
-	using Final = Object::Final;
-
-protected:
-	using Config = _::Config<Options>;
+template <is::Option... Os> class Custom : public _::GetBase<Os...> {
+	using Base = _::GetBase<Os...>;
+	using typename Base::Config;
+	using Item = Config::Item;
 
 public:
-	using Item = Config::Item;
-	using ConstructKey = ConstructKey<Options>;
-
-private:
-	using ConstructKeyToken = _::ConstructKeyToken_doNotUseThisDirectly<Options>;
-
-private:
-	static constexpr bool _lazy = Config::_lazy;
-	static constexpr bool _threadLocal = Config::_threadLocal;
-	static constexpr bool _concurrent = Config::_concurrent;
-	static constexpr bool _hasIsInitialized = Config::_hasIsInitialized;
-	static constexpr bool _constinitStorage = Config::_constinitStorage;
-	static constexpr bool _trivialConstinitItem = Config::_trivialConstinitItem;
+	using ConstructKey = Config::ConstructKey;
 
 protected:
 	struct Data {
@@ -56,22 +27,22 @@ protected:
 
 		constexpr Data() noexcept = default;
 		constexpr Data() noexcept
-		  requires(Config::_initializeImmediately && !std::is_trivially_constructible_v<Item>)
+		  requires(Config::initializeImmediately && !std::is_trivially_constructible_v<Item>)
 		{
 			_construct(storage);
 		}
 
 		constexpr ~Data() noexcept = default;
 		constexpr ~Data() noexcept
-		  requires(Config::_initializeImmediately && !std::is_trivially_destructible_v<Item>)
+		  requires(Config::initializeImmediately && !std::is_trivially_destructible_v<Item>)
 		{
 			_destroy(storage);
 		}
 	};
 
 private:
-	using ConstinitGlobal = std::conditional_t<!_threadLocal, Data, Empty>;
-	using ConstinitThreadLocal = std::conditional_t<_threadLocal, Data, Empty>;
+	using ConstinitGlobal = std::conditional_t<!Config::threadLocal, Data, Empty>;
+	using ConstinitThreadLocal = std::conditional_t<Config::threadLocal, Data, Empty>;
 
 	// ⚠️ Constexpr-constructible `Item` must initialize all members - otherwise it's invalid to
 	// `constinit` it.
@@ -84,13 +55,14 @@ private:
 
 protected:
 	INLINE static constexpr Data &_static() noexcept {
-		if constexpr (_threadLocal) {
+		if constexpr (Config::threadLocal) {
 			static_assert(
-			  _lazy || _trivialConstinitItem, "Use `::Lazy` to avoid injecting TLS guard code.");
+			  Config::lazy || Config::trivialConstinitItem,
+			  "Use `::Lazy` to avoid injecting TLS guard code.");
 			return _constinitThreadLocal;
 		} else /* global */ {
 			static_assert(
-			  _lazy || _trivialConstinitItem,
+			  Config::lazy || Config::trivialConstinitItem,
 			  "Use `::Lazy` to avoid SIOF (static-initialization-order-fiasco).");
 			return _constinitGlobal;
 		}
@@ -110,11 +82,11 @@ private:
 private:
 	INLINE static constexpr void
 	_construct(Config::Storage &storage) noexcept(std::is_nothrow_constructible_v<Item>) {
-		if constexpr (_hasIsInitialized) {
+		if constexpr (Config::hasIsInitialized) {
 			CHECK(!_static().isInitialized.load(std::memory_order_acquire));
 		}
 		if constexpr (std::is_constructible_v<Item, ConstructKey>) {
-			new (std::addressof(storage.storedItem())) Item{ConstructKeyToken{}};
+			new (std::addressof(storage.storedItem())) Item{ConstructKey{}};
 		} else {
 			new (std::addressof(storage.storedItem())) Item;
 		}
@@ -128,15 +100,15 @@ private:
 
 public:
 	static INLINE Item &instance() noexcept(std::is_nothrow_constructible_v<Item>) {
-		Final::_staticChecks();
+		_staticChecks();
 		_maybeInitialize();
 		return _static().storage.storedItem();
 	}
 
 	static INLINE Item &instanceUnchecked() noexcept
-	  requires(_hasIsInitialized)
+	  requires(Config::hasIsInitialized)
 	{
-		Final::_staticChecks();
+		_staticChecks();
 		CHECK(_static().isInitialized.load(std::memory_order_acquire));
 		return _static().storage.storedItem();
 	}
@@ -150,11 +122,11 @@ public:
 
 private:
 	INLINE static constexpr void _maybeInitialize() noexcept
-	  requires(!_hasIsInitialized)
+	  requires(!Config::hasIsInitialized)
 	{}
 
 	INLINE static constexpr void _maybeInitialize() noexcept(std::is_nothrow_constructible_v<Item>)
-	  requires(_hasIsInitialized)
+	  requires(Config::hasIsInitialized)
 	{
 		if (_static().isInitialized.load(std::memory_order_acquire)) [[likely]] {
 			return;
@@ -170,7 +142,7 @@ private:
 		if (_static().isInitialized.load(std::memory_order_relaxed)) [[unlikely]] {
 			return;
 		}
-		if constexpr (!Config::_initializeImmediately) {
+		if constexpr (!Config::initializeImmediately) {
 			_construct(_static().storage);
 		}
 		_static().isInitialized.store(true, std::memory_order_release);
@@ -180,7 +152,7 @@ private:
 	// ⚠️ can't be constexpr
 	INLINE static void _registerDestructor() noexcept {
 		if constexpr (!std::is_trivially_destructible_v<Item>) {
-			if constexpr (_threadLocal) {
+			if constexpr (Config::threadLocal) {
 				static thread_local Destructor destructor;
 			} else {
 				static Destructor destructor;
@@ -189,17 +161,16 @@ private:
 	}
 
 	struct Destructor {
-		~Destructor() { Self::_destroy(_static().storage); }
+		~Destructor() { _destroy(_static().storage); }
 	};
 
 public:
-	template <class... MoreOptions> using With = Object::template With<MoreOptions...>;
-
+	template <is::Option... More> using With = Base::template With<More...>;
 	using Lazy = With<option::lazy<true>>;
 	using ThreadLocal = With<option::threadLocal<true>>;
 	using Concurrent = With<option::concurrent<true>>;
 }; // class Custom
 
-} // namespace VOLTISO_NAMESPACE::singleton
+} // namespace V::singleton
 
 #include <v/OFF>

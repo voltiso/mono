@@ -3,7 +3,7 @@
 
 #include <v/_/ref.forward.hpp>
 
-#include "v/concepts/options"
+#include "v/is/options"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/final"
@@ -26,7 +26,7 @@ template <class Target> struct Specializations<Options<option::Target<Target>>> 
 
 namespace VOLTISO_NAMESPACE::ref {
 template <class InputOptions>
-  requires concepts::Options<InputOptions>
+  requires is::Options<InputOptions>
 // requires(!std::is_const_v<T>) // ! allow `Ref<const T>`
 class Custom : public Object<typename InputOptions::template WithDefault<
                  option::CustomTemplate<GetCustom>, option::InputOptions<InputOptions>>> {
@@ -39,11 +39,11 @@ private:
 
 public:
 	using Target = InputOptions::template Get<option::Target>;
-	static constexpr bool IS_OPTIONAL = InputOptions::template GET<option::OPTIONAL>;
+	static constexpr bool IS_OPTIONAL = InputOptions::template get<option::OPTIONAL>;
 
 protected:
 	template <class OtherOptions>
-	  requires concepts::Options<OtherOptions>
+	  requires is::Options<OtherOptions>
 	friend class Custom;
 	Target *_pTarget = nullptr;
 

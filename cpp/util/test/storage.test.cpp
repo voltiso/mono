@@ -1,25 +1,37 @@
 #include <gtest/gtest.h>
 
 #include "v/_/is/relocatable.hpp"
-#include "v/_/storage/impl.hpp"
 #include "v/_/storage/storage.hpp"
-#include "v/concepts/constexpr-constructible"
+#include "v/is/constexpr-constructible"
 #include "v/storage"
 
 #include <type_traits>
 
 #include <v/ON>
 
-using namespace VOLTISO_NAMESPACE;
+using namespace V;
+using namespace storage;
+using namespace option;
 
-static_assert(is::relocatable<storage::Custom<Options<option::Item<int>>>>);
+// ============================================================================
+// Builder
+// ============================================================================
+
+struct TestBuilder {
+	using A = Storage<int>::NonUnion::With<option::nonUnion<false>>;
+	static_assert(std::is_same_v<A, Storage<int>>);
+};
+
+// ============================================================================
+// Relocatable
+// ============================================================================
+
+static_assert(is::relocatable<Custom<Item<int>>>);
 static_assert(is::relocatable<Storage<int>>);
 
-static_assert(is::relocatable<storage::Custom<Options<option::Item<int>, option::nonUnion<true>>>>);
+static_assert(is::relocatable<Custom<Item<int>, nonUnion<true>>>);
 static_assert(is::relocatable<Storage<int>::NonUnion>);
 
-// static_assert(std::is_trivially_copyable_v<storage::_::Impl<Options<option::Item<int>>>>);
-// static_assert(std::is_trivially_copyable_v<storage::Custom<Options<option::Item<int>>>>);
 static_assert(std::is_trivially_copyable_v<Storage<int>>);
 static_assert(std::is_trivially_copyable_v<Storage<int>::NonUnion>);
 
@@ -50,8 +62,8 @@ public:
 	ForcedRelocatable() = default;
 
 private:
-	ForcedRelocatable(ForcedRelocatable &&) = delete;
-	ForcedRelocatable(const ForcedRelocatable &) = default; // for [[trivial_abi]]
+	ForcedRelocatable(const ForcedRelocatable &) = delete;
+	explicit ForcedRelocatable(ForcedRelocatable &&) = default; // for [[trivial_abi]]
 	ForcedRelocatable &operator=(const ForcedRelocatable &) = delete;
 	ForcedRelocatable &operator=(ForcedRelocatable &&) = delete;
 
@@ -81,7 +93,7 @@ static_assert(!is::relocatable<Storage<WithDestructor>::NonUnion>);
 
 static_assert(!std::is_trivially_copyable_v<WithDestructor>);
 static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>>);
-// static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>::NonUnion>); // ! BAD?
+static_assert(!std::is_trivially_copyable_v<Storage<WithDestructor>::NonUnion>);
 
 // nested
 static_assert(!is::relocatable<Storage<Storage<WithDestructor>>>);
@@ -211,7 +223,7 @@ template struct WITH_CONSTRUCTOR<Storage<WithConstructor>::NonUnion>;
 struct WITH_CONSTRUCTOR_BYTES {
 	using S = Storage<WithConstructor>::NonUnion;
 	static_assert(std::is_trivially_constructible_v<S>);
-	static_assert(concepts::ConstexprConstructible<S>);
+	static_assert(is::constexprConstructible<S>);
 };
 
 // ! ---------------------

@@ -1,14 +1,10 @@
 #pragma once
 #include <v/_/_>
 
+#include "_/get-base.hpp"
 #include "forward.hpp"
 
-#include "v/concepts/options"
 #include "v/empty"
-#include "v/object"
-#include "v/option/custom-template"
-#include "v/option/enabled"
-#include "v/option/input-options"
 
 #include <atomic>
 #include <mutex>
@@ -17,26 +13,19 @@
 
 namespace VOLTISO_NAMESPACE::mutex {
 
-#pragma push_macro("OBJECT")
-#define OBJECT                                                                                     \
-	Object<typename Options::template WithDefault<                                                   \
-	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>
-
 /** A trivial mutex implementation that is trivially destructible. */
-template <concepts::Options Options> class Custom : public OBJECT {
-	using Object = OBJECT;
-#pragma pop_macro("OBJECT")
+template <is::Option... Os> class Custom : public _::GetBase<Os...> {
+	using Base = _::GetBase<Os...>;
+	using typename Base::Config;
 
-	static constexpr bool _enabled = Options::template GET<option::enabled>;
-
-	using Locked = std::conditional_t<_enabled, std::atomic_flag, Empty>;
+	using Locked = std::conditional_t<Config::enabled, std::atomic_flag, Empty>;
 	Locked _locked;
 
 public:
 	constexpr Custom() noexcept : _locked(ATOMIC_FLAG_INIT) {}
 
 	constexpr Custom() noexcept
-	  requires(!_enabled)
+	  requires(!Config::enabled)
 	= default;
 
 private:
@@ -53,7 +42,7 @@ public:
 	}
 
 	INLINE void lock() noexcept
-	  requires(!_enabled)
+	  requires(!Config::enabled)
 	{}
 
 public:
@@ -63,14 +52,15 @@ public:
 	}
 
 	INLINE void unlock() noexcept
-	  requires(!_enabled)
+	  requires(!Config::enabled)
 	{}
 
 public:
 	[[nodiscard]] INLINE auto guard() noexcept { return std::lock_guard(*this); }
 
 public:
-	template <bool enabled> using Enabled = Object::template With<option::enabled<enabled>>;
+	template <is::Option... More> using With = Base::template With<More...>;
+	template <bool e> using Enabled = With<option::enabled<e>>;
 }; // class Custom
 
 } // namespace VOLTISO_NAMESPACE::mutex

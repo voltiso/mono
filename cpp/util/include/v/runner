@@ -2,10 +2,10 @@
 #include <v/_/_>
 
 #include "v/any-function"
-#include "v/concepts/options"
 #include "v/context"
 #include "v/hash-set"
 #include "v/heap"
+#include "v/is/options"
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/final"
@@ -27,7 +27,7 @@
 // forward declarations
 namespace VOLTISO_NAMESPACE::runner {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 } // namespace VOLTISO_NAMESPACE::runner
 
@@ -158,7 +158,7 @@ template <> struct ThreadSafeData<true> {
 
 namespace VOLTISO_NAMESPACE::runner {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom : public Object<typename Options::template WithDefault<
                  option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
 private:
@@ -172,9 +172,9 @@ public:
 	using Duration = Clock::duration;
 	using TimePoint = runner::_::TimePoint;
 	using Delay = runner::_::Delay;
-	static constexpr bool IS_NOEXCEPT = Options::template GET<option::NOEXCEPT>;
-	static constexpr bool IS_MUTABLE = Options::template GET<option::MUTABLE>;
-	static constexpr bool IS_THREAD_SAFE = Options::template GET<option::THREAD_SAFE>;
+	static constexpr bool IS_NOEXCEPT = Options::template get<option::NOEXCEPT>;
+	static constexpr bool IS_MUTABLE = Options::template get<option::MUTABLE>;
+	static constexpr bool IS_THREAD_SAFE = Options::template get<option::THREAD_SAFE>;
 	using AnyCallback =
 	  AnyFunction<void()>::With<option::NOEXCEPT<IS_NOEXCEPT>, option::MUTABLE<IS_MUTABLE>>;
 

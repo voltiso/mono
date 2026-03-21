@@ -1,37 +1,26 @@
 #pragma once
 #include <v/_/_>
 
-// #include "v/_/is/relocatable.hpp"
-#include "v/concepts/options"
-// #include "v/option/item"
+#include "v/is/option"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::storage {
-template <concepts::Options Options> class Custom;
+namespace V::storage {
 
-// template <concepts::Options Options>
-//   requires is::relocatable<typename Options::template Get<option::Item>>
-// class RELOCATABLE(Custom<Options>);
-} // namespace VOLTISO_NAMESPACE::storage
+template <is::Option... Options> class Custom;
 
-// !
-
-namespace VOLTISO_NAMESPACE::storage {
-template <class Options>
-  requires concepts::Options<Options>
-struct Specializations {
-	using Result = Custom<Options>;
+template <is::Option... Os> struct Specializations {
+	using Result = Custom<Os...>;
 };
-} // namespace VOLTISO_NAMESPACE::storage
+
+template <is::Option... Os> using GetCustom = Specializations<Os...>::Result;
+
+} // namespace V::storage
 
 // !
 
-namespace VOLTISO_NAMESPACE {
+namespace V {
 template <class Item> class Storage;
-// template <class Item>
-//   requires is::relocatable<Item>
-// class RELOCATABLE(Storage<Item>);
-} // namespace VOLTISO_NAMESPACE
+} // namespace V
 
 #include <v/OFF>

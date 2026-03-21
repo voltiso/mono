@@ -1,0 +1,20 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+namespace V {
+
+namespace _ {
+template <template <class...> class Tpl, class Packed> struct ApplyImpl;
+template <template <class...> class Tpl, template <class...> class Pack, class... Os>
+struct ApplyImpl<Tpl, Pack<Os...>> {
+	using type = Tpl<Os...>;
+};
+} // namespace _
+
+// Unpack `Params` and apply `Template` to the resulting parameter pack
+template <template <class...> class Template, class Params>
+using Apply = typename _::ApplyImpl<Template, Params>::type;
+
+} // namespace V
+#include <v/OFF>

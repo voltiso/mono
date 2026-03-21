@@ -1,0 +1,52 @@
+#pragma once
+
+#include "v/empty"
+#include "v/extent"
+
+#include <v/ON>
+namespace V {
+
+//
+
+template <Extent... extentsPack> class Extents {
+	static constexpr Size _numDynamic = ((extentsPack == Extent::dynamic ? 1 : 0) + ... + 0);
+
+	using Storage = std::conditional_t<_numDynamic == 0, Empty, std::array<Extent, _numDynamic>>;
+
+	[[no_unique_address]] Storage _dynamicExtents;
+
+public:
+	constexpr Extents() noexcept = default;
+
+	template <std::convertible_to<Extent>... Args>
+	  requires(sizeof...(Args) == _numDynamic)
+	constexpr explicit Extents(Args &&...args) noexcept
+	    : _dynamicExtents{std::forward<Args>(args)...} {}
+
+	[[nodiscard]] static constexpr Size rank() noexcept { return sizeof...(extentsPack); }
+
+	[[nodiscard]] constexpr Extent operator[](Size index) const noexcept {
+		RANGE(index, 0, rank());
+		constexpr std::array<Extent, rank()> extents{extentsPack...};
+		if (extents[index] != Extent::dynamic) {
+			return extents[index];
+		}
+
+		if constexpr (_numDynamic > 0) {
+			Size iDynamic = 0;
+			for (Size i = 0; i < index; ++i) {
+				if (extents[i] == Extent::dynamic) {
+					++iDynamic;
+				}
+			}
+			return _dynamicExtents[iDynamic];
+		} else {
+			std::unreachable();
+		}
+	}
+};
+
+//
+
+} // namespace V
+#include <v/OFF>

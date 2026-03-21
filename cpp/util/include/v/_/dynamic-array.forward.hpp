@@ -1,13 +1,13 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/concepts/options"
+#include "v/is/options"
 
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
-  requires concepts::Options<Options>
+  requires is::Options<Options>
 class Custom;
 } // namespace VOLTISO_NAMESPACE::dynamicArray
 
@@ -30,13 +30,9 @@ namespace VOLTISO_NAMESPACE::dynamicArray {
 // explicit copy
 // if OtherItems is rvalue, it must be const (marked for copy)
 template <class OtherItems>
-  requires(
-    std::is_reference_v<OtherItems> ||
-    std::is_const_v<std::remove_reference_t<OtherItems>>)
-[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto
-from(OtherItems &&otherItems);
+  requires(std::is_reference_v<OtherItems> || std::is_const_v<std::remove_reference_t<OtherItems>>)
+[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto from(OtherItems &&otherItems);
 
 template <class Item>
-[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto
-from(std::initializer_list<Item> items);
+[[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto from(std::initializer_list<Item> items);
 } // namespace VOLTISO_NAMESPACE::dynamicArray

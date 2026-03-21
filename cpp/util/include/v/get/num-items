@@ -2,47 +2,34 @@
 #include <v/_/_>
 
 #include "v/size"
+#include "v/trait/num-items"
 
 #include <type_traits>
 
 #include <v/ON>
 
-namespace V::get {
-template <class T> [[nodiscard]] constexpr Size numItems(const T &t) noexcept {
+namespace V::get::_ {
+template <class T> [[nodiscard]] static constexpr auto dynamic_num_items(const T &t) noexcept {
 	if constexpr (requires { t.numItems(); }) {
 		static_assert(noexcept(t.numItems()));
 		return t.numItems();
-	} else if constexpr (requires { t.numItems; }) {
-		return t.numItems;
-	} else if constexpr (requires { t.NUM_ITEMS; }) {
-		return t.NUM_ITEMS;
-	} else if constexpr (std::is_array_v<T>) {
-		return std::extent_v<T>;
 	} else if constexpr (requires { t.size(); }) {
-		// std interop
 		static_assert(noexcept(t.size()));
 		return t.size();
+	} else if constexpr (!std::is_void_v<decltype(trait::numItems<T>)>) {
+		return trait::numItems<T>;
 	} else {
-		static_assert(false, "numItems: no known member or trait for this type");
+		return; // void
 	}
 }
-} // namespace V::get
-
-// !
+} // namespace V::get::_
 
 namespace V::get {
 template <class T>
-static constexpr auto NUM_ITEMS = []() {
-	using Value = std::remove_reference_t<T>;
-	if constexpr (requires { Value::NUM_ITEMS; }) {
-		return Value::NUM_ITEMS;
-	} else if constexpr (std::is_array_v<Value>) {
-		return static_cast<v::Size>(std::extent_v<Value>);
-	} else {
-		static_assert(
-		  false, "get::NUM_ITEMS: no known member or trait for this type");
-	}
-}();
+  requires(!std::is_void_v<decltype(_::dynamic_num_items(std::declval<T>()))>)
+[[nodiscard]] static constexpr Size numItems(const T &t) noexcept {
+	return _::dynamic_num_items(t);
+}
 } // namespace V::get
 
 #include <v/OFF>

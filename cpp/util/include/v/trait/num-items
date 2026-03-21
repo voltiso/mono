@@ -1,0 +1,31 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/size"
+
+#include <v/ON>
+
+namespace V::trait::_ {
+template <class T> [[nodiscard]] static consteval auto numItems() {
+	using Value = std::remove_reference_t<T>;
+	if constexpr (requires { Value::numItems(); }) {
+		static_assert(noexcept(Value::numItems()));
+		return Value::numItems();
+	} else if constexpr (std::is_bounded_array_v<Value>) {
+		return std::extent_v<Value>;
+	} else if constexpr (requires { Value::size(); }) {
+		static_assert(noexcept(Value::size()));
+		return Value::size();
+	} else {
+		return; // void
+	}
+}
+} // namespace V::trait::_
+
+namespace V::trait {
+template <class T>
+  requires(!std::is_void_v<decltype(_::numItems<T>())>)
+static constexpr Size numItems = []() { return _::numItems<T>(); }();
+} // namespace V::trait
+
+#include <v/OFF>

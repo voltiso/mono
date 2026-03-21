@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "v/concepts/constexpr-constructible"
+#include "v/is/constexpr-constructible"
 #include "v/singleton"
 
 #include <atomic>
@@ -33,14 +33,14 @@ struct Constructor {
 	Constructor() { value = 123; }
 };
 static_assert(!std::is_trivially_constructible_v<Constructor>);
-static_assert(!concepts::ConstexprConstructible<Constructor>);
+static_assert(!is::constexprConstructible<Constructor>);
 static_assert(std::is_trivially_destructible_v<Constructor>);
 
 struct Constinit {
 	int value = 123;
 };
 static_assert(!std::is_trivially_constructible_v<Constinit>);
-static_assert(concepts::ConstexprConstructible<Constinit>);
+static_assert(is::constexprConstructible<Constinit>);
 static_assert(std::is_trivially_destructible_v<Constinit>);
 
 struct Destructor {
@@ -48,7 +48,7 @@ struct Destructor {
 	~Destructor() { value = 456; }
 };
 static_assert(!std::is_trivially_constructible_v<Destructor>);
-static_assert(!concepts::ConstexprConstructible<Destructor>);
+static_assert(!is::constexprConstructible<Destructor>);
 static_assert(!std::is_trivially_destructible_v<Destructor>);
 
 struct ConstinitDestructor {
@@ -57,7 +57,7 @@ struct ConstinitDestructor {
 	constexpr ~ConstinitDestructor() { value = 456; }
 };
 static_assert(!std::is_trivially_constructible_v<ConstinitDestructor>);
-static_assert(concepts::ConstexprConstructible<ConstinitDestructor>);
+static_assert(is::constexprConstructible<ConstinitDestructor>);
 static_assert(!std::is_trivially_destructible_v<ConstinitDestructor>);
 
 // ℹ️ The whole logic is to possibly have neither `haveIsInitialized` and
@@ -71,22 +71,22 @@ TEST(Singleton, internalLogic) {
 
 	// Constructor
 	// static_assert(!concepts::ConstexprConstructible<Constructor>);
-	static_assert(!singleton::_::Config<Singleton<Constructor>::Options>::_hasIsInitialized);
-	static_assert(singleton::_::Config<Singleton<Constructor>::Lazy::Options>::_hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<Constructor>::Options>::hasIsInitialized);
+	static_assert(singleton::_::Config<Singleton<Constructor>::Lazy::Options>::hasIsInitialized);
 
 	// Constinit
-	static_assert(!singleton::_::Config<Singleton<Constinit>::Options>::_hasIsInitialized);
-	static_assert(!singleton::_::Config<Singleton<Constinit>::Lazy::Options>::_hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<Constinit>::Options>::hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<Constinit>::Lazy::Options>::hasIsInitialized);
 
 	// Destructor
-	static_assert(!singleton::_::Config<Singleton<Destructor>::Options>::_hasIsInitialized);
-	static_assert(singleton::_::Config<Singleton<Destructor>::Lazy::Options>::_hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<Destructor>::Options>::hasIsInitialized);
+	static_assert(singleton::_::Config<Singleton<Destructor>::Lazy::Options>::hasIsInitialized);
 
 	// ConstinitDestructor
 	// * fringe case - initialize immediately, but register destructor on first access
-	static_assert(!singleton::_::Config<Singleton<ConstinitDestructor>::Options>::_hasIsInitialized);
+	static_assert(!singleton::_::Config<Singleton<ConstinitDestructor>::Options>::hasIsInitialized);
 	static_assert(
-	  singleton::_::Config<Singleton<ConstinitDestructor>::Lazy::Options>::_hasIsInitialized);
+	  singleton::_::Config<Singleton<ConstinitDestructor>::Lazy::Options>::hasIsInitialized);
 }
 
 // =========================================================================
@@ -140,7 +140,7 @@ void testThreadIsolation(int expectedInitVal = 0) {
 // Proves initial values are correctly applied (for types with constructors)
 template <class SingletonType, int Expected> void testInitialValue() {
 	// If lazy, we must explicitly spin it up in the test
-	if constexpr (SingletonType::Options::template GET<option::lazy>) {
+	if constexpr (SingletonType::Options::template get<singleton::option::lazy>) {
 		SingletonType::instance();
 	}
 	auto &s = SingletonType::instance();
@@ -152,7 +152,7 @@ template <class SingletonType, int Expected> void testInitialValue() {
 // ---------------------------------------------------------
 
 // Most types now only support lazy singleton variants.
-#define GENERATE_LAZY_SINGLETON_TESTS(TypeName, HasInit, InitVal)                                   \
+#define GENERATE_LAZY_SINGLETON_TESTS(TypeName, HasInit, InitVal)                                  \
 	TEST(SingletonRuntime, TypeName##_Global_Lazy) {                                                 \
 		if constexpr (HasInit)                                                                         \
 			testInitialValue<Singleton<TypeName>::Lazy, InitVal>();                                      \
@@ -167,7 +167,7 @@ template <class SingletonType, int Expected> void testInitialValue() {
 	}
 
 // Constinit still supports eager and lazy variants.
-#define GENERATE_CONSTINIT_SINGLETON_TESTS(TypeName, HasInit, InitVal)                              \
+#define GENERATE_CONSTINIT_SINGLETON_TESTS(TypeName, HasInit, InitVal)                             \
 	TEST(SingletonRuntime, TypeName##_Global_Eager) {                                                \
 		if constexpr (HasInit)                                                                         \
 			testInitialValue<Singleton<TypeName>, InitVal>();                                            \

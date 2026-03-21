@@ -1,32 +1,22 @@
 #pragma once
 #include <v/_/_>
 
+#include "_/get-base.hpp"
 #include "forward.hpp"
-
-#include "v/concepts/options"
-#include "v/object"
-#include "v/option/enabled"
-#include "v/option/item"
 
 #include <atomic>
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::atomic {
-
-#pragma push_macro("OBJECT")
-#define OBJECT                                                                                     \
-	Object<typename Options::template WithDefault<                                                   \
-	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>
+namespace V::atomic {
 
 /** Hides operators from `std::atomic`, lock-free only */
-template <concepts::Options Options> class Custom : public OBJECT {
-	using Item = Options::template Get<option::Item>;
-	using Object = OBJECT;
-#pragma pop_macro("OBJECT")
+template <is::Option... Os> class Custom : public _::GetBase<Os...> {
+	using Base = _::GetBase<Os...>;
+	using typename Base::Config;
+	using Item = Config::Item;
 
-	static constexpr bool _enabled = Options::template GET<option::enabled>;
-	using Value = std::conditional_t<_enabled, std::atomic<Item>, Item>;
+	using Value = std::conditional_t<Config::enabled, std::atomic<Item>, Item>;
 
 private:
 	Value _value;
@@ -52,7 +42,7 @@ public:
 	//
 
 	INLINE Item load(std::memory_order order) const noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.load(order);
 		} else {
 			return _value;
@@ -60,7 +50,7 @@ public:
 	}
 
 	INLINE void store(Item desired, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			_value.store(desired, order);
 		} else {
 			_value = desired;
@@ -70,7 +60,7 @@ public:
 	//
 
 	INLINE Item fetchAdd(Item arg, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.fetch_add(arg, order);
 		} else {
 			auto old = _value;
@@ -79,7 +69,7 @@ public:
 		}
 	}
 	INLINE Item fetchSub(Item arg, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.fetch_sub(arg, order);
 		} else {
 			auto old = _value;
@@ -91,7 +81,7 @@ public:
 	//
 
 	INLINE Item fetchOr(Item arg, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.fetch_or(arg, order);
 		} else {
 			auto old = _value;
@@ -101,7 +91,7 @@ public:
 	}
 
 	INLINE Item fetchAnd(Item arg, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.fetch_and(arg, order);
 		} else {
 			auto old = _value;
@@ -111,7 +101,7 @@ public:
 	}
 
 	INLINE Item fetchXor(Item arg, std::memory_order order) noexcept {
-		if constexpr (_enabled) {
+		if constexpr (Config::enabled) {
 			return _value.fetch_xor(arg, order);
 		} else {
 			auto old = _value;
@@ -125,27 +115,28 @@ public:
 	// ---------------------------------------------------------------------------
 
 	INLINE void wait(const Item &expected, std::memory_order order) noexcept
-	  requires(_enabled)
+	  requires(Config::enabled)
 	{
 		_value.wait(expected, order);
 	}
 
 	INLINE void notifyOne() noexcept
-	  requires(_enabled)
+	  requires(Config::enabled)
 	{
 		_value.notify_one();
 	}
 
 	INLINE void notifyAll() noexcept
-	  requires(_enabled)
+	  requires(Config::enabled)
 	{
 		_value.notify_all();
 	}
 
 public:
-	template <bool enabled> using Enabled = Object::template With<option::enabled<enabled>>;
+	template <is::Option... More> using With = Base::template With<More...>;
+	template <bool e> using Enabled = With<atomic::option::enabled<e>>;
 }; // class Custom
 
-} // namespace VOLTISO_NAMESPACE::atomic
+} // namespace V::atomic
 
 #include <v/OFF>

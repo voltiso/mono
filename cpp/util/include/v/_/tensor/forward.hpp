@@ -2,20 +2,20 @@
 #include <v/_/_>
 
 // #include "v/_/is/relocatable.hpp"
-#include "v/concepts/options"
+#include "v/is/options"
 // #include "v/option/item"
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::tensor {
 
-template <concepts::Options Options> class Custom;
+template <is::Options Options> class Custom;
 
-// template <concepts::Options Options>
+// template <is::Options Options>
 //   requires is::relocatable<typename Options::template Get<option::Item>>
 // class RELOCATABLE(Custom<Options>);
 
-template <concepts::Options Options> struct Specializations {
+template <is::Options Options> struct Specializations {
 	using Result = Custom<Options>;
 };
 

@@ -9,7 +9,7 @@ namespace VOLTISO_NAMESPACE::_::tensor {
 consteval Size sumNumItems() { return 0; }
 
 template <class T, class... Ts> consteval Size sumNumItems(T &&t, Ts &&...ts) {
-	return get::NUM_ITEMS<T> + sumNumItems(std::forward<Ts>(ts)...);
+	return get::numItems<T> + sumNumItems(std::forward<Ts>(ts)...);
 }
 
 } // namespace VOLTISO_NAMESPACE::_::tensor

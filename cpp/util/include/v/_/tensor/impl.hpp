@@ -6,11 +6,11 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/_/view.forward.hpp"
-#include "v/concepts/options"
 #include "v/extent"
 #include "v/get/extent"
 #include "v/get/num-items"
 #include "v/handle"
+#include "v/is/options"
 #include "v/memory/iterator"
 #include "v/object"
 #include "v/option/extents"
@@ -58,7 +58,7 @@ public:
 	}();
 };
 
-template <concepts::Options Options>
+template <is::Options Options>
 class CustomNNR : public Object<typename Options ::template WithDefault<
                     option::CustomTemplate<V::tensor::GetCustom>, option::InputOptions<Options>>>,
                   public ExtentData<Options, extentKind<Options>> {
@@ -107,7 +107,7 @@ public:
 		return strides;
 	}();
 
-	static constexpr auto STARTING_INDEX = Options::template GET<option::startingIndex>;
+	static constexpr auto STARTING_INDEX = Options::template get<option::startingIndex>;
 
 	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
 
@@ -122,7 +122,7 @@ public:
 	constexpr auto strides() const noexcept { return STRIDES; }
 
 private:
-	static constexpr auto _implicitCopy = Options::template GET<option::implicitCopy>;
+	static constexpr auto _implicitCopy = Options::template get<option::implicitCopy>;
 
 public:
 	CustomNNR() = default;
@@ -318,9 +318,9 @@ public:
 	template <class Other>
 	  requires(get::EXTENT<Other> != V::extent::DYNAMIC && get::EXTENT<Other> != V::extent::UNBOUND)
 	constexpr auto operator<<(this auto &&self, Other &&other) {
-		constexpr Size NEW_NUM_ITEMS = NUM_ITEMS + get::NUM_ITEMS<Other>;
-		using Result = Final::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
-		EQ(_::tensor::sumNumItems(self, other), NEW_NUM_ITEMS);
+		constexpr Size newNumItems = NUM_ITEMS + get::numItems<Other>;
+		using Result = Final::template With<option::Extents<ValuePack<newNumItems>>>;
+		EQ(_::tensor::sumNumItems(self, other), newNumItems);
 		return Result::concat(std::forward<decltype(self)>(self), std::forward<Other>(other));
 	}
 

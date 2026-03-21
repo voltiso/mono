@@ -1,4 +1,4 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/object.hpp" // IWYU pragma: export
+#include "v/_/object/all.hpp" // IWYU pragma: export

@@ -75,12 +75,11 @@ constexpr bool hasIncorrectBaseMarker = []() constexpr {
 	}
 	return false;
 }();
-} // namespace _
 
 // !
 
 template <class T>
-static constexpr auto relocatable = []() constexpr {
+inline constexpr bool relocatable_v = []() constexpr {
 	// static_assert(is::complete<T>, "is::relocatable: type is not complete");
 
 	const auto hasMarker = _::hasMarker<T>;
@@ -150,5 +149,10 @@ static constexpr auto relocatable = []() constexpr {
 
 	return result;
 }();
+
+} // namespace _
+
+template <class T>
+concept relocatable = _::relocatable_v<T>;
 
 } // namespace VOLTISO_NAMESPACE::is
