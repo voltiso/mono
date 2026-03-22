@@ -1,7 +1,7 @@
 #pragma once
 
-#include "options-full.hpp"
-#include "options-list.hpp"
+#include "options-canonical.hpp"
+#include "filter-out.hpp"
 
 #include "v/is/instantiated-from-same"
 
@@ -11,24 +11,16 @@ namespace VOLTISO_NAMESPACE::options::_ {
 
 // --- With/WithIfMissing implementations ---
 
-template <typename OptionToRemove, typename List> struct _RemoveKind;
-
 template <typename OptionToRemove>
-struct _RemoveKind<OptionToRemove, TypeList<>> {
-	using type = TypeList<>;
+struct _RemoveIfSameKindPredicate {
+	template <typename Head>
+	struct Apply
+	    : std::bool_constant<VOLTISO_NAMESPACE::is::InstantiatedFromSame<OptionToRemove, Head>> {};
 };
 
-template <typename OptionToRemove, typename Head, typename... Tail>
-struct _RemoveKind<OptionToRemove, TypeList<Head, Tail...>> {
-private:
-	using FilteredTail = typename _RemoveKind<OptionToRemove, TypeList<Tail...>>::type;
-
-public:
-	using type = std::conditional_t<
-	  VOLTISO_NAMESPACE::is::InstantiatedFromSame<OptionToRemove, Head>,
-	  FilteredTail,
-	  typename Concat<TypeList<Head>, FilteredTail>::Result>;
-};
+template <typename OptionToRemove, typename List>
+using _RemoveKind_t =
+  FilterOut_t<_RemoveIfSameKindPredicate<OptionToRemove>::template Apply, List>;
 
 template <typename CurrentList, typename... NewOptions> struct _WithAdd;
 template <typename CurrentList> struct _WithAdd<CurrentList> {
@@ -37,7 +29,7 @@ template <typename CurrentList> struct _WithAdd<CurrentList> {
 
 template <typename CurrentList, typename HeadOption, typename... TailOptions>
 struct _WithAdd<CurrentList, HeadOption, TailOptions...> {
-	using Removed = typename _RemoveKind<HeadOption, CurrentList>::type;
+	using Removed = _RemoveKind_t<HeadOption, CurrentList>;
 	using Appended = typename Concat<Removed, TypeList<HeadOption>>::Result;
 	using type = typename _WithAdd<Appended, TailOptions...>::type;
 };
@@ -70,32 +62,41 @@ public:
 	using type = typename _WithIfMissingAdd<NextList, TailDefaults...>::type;
 };
 
-template <typename CurrentList, typename... Args> struct WithFromArgs;
-template <typename... CurrentAs, typename... MoreOptions>
-struct WithFromArgs<TypeList<CurrentAs...>, MoreOptions...> {
-	using _Raw = typename _WithAdd<TypeList<CurrentAs...>, MoreOptions...>::type;
+template <typename CurrentList, typename MoreAsList> struct _WithFromArgsCanon;
+
+template <typename... CurrentAs, typename... More>
+struct _WithFromArgsCanon<TypeList<CurrentAs...>, TypeList<More...>> {
+	using _Raw = typename _WithAdd<TypeList<CurrentAs...>, More...>::type;
 	using type = typename MaybeCanonicalFromTypeList<_Raw>::type;
 };
 
+template <typename CurrentList, typename... Args> struct WithFromArgs;
+
+template <typename... CurrentAs, typename... MoreOptions>
+struct WithFromArgs<TypeList<CurrentAs...>, MoreOptions...>
+    : _WithFromArgsCanon<TypeList<CurrentAs...>, TypeList<MoreOptions...>> {};
+
 template <typename... CurrentAs, typename... OtherAs>
-struct WithFromArgs<TypeList<CurrentAs...>, VOLTISO_NAMESPACE::Options<OtherAs...>> {
-	using _Raw = typename _WithAdd<TypeList<CurrentAs...>, OtherAs...>::type;
+struct WithFromArgs<TypeList<CurrentAs...>, VOLTISO_NAMESPACE::Options<OtherAs...>>
+    : _WithFromArgsCanon<TypeList<CurrentAs...>, TypeList<OtherAs...>> {};
+
+template <typename CurrentList, typename DefaultsList> struct _WithIfMissingFromArgsCanon;
+
+template <typename... CurrentAs, typename... Def>
+struct _WithIfMissingFromArgsCanon<TypeList<CurrentAs...>, TypeList<Def...>> {
+	using _Raw = typename _WithIfMissingAdd<TypeList<CurrentAs...>, Def...>::type;
 	using type = typename MaybeCanonicalFromTypeList<_Raw>::type;
 };
 
 template <typename CurrentList, typename... Args> struct WithIfMissingFromArgs;
+
 template <typename... CurrentAs, typename... DefaultOpts>
-struct WithIfMissingFromArgs<TypeList<CurrentAs...>, DefaultOpts...> {
-	using _Raw = typename _WithIfMissingAdd<TypeList<CurrentAs...>, DefaultOpts...>::type;
-	using type = typename MaybeCanonicalFromTypeList<_Raw>::type;
-};
+struct WithIfMissingFromArgs<TypeList<CurrentAs...>, DefaultOpts...>
+    : _WithIfMissingFromArgsCanon<TypeList<CurrentAs...>, TypeList<DefaultOpts...>> {};
 
 template <typename... CurrentAs, typename... OtherDefaultAs>
-struct WithIfMissingFromArgs<TypeList<CurrentAs...>, VOLTISO_NAMESPACE::Options<OtherDefaultAs...>> {
-	using _Raw =
-	  typename _WithIfMissingAdd<TypeList<CurrentAs...>, OtherDefaultAs...>::type;
-	using type = typename MaybeCanonicalFromTypeList<_Raw>::type;
-};
+struct WithIfMissingFromArgs<TypeList<CurrentAs...>, VOLTISO_NAMESPACE::Options<OtherDefaultAs...>>
+    : _WithIfMissingFromArgsCanon<TypeList<CurrentAs...>, TypeList<OtherDefaultAs...>> {};
 
 } // namespace VOLTISO_NAMESPACE::options::_
 

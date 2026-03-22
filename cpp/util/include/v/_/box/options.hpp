@@ -26,7 +26,7 @@ using DefaultOptions = Options<
   option::comparable<false>, option::arithmetic<false>, option::bitwise<false>,
   option::logical<false>, option::implicit<false>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 
 } // namespace V::box
 #include <v/OFF>

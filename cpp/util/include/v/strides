@@ -1,0 +1,16 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/static-array"
+#include "v/stride"
+
+#include <v/ON>
+namespace V {
+
+template <Stride... stridesPack> class Strides : public StaticArray<Stride, stridesPack...> {
+	using Base = StaticArray<Stride, stridesPack...>;
+	using Base::Base;
+};
+
+} // namespace V
+#include <v/OFF>

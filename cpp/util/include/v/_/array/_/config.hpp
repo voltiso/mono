@@ -5,21 +5,21 @@
 
 #include "v/handle"
 #include "v/is/options"
+#include "v/mixin/copy"
 #include "v/raw-array"
 
 #include <v/ON>
 namespace V::array::_ {
 
 template <is::Options O> class Config {
-	using _Options = V::mixin::Options_<O>::Options;
 	using _Final = V::mixin::Crtp<O>::Final;
 
 public:
-	using Item = _Options::template Get<option::Item>;
-	static constexpr auto numItems = _Options::template get<option::numItems>;
+	using Item = O::template Get<option::Item>;
+	static constexpr auto numItems = O::template get<option::numItems>;
 	static_assert(numItems > 0, "numItems must be greater than 0");
 
-	static constexpr bool implicitCopy = _Options::template get<option::implicitCopy>;
+	static constexpr bool implicitCopy = O::template get<mixin::copy::option::implicitCopy>;
 
 	static constexpr auto startingIndex = 0; // todo - nd-offsets instead?
 

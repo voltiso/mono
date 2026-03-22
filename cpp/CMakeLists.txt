@@ -83,15 +83,15 @@ add_executable(
   test.cpp
 
   util/test/options.test.cpp
-  # util/test/box.test.cpp
-  # util/test/extents.test.cpp
-  # util/test/num-items.test.cpp
-  # util/test/inherit.test.cpp
-  # util/test/storage.test.cpp
-  # util/test/singleton.test.cpp
-  # util/test/raw-array.test.cpp
-  # util/test/handle.test.cpp
-  # util/test/array.test.cpp
+  util/test/box.test.cpp
+  util/test/extents.test.cpp
+  util/test/num-items.test.cpp
+  util/test/inherit.test.cpp
+  util/test/storage.test.cpp
+  util/test/singleton.test.cpp
+  util/test/raw-array.test.cpp
+  util/test/handle.test.cpp
+  util/test/array.test.cpp
   # util/test/view.test.cpp
   # util/test/tensor.test.cpp
   # util/test/quaternion.test.cpp

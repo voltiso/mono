@@ -14,17 +14,15 @@
 
 namespace VOLTISO_NAMESPACE::singleton::_ {
 template <is::Options O> class Config {
-	using _Options = V::mixin::Options_<O>::Options;
-
 public:
-	using Item = _Options::template Get<option::Item>;
+	using Item = O::template Get<option::Item>;
 	static_assert(!std::is_reference_v<Item>);
 	static_assert(!std::is_const_v<Item>);
 	static_assert(!std::is_volatile_v<Item>);
 
-	static constexpr bool lazy = _Options::template get<option::lazy>;
-	static constexpr bool threadLocal = _Options::template get<option::threadLocal>;
-	static constexpr bool concurrent = _Options::template get<option::concurrent>;
+	static constexpr bool lazy = O::template get<option::lazy>;
+	static constexpr bool threadLocal = O::template get<option::threadLocal>;
+	static constexpr bool concurrent = O::template get<option::concurrent>;
 
 	struct ConstructKey {
 	private:

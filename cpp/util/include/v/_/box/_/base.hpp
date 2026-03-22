@@ -9,6 +9,7 @@
 
 #include "v/is/options"
 #include "v/mixin/builder"
+// #include "v/mixin/options"
 
 #include <v/ON>
 namespace V::box::_ {
@@ -16,7 +17,7 @@ namespace V::box::_ {
 //
 
 template <is::Options O>
-class Base : public V::mixin::Options_<O>,
+class Base : // public V::mixin::Options_<O>,
              public V::mixin::Builder<O>,
              public mixin::Comparable<O>,
              public mixin::Arithmetic<O>,

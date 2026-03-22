@@ -18,7 +18,7 @@ class Base : public V::mixin::Builder<O>,
              public V::mixin::Crtp<O>,
              //
              public mixin::Array<O>,
-             public mixin::Copy {
+             public mixin::Copy<O> {
 protected:
 	using Config = _::Config<O>;
 };

@@ -18,7 +18,7 @@ template <bool B> struct nonUnion : Option::Value<B> {};
 using DefaultOptions = Options<
   option::Item<void>, option::nonUnion<false>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 
 } // namespace V::storage
 #include <v/OFF>

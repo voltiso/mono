@@ -9,10 +9,8 @@
 namespace VOLTISO_NAMESPACE::mutex::_ {
 
 template <is::Options O> class Config {
-	using _Options = V::mixin::Options_<O>::Options;
-
 public:
-	static constexpr bool enabled = _Options::template get<option::enabled>;
+	static constexpr bool enabled = O::template get<option::enabled>;
 };
 
 } // namespace VOLTISO_NAMESPACE::mutex::_

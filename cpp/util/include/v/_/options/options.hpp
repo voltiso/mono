@@ -4,7 +4,9 @@
 
 #include "_/filter-out.hpp"
 #include "_/options-common.hpp"
-#include "_/options-get.hpp"
+#include "_/options-get-template.hpp"
+#include "_/options-get-type.hpp"
+#include "_/options-get-value.hpp"
 #include "_/options-list.hpp"
 #include "_/options-with.hpp"
 
@@ -35,24 +37,18 @@ public:
 	  typename options::_::GetTemplateImpl<TemplateOption, Args...>::template _WithOpts<As...>::type;
 
 	// --- With: override existing kinds (no sorting, ORDER-free) ---
-	template <typename... Args>
-	using With = typename options::_::WithFromArgs<options::_::TypeList<As...>, Args...>::type;
+	template <is::Option... Os>
+	using With = typename options::_::WithFromArgs<options::_::TypeList<As...>, Os...>::type;
 
 	// --- WithIfMissing: ignore existing kinds, add only missing ones ---
-	template <typename... Args>
+	template <is::Option... Os>
 	using WithIfMissing =
-	  typename options::_::WithIfMissingFromArgs<options::_::TypeList<As...>, Args...>::type;
+	  typename options::_::WithIfMissingFromArgs<options::_::TypeList<As...>, Os...>::type;
 
-	// --- Without: remove options carrying any of the given `Option::Tag` types ---
+	// --- Without: remove options whose `option_tag` matches any of the given `Option::Tag` types ---
 	template <is::OptionTag... OptionTags>
 	using Without = typename options::_::MaybeCanonicalFromTypeList<options::_::FilterOut_t<
 	  options::_::IsOptionTagAnyOfPredicate<OptionTags...>::template Apply,
-	  options::_::TypeList<As...>>>::type;
-
-	// --- WithoutKind: remove options instantiated from any of the given option-class templates ---
-	template <template <class...> class... OptionKinds>
-	using WithoutKind = typename options::_::MaybeCanonicalFromTypeList<options::_::FilterOut_t<
-	  options::_::IsOptionKindAnyOfPredicate<OptionKinds...>::template Apply,
 	  options::_::TypeList<As...>>>::type;
 };
 

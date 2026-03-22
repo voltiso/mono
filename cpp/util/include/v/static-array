@@ -1,0 +1,65 @@
+#pragma once
+
+#include "v/empty"
+#include "v/index"
+#include "v/size"
+
+#include <array>
+
+#include <v/ON>
+namespace V {
+
+//
+
+template <class Item, Item... itemsPack> class StaticArray {
+	static constexpr std::array<Item, sizeof...(itemsPack)> _items{itemsPack...};
+	static constexpr Size _numDynamic = ((itemsPack == Item::dynamic ? 1 : 0) + ... + 0);
+
+	static constexpr auto _map = []() consteval noexcept {
+		std::array<Size, sizeof...(itemsPack)> out{};
+		constexpr std::array<Item, sizeof...(itemsPack)> items{itemsPack...};
+		Size nDynamicBefore = 0;
+		for (Size i = 0; i < sizeof...(itemsPack); ++i) {
+			out[i] = nDynamicBefore;
+			if (items[i] == Item::dynamic) {
+				++nDynamicBefore;
+			}
+		}
+		return out;
+	}();
+
+	using Storage = std::conditional_t<_numDynamic == 0, Empty, std::array<Item, _numDynamic>>;
+	[[no_unique_address]] Storage _dynamicItems;
+
+public:
+	constexpr StaticArray() noexcept = default;
+
+	template <std::convertible_to<Item>... Args>
+	  requires(sizeof...(Args) == _numDynamic)
+	constexpr explicit StaticArray(Args &&...args) noexcept
+	    : _dynamicItems{std::forward<Args>(args)...} {}
+
+	[[nodiscard]] static constexpr Size numItems() noexcept { return sizeof...(itemsPack); }
+
+	[[nodiscard]] constexpr const Item &operator[](const Index &index) const noexcept
+	  requires(_numDynamic > 0)
+	{
+		RANGE(index, 0, numItems());
+		if (_items[index] != Item::dynamic) [[likely]] {
+			return _items[index];
+		}
+		return _dynamicItems[_map[index]];
+	}
+
+	[[nodiscard]] constexpr const Item &operator[](const Index &index) noexcept
+	  requires(_numDynamic == 0)
+	{
+		RANGE(index, 0, numItems());
+		return _items[index];
+	}
+};
+
+//
+
+} // namespace V
+#include <v/OFF>

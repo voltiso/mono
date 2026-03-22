@@ -35,8 +35,8 @@ template <class T, class... Ts> consteval Size sumNumItems(T &&, Ts &&...ts) {
 
 // !
 
-template <is::Option... Os> class RELOCATABLE(Impl) : public _::GetBase<Os...> {
-	using Base = _::GetBase<Os...>;
+template <is::Option... Os> class RELOCATABLE(Impl) : public GetBase<Os...> {
+	using Base = GetBase<Os...>;
 	using Final = Base::Final;
 
 	using typename Base::Config;
@@ -48,8 +48,9 @@ private:
 	Items _items;
 
 public:
-	consteval Items &items() noexcept { return _items; }
-	consteval const Items &items() const noexcept { return _items; }
+	/// `constexpr` (not `consteval`) so `data()`, iterators, and conversions work at runtime too.
+	constexpr Items &items() noexcept { return _items; }
+	constexpr const Items &items() const noexcept { return _items; }
 
 public:
 	static consteval auto numItems() noexcept { return Config::numItems; }
@@ -313,7 +314,7 @@ private:
 public:
 	template <class... More> using With = Base::template With<More...>;
 	template <auto n> using NumItems = With<option::numItems<n>>;
-	using ImplicitCopy = With<option::implicitCopy<true>>;
+	using ImplicitCopy = With<mixin::copy::option::implicitCopy<true>>;
 }; // class Impl
 } // namespace VOLTISO_NAMESPACE::array::_
 

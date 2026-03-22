@@ -29,10 +29,16 @@ static_assert(std::is_trivially_copyable_v<Array<int, 1>>);
 // using Implicit =
 //   array::_::Impl<Options<option::Item<int>, option::numItems<3>, option::implicitCopy<true>>>;
 using Implicit = array::Custom<
-  array::option::Item<int>, array::option::numItems<3>, array::option::implicitCopy<true>>;
+  array::option::Item<int>, array::option::numItems<3>, mixin::copy::option::implicitCopy<true>>;
 // using Implicit = Array<int, 3>::WithImplicitCopy;
 
 static_assert(std::is_trivially_copyable_v<Implicit>);
+
+// !
+
+static_assert(
+  std::is_same_v<
+    Array<int, 3>::ImplicitCopy::With<mixin::copy::option::implicitCopy<false>>, Array<int, 3>>);
 
 // !
 

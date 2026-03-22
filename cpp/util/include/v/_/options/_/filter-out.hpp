@@ -2,18 +2,9 @@
 
 #include "options-list.hpp"
 
-#include "v/is/instantiated-from"
-
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE::options::_ {
-
-template <typename T> struct IsOptionFinal : std::false_type {};
-
-template <template <class...> class OptionKind> struct IsOptionKindPredicate {
-	template <typename T_To_Check>
-	struct Apply : std::bool_constant<is::instantiatedFrom<T_To_Check, OptionKind>> {};
-};
 
 /// True if `Opt` exposes `option_tag` (from `Option::Type<_, Tag>`) and it equals `TagToMatch`.
 template <class Opt, class TagToMatch, class = void> struct OptionHasTag : std::false_type {};
@@ -25,11 +16,6 @@ struct OptionHasTag<Opt, TagToMatch, std::void_t<typename Opt::option_tag>>
 template <class... OptionTags> struct IsOptionTagAnyOfPredicate {
 	template <typename T_To_Check>
 	struct Apply : std::bool_constant<(OptionHasTag<T_To_Check, OptionTags>::value || ...)> {};
-};
-
-template <template <class...> class... OptionKinds> struct IsOptionKindAnyOfPredicate {
-	template <typename T_To_Check>
-	struct Apply : std::bool_constant<(is::instantiatedFrom<T_To_Check, OptionKinds> || ...)> {};
 };
 
 template <template <typename> class Predicate, typename ListToFilter> struct FilterOut;

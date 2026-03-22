@@ -18,7 +18,7 @@ namespace V::handle {
 using DefaultOptions = Options<
   option::Value<void *>, option::Brand<void>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 } // namespace V::handle
 
 #include <v/OFF>

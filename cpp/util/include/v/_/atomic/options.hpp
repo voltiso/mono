@@ -22,7 +22,7 @@ using DefaultOptions = Options<
   //
   option::enabled<true>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 
 } // namespace VOLTISO_NAMESPACE::atomic
 

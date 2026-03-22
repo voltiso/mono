@@ -5,6 +5,7 @@
 
 #include "v/is/options"
 #include "v/mixin/builder"
+#include "v/mixin/options"
 
 #include <v/ON>
 namespace V::singleton::_ {

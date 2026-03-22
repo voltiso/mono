@@ -20,7 +20,7 @@ namespace VOLTISO_NAMESPACE::singleton {
 using DefaultOptions = Options<
   option::Item<void>, option::lazy<false>, option::threadLocal<false>, option::concurrent<false>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 } // namespace VOLTISO_NAMESPACE::singleton
 
 #include <v/OFF>

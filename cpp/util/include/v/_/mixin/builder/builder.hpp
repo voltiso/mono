@@ -1,6 +1,7 @@
 #pragma once
 #include <v/_/_>
 
+#include "v/_/options/option.hpp"
 #include "v/apply"
 #include "v/is/options"
 #include "v/mixin/crtp"
@@ -19,15 +20,13 @@ template <is::Options O> class Builder {
 public:
 	template <class... MoreOptions>
 	using With = Apply<
-	  _CustomTemplate, typename O::template With<MoreOptions...>::template Without<
-	                     crtp::option::CustomTemplate, crtp::option::InputOptions,
-	                     crtp::option::Final, options::option::DefaultOptions>>;
+	  _CustomTemplate,
+	  typename O::template With<MoreOptions...>::template Without<options::option::DefaultOptions>>;
 
 	template <class... MoreOptions>
 	using WithIfMissing = Apply<
 	  _CustomTemplate, typename O::template WithIfMissing<MoreOptions...>::template Without<
-	                     crtp::option::CustomTemplate, crtp::option::InputOptions,
-	                     crtp::option::Final, options::option::DefaultOptions>>;
+	                     options::option::DefaultOptions>>;
 };
 
 //

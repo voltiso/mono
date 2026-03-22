@@ -4,7 +4,6 @@
 #include "../options.hpp"
 
 #include "v/is/options"
-#include "v/mixin/options"
 
 #include <v/ON>
 namespace V::storage::_ {
@@ -12,10 +11,8 @@ namespace V::storage::_ {
 //
 
 template <is::Options O> class Config {
-	using _Options = V::mixin::Options_<O>::Options;
-
 public:
-	using Item = _Options::template Get<option::Item>;
+	using Item = O::template Get<option::Item>;
 };
 
 //

@@ -5,6 +5,7 @@ TabWidth: 2
 LineEnding: LF
 ColumnLimit: 100
 
-InsertBraces: true # Insert braces for all control statements
+# InsertBraces: true # Insert braces for all control statements
 IndentPPDirectives: BeforeHash # Preprocessor directive indentation
 AlignAfterOpenBracket: AlwaysBreak
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse

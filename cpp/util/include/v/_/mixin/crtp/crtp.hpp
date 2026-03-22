@@ -5,7 +5,7 @@
 
 #include "v/apply"
 #include "v/is/options"
-#include "v/mixin/options"
+#include "v/options"
 
 #include <v/ON>
 namespace V::mixin {
@@ -13,18 +13,11 @@ namespace V::mixin {
 //
 
 template <is::Options O> class Crtp {
-private:
-	using _Options = mixin::Options_<O>::Options;
-
 public:
 	template <is::Option... Os>
-	using CustomTemplate = _Options::template GetTemplate<crtp::option::CustomTemplate, Os...>;
-
-	// Use `InputOptions` if provided, otherwise fall back to `O` parameter
-	using InputOptions = _Options::template Get<crtp::option::InputOptions, O>;
-
-	// use `option::Final` if present, otherwise use `CustomTemplate<InputOptions>`
-	using Final = _Options::template Get<crtp::option::Final, Apply<CustomTemplate, InputOptions>>;
+	using CustomTemplate = O::template GetTemplate<crtp::option::customTemplate, Os...>;
+	using Final =
+	  Apply<CustomTemplate, typename O::template Without<options::option::DefaultOptions>>;
 };
 
 //

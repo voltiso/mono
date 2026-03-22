@@ -96,31 +96,7 @@ struct TEST_OptionsWithIfMissing_InsertIfMissingOnly {
 };
 
 // ============================================================================
-// WithoutKind (remove by option class template)
-// ============================================================================
-
-struct TEST_OptionsWithoutKind_RemovesMatchingKind {
-	template <class T> struct TypeOpt : Option::Type<T> {};
-	template <auto V> struct ValueOpt : Option::Value<V> {};
-
-	using In = Options<TypeOpt<int>, ValueOpt<0>>;
-	using Out = In::template WithoutKind<TypeOpt>;
-	using Expected = Options<ValueOpt<0>>;
-	static_assert(std::is_same_v<Out, Expected>);
-
-	// kind absent -> unchanged
-	using In2 = Options<ValueOpt<1>>;
-	using Out2 = In2::template WithoutKind<TypeOpt>;
-	static_assert(std::is_same_v<Out2, In2>);
-
-	// only matching kind -> empty
-	using In3 = Options<TypeOpt<long>>;
-	using Out3 = In3::template WithoutKind<TypeOpt>;
-	static_assert(std::is_same_v<Out3, Options<>>);
-};
-
-// ============================================================================
-// Without (remove by Option::Tag)
+// Without (remove by Option::Tag — options must use `Option::Type<_, Tag>` with that tag)
 // ============================================================================
 
 struct TEST_OptionsWithout_RemovesByOptionTag {
@@ -133,6 +109,22 @@ struct TEST_OptionsWithout_RemovesByOptionTag {
 	using In = Options<TaggedOpt<int>, ValueOpt<0>>;
 	using Out = In::template Without<SomeTag>;
 	static_assert(std::is_same_v<Out, Options<ValueOpt<0>>>);
+
+	// Same idea as old template-template removal: one tag for all "type slot" options.
+	struct TypeSlotTag : Option::Tag {};
+	template <class T> struct TypeSlot : Option::Type<T, TypeSlotTag> {};
+
+	using InSlot = Options<TypeSlot<int>, ValueOpt<0>>;
+	using OutSlot = InSlot::template Without<TypeSlotTag>;
+	static_assert(std::is_same_v<OutSlot, Options<ValueOpt<0>>>);
+
+	using InSlot2 = Options<ValueOpt<1>>;
+	using OutSlot2 = InSlot2::template Without<TypeSlotTag>;
+	static_assert(std::is_same_v<OutSlot2, InSlot2>);
+
+	using InSlot3 = Options<TypeSlot<long>>;
+	using OutSlot3 = InSlot3::template Without<TypeSlotTag>;
+	static_assert(std::is_same_v<OutSlot3, Options<>>);
 
 	using Default = Options<TypeOpt<int>, ValueOpt<7>>;
 	using Meta = options::option::defaultOptions<Default>;

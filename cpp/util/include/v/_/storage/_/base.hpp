@@ -14,8 +14,7 @@ namespace V::storage::_ {
 //
 
 template <is::Options O>
-using Data = std::conditional_t<
-  mixin::Options_<O>::Options::template get<option::nonUnion>, DataBytes<O>, DataUnion<O>>;
+using Data = std::conditional_t<O::template get<option::nonUnion>, DataBytes<O>, DataUnion<O>>;
 
 template <is::Options O> class Base : public V::mixin::Builder<O>, public Data<O> {
 protected:

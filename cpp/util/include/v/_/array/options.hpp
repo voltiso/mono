@@ -3,6 +3,7 @@
 
 #include "forward.hpp"
 
+#include "v/mixin/copy"
 #include "v/mixin/crtp"
 #include "v/option"
 #include "v/options"
@@ -21,9 +22,9 @@ namespace V::array {
 using DefaultOptions = Options<
   option::Item<void>, option::numItems<0>,
   //
-  // option::implicitCopy<false>,
+  mixin::copy::option::implicitCopy<false>,
   //
-  mixin::crtp::option::CustomTemplate<GetCustom>, mixin::crtp::option::InputOptions<>>;
+  mixin::crtp::option::customTemplate<GetCustom>>;
 } // namespace V::array
 
 #include <v/OFF>
