@@ -13,7 +13,7 @@ template <class TItem> class Iterator {
 public:
 	using Item = TItem;
 
-	Item *target; // uninitialized
+	Item *target; // ! uninitialized
 
 	// Constructors
 	INLINE Iterator() noexcept = default;
@@ -68,21 +68,17 @@ public:
 	}
 
 	// Difference between iterators
-	VOLTISO_FORCE_INLINE std::ptrdiff_t
-	operator-(const Self &other) const noexcept {
+	VOLTISO_FORCE_INLINE std::ptrdiff_t operator-(const Self &other) const noexcept {
 		return target - other.target;
 	}
 
 	// Subscript operator
-	VOLTISO_FORCE_INLINE Item &operator[](std::ptrdiff_t n) const noexcept {
-		return target[n];
-	}
+	VOLTISO_FORCE_INLINE Item &operator[](std::ptrdiff_t n) const noexcept { return target[n]; }
 
 	// std interop
 public:
-	using iterator_concept = std::random_access_iterator_tag; // C++20
-	using iterator_category =
-	  std::random_access_iterator_tag; // pre-C++20 fallback
+	using iterator_concept = std::random_access_iterator_tag;  // C++20
+	using iterator_category = std::random_access_iterator_tag; // pre-C++20 fallback
 	using value_type = std::remove_cv_t<Item>;
 	using difference_type = std::ptrdiff_t;
 	using pointer = Item *;
@@ -91,8 +87,7 @@ public:
 
 // Non-member operator+ for symmetry (difference + iterator)
 template <class TItem>
-INLINE Iterator<TItem>
-operator+(std::ptrdiff_t difference, const Iterator<TItem> &it) noexcept {
+INLINE Iterator<TItem> operator+(std::ptrdiff_t difference, const Iterator<TItem> &it) noexcept {
 	return it + difference;
 }
 

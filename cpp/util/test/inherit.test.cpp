@@ -394,6 +394,29 @@ struct STORAGE_TRIVIALITY_BUG_TEST {
 	static_assert(std::is_trivially_copyable_v<Storage<Item>>);
 };
 
+// Regression: base templated `operator=(const O&&)` for `O == Leaf` + bridge
+// `VOLTISO_INHERIT_ASSIGN_COPY_RVALUE` used to be two viable templates (ambiguous assign).
+struct BRIDGE_NO_AMBIGUOUS_ASSIGN_WITH_BASE_TEMPLATE {
+	template <class> struct Leaf;
+	struct Mid {
+		template <class O>
+		  requires(
+		    !std::is_reference_v<O> && std::is_const_v<O> &&
+		    std::is_same_v<std::remove_cv_t<O>, Leaf<void>>)
+		Mid &operator=(O &&) {
+			return *this;
+		}
+	};
+	template <class T = void> struct Leaf : Mid {
+		using Base = Mid;
+		INHERIT(Leaf);
+	};
+	static_assert(std::is_assignable_v<Leaf<void> &, const Leaf<void> &&>);
+	static void useAssign(Leaf<void> &b, const Leaf<void> &a) {
+		b = static_cast<const Leaf<void> &&>(a);
+	}
+};
+
 struct TENSOR_TRIVIALITY_BUG_TEST {
 	struct CustomNNR {
 		CustomNNR() = default;

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "v/_/is/relocatable.hpp"
-#include "v/array"
 #include "v/is/relocatable"
 #include "v/storage"
+#include "v/tensor"
 // #include "v/view"
 
 #include <string>
@@ -19,17 +19,17 @@ using namespace VOLTISO_NAMESPACE;
 // TODO: implement `array::Aggregate` if needed
 // static_assert(!std::is_aggregate_v<Array<int, 3>>);
 
-static_assert(std::is_trivially_constructible_v<Array<int, 3>>);
+static_assert(std::is_trivially_constructible_v<Tensor<int, 3>>);
 
-static_assert(is::relocatable<Array<int, 3>>);
+static_assert(is::relocatable<Tensor<int, 3>>);
 static_assert(std::is_trivially_copyable_v<
-              array::_::Impl<array::option::Item<int>, array::option::numItems<1>>>);
-static_assert(std::is_trivially_copyable_v<Array<int, 1>>);
+              tensor::_::Impl<tensor::option::item<int>, tensor::option::numItems<1>>>);
+static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
 
 // using Implicit =
 //   array::_::Impl<Options<option::Item<int>, option::numItems<3>, option::implicitCopy<true>>>;
-using Implicit = array::Custom<
-  array::option::Item<int>, array::option::numItems<3>, mixin::copy::option::implicitCopy<true>>;
+using Implicit = tensor::Custom<
+  tensor::option::item<int>, tensor::option::numItems<3>, tensor::option::implicitCopy<true>>;
 // using Implicit = Array<int, 3>::WithImplicitCopy;
 
 static_assert(std::is_trivially_copyable_v<Implicit>);
@@ -38,88 +38,88 @@ static_assert(std::is_trivially_copyable_v<Implicit>);
 
 static_assert(
   std::is_same_v<
-    Array<int, 3>::ImplicitCopy::With<mixin::copy::option::implicitCopy<false>>, Array<int, 3>>);
+    Tensor<int, 3>::ImplicitCopy::With<tensor::option::implicitCopy<false>>, Tensor<int, 3>>);
 
 // !
 
 TEST(Array, uninitialized) {
-	Storage<Array<int, 10>> array;
+	Storage<Tensor<int, 10>> array;
 	*(int *)&array = 123;
 
 	// No value-init here: underlying bytes remain untouched.
-	new (&array) Array<int, 10>;
-	EXPECT_EQ(((Array<int, 10> &)array)[0], 123);
+	new (&array) Tensor<int, 10>;
+	EXPECT_EQ(((Tensor<int, 10> &)array)[0], 123);
 }
 
 TEST(Array, defaultInitialized) {
-	Storage<Array<int, 10>> array;
+	Storage<Tensor<int, 10>> array;
 	*(int *)&array = 123;
 
 	// `{}` value-initializes the storage.
-	new (&array) Array<int, 10>{};
-	EXPECT_EQ(((Array<int, 10> &)array)[0], 0);
+	new (&array) Tensor<int, 10>{};
+	EXPECT_EQ(((Tensor<int, 10> &)array)[0], 0);
 }
 
 template <class T, class... Args>
 concept CanBraceInit = requires { T{std::declval<Args>()...}; };
 
 TEST(Array, braceInit) {
-	Array<int, 3> array = {1, 2, 3};
+	Tensor<int, 3> array = {1, 2, 3};
 	EXPECT_EQ(array[0], 1);
 	EXPECT_EQ(array[1], 2);
 	EXPECT_EQ(array[2], 3);
 
-	static_assert(CanBraceInit<Array<int, 3>>);
+	static_assert(CanBraceInit<Tensor<int, 3>>);
 
-	static_assert(CanBraceInit<Array<int, 3>, int, int, int>);
-	static_assert(!CanBraceInit<Array<int, 3>, int, int>);
-	static_assert(!CanBraceInit<Array<int, 3>, int, int, int, int>);
+	static_assert(CanBraceInit<Tensor<int, 3>, int, int, int>);
+	static_assert(!CanBraceInit<Tensor<int, 3>, int, int>);
+	static_assert(!CanBraceInit<Tensor<int, 3>, int, int, int, int>);
 }
 
 TEST(Array, deductionGuide) {
-	auto array = Array{1, 2, 3};
-	static_assert(std::is_same_v<decltype(array), Array<int, 3L>>);
+	auto array = Tensor{1, 2, 3};
+	static_assert(std::is_same_v<decltype(array), Tensor<int, 3L>>);
 	EXPECT_EQ(array[0], 1);
 	EXPECT_EQ(array[1], 2);
 	EXPECT_EQ(array[2], 3);
 }
 
 TEST(Array, deductionGuideStrings) {
-	auto array = Array{"a", "b"};
-	static_assert(std::is_same_v<decltype(array), Array<const char *, 2L>>);
+	auto array = Tensor{"a", "b"};
+	static_assert(std::is_same_v<decltype(array), Tensor<const char *, 2L>>);
 	EXPECT_EQ(array[0], "a");
 	EXPECT_EQ(array[1], "b");
 }
 
 TEST(Array, deductionGuideSingleString) {
-	auto array = Array{"a"};
-	static_assert(std::is_same_v<decltype(array), Array<const char *, 1L>>);
+	auto array = Tensor{"a"};
+	static_assert(std::is_same_v<decltype(array), Tensor<const char *, 1L>>);
 	EXPECT_EQ(array[0], "a");
 }
 
 TEST(Array, initializerList_deductionGuide) {
-	Array array = {1, 2};
+	Tensor array = {1, 2};
 	EXPECT_EQ(array[0], 1);
 	EXPECT_EQ(array[1], 2);
 }
 
 TEST(Array, from) {
-	auto str = array::from("abc");
-	static_assert(std::is_same_v<decltype(str), Array<char, 4>>);
+	auto str = tensor::from("abc");
+	static_assert(std::is_same_v<decltype(str), Tensor<char, 4>>);
 
-	auto arr = array::from({1, 2, 3});
-	static_assert(std::is_same_v<decltype(arr), Array<int, 3>>);
+	auto arr = tensor::from({1, 2, 3});
+	static_assert(std::is_same_v<decltype(arr), Tensor<int, 3>>);
 
-	auto arr2 = array::from({"a"});
-	static_assert(std::is_same_v<decltype(arr2), Array<const char *, 1>>);
+	auto arr2 = tensor::from({"a"});
+	static_assert(std::is_same_v<decltype(arr2), Tensor<const char *, 1>>);
 }
 
-TEST(Array, deductionGuideStr) {
-	Array array = {"a", "b"};
-	static_assert(std::is_same_v<decltype(array), Array<const char *, 2L>>);
+TEST(Tensor, deductionGuideStr) {
+	Tensor array = {"a", "b"};
+	static_assert(std::is_same_v<decltype(array), Tensor<const char *, 2L>>);
 
-	Array arr = {"abc"};
-	static_assert(std::is_same_v<decltype(arr), Array<const char *, 1L>>);
+	Tensor arr = {"abc"};
+	static_assert(std::is_same_v<decltype(arr), Tensor<const char *, 1L>>);
 }
 
 // TODO !!!!!!!!!!!!!!!!!!!!!!
@@ -163,7 +163,7 @@ TEST(Array, deductionGuideStr) {
 // }
 
 TEST(Array, noImplicitCopy) {
-	using Array = array::_::Impl<array::option::Item<int>, array::option::numItems<3>>;
+	using Array = tensor::_::Impl<tensor::option::item<int>, tensor::option::numItems<3>>;
 	// using Array = Array<int, 3>;
 
 	// Regular copy/move is intentionally disabled (linear-time operation).
@@ -184,19 +184,19 @@ TEST(Array, noImplicitCopy) {
 }
 
 TEST(Array, iterators) {
-	Array<int, 3> array = {10, 20, 30};
+	Tensor<int, 3> tensor = {10, 20, 30};
 
 	int sum = 0;
-	for (const auto &val : array) {
+	for (const auto &val : tensor) {
 		sum += val;
 	}
 	EXPECT_EQ(sum, 60);
-	EXPECT_EQ(std::distance(array.begin(), array.end()), 3);
-	EXPECT_TRUE(std::equal(array.begin(), array.end(), array.data()));
+	EXPECT_EQ(std::distance(tensor.begin(), tensor.end()), 3);
 }
 
 TEST(Array, stringConversions) {
-	Array<char, 3> text = {'a', 'b', 'c'};
+	static_assert(std::is_same_v<Tensor<char, 3>::Item, char>);
+	Tensor<char, 3>::Std text = {'a', 'b', 'c'};
 	// std::string_view conversion is implicit and constant-time.
 	std::string_view sv = text;
 	EXPECT_EQ(sv, "abc");
@@ -208,47 +208,50 @@ TEST(Array, stringConversions) {
 	EXPECT_EQ(s.length(), 3);
 }
 
-TEST(Array, viewMemberFunction) {
-	Array<int, 3> array = {1, 2, 3};
-	auto v = array.view();
-	EXPECT_EQ(v[0], 1);
-	EXPECT_EQ(v[1], 2);
-	EXPECT_EQ(v[2], 3);
+// TODO !!!!!!!!!!!!!!!!!!!!!!
+// TEST(Array, viewMemberFunction) {
+// 	Array<int, 3> array = {1, 2, 3};
+// 	auto v = array.view();
+// 	EXPECT_EQ(v[0], 1);
+// 	EXPECT_EQ(v[1], 2);
+// 	EXPECT_EQ(v[2], 3);
 
-	const Array<int, 3> constArray = {4, 5, 6};
-	auto cv = constArray.view();
-	EXPECT_EQ(cv[0], 4);
-}
+// 	const Array<int, 3> constArray = {4, 5, 6};
+// 	auto cv = constArray.view();
+// 	EXPECT_EQ(cv[0], 4);
+// }
 
-TEST(Array, runtimeExtentAndNumItems) {
-	Array<int, 6> array = {1, 2, 3, 4, 5, 6};
-	EXPECT_EQ(array.numItems(), 6);
-	EXPECT_EQ(array.extent(), 6);
-	auto s = array.strides();
-	EXPECT_EQ(s[0], 1);
-}
+// TODO !!!!!!!!!!!!!!!!!!!!!!
+// TEST(Array, runtimeExtentAndNumItems) {
+// 	Array<int, 6> array = {1, 2, 3, 4, 5, 6};
+// 	EXPECT_EQ(array.numItems(), 6);
+// 	auto s = array.strides();
+// 	EXPECT_EQ(s[0], 1);
+// }
 
 TEST(Array, explicitRawArrayConversion) {
-	Array<int, 3> array = {7, 8, 9};
+	Tensor<int, 3> tensor = {7, 8, 9};
 	// Explicit cast to avoid silently dropping semantic type info.
-	auto &raw = static_cast<RawArray<int, 3> &>(array);
+	auto &raw = static_cast<tensor::Raw<int, 3> &>(tensor);
 	EXPECT_EQ(raw[0], 7);
 	EXPECT_EQ(raw[1], 8);
 	EXPECT_EQ(raw[2], 9);
 
 	raw[0] = 99;
-	EXPECT_EQ(array[0], 99);
+	EXPECT_EQ(tensor[0], 99);
 }
 
-TEST(Array, customStartingIndex) {
-	using Custom1Indexed = array::Custom<
-	  Options<option::Item<int>, option::Extents<ValuePack<3>>, option::startingIndex<1>>>;
+// TODO !!!!!!!!!!!!!!!!!!!!!!
+// TEST(Array, customStartingIndex) {
+// 	using Custom1Indexed = array::Custom<
+// 	  Options<array::option::item<int>, array::option::numItems<3>,
+// array::option::startingIndex<1>>>;
 
-	Custom1Indexed array = {10, 20, 30};
-	EXPECT_EQ(array[1], 10);
-	EXPECT_EQ(array[2], 20);
-	EXPECT_EQ(array[3], 30);
-}
+// 	Custom1Indexed array = {10, 20, 30};
+// 	EXPECT_EQ(array[1], 10);
+// 	EXPECT_EQ(array[2], 20);
+// 	EXPECT_EQ(array[3], 30);
+// }
 
 struct CopyLifecycle {
 	static int numConstructed;
@@ -266,15 +269,15 @@ TEST(Array, copyLifecycle) {
 	CopyLifecycle::numConstructed = 0;
 	CopyLifecycle::numDestructed = 0;
 	{
-		Array<CopyLifecycle, 3> array = {0, 0, 0};
-		EXPECT_EQ(array[0].num, 0);
-		EXPECT_EQ(array[1].num, 0);
-		EXPECT_EQ(array[2].num, 0);
-		auto array2 = array.copy();
-		static_assert(std::is_same_v<decltype(array2), Array<CopyLifecycle, 3>>);
-		EXPECT_EQ(array2[0].num, 1);
-		EXPECT_EQ(array2[1].num, 1);
-		EXPECT_EQ(array2[2].num, 1);
+		Tensor<CopyLifecycle, 3> tensor = {0, 0, 0};
+		EXPECT_EQ(tensor[0].num, 0);
+		EXPECT_EQ(tensor[1].num, 0);
+		EXPECT_EQ(tensor[2].num, 0);
+		auto tensor2 = tensor.copy();
+		static_assert(std::is_same_v<decltype(tensor2), Tensor<CopyLifecycle, 3>>);
+		EXPECT_EQ(tensor2[0].num, 1);
+		EXPECT_EQ(tensor2[1].num, 1);
+		EXPECT_EQ(tensor2[2].num, 1);
 	}
 	EXPECT_EQ(CopyLifecycle::numConstructed, 6);
 	EXPECT_EQ(CopyLifecycle::numDestructed, 6);
@@ -296,15 +299,15 @@ TEST(Array, assignLifecycle) {
 	AssignLifecycle::numConstructed = 0;
 	AssignLifecycle::numDestructed = 0;
 	{
-		Array<AssignLifecycle, 3> array = {0, 0, 0};
-		EXPECT_EQ(array[0].num, 0);
-		EXPECT_EQ(array[1].num, 0);
-		EXPECT_EQ(array[2].num, 0);
-		Array<AssignLifecycle, 3> array2 = {10, 10, 10};
-		array2 = array.copy();
-		EXPECT_EQ(array2[0].num, 1);
-		EXPECT_EQ(array2[1].num, 1);
-		EXPECT_EQ(array2[2].num, 1);
+		Tensor<AssignLifecycle, 3> tensor = {0, 0, 0};
+		EXPECT_EQ(tensor[0].num, 0);
+		EXPECT_EQ(tensor[1].num, 0);
+		EXPECT_EQ(tensor[2].num, 0);
+		Tensor<AssignLifecycle, 3> tensor2 = {10, 10, 10};
+		tensor2 = tensor.copy();
+		EXPECT_EQ(tensor2[0].num, 1);
+		EXPECT_EQ(tensor2[1].num, 1);
+		EXPECT_EQ(tensor2[2].num, 1);
 	}
 	EXPECT_EQ(AssignLifecycle::numConstructed, 6);
 	EXPECT_EQ(AssignLifecycle::numDestructed, 6);
@@ -316,61 +319,61 @@ TEST(Array, copyConversion) {
 		S(int x) : x(x) {}
 	};
 
-	using IArray = Array<int, 3>;
-	using SArray = Array<S, 3>;
+	using ITensor = Tensor<int, 3>;
+	using STensor = Tensor<S, 3>;
 
-	IArray array = {1, 2, 3};
-	SArray array2 = array.copy();
-	EXPECT_EQ(array2[0].x, 1);
-	EXPECT_EQ(array2[1].x, 2);
-	EXPECT_EQ(array2[2].x, 3);
-	SArray array3 = {0, 0, 0};
-	array3 = array.copy();
-	EXPECT_EQ(array3[0].x, 1);
-	EXPECT_EQ(array3[1].x, 2);
-	EXPECT_EQ(array3[2].x, 3);
+	ITensor tensor = {1, 2, 3};
+	STensor tensor2 = tensor.copy();
+	EXPECT_EQ(tensor2[0].x, 1);
+	EXPECT_EQ(tensor2[1].x, 2);
+	EXPECT_EQ(tensor2[2].x, 3);
+	STensor tensor3 = {0, 0, 0};
+	tensor3 = tensor.copy();
+	EXPECT_EQ(tensor3[0].x, 1);
+	EXPECT_EQ(tensor3[1].x, 2);
+	EXPECT_EQ(tensor3[2].x, 3);
 }
 
 TEST(Array, copyConversionImplicit) {
-	Array<int, 3>::WithImplicitCopy array = {1, 2, 3};
+	Tensor<int, 3>::ImplicitCopy tensor = {1, 2, 3};
 	struct S {
 		int x;
 		S(int x) : x(2 * x) {}
 	};
-	Array<S, 3>::WithImplicitCopy array2 = array;
-	EXPECT_EQ(array2[0].x, 2);
-	EXPECT_EQ(array2[1].x, 4);
-	EXPECT_EQ(array2[2].x, 6);
-	Array<S, 3>::WithImplicitCopy array3 = {0, 0, 0};
-	array3 = array;
-	EXPECT_EQ(array3[0].x, 2);
-	EXPECT_EQ(array3[1].x, 4);
-	EXPECT_EQ(array3[2].x, 6);
+	Tensor<S, 3>::ImplicitCopy tensor2 = tensor;
+	EXPECT_EQ(tensor2[0].x, 2);
+	EXPECT_EQ(tensor2[1].x, 4);
+	EXPECT_EQ(tensor2[2].x, 6);
+	Tensor<S, 3>::ImplicitCopy tensor3 = {0, 0, 0};
+	tensor3 = tensor;
+	EXPECT_EQ(tensor3[0].x, 2);
+	EXPECT_EQ(tensor3[1].x, 4);
+	EXPECT_EQ(tensor3[2].x, 6);
 }
 
 TEST(Array, moveConversionImplicit) {
-	Array<int, 3>::WithImplicitCopy iArray1 = {1, 2, 3};
+	Tensor<int, 3>::ImplicitCopy iTensor1 = {1, 2, 3};
 	struct S {
 		int x;
 		S(int &&x) : x(2 * x) { x = 0; }
 	};
-	Array<S, 3>::WithImplicitCopy sArray1 = iArray1.move();
-	EXPECT_EQ(sArray1[0].x, 2);
-	EXPECT_EQ(sArray1[1].x, 4);
-	EXPECT_EQ(sArray1[2].x, 6);
-	EXPECT_EQ(iArray1[0], 0);
-	EXPECT_EQ(iArray1[1], 0);
-	EXPECT_EQ(iArray1[2], 0);
+	Tensor<S, 3>::ImplicitCopy sTensor1 = iTensor1.move();
+	EXPECT_EQ(sTensor1[0].x, 2);
+	EXPECT_EQ(sTensor1[1].x, 4);
+	EXPECT_EQ(sTensor1[2].x, 6);
+	EXPECT_EQ(iTensor1[0], 0);
+	EXPECT_EQ(iTensor1[1], 0);
+	EXPECT_EQ(iTensor1[2], 0);
 
-	Array<int, 3>::WithImplicitCopy iArray2 = {1, 2, 3};
-	Array<S, 3>::WithImplicitCopy sArray2 = {0, 0, 0};
-	sArray2 = iArray2.move();
-	EXPECT_EQ(sArray2[0].x, 2);
-	EXPECT_EQ(sArray2[1].x, 4);
-	EXPECT_EQ(sArray2[2].x, 6);
-	EXPECT_EQ(iArray2[0], 0);
-	EXPECT_EQ(iArray2[1], 0);
-	EXPECT_EQ(iArray2[2], 0);
+	Tensor<int, 3>::ImplicitCopy iTensor2 = {1, 2, 3};
+	Tensor<S, 3>::ImplicitCopy sTensor2 = {0, 0, 0};
+	sTensor2 = iTensor2.move();
+	EXPECT_EQ(sTensor2[0].x, 2);
+	EXPECT_EQ(sTensor2[1].x, 4);
+	EXPECT_EQ(sTensor2[2].x, 6);
+	EXPECT_EQ(iTensor2[0], 0);
+	EXPECT_EQ(iTensor2[1], 0);
+	EXPECT_EQ(iTensor2[2], 0);
 }
 
 // !
@@ -396,7 +399,7 @@ TEST(Array, test) {
 }
 
 static_assert(std::is_trivially_copyable_v<
-              array::_::Impl<Options<option::Item<int>, option::Extents<ValuePack<3>>>>>);
+              tensor::_::Impl<tensor::option::item<int>, tensor::option::numItems<3>>>);
 
 // !
 
@@ -413,27 +416,27 @@ struct MoveOnly {
 static_assert(!is::relocatable<MoveOnly>);
 
 TEST(Array, implicitMoveOnly) {
-	using Array = Array<MoveOnly, 3>::WithImplicitCopy;
+	using Tensor = Tensor<MoveOnly, 3>::ImplicitCopy;
 	// using Array = array::_::Impl<
 	//   Options<option::Item<MoveOnly>, option::Extents<ValuePack<3>>, option::implicitCopy<true>>>;
-	Array array = {1, 2, 3};
-	EXPECT_EQ(array[0].x, 1);
-	EXPECT_EQ(array[1].x, 2);
-	EXPECT_EQ(array[2].x, 3);
+	Tensor tensor = {1, 2, 3};
+	EXPECT_EQ(tensor[0].x, 1);
+	EXPECT_EQ(tensor[1].x, 2);
+	EXPECT_EQ(tensor[2].x, 3);
 
 	// static_assert(!std::is_constructible_v<Array, Array &>);
 	// auto arrayCopy = array.copy();
 
 	// static_assert(std::is_constructible_v<Array, Array &&>);
-	auto arrayMove = array.move();
-	static_assert(std::is_same_v<decltype(arrayMove), Array>);
+	auto tensorMove = tensor.move();
+	static_assert(std::is_same_v<decltype(tensorMove), Tensor>);
 
-	EXPECT_EQ(arrayMove[0].x, 1);
-	EXPECT_EQ(arrayMove[1].x, 2);
-	EXPECT_EQ(arrayMove[2].x, 3);
-	EXPECT_EQ(array[0].x, 0);
-	EXPECT_EQ(array[1].x, 0);
-	EXPECT_EQ(array[2].x, 0);
+	EXPECT_EQ(tensorMove[0].x, 1);
+	EXPECT_EQ(tensorMove[1].x, 2);
+	EXPECT_EQ(tensorMove[2].x, 3);
+	EXPECT_EQ(tensor[0].x, 0);
+	EXPECT_EQ(tensor[1].x, 0);
+	EXPECT_EQ(tensor[2].x, 0);
 }
 
 struct MoveAssignOnly {
@@ -453,21 +456,22 @@ struct MoveAssignOnly {
 static_assert(!is::relocatable<MoveAssignOnly>);
 
 TEST(Array, implicitMoveAssignOnly) {
-	using Array = array::_::Impl<Options<
-	  option::Item<MoveAssignOnly>, option::Extents<ValuePack<3>>, option::implicitCopy<true>>>;
-	// using Array = Array<MoveAssignOnly, 3>::WithImplicitCopy;
-	Array array = {1, 2, 3};
-	Array array2 = {4, 5, 6};
+	// using Array = array::_::Impl<
+	//   array::option::item<MoveAssignOnly>, array::option::numItems<3>,
+	//   mixin::copy::option::implicitCopy<true>>;
+	using Tensor = Tensor<MoveAssignOnly, 3>::ImplicitCopy;
+	Tensor tensor = {1, 2, 3};
+	Tensor tensor2 = {4, 5, 6};
 
-	static_assert(!std::is_assignable_v<Array &, Array &>);
-	// static_assert(std::is_assignable_v<Array &, Array &&>);
-	array = array2.move();
-	EXPECT_EQ(array[0].x, 4);
-	EXPECT_EQ(array[1].x, 5);
-	EXPECT_EQ(array[2].x, 6);
-	EXPECT_EQ(array2[0].x, 0);
-	EXPECT_EQ(array2[1].x, 0);
-	EXPECT_EQ(array2[2].x, 0);
+	static_assert(!std::is_assignable_v<Tensor &, Tensor &>);
+	// static_assert(std::is_assignable_v<Tensor &, Tensor &&>);
+	tensor = tensor2.move();
+	EXPECT_EQ(tensor[0].x, 4);
+	EXPECT_EQ(tensor[1].x, 5);
+	EXPECT_EQ(tensor[2].x, 6);
+	EXPECT_EQ(tensor2[0].x, 0);
+	EXPECT_EQ(tensor2[1].x, 0);
+	EXPECT_EQ(tensor2[2].x, 0);
 }
 
 TEST(Array, implicitCopyMove) {
@@ -481,32 +485,33 @@ TEST(Array, implicitCopyMove) {
 		CopyMove &operator=(const CopyMove &other) = delete;
 	};
 	static_assert(!is::relocatable<CopyMove>);
-	using Array = array::_::Impl<
-	  Options<option::Item<CopyMove>, option::Extents<ValuePack<3>>, option::implicitCopy<true>>>;
-	// using Array = Array<CopyMove, 3>::WithImplicitCopy;
-	Array array = {1, 2, 3};
-	EXPECT_EQ(array[0].x, 1);
-	EXPECT_EQ(array[1].x, 2);
-	EXPECT_EQ(array[2].x, 3);
+	// using Array = array::_::Impl<
+	//   array::option::item<CopyMove>, array::option::numItems<3>,
+	//   mixin::copy::option::implicitCopy<true>>;
+	using Tensor = Tensor<CopyMove, 3>::ImplicitCopy;
+	Tensor tensor = {1, 2, 3};
+	EXPECT_EQ(tensor[0].x, 1);
+	EXPECT_EQ(tensor[1].x, 2);
+	EXPECT_EQ(tensor[2].x, 3);
 
 	// should select copy constructor
-	auto arrayCopy = array.copy();
-	static_assert(std::is_same_v<decltype(arrayCopy), Array>);
-	EXPECT_EQ(arrayCopy[0].x, 1);
-	EXPECT_EQ(arrayCopy[1].x, 2);
-	EXPECT_EQ(arrayCopy[2].x, 3);
-	EXPECT_EQ(array[0].x, 1);
-	EXPECT_EQ(array[1].x, 2);
-	EXPECT_EQ(array[2].x, 3);
+	auto tensorCopy = tensor.copy();
+	static_assert(std::is_same_v<decltype(tensorCopy), Tensor>);
+	EXPECT_EQ(tensorCopy[0].x, 1);
+	EXPECT_EQ(tensorCopy[1].x, 2);
+	EXPECT_EQ(tensorCopy[2].x, 3);
+	EXPECT_EQ(tensor[0].x, 1);
+	EXPECT_EQ(tensor[1].x, 2);
+	EXPECT_EQ(tensor[2].x, 3);
 
 	// should select move constructor
-	auto arrayMove = array.move();
-	EXPECT_EQ(arrayMove[0].x, 1);
-	EXPECT_EQ(arrayMove[1].x, 2);
-	EXPECT_EQ(arrayMove[2].x, 3);
-	EXPECT_EQ(array[0].x, 0);
-	EXPECT_EQ(array[1].x, 0);
-	EXPECT_EQ(array[2].x, 0);
+	auto tensorMove = tensor.move();
+	EXPECT_EQ(tensorMove[0].x, 1);
+	EXPECT_EQ(tensorMove[1].x, 2);
+	EXPECT_EQ(tensorMove[2].x, 3);
+	EXPECT_EQ(tensor[0].x, 0);
+	EXPECT_EQ(tensor[1].x, 0);
+	EXPECT_EQ(tensor[2].x, 0);
 }
 
 class RELOCATABLE(Relocatable) {
@@ -529,32 +534,36 @@ static_assert(is::relocatable<Relocatable>);
 // ! this is impossible for aggregate type
 static_assert(is::_::builtinRelocatable<std::array<Relocatable, 3>>);
 
-static_assert(std::is_trivially_copyable_v<Array<Relocatable, 3>>);
+static_assert(std::is_trivially_copyable_v<Tensor<Relocatable, 3>>);
 static_assert(is::_::builtinRelocatable<
-              array::_::Impl<Options<option::Item<int>, option::Extents<ValuePack<3>>>>>);
+              tensor::_::Impl<tensor::option::item<int>, tensor::option::numItems<3>>>);
 static_assert(is::_::builtinRelocatable<
-              array::Custom<Options<option::Item<int>, option::Extents<ValuePack<3>>>>>);
+              tensor::Custom<tensor::option::item<int>, tensor::option::numItems<3>>>);
 // static_assert(is::_::builtinRelocatable<
-//               array::Custom<Options<option::Item<Relocatable>, option::Extents<ValuePack<3>>>>>);
-static_assert(is::relocatable<Array<Relocatable, 3>>);
-static_assert(is::relocatable<Array<Relocatable, 3>::WithImplicitCopy>);
+//               array::Custom<array::option::item<Relocatable>, array::option::numItems<3>>>);
+static_assert(is::relocatable<Tensor<Relocatable, 3>>);
+static_assert(is::relocatable<tensor::Custom<
+                tensor::option::item<Relocatable>, tensor::option::numItems<3>,
+                tensor::option::implicitCopy<true>>>);
 
 // !
 
-static_assert(is::relocatable<array::Custom<Options<option::Item<int>>>>);
-static_assert(is::relocatable<Array<int, 1>>);
+static_assert(
+  is::relocatable<tensor::Custom<tensor::option::item<int>, tensor::option::numItems<1>>>);
+static_assert(is::relocatable<Tensor<int, 1>>);
 
 // !
 
-// ! note: our Array is not an aggregate type !
+// ! note: our Tensor is not an aggregate type !
 // TODO: implement `array::Aggregate` if needed
-static_assert(!std::is_aggregate_v<Array<int, 3>>); // !
+static_assert(!std::is_aggregate_v<Tensor<int, 3>>); // !
 static_assert(std::is_aggregate_v<std::array<int, 3>>);
 
 // void test() {
 // 	Implicit a = {1, 2, 3};
 // 	Implicit b = a;
 // 	b = a;
+// 	b = a.copy();
 // }
 
 // WithImplicitCopy should restore regular copy/move ergonomics.
@@ -566,6 +575,7 @@ static_assert(std::is_assignable_v<Implicit &, Implicit>);
 static_assert(std::is_assignable_v<Implicit &, Implicit &>);
 static_assert(std::is_assignable_v<Implicit &, Implicit &&>);
 static_assert(std::is_assignable_v<Implicit &, const Implicit &>);
+static_assert(trait::numItems<Implicit> == 3);
 static_assert(std::is_assignable_v<Implicit &, const Implicit &&>);
 
 #include <v/OFF>

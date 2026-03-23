@@ -2,6 +2,3 @@
 #include <v/_/_>
 
 #include "v/_/tensor/all.hpp" // IWYU pragma: export
-
-// possibly required by Tensor
-#include "v/dynamic-array" // IWYU pragma: keep

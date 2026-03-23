@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "v/extents"
+#include "v/tensor"
 
 using namespace VOLTISO_NAMESPACE;
+using namespace VOLTISO_NAMESPACE::tensor;
 
 TEST(Extents, Static) {
 	Extents<2, 3, 4> e;

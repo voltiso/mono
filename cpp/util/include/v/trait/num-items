@@ -14,6 +14,7 @@ template <class T> [[nodiscard]] static consteval auto numItems() {
 	} else if constexpr (std::is_bounded_array_v<Value>) {
 		return std::extent_v<Value>;
 	} else if constexpr (requires { Value::size(); }) {
+		// std interop
 		static_assert(noexcept(Value::size()));
 		return Value::size();
 	} else {

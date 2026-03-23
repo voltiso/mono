@@ -2,7 +2,47 @@
 description: ⚙️ C++
 globs: cpp/**/*
 ---
-- 🧪 Test — `cd cpp && pnpm exec v test`
-- 📊 Bench — `cd cpp && pnpm exec v bench`
-- 🔧 Compiler binary — `clang-22`
-- 🐫 Naming — *camelCase*, even though it’s C++
+## Commands
+
+- **Tests** (always from `cpp/`): `cd cpp && pnpm exec v test`  
+  Repo-root `pnpm exec v test` runs **TypeScript** Vitest, not C++.
+- **Bench:** `cd cpp && pnpm exec v bench`
+
+## Toolchain
+
+- Compiler: **clang-22**
+- Naming: **camelCase**
+
+## Includes
+
+Separate groups with a **blank line**. Order:
+
+1. **Local** — same-dir / nearby quoted headers (`"std.hpp"`), not `v/...`
+2. **Lib** — Voltiso `v/...` (`"v/..."` or `<v/...>`)
+3. **External** — `<system>` / third-party
+
+After `#pragma once`, keep `#include <v/_/_>` first. **`#include <v/ON>` and `#include <v/OFF>` are always paired**: `ON` after the other includes (blank line above), then the file body; `OFF` as the **last line** of the file.
+
+Example:
+
+```cpp
+#pragma once
+#include <v/_/_>
+
+#include "std.hpp"
+
+#include "v/is/options"
+#include "v/memory/iterator"
+
+#include <type_traits>
+
+#include <v/ON>
+
+namespace V::example {
+
+// code here …
+
+} // namespace V::example
+
+#include <v/OFF>
+```

@@ -1,15 +1,13 @@
 #pragma once
 #include <v/_/_>
 
-#include "../options.hpp"
+#include "../option.hpp"
 #include "get-base.hpp"
 
 #include "v/_/0-is-derived-from-template.hpp"
-// #include "v/_/view.forward.hpp"
 #include "v/copy"
 #include "v/memory/iterator"
 #include "v/move"
-#include "v/raw-array"
 #include "v/size"
 #include "v/tag/concat"
 #include "v/tag/copy"
@@ -19,14 +17,12 @@
 #include <algorithm>
 #include <cstring>
 #include <iterator>
-#include <string>
-#include <string_view>
 #include <type_traits>
 #include <utility>
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::array::_ {
+namespace V::tensor::_ {
 consteval Size sumNumItems() { return 0; }
 
 template <class T, class... Ts> consteval Size sumNumItems(T &&, Ts &&...ts) {
@@ -40,7 +36,13 @@ template <is::Option... Os> class RELOCATABLE(Impl) : public GetBase<Os...> {
 	using Final = Base::Final;
 
 	using typename Base::Config;
+
+public:
 	using Item = Config::Item;
+	using Iterator = memory::Iterator<Item>;
+	using ConstIterator = memory::Iterator<const Item>;
+
+private:
 	using Items = Config::Items;
 
 private:
@@ -48,12 +50,10 @@ private:
 	Items _items;
 
 public:
-	/// `constexpr` (not `consteval`) so `data()`, iterators, and conversions work at runtime too.
-	constexpr Items &items() noexcept { return _items; }
-	constexpr const Items &items() const noexcept { return _items; }
+	constexpr auto &&items(this auto &&self) noexcept { return self._items; }
 
 public:
-	static consteval auto numItems() noexcept { return Config::numItems; }
+	static consteval auto numItems() /*const*/ noexcept { return Config::numItems; }
 
 	// ! ---------------------------------
 	// ! CONSTRUCT
@@ -181,20 +181,19 @@ public:
 
 public:
 	template <class TSource> constexpr Impl(tag::Copy, const TSource &source) {
-		// Compile-time shape compatibility check.
 		static_assert(trait::numItems<TSource> == Config::numItems);
 		std::copy(source.items(), source.items() + Config::numItems, this->items());
 	}
 
-	constexpr Impl(tag::Copy, RawArray<const Item, Config::numItems> &items) {
-		std::copy(items, items + Config::numItems, this->items());
+	constexpr Impl(tag::Copy, const Items &items) {
+		std::copy(items, items + numItems(), this->items());
 	}
 
 	template <Size N>
-	  requires(N >= Config::numItems)
+	  requires(N >= numItems())
 	consteval Impl(tag::CopyConsteval, const Item (&items)[N]) {
 		// Accept N >= NUM_ITEMS to support null-terminated string literals.
-		std::copy(items, items + Config::numItems, this->items());
+		std::copy(items, items + numItems(), this->items());
 	}
 
 	// ! ---------------------------------
@@ -210,66 +209,36 @@ public:
 		return this->items()[handle.value - Config::startingIndex];
 	}
 
-	template <
-	  class InferredHandle,
-	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Final>> * = nullptr>
+	template <class InferredHandle>
+	  requires std::is_same_v<typename InferredHandle::Brand, Final>
 	Item &operator[](const InferredHandle &handle) {
 		return const_cast<Item &>(const_cast<const Impl &>(*this)[handle]);
 	}
 
-	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
-	const Item &operator[](const Index &index) const {
-		return (*this)[CustomHandle<Index>(index)];
+	template <std::integral Index> const Item &operator[](const Index &index) const {
+		using IndexHandle = typename Config::template CustomHandle<Index>;
+		return (*this)[IndexHandle(index)];
 	}
 
-	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
-	Item &operator[](const Index &index) {
-		return (*this)[CustomHandle<Index>(index)];
+	template <std::integral Index> Item &operator[](const Index &index) {
+		using IndexHandle = typename Config::template CustomHandle<Index>;
+		return (*this)[IndexHandle(index)];
 	}
 
 	constexpr bool operator==(const Impl &other) const {
-		return std::equal(this->items(), this->items() + Config::numItems, other.items());
+		return std::equal(items(), items() + numItems(), other.items());
 	}
 
-	explicit operator RawArray<Item, Config::numItems> &() noexcept { return this->items(); }
-	explicit operator const RawArray<Item, Config::numItems> &() const noexcept {
-		return this->items();
-	}
+	// constexpr operator View<Item, numItems()> { return View<Item, numItems()>{items()}; }
 
-	constexpr operator ::std::string_view() const
-	  requires std::is_same_v<std::remove_const_t<Item>, char>
-	{
-		return ::std::string_view(this->items(), Config::numItems);
-	}
-
-	explicit constexpr operator ::std::string() noexcept(
-	  noexcept(std::string(this->items(), this->items() + Config::numItems)))
-	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
-	{
-		return std::string(this->items(), this->items() + Config::numItems);
-	}
-
-	// constexpr operator View<Item, _numItems>() { return View<Item, _numItems>{this->items()}; }
-
-	// constexpr operator View<const Item, _numItems>() const {
-	// 	return View<const Item, _numItems>{this->items()};
+	// constexpr operator View<const Item, numItems()>() const {
+	// 	return View<const Item, numItems()>{items()};
 	// }
 
-	// [[nodiscard]] constexpr auto view() noexcept { return View<Item, _numItems>{*this}; }
-	// [[nodiscard]] constexpr auto view() const noexcept { return View<const Item, _numItems>{*this};
+	// [[nodiscard]] constexpr auto view() noexcept { return View<Item, numItems()>{*this}; }
+	// [[nodiscard]] constexpr auto view() const noexcept { return View<const Item,
+	// numItems()>{*this};
 	// }
-
-	using Iterator = memory::Iterator<Item>;
-	using ConstIterator = memory::Iterator<const Item>;
-
-	// Iterator validity follows underlying storage relocation rules.
-	Iterator begin() { return Iterator{this->items()}; }
-	Iterator end() { return Iterator{this->items() + Config::numItems}; }
-	ConstIterator begin() const { return ConstIterator{this->items()}; }
-	ConstIterator end() const { return ConstIterator{this->items() + Config::numItems}; }
-
-	[[nodiscard]] constexpr Size size() const noexcept { return Config::numItems; }
-	[[nodiscard]] constexpr auto &data() const noexcept { return this->items(); }
 
 public:
 	// Concat for statically-sized sources only.
@@ -278,13 +247,13 @@ public:
 	constexpr auto operator<<(this auto &&self, Other &&other) {
 		constexpr Size newNumItems = Config::numItems + trait::numItems<Other>;
 		using Result = With<option::numItems<newNumItems>>;
-		EQ(array::_::sumNumItems(self, other), newNumItems);
+		EQ(sumNumItems(self, other), newNumItems);
 		return Result::concat(std::forward<decltype(self)>(self), std::forward<Other>(other));
 	}
 
 private:
 	template <class... Slices> constexpr Impl(tag::Concat, Slices &&...slices) {
-		constexpr auto sumResult = array::_::sumNumItems(slices...);
+		constexpr auto sumResult = sumNumItems(slices...);
 		if constexpr (!is::staticError(sumResult)) {
 			static_assert(Config::numItems == sumResult);
 		}
@@ -314,8 +283,9 @@ private:
 public:
 	template <class... More> using With = Base::template With<More...>;
 	template <auto n> using NumItems = With<option::numItems<n>>;
-	using ImplicitCopy = With<mixin::copy::option::implicitCopy<true>>;
+	using ImplicitCopy = With<option::implicitCopy<true>>;
+	using Std = With<option::std<true>>;
 }; // class Impl
-} // namespace VOLTISO_NAMESPACE::array::_
+} // namespace V::tensor::_
 
 #include <v/OFF>

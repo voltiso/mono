@@ -2,32 +2,38 @@
 #include <v/_/_>
 
 // #include "v/_/is/relocatable.hpp"
-#include "v/is/options"
-// #include "v/option/item"
+#include "v/is/option"
+// #include "v/options"
+#include "v/size"
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::tensor {
+namespace V::tensor {
 
-template <is::Options Options> class Custom;
+template <is::Option... Os> class Custom;
 
-// template <is::Options Options>
-//   requires is::relocatable<typename Options::template Get<option::Item>>
-// class RELOCATABLE(Custom<Options>);
+// template <is::Option... Os>
+//   requires is::relocatable<typename Options<Os...>::template Get<option::item>>
+// class RELOCATABLE(Custom<Os...>);
 
-template <is::Options Options> struct Specializations {
-	using Result = Custom<Options>;
+template <is::Option... Os> struct Specializations {
+	using Result = Custom<Os...>;
 };
 
-template <class... Args> using GetCustom = Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::tensor
+template <is::Option... Os> using GetCustom = typename Specializations<Os...>::Result;
 
-namespace VOLTISO_NAMESPACE {
-template <class Item, auto... ES> class Tensor;
+} // namespace V::tensor
 
-// template <class Item, auto... ES>
+//
+
+namespace V {
+
+template <class Item, Size numItems> class Tensor;
+
+// template <class Item, Size numItems>
 //   requires is::relocatable<Item>
-// class RELOCATABLE(Tensor<Item COMMA ES...>);
-} // namespace VOLTISO_NAMESPACE
+// class RELOCATABLE(Tensor<Item COMMA numItems>);
+
+} // namespace V
 
 #include <v/OFF>

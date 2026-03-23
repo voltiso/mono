@@ -130,6 +130,7 @@ public:                                                                         
 	template <class Src>                                                                             \
 	  requires(                                                                                      \
 	    std::is_same_v<Src, const Self> && std::is_assignable_v<Base &, const Base &&> &&            \
+	    !std::is_assignable_v<Base &, const Src &&> &&                                               \
 	    std::is_nothrow_assignable_v<Base &, const Base &&>)                                         \
 	constexpr Self &operator=(Src &&src) noexcept {                                                  \
 		static_cast<std::conditional_t<std::is_same_v<Src, Src>, Base &, void>>(*this) =               \
@@ -140,6 +141,7 @@ public:                                                                         
 	template <class Src>                                                                             \
 	  requires(                                                                                      \
 	    std::is_same_v<Src, const Self> && std::is_assignable_v<Base &, const Base &&> &&            \
+	    !std::is_assignable_v<Base &, const Src &&> &&                                               \
 	    !std::is_nothrow_assignable_v<Base &, const Base &&>)                                        \
 	constexpr Self &operator=(Src &&src) {                                                           \
 		static_cast<std::conditional_t<std::is_same_v<Src, Src>, Base &, void>>(*this) =               \
