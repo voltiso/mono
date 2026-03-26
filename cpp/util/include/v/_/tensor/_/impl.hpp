@@ -43,11 +43,8 @@ public:
 	using ConstIterator = memory::Iterator<const Item>;
 
 private:
-	using Items = Config::Items;
-
-private:
 	// ⚠️ All data members here
-	Items _items;
+	Config::Items _items;
 
 public:
 	constexpr auto &&items(this auto &&self) noexcept { return self._items; }
@@ -185,7 +182,7 @@ public:
 		std::copy(source.items(), source.items() + Config::numItems, this->items());
 	}
 
-	constexpr Impl(tag::Copy, const Items &items) {
+	constexpr Impl(tag::Copy, const Config::Items &items) {
 		std::copy(items, items + numItems(), this->items());
 	}
 

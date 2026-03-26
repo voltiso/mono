@@ -44,7 +44,8 @@
 			"ignoreDependencies": ["@voltiso/script.cmake"]
 		},
 		"ts/script": {
-			"entry": ["src/_bin/v.ts"],
+			"entry": ["src/bin/v.ts"],
+			"ignoreFiles": ["src/bin/index.ts"], // only to make `attw` happy
 			"ignoreDependencies": ["@voltiso/transform"]
 		},
 		"ts/styler.test.native": {

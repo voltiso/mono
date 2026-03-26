@@ -1,0 +1,20 @@
+{
+  "name": "voltiso",
+  "version": "3.0.0",
+  "description": "Alias for @voltiso/script",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________EXECUTABLES": "__________",
+  "bin": {
+    "v": "./bin.js",
+    "voltiso": "./bin.js"
+  },
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "bin.js"
+  ],
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/script": "workspace:^3.0.0"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/script",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -8,8 +8,8 @@
   "sideEffects": false,
   "__________EXECUTABLES": "__________",
   "bin": {
-    "voltiso-script": "dist/cjs/_bin/v.js",
-    "v": "dist/cjs/_bin/v.js"
+    "v": "dist/cjs/bin/v.js",
+    "voltiso": "dist/cjs/bin/v.js"
   },
   "__________EXPORTS": "__________",
   "exports": {
@@ -20,6 +20,21 @@
       },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./bin": {
+      "types": {
+        "import": "./dist/esm/bin/v.d.ts",
+        "require": "./dist/cjs/bin/v.d.ts"
+      },
+      "import": "./dist/esm/bin/v.js",
+      "require": "./dist/cjs/bin/v.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "bin": [
+        "dist/cjs/bin"
+      ]
     }
   },
   "__________EXPORTS FALLBACK": "__________",
@@ -28,21 +43,22 @@
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist"
+    "dist",
+    "bin/"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TURBO": "__________",
-    "build": "run-p build:esm build:cjs",
+    "build": "pnpm run \"/^build:(esm|cjs)$/\" && pnpm exec v compatDirs write",
     "check": "v check",
     "__________HOOKS": "__________",
     "prepublishOnly": "v prepublishOnly",
     "__________IMPL": "__________",
-    "build:esm": "run-s build:esm:clean build:esm:tsc build:esm:type",
+    "build:esm": "pnpm run build:esm:clean && pnpm run build:esm:tsc && pnpm run build:esm:type",
     "build:esm:clean": "rimraf dist/esm",
     "build:esm:tsc": "tspc -b tsconfig.build.esm.json",
     "build:esm:type": "echo '{\"type\":\"module\"}' > dist/esm/package.json",
-    "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
+    "build:cjs": "pnpm run build:cjs:clean && pnpm run build:cjs:tsc && pnpm run build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
     "build:cjs:tsc": "tspc -b tsconfig.build.cjs.json",
     "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json"

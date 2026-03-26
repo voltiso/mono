@@ -259,7 +259,7 @@ describe('runScript', () => {
 			'require("esbuild-register/dist/node").register()',
 			'const args = process.argv.slice(1)',
 			'process.argv = ["node", "v", ...args]',
-			'require("./src/_bin/v.ts")',
+			'require("./src/bin/v.ts")',
 		])
 
 		const cliProcess = spawn(

@@ -75,11 +75,11 @@ async function getPackageScripts() {
 		const buffer = await fs.readFile(packageJsonPath)
 		const packageStr = buffer.toString()
 		const packageJson = JSON.parse(packageStr) as {
-			scripts: Record<string, string>
+			scripts?: Record<string, string>
 		}
 
 		gPackageScripts = Object.fromEntries(
-			Object.entries(packageJson.scripts).map(([k, v]) => [
+			Object.entries(packageJson.scripts || {}).map(([k, v]) => [
 				k,
 				v.startsWith('v ') ? v.slice(2) : v,
 			]),

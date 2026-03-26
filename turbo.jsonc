@@ -10,6 +10,40 @@
 		"check": {
 			"dependsOn": ["build"],
 			"outputs": []
+		},
+
+		// ! overrides for compat dirs (messy...)
+		// (for ancient `node10` resolution)
+		// (makes `attw` happy)
+		"@voltiso/rpc#build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "client/**", "server/**"]
+		},
+		"@voltiso/script#build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "bin/**"]
+		},
+		"@voltiso/styler#build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "client/**", "server/**"]
+		},
+		"@voltiso/transactor#build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "client/**"]
+		},
+		"@voltiso/transform#build": {
+			"dependsOn": ["^build"],
+			"outputs": [
+				"dist/**",
+				"strip/**",
+				"inline/**",
+				"compat/**",
+				"call-info/**"
+			]
+		},
+		"@voltiso/util#build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**", "universal-mock/**"]
 		}
 	}
 }
